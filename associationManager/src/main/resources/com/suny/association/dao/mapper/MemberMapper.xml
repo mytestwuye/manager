@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.suny.association.dao.mapper.MemberMapper" >
+  <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.Member" >
+    <constructor >
+      <idArg column="member_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="member_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="member_class_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="member_sex" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="memver_grade_number" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="member_manager_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="member_department_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="member_status" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="member_role_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    member_id, member_name, member_class_name, member_sex, memver_grade_number, member_manager_id, 
+    member_department_id, member_status, member_role_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.suny.association.pojo.po.MemberExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from member
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from member
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.suny.association.pojo.po.MemberExample" >
+    delete from member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.suny.association.pojo.po.Member" >
+    insert into member (member_id, member_name, member_class_name, 
+      member_sex, memver_grade_number, member_manager_id, 
+      member_department_id, member_status, member_role_id
+      )
+    values (#{memberId,jdbcType=INTEGER}, #{memberName,jdbcType=VARCHAR}, #{memberClassName,jdbcType=VARCHAR}, 
+      #{memberSex,jdbcType=BIT}, #{memverGradeNumber,jdbcType=INTEGER}, #{memberManagerId,jdbcType=INTEGER}, 
+      #{memberDepartmentId,jdbcType=INTEGER}, #{memberStatus,jdbcType=BIT}, #{memberRoleId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.suny.association.pojo.po.Member" >
+    insert into member
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        member_id,
+      </if>
+      <if test="memberName != null" >
+        member_name,
+      </if>
+      <if test="memberClassName != null" >
+        member_class_name,
+      </if>
+      <if test="memberSex != null" >
+        member_sex,
+      </if>
+      <if test="memverGradeNumber != null" >
+        memver_grade_number,
+      </if>
+      <if test="memberManagerId != null" >
+        member_manager_id,
+      </if>
+      <if test="memberDepartmentId != null" >
+        member_department_id,
+      </if>
+      <if test="memberStatus != null" >
+        member_status,
+      </if>
+      <if test="memberRoleId != null" >
+        member_role_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="memberId != null" >
+        #{memberId,jdbcType=INTEGER},
+      </if>
+      <if test="memberName != null" >
+        #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberClassName != null" >
+        #{memberClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberSex != null" >
+        #{memberSex,jdbcType=BIT},
+      </if>
+      <if test="memverGradeNumber != null" >
+        #{memverGradeNumber,jdbcType=INTEGER},
+      </if>
+      <if test="memberManagerId != null" >
+        #{memberManagerId,jdbcType=INTEGER},
+      </if>
+      <if test="memberDepartmentId != null" >
+        #{memberDepartmentId,jdbcType=INTEGER},
+      </if>
+      <if test="memberStatus != null" >
+        #{memberStatus,jdbcType=BIT},
+      </if>
+      <if test="memberRoleId != null" >
+        #{memberRoleId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.suny.association.pojo.po.MemberExample" resultType="java.lang.Integer" >
+    select count(*) from member
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update member
+    <set >
+      <if test="record.memberId != null" >
+        member_id = #{record.memberId,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberName != null" >
+        member_name = #{record.memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memberClassName != null" >
+        member_class_name = #{record.memberClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.memberSex != null" >
+        member_sex = #{record.memberSex,jdbcType=BIT},
+      </if>
+      <if test="record.memverGradeNumber != null" >
+        memver_grade_number = #{record.memverGradeNumber,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberManagerId != null" >
+        member_manager_id = #{record.memberManagerId,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberDepartmentId != null" >
+        member_department_id = #{record.memberDepartmentId,jdbcType=INTEGER},
+      </if>
+      <if test="record.memberStatus != null" >
+        member_status = #{record.memberStatus,jdbcType=BIT},
+      </if>
+      <if test="record.memberRoleId != null" >
+        member_role_id = #{record.memberRoleId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update member
+    set member_id = #{record.memberId,jdbcType=INTEGER},
+      member_name = #{record.memberName,jdbcType=VARCHAR},
+      member_class_name = #{record.memberClassName,jdbcType=VARCHAR},
+      member_sex = #{record.memberSex,jdbcType=BIT},
+      memver_grade_number = #{record.memverGradeNumber,jdbcType=INTEGER},
+      member_manager_id = #{record.memberManagerId,jdbcType=INTEGER},
+      member_department_id = #{record.memberDepartmentId,jdbcType=INTEGER},
+      member_status = #{record.memberStatus,jdbcType=BIT},
+      member_role_id = #{record.memberRoleId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suny.association.pojo.po.Member" >
+    update member
+    <set >
+      <if test="memberName != null" >
+        member_name = #{memberName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberClassName != null" >
+        member_class_name = #{memberClassName,jdbcType=VARCHAR},
+      </if>
+      <if test="memberSex != null" >
+        member_sex = #{memberSex,jdbcType=BIT},
+      </if>
+      <if test="memverGradeNumber != null" >
+        memver_grade_number = #{memverGradeNumber,jdbcType=INTEGER},
+      </if>
+      <if test="memberManagerId != null" >
+        member_manager_id = #{memberManagerId,jdbcType=INTEGER},
+      </if>
+      <if test="memberDepartmentId != null" >
+        member_department_id = #{memberDepartmentId,jdbcType=INTEGER},
+      </if>
+      <if test="memberStatus != null" >
+        member_status = #{memberStatus,jdbcType=BIT},
+      </if>
+      <if test="memberRoleId != null" >
+        member_role_id = #{memberRoleId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suny.association.pojo.po.Member" >
+    update member
+    set member_name = #{memberName,jdbcType=VARCHAR},
+      member_class_name = #{memberClassName,jdbcType=VARCHAR},
+      member_sex = #{memberSex,jdbcType=BIT},
+      memver_grade_number = #{memverGradeNumber,jdbcType=INTEGER},
+      member_manager_id = #{memberManagerId,jdbcType=INTEGER},
+      member_department_id = #{memberDepartmentId,jdbcType=INTEGER},
+      member_status = #{memberStatus,jdbcType=BIT},
+      member_role_id = #{memberRoleId,jdbcType=INTEGER}
+    where member_id = #{memberId,jdbcType=INTEGER}
+  </update>
+</mapper>
