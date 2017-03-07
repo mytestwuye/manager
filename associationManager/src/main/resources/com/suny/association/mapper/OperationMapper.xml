@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.suny.association.mapper.OperationMapper" >
+  <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.Operation" >
+    <constructor >
+      <idArg column="operation_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="operation_message" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="operation_brower" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="operation_os_version" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="operation_user_agent" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="operation_request_url" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="operation_account_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    operation_id, operation_message, operation_brower, operation_os_version, operation_user_agent, 
+    operation_request_url, operation_account_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.suny.association.pojo.po.OperationExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from operation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from operation
+    where operation_id = #{operationId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from operation
+    where operation_id = #{operationId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.suny.association.pojo.po.OperationExample" >
+    delete from operation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.suny.association.pojo.po.Operation" >
+    insert into operation (operation_id, operation_message, operation_brower, 
+      operation_os_version, operation_user_agent, 
+      operation_request_url, operation_account_id)
+    values (#{operationId,jdbcType=BIGINT}, #{operationMessage,jdbcType=VARCHAR}, #{operationBrower,jdbcType=VARCHAR}, 
+      #{operationOsVersion,jdbcType=VARCHAR}, #{operationUserAgent,jdbcType=VARCHAR}, 
+      #{operationRequestUrl,jdbcType=VARCHAR}, #{operationAccountId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suny.association.pojo.po.Operation" >
+    insert into operation
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="operationId != null" >
+        operation_id,
+      </if>
+      <if test="operationMessage != null" >
+        operation_message,
+      </if>
+      <if test="operationBrower != null" >
+        operation_brower,
+      </if>
+      <if test="operationOsVersion != null" >
+        operation_os_version,
+      </if>
+      <if test="operationUserAgent != null" >
+        operation_user_agent,
+      </if>
+      <if test="operationRequestUrl != null" >
+        operation_request_url,
+      </if>
+      <if test="operationAccountId != null" >
+        operation_account_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="operationId != null" >
+        #{operationId,jdbcType=BIGINT},
+      </if>
+      <if test="operationMessage != null" >
+        #{operationMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="operationBrower != null" >
+        #{operationBrower,jdbcType=VARCHAR},
+      </if>
+      <if test="operationOsVersion != null" >
+        #{operationOsVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="operationUserAgent != null" >
+        #{operationUserAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="operationRequestUrl != null" >
+        #{operationRequestUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="operationAccountId != null" >
+        #{operationAccountId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.suny.association.pojo.po.OperationExample" resultType="java.lang.Integer" >
+    select count(*) from operation
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update operation
+    <set >
+      <if test="record.operationId != null" >
+        operation_id = #{record.operationId,jdbcType=BIGINT},
+      </if>
+      <if test="record.operationMessage != null" >
+        operation_message = #{record.operationMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationBrower != null" >
+        operation_brower = #{record.operationBrower,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationOsVersion != null" >
+        operation_os_version = #{record.operationOsVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationUserAgent != null" >
+        operation_user_agent = #{record.operationUserAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationRequestUrl != null" >
+        operation_request_url = #{record.operationRequestUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.operationAccountId != null" >
+        operation_account_id = #{record.operationAccountId,jdbcType=BIGINT},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update operation
+    set operation_id = #{record.operationId,jdbcType=BIGINT},
+      operation_message = #{record.operationMessage,jdbcType=VARCHAR},
+      operation_brower = #{record.operationBrower,jdbcType=VARCHAR},
+      operation_os_version = #{record.operationOsVersion,jdbcType=VARCHAR},
+      operation_user_agent = #{record.operationUserAgent,jdbcType=VARCHAR},
+      operation_request_url = #{record.operationRequestUrl,jdbcType=VARCHAR},
+      operation_account_id = #{record.operationAccountId,jdbcType=BIGINT}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suny.association.pojo.po.Operation" >
+    update operation
+    <set >
+      <if test="operationMessage != null" >
+        operation_message = #{operationMessage,jdbcType=VARCHAR},
+      </if>
+      <if test="operationBrower != null" >
+        operation_brower = #{operationBrower,jdbcType=VARCHAR},
+      </if>
+      <if test="operationOsVersion != null" >
+        operation_os_version = #{operationOsVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="operationUserAgent != null" >
+        operation_user_agent = #{operationUserAgent,jdbcType=VARCHAR},
+      </if>
+      <if test="operationRequestUrl != null" >
+        operation_request_url = #{operationRequestUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="operationAccountId != null" >
+        operation_account_id = #{operationAccountId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where operation_id = #{operationId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suny.association.pojo.po.Operation" >
+    update operation
+    set operation_message = #{operationMessage,jdbcType=VARCHAR},
+      operation_brower = #{operationBrower,jdbcType=VARCHAR},
+      operation_os_version = #{operationOsVersion,jdbcType=VARCHAR},
+      operation_user_agent = #{operationUserAgent,jdbcType=VARCHAR},
+      operation_request_url = #{operationRequestUrl,jdbcType=VARCHAR},
+      operation_account_id = #{operationAccountId,jdbcType=BIGINT}
+    where operation_id = #{operationId,jdbcType=BIGINT}
+  </update>
+</mapper>

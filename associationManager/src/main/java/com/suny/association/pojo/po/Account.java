@@ -95,4 +95,6 @@ public class Account {
     public void setAccountMemberId(Integer accountMemberId) {
         this.accountMemberId = accountMemberId;
     }
+
+
 }

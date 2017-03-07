@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.suny.association.mapper.AccountMapper" >
+  <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.Account" >
+    <constructor >
+      <idArg column="account_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="account_name" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="account_password" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="account_phone" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="account_email" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <arg column="account_status" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="account_role_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="account_member_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    account_id, account_name, account_password, account_phone, account_email, account_status, 
+    account_role_id, account_member_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.suny.association.pojo.po.AccountExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from account
+    where account_id = #{accountId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from account
+    where account_id = #{accountId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.suny.association.pojo.po.AccountExample" >
+    delete from account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.suny.association.pojo.po.Account" >
+    insert into account (account_id, account_name, account_password, 
+      account_phone, account_email, account_status, 
+      account_role_id, account_member_id)
+    values (#{accountId,jdbcType=BIGINT}, #{accountName,jdbcType=VARCHAR}, #{accountPassword,jdbcType=VARCHAR}, 
+      #{accountPhone,jdbcType=INTEGER}, #{accountEmail,jdbcType=VARCHAR}, #{accountStatus,jdbcType=BIT}, 
+      #{accountRoleId,jdbcType=INTEGER}, #{accountMemberId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.suny.association.pojo.po.Account" >
+    insert into account
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        account_id,
+      </if>
+      <if test="accountName != null" >
+        account_name,
+      </if>
+      <if test="accountPassword != null" >
+        account_password,
+      </if>
+      <if test="accountPhone != null" >
+        account_phone,
+      </if>
+      <if test="accountEmail != null" >
+        account_email,
+      </if>
+      <if test="accountStatus != null" >
+        account_status,
+      </if>
+      <if test="accountRoleId != null" >
+        account_role_id,
+      </if>
+      <if test="accountMemberId != null" >
+        account_member_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="accountId != null" >
+        #{accountId,jdbcType=BIGINT},
+      </if>
+      <if test="accountName != null" >
+        #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountPassword != null" >
+        #{accountPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="accountPhone != null" >
+        #{accountPhone,jdbcType=INTEGER},
+      </if>
+      <if test="accountEmail != null" >
+        #{accountEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="accountStatus != null" >
+        #{accountStatus,jdbcType=BIT},
+      </if>
+      <if test="accountRoleId != null" >
+        #{accountRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="accountMemberId != null" >
+        #{accountMemberId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.suny.association.pojo.po.AccountExample" resultType="java.lang.Integer" >
+    select count(*) from account
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update account
+    <set >
+      <if test="record.accountId != null" >
+        account_id = #{record.accountId,jdbcType=BIGINT},
+      </if>
+      <if test="record.accountName != null" >
+        account_name = #{record.accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountPassword != null" >
+        account_password = #{record.accountPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountPhone != null" >
+        account_phone = #{record.accountPhone,jdbcType=INTEGER},
+      </if>
+      <if test="record.accountEmail != null" >
+        account_email = #{record.accountEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accountStatus != null" >
+        account_status = #{record.accountStatus,jdbcType=BIT},
+      </if>
+      <if test="record.accountRoleId != null" >
+        account_role_id = #{record.accountRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="record.accountMemberId != null" >
+        account_member_id = #{record.accountMemberId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update account
+    set account_id = #{record.accountId,jdbcType=BIGINT},
+      account_name = #{record.accountName,jdbcType=VARCHAR},
+      account_password = #{record.accountPassword,jdbcType=VARCHAR},
+      account_phone = #{record.accountPhone,jdbcType=INTEGER},
+      account_email = #{record.accountEmail,jdbcType=VARCHAR},
+      account_status = #{record.accountStatus,jdbcType=BIT},
+      account_role_id = #{record.accountRoleId,jdbcType=INTEGER},
+      account_member_id = #{record.accountMemberId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suny.association.pojo.po.Account" >
+    update account
+    <set >
+      <if test="accountName != null" >
+        account_name = #{accountName,jdbcType=VARCHAR},
+      </if>
+      <if test="accountPassword != null" >
+        account_password = #{accountPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="accountPhone != null" >
+        account_phone = #{accountPhone,jdbcType=INTEGER},
+      </if>
+      <if test="accountEmail != null" >
+        account_email = #{accountEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="accountStatus != null" >
+        account_status = #{accountStatus,jdbcType=BIT},
+      </if>
+      <if test="accountRoleId != null" >
+        account_role_id = #{accountRoleId,jdbcType=INTEGER},
+      </if>
+      <if test="accountMemberId != null" >
+        account_member_id = #{accountMemberId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where account_id = #{accountId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suny.association.pojo.po.Account" >
+    update account
+    set account_name = #{accountName,jdbcType=VARCHAR},
+      account_password = #{accountPassword,jdbcType=VARCHAR},
+      account_phone = #{accountPhone,jdbcType=INTEGER},
+      account_email = #{accountEmail,jdbcType=VARCHAR},
+      account_status = #{accountStatus,jdbcType=BIT},
+      account_role_id = #{accountRoleId,jdbcType=INTEGER},
+      account_member_id = #{accountMemberId,jdbcType=INTEGER}
+    where account_id = #{accountId,jdbcType=BIGINT}
+  </update>
+</mapper>

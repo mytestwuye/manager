@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.suny.association.mapper.PunchRecordMapper" >
+  <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.PunchRecord" >
+    <constructor >
+      <idArg column="punch_record_id" jdbcType="BIGINT" javaType="java.lang.Long" />
+      <arg column="punch_datetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
+      <arg column="punch_today_date" jdbcType="DATE" javaType="java.util.Date" />
+      <arg column="punch_is_come" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <arg column="punch_type_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <arg column="punch_member_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
+    </constructor>
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    punch_record_id, punch_datetime, punch_today_date, punch_is_come, punch_type_id, 
+    punch_member_id
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.suny.association.pojo.po.PunchRecordExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from punch_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from punch_record
+    where punch_record_id = #{punchRecordId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from punch_record
+    where punch_record_id = #{punchRecordId,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.suny.association.pojo.po.PunchRecordExample" >
+    delete from punch_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.suny.association.pojo.po.PunchRecord" >
+    insert into punch_record (punch_record_id, punch_datetime, punch_today_date, 
+      punch_is_come, punch_type_id, punch_member_id
+      )
+    values (#{punchRecordId,jdbcType=BIGINT}, #{punchDatetime,jdbcType=TIMESTAMP}, #{punchTodayDate,jdbcType=DATE}, 
+      #{punchIsCome,jdbcType=BIT}, #{punchTypeId,jdbcType=INTEGER}, #{punchMemberId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.suny.association.pojo.po.PunchRecord" >
+    insert into punch_record
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="punchRecordId != null" >
+        punch_record_id,
+      </if>
+      <if test="punchDatetime != null" >
+        punch_datetime,
+      </if>
+      <if test="punchTodayDate != null" >
+        punch_today_date,
+      </if>
+      <if test="punchIsCome != null" >
+        punch_is_come,
+      </if>
+      <if test="punchTypeId != null" >
+        punch_type_id,
+      </if>
+      <if test="punchMemberId != null" >
+        punch_member_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="punchRecordId != null" >
+        #{punchRecordId,jdbcType=BIGINT},
+      </if>
+      <if test="punchDatetime != null" >
+        #{punchDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punchTodayDate != null" >
+        #{punchTodayDate,jdbcType=DATE},
+      </if>
+      <if test="punchIsCome != null" >
+        #{punchIsCome,jdbcType=BIT},
+      </if>
+      <if test="punchTypeId != null" >
+        #{punchTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="punchMemberId != null" >
+        #{punchMemberId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.suny.association.pojo.po.PunchRecordExample" resultType="java.lang.Integer" >
+    select count(*) from punch_record
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update punch_record
+    <set >
+      <if test="record.punchRecordId != null" >
+        punch_record_id = #{record.punchRecordId,jdbcType=BIGINT},
+      </if>
+      <if test="record.punchDatetime != null" >
+        punch_datetime = #{record.punchDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.punchTodayDate != null" >
+        punch_today_date = #{record.punchTodayDate,jdbcType=DATE},
+      </if>
+      <if test="record.punchIsCome != null" >
+        punch_is_come = #{record.punchIsCome,jdbcType=BIT},
+      </if>
+      <if test="record.punchTypeId != null" >
+        punch_type_id = #{record.punchTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="record.punchMemberId != null" >
+        punch_member_id = #{record.punchMemberId,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update punch_record
+    set punch_record_id = #{record.punchRecordId,jdbcType=BIGINT},
+      punch_datetime = #{record.punchDatetime,jdbcType=TIMESTAMP},
+      punch_today_date = #{record.punchTodayDate,jdbcType=DATE},
+      punch_is_come = #{record.punchIsCome,jdbcType=BIT},
+      punch_type_id = #{record.punchTypeId,jdbcType=INTEGER},
+      punch_member_id = #{record.punchMemberId,jdbcType=INTEGER}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.suny.association.pojo.po.PunchRecord" >
+    update punch_record
+    <set >
+      <if test="punchDatetime != null" >
+        punch_datetime = #{punchDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="punchTodayDate != null" >
+        punch_today_date = #{punchTodayDate,jdbcType=DATE},
+      </if>
+      <if test="punchIsCome != null" >
+        punch_is_come = #{punchIsCome,jdbcType=BIT},
+      </if>
+      <if test="punchTypeId != null" >
+        punch_type_id = #{punchTypeId,jdbcType=INTEGER},
+      </if>
+      <if test="punchMemberId != null" >
+        punch_member_id = #{punchMemberId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where punch_record_id = #{punchRecordId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.suny.association.pojo.po.PunchRecord" >
+    update punch_record
+    set punch_datetime = #{punchDatetime,jdbcType=TIMESTAMP},
+      punch_today_date = #{punchTodayDate,jdbcType=DATE},
+      punch_is_come = #{punchIsCome,jdbcType=BIT},
+      punch_type_id = #{punchTypeId,jdbcType=INTEGER},
+      punch_member_id = #{punchMemberId,jdbcType=INTEGER}
+    where punch_record_id = #{punchRecordId,jdbcType=BIGINT}
+  </update>
+</mapper>

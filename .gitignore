@@ -20,7 +20,7 @@ hs_err_pid*
 .idea/
 #associationManager/
 associationManager/target
-*.iml
+#*.iml
 demo/
 out/
 #pom.xml
