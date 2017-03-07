@@ -1,4 +1,4 @@
-package com.suny.association.dao.interfaces;
+package com.suny.association.dao;
 
 import java.util.List;
 
