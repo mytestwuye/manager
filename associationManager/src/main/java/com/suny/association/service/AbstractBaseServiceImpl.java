@@ -13,6 +13,9 @@ public abstract class AbstractBaseServiceImpl<T> implements IBaseService<T> {
 
     private IBaseDao<T> iBaseDao;
 
+    public AbstractBaseServiceImpl() {
+    }
+
     public AbstractBaseServiceImpl(IBaseDao<T> iBaseDao) {
         if (iBaseDao != null){
 

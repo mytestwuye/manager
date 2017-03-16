@@ -1,6 +1,8 @@
 package com.suny.association.pojo.po;
 
-public class Account {
+import java.io.Serializable;
+
+public class Account implements Serializable{
     private Long accountId;
 
     private String accountName;
@@ -95,6 +97,18 @@ public class Account {
     public void setAccountMemberId(Integer accountMemberId) {
         this.accountMemberId = accountMemberId;
     }
-
-
+    
+    @Override
+    public String toString() {
+        return "Account{" +
+                "accountId=" + accountId +
+                ", accountName='" + accountName + '\'' +
+                ", accountPassword='" + accountPassword + '\'' +
+                ", accountPhone=" + accountPhone +
+                ", accountEmail='" + accountEmail + '\'' +
+                ", accountStatus=" + accountStatus +
+                ", accountRoleId=" + accountRoleId +
+                ", accountMemberId=" + accountMemberId +
+                '}';
+    }
 }

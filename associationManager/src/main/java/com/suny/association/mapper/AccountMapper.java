@@ -8,7 +8,13 @@ import com.suny.association.pojo.po.Account;
  * Author:   孙建荣
  * Create Date: 2017/03/05 23:05
  */
-public interface AccountMapper extends IMapper<Account> {
 
-
+public interface AccountMapper  extends IMapper<Account>{
+    /**
+     * 通过用户名查找用户的账号的信息
+     * @param username
+     * @return
+     */
+    public Account selectByUserName(String username);
+    
 }

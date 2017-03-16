@@ -5,26 +5,33 @@ import com.suny.association.dao.interfaces.IRolesDao;
 import com.suny.association.pojo.po.Roles;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IRolesService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Comments:
  * Author:   孙建荣
  * Create Date: 2017/03/07 22:41
  */
+@Service
 public class RolesServiceImpl extends AbstractBaseServiceImpl<Roles> implements IRolesService {
-    private IRolesDao iRolesDao;
-
-    public IRolesDao getiRolesDao() {
-        return iRolesDao;
+    
+    
+    @Autowired
+    private IRolesDao rolesDao;
+    
+    public RolesServiceImpl() {
     }
-
-    public void setiRolesDao(IRolesDao iRolesDao) {
-        this.iRolesDao = iRolesDao;
-    }
-
-    public RolesServiceImpl(IBaseDao<Roles> iBaseDao, IRolesDao iRolesDao) {
-
+    
+    public RolesServiceImpl(IBaseDao<Roles> iBaseDao) {
         super(iBaseDao);
-        this.iRolesDao = iRolesDao;
+    }
+    
+    public IRolesDao getRolesDao() {
+        return rolesDao;
+    }
+    
+    public void setRolesDao(IRolesDao rolesDao) {
+        this.rolesDao = rolesDao;
     }
 }

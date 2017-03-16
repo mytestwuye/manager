@@ -9,7 +9,7 @@ public class Member {
 
     private Boolean memberSex;
 
-    private Integer memverGradeNumber;
+    private Integer memberGradeNumber;
 
     private Integer memberManagerId;
 
@@ -19,12 +19,12 @@ public class Member {
 
     private Integer memberRoleId;
 
-    public Member(Integer memberId, String memberName, String memberClassName, Boolean memberSex, Integer memverGradeNumber, Integer memberManagerId, Integer memberDepartmentId, Boolean memberStatus, Integer memberRoleId) {
+    public Member(Integer memberId, String memberName, String memberClassName, Boolean memberSex, Integer memberGradeNumber, Integer memberManagerId, Integer memberDepartmentId, Boolean memberStatus, Integer memberRoleId) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.memberClassName = memberClassName;
         this.memberSex = memberSex;
-        this.memverGradeNumber = memverGradeNumber;
+        this.memberGradeNumber = memberGradeNumber;
         this.memberManagerId = memberManagerId;
         this.memberDepartmentId = memberDepartmentId;
         this.memberStatus = memberStatus;
@@ -67,12 +67,12 @@ public class Member {
         this.memberSex = memberSex;
     }
 
-    public Integer getMemverGradeNumber() {
-        return memverGradeNumber;
+    public Integer getMemberGradeNumber() {
+        return memberGradeNumber;
     }
 
-    public void setMemverGradeNumber(Integer memverGradeNumber) {
-        this.memverGradeNumber = memverGradeNumber;
+    public void setMemberGradeNumber(Integer memberGradeNumber) {
+        this.memberGradeNumber = memberGradeNumber;
     }
 
     public Integer getMemberManagerId() {
@@ -105,5 +105,20 @@ public class Member {
 
     public void setMemberRoleId(Integer memberRoleId) {
         this.memberRoleId = memberRoleId;
+    }
+    
+    @Override
+    public String toString() {
+        return "Member{" +
+                "memberId=" + memberId +
+                ", memberName='" + memberName + '\'' +
+                ", memberClassName='" + memberClassName + '\'' +
+                ", memberSex=" + memberSex +
+                ", memberGradeNumber=" + memberGradeNumber +
+                ", memberManagerId=" + memberManagerId +
+                ", memberDepartmentId=" + memberDepartmentId +
+                ", memberStatus=" + memberStatus +
+                ", memberRoleId=" + memberRoleId +
+                '}';
     }
 }

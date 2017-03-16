@@ -5,27 +5,31 @@ import com.suny.association.dao.interfaces.IOperationDao;
 import com.suny.association.pojo.po.Operation;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IOperationService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Comments:
  * Author:   孙建荣
  * Create Date: 2017/03/07 22:38
  */
+@Service
 public class OperationServiceImpl extends AbstractBaseServiceImpl<Operation> implements IOperationService {
-
-    private IOperationDao iOperationDao;
-
-    public IOperationDao getiOperationDao() {
-        return iOperationDao;
+    @Autowired
+    private IOperationDao operationDao;
+    
+    public OperationServiceImpl() {
     }
-
-    public void setiOperationDao(IOperationDao iOperationDao) {
-        this.iOperationDao = iOperationDao;
-    }
-
-    public OperationServiceImpl(IBaseDao<Operation> iBaseDao, IOperationDao iOperationDao) {
-
+    
+    public OperationServiceImpl(IBaseDao<Operation> iBaseDao) {
         super(iBaseDao);
-        this.iOperationDao = iOperationDao;
+    }
+    
+    public IOperationDao getOperationDao() {
+        return operationDao;
+    }
+    
+    public void setOperationDao(IOperationDao operationDao) {
+        this.operationDao = operationDao;
     }
 }

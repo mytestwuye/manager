@@ -5,26 +5,31 @@ import com.suny.association.dao.interfaces.IPunchRecordDao;
 import com.suny.association.pojo.po.PunchRecord;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IPunchRecordService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /**
  * Comments:
  * Author:   孙建荣
  * Create Date: 2017/03/07 22:39
  */
+@Service
 public class PunchRecordServiceImpl extends AbstractBaseServiceImpl<PunchRecord> implements IPunchRecordService {
-    private IPunchRecordDao iPunchRecordDao;
-
-    public IPunchRecordDao getiPunchRecordDao() {
-        return iPunchRecordDao;
+    @Autowired
+    private IPunchRecordDao punchRecordDao;
+    
+    public PunchRecordServiceImpl() {
     }
-
-    public void setiPunchRecordDao(IPunchRecordDao iPunchRecordDao) {
-        this.iPunchRecordDao = iPunchRecordDao;
-    }
-
-    public PunchRecordServiceImpl(IBaseDao<PunchRecord> iBaseDao, IPunchRecordDao iPunchRecordDao) {
-
+    
+    public PunchRecordServiceImpl(IBaseDao<PunchRecord> iBaseDao) {
         super(iBaseDao);
-        this.iPunchRecordDao = iPunchRecordDao;
+    }
+    
+    public IPunchRecordDao getPunchRecordDao() {
+        return punchRecordDao;
+    }
+    
+    public void setPunchRecordDao(IPunchRecordDao punchRecordDao) {
+        this.punchRecordDao = punchRecordDao;
     }
 }
