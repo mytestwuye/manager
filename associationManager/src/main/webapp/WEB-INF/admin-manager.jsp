@@ -86,17 +86,17 @@
             background: url(${pageContext.request.contextPath}/images/oss.png) left top no-repeat;
         }
 
-        #test #header {
-            background: test;
-        }
+        /* #test #header {
+             background: test;
+         }
 
-        #test .content_tab {
-            background: test;
-        }
+         #test .content_tab {
+             background: test;
+         }*/
 
-        #test .s-profile > a {
-            background: url(test) left top no-repeat;
-        }
+        /*#test .s-profile > a {
+            background: url() left top no-repeat;
+        }*/
     </style>
 </head>
 <body>
@@ -110,10 +110,10 @@
             </div>
         </li>
         <li id="logo" class="hidden-xs">
-            <a href="index.html">
-                <img src="/images/logo.png"/>
+            <a href="${pageContext.request.contextPath}/admin-manager.html">
+                <img src="${pageContext.request.contextPath}/images/logo.png"/>
             </a>
-            <span id="system_title">社团管理系统</span>
+            <span id="system_title">协会管理系统</span>
         </li>
         <li class="pull-right">
             <ul class="hi-menu">
@@ -194,7 +194,8 @@
                             <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-settings"></i> 系统设置</a>
                         </li>
                         <li>
-                            <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-run"></i> 退出登录</a>
+                            <a class="waves-effect" href="javascript:;" onclick="clickLogout()"><i
+                                    class="zmdi zmdi-run"></i> 退出登录</a>
                         </li>
                     </ul>
                 </li>
@@ -212,7 +213,7 @@
                     <img src="${pageContext.request.contextPath}/images/avatar.jpg"/>
                 </div>
                 <div class="sp-info">
-                    孙建荣，您好！
+                    ${member.memberName}，您好！
                     <i class="zmdi zmdi-caret-down"></i>
                 </div>
             </a>
@@ -227,7 +228,8 @@
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-settings"></i> 系统设置</a>
                 </li>
                 <li>
-                    <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-run"></i> 退出登录</a>
+                    <a class="waves-effect" href="javascript:;" onclick="clickLogout()"><i class="zmdi zmdi-run"></i>
+                        退出登录</a>
                 </li>
             </ul>
         </div>
@@ -242,7 +244,7 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts-list"></i> 成员信息管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('协会档案信息', '${pageContext.request.contextPath}/archives-manager.html');">协会档案信息</a>
+                           href="javascript:Tab.addTab('协会档案信息', '${pageContext.request.contextPath}/member/member-manager.html');">协会档案信息</a>
                     </li>
                     <li><a class="waves-effect"
                            href="javascript:Tab.addTab('协会档案管理', '${pageContext.request.contextPath}/member/member-manager.html');">协会档案管理</a>
@@ -374,8 +376,43 @@
 <script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.jdirk.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/jquery.cookie.js"></script>
-
-
-</body>
 <script src="${pageContext.request.contextPath}/js/admin.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
+<script>
+    function clickLogout() {
+        //询问框
+        layer.confirm('您确定要退出登陆吗？', {
+            btn: ['是的', '点错了'] //按钮
+        }, function () {
+            sendLogout();
+            layer.load();
+            setTimeout(login, 2000);
+        }, function () {
+            layer.msg('取消退出登陆', {
+                time: 20000, //20s后自动关闭
+            });
+        });
+    }
+    function sendLogout() {
+        $.ajax({
+            type: "Get",
+            url: "${pageContext.request.contextPath}/logout.do",
+            success: function (result) {
+                if (result.success !== true) {
+                    layer.msg('这都能出错了。。', {icon: 5});
+                }
+                layer.alert('您已经成功退出，请注意账号安全', {icon: 6});
+
+            },
+            error: function () {
+                layer.msg('这都能出错了。。', {icon: 5});
+            }
+        })
+    }
+    function login() {
+        window.parent.location.href = "${pageContext.request.contextPath}/login.html";
+    }
+</script>
+</body>
+
 </html>

@@ -2,7 +2,6 @@ package com.suny.association.realm;
 
 import com.suny.association.enums.ErrorCode;
 import com.suny.association.exception.BusinessException;
-import com.suny.association.mapper.AccountMapper;
 import com.suny.association.service.interfaces.IAccountService;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
@@ -26,11 +25,7 @@ public class LoginRealm extends AuthorizingRealm {
     @Autowired
     private IAccountService accountService;
     
-    @Autowired
-    private AccountMapper accountMapper;
     
-    private String USERNAME = null;
-    private String PASSWORD = null;
     
     /**
      * 授权
@@ -61,7 +56,7 @@ public class LoginRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
         //根据用户名查询一个用户的信息
-        com.suny.association.pojo.po.Account account = accountMapper.selectByUserName(usernamePasswordToken.getUsername());
+        com.suny.association.pojo.po.Account account = accountService.selectByUserName(usernamePasswordToken.getUsername());
         if (account != null ) {
             return new SimpleAuthenticationInfo(account.getAccountName(), account.getAccountPassword(), getName());
         }

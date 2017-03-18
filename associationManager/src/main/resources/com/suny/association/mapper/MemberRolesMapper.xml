@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.suny.association.mapper.MemberRolesMapper" >
-  <!--<resultMap id="BaseResultMap" type="com.suny.association.pojo.po.MemberRoles" >
-    <constructor >
-      <idArg column="member_role_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="member_role_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>-->
+<mapper namespace="com.suny.association.mapper.MemberRolesMapper">
+    <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.MemberRoles">
+        <id property="memberRoleId" column="member_role_id"></id>
+        <result property="memberRoleName" column="member_role_name"></result>
+    </resultMap>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+            member_role_id,
+            member_role_name
+        FROM
+            member_roles
+    </select>
 
 </mapper>

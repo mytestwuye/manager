@@ -15,6 +15,6 @@ public interface AccountMapper  extends IMapper<Account>{
      * @param username
      * @return
      */
-    public Account selectByUserName(String username);
+     Account selectByUserName(String username);
     
 }

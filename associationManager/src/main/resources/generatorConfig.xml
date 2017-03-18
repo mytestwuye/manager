@@ -86,7 +86,7 @@
         </javaClientGenerator>
 
 
-        <table tableName="account" schema=""/>
+        <!--<table tableName="account" schema=""/>
         <table tableName="application_message" schema=""/>
         <table tableName="checkback_result" schema=""/>
         <table tableName="checkback_result" schema=""/>
@@ -96,7 +96,8 @@
         <table tableName="operation" schema=""/>
         <table tableName="punch_record" schema=""/>
         <table tableName="punch_type" schema=""/>
-        <table tableName="roles" schema=""/>
+        <table tableName="roles" schema=""/>-->
+        <table tableName="department" schema=""/>
 
     </context>
 </generatorConfiguration>

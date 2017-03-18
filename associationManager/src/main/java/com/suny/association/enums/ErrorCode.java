@@ -9,6 +9,7 @@ public enum ErrorCode {
 
     NULL_OBJ("0001","对象为空"),
     ERROR_ADD_USER("0002","添加用户失败"),
+    ERROR_DELETE_USER("000","删除用户失败"),
     LOGIN_VERIFY_FAILURE("0003","登陆验证失败，请检查用户名密码是否正确"),
     UNKNOWN_ERROR("0999","系统繁忙....");
 

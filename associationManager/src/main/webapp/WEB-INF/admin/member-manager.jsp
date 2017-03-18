@@ -1,8 +1,8 @@
 <%--
   Created by IntelliJ IDEA.
   User: 孙建荣
-  Date: 2017/3/16/016
-  Time: 17:48
+  Date: 2017/3/15/015
+  Time: 20:18
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -19,267 +19,89 @@
     <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
           rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
+          rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
           rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
           rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet"/>
+    <style>
+        .panel {
+            margin-bottom: 0;
+        }
+    </style>
 </head>
 <body>
+<div class="panel-body" style="padding-bottom:0px;">
+    <div class="panel panel-default">
+        <div class="panel-heading">查询条件</div>
+        <div class="panel-body">
+            <form id="formSearch" class="form-horizontal">
+                <div class="form-group" style="margin-top:15px">
+                    <label class="control-label col-sm-1" for="txt_search_departmentname">部门名称</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="txt_search_departmentname">
+                    </div>
+                    <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" id="txt_search_statu">
+                    </div>
+                    <div class="col-sm-4" style="text-align:left;">
+                        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-
-<div class="container">
-    <h1>Bootstrap Table Examples <a href="https://github.com/wenzhixin/bootstrap-table-examples" class="btn btn-primary" role="button" target="_blank">Learn more &raquo;</a></h1>
-    <div id="toolbar">
-        <button id="remove" class="btn btn-danger" disabled>
-            <i class="glyphicon glyphicon-remove"></i> Delete
+    <div id="toolbar" class="btn-group">
+        <button id="btn_add" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+        </button>
+        <button id="btn_edit" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+        </button>
+        <button id="btn_delete" type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
         </button>
     </div>
-    <table id="table"
-           data-toolbar="#toolbar"
-           data-search="true"
-           data-show-refresh="true"
-           data-show-toggle="true"
-           data-show-columns="true"
-           data-show-export="true"
-           data-detail-view="true"
-           data-detail-formatter="detailFormatter"
-           data-minimum-count-columns="2"
-           data-show-pagination-switch="true"
-           data-pagination="true"
-           data-id-field="id"
-           data-page-list="[10, 25, 50, 100, ALL]"
-           data-show-footer="false"
-           data-side-pagination="server"
-           data-url="/examples/bootstrap_table/data"
-           data-response-handler="responseHandler">
-    </table>
+    <table id="mytab" class="table table-hover"></table>
 </div>
 
-<script>
-    var $table = $('#table'),
-            $remove = $('#remove'),
-            selections = [];
-    function initTable() {
-        $table.bootstrapTable({
-            height: getHeight(),
-            columns: [
-                [
-                    {
-                        field: 'state',
-                        checkbox: true,
-                        rowspan: 2,
-                        align: 'center',
-                        valign: 'middle'
-                    }, {
-                    title: 'Item ID',
-                    field: 'id',
-                    rowspan: 2,
-                    align: 'center',
-                    valign: 'middle',
-                    sortable: true,
-                    footerFormatter: totalTextFormatter
-                }, {
-                    title: 'Item Detail',
-                    colspan: 3,
-                    align: 'center'
-                }
-                ],
-                [
-                    {
-                        field: 'name',
-                        title: 'Item Name',
-                        sortable: true,
-                        editable: true,
-                        footerFormatter: totalNameFormatter,
-                        align: 'center'
-                    }, {
-                    field: 'price',
-                    title: 'Item Price',
-                    sortable: true,
-                    align: 'center',
-                    editable: {
-                        type: 'text',
-                        title: 'Item Price',
-                        validate: function (value) {
-                            value = $.trim(value);
-                            if (!value) {
-                                return 'This field is required';
-                            }
-                            if (!/^\$/.test(value)) {
-                                return 'This field needs to start width $.'
-                            }
-                            var data = $table.bootstrapTable('getData'),
-                                    index = $(this).parents('tr').data('index');
-                            console.log(data[index]);
-                            return '';
-                        }
-                    },
-                    footerFormatter: totalPriceFormatter
-                }, {
-                    field: 'operate',
-                    title: 'Item Operate',
-                    align: 'center',
-                    events: operateEvents,
-                    formatter: operateFormatter
-                }
-                ]
-            ]
-        });
-        // sometimes footer render error.
-        setTimeout(function () {
-            $table.bootstrapTable('resetView');
-        }, 200);
-        $table.on('check.bs.table uncheck.bs.table ' +
-                'check-all.bs.table uncheck-all.bs.table', function () {
-            $remove.prop('disabled', !$table.bootstrapTable('getSelections').length);
-            // save your data, here just save the current page
-            selections = getIdSelections();
-            // push or splice the selections if you want to save all data selections
-        });
-        $table.on('expand-row.bs.table', function (e, index, row, $detail) {
-            if (index % 2 == 1) {
-                $detail.html('Loading from ajax request...');
-                $.get('LICENSE', function (res) {
-                    $detail.html(res.replace(/\n/g, '<br>'));
-                });
-            }
-        });
-        $table.on('all.bs.table', function (e, name, args) {
-            console.log(name, args);
-        });
-        $remove.click(function () {
-            var ids = getIdSelections();
-            $table.bootstrapTable('remove', {
-                field: 'id',
-                values: ids
-            });
-            $remove.prop('disabled', true);
-        });
-        $(window).resize(function () {
-            $table.bootstrapTable('resetView', {
-                height: getHeight()
-            });
-        });
-    }
-    function getIdSelections() {
-        return $.map($table.bootstrapTable('getSelections'), function (row) {
-            return row.id
-        });
-    }
-    function responseHandler(res) {
-        $.each(res.rows, function (i, row) {
-            row.state = $.inArray(row.id, selections) !== -1;
-        });
-        return res;
-    }
-    function detailFormatter(index, row) {
-        var html = [];
-        $.each(row, function (key, value) {
-            html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-        });
-        return html.join('');
-    }
-    function operateFormatter(value, row, index) {
-        return [
-            '<a class="like" href="javascript:void(0)" title="Like">',
-            '<i class="glyphicon glyphicon-heart"></i>',
-            '</a>  ',
-            '<a class="remove" href="javascript:void(0)" title="Remove">',
-            '<i class="glyphicon glyphicon-remove"></i>',
-            '</a>'
-        ].join('');
-    }
-    window.operateEvents = {
-        'click .like': function (e, value, row, index) {
-            alert('You click like action, row: ' + JSON.stringify(row));
-        },
-        'click .remove': function (e, value, row, index) {
-            $table.bootstrapTable('remove', {
-                field: 'id',
-                values: [row.id]
-            });
-        }
-    };
-    function totalTextFormatter(data) {
-        return 'Total';
-    }
-    function totalNameFormatter(data) {
-        return data.length;
-    }
-    function totalPriceFormatter(data) {
-        var total = 0;
-        $.each(data, function (i, row) {
-            total += +(row.price.substring(1));
-        });
-        return '$' + total;
-    }
-    function getHeight() {
-        return $(window).height() - $('h1').outerHeight(true);
-    }
-    $(function () {
-        var scripts = [
-                    location.search.substring(1) || 'assets/bootstrap-table/src/bootstrap-table.js',
-                    'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js',
-                    'http://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js',
-                    'assets/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js',
-                    'http://rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js'
-                ],
-                eachSeries = function (arr, iterator, callback) {
-                    callback = callback || function () {};
-                    if (!arr.length) {
-                        return callback();
-                    }
-                    var completed = 0;
-                    var iterate = function () {
-                        iterator(arr[completed], function (err) {
-                            if (err) {
-                                callback(err);
-                                callback = function () {};
-                            }
-                            else {
-                                completed += 1;
-                                if (completed >= arr.length) {
-                                    callback(null);
-                                }
-                                else {
-                                    iterate();
-                                }
-                            }
-                        });
-                    };
-                    iterate();
-                };
-        eachSeries(scripts, getScript, initTable);
-    });
-    function getScript(url, callback) {
-        var head = document.getElementsByTagName('head')[0];
-        var script = document.createElement('script');
-        script.src = url;
-        var done = false;
-        // Attach handlers for all browsers
-        script.onload = script.onreadystatechange = function() {
-            if (!done && (!this.readyState ||
-                    this.readyState == 'loaded' || this.readyState == 'complete')) {
-                done = true;
-                if (callback)
-                    callback();
-                // Handle memory leak in IE
-                script.onload = script.onreadystatechange = null;
-            }
-        };
-        head.appendChild(script);
-        // We handle everything using the script element injection
-        return undefined;
-    }
-</script>
-
+<!-- 新增拟态框 -->
+<div id="createDialog" class="crudDialog" hidden>
+    <form>
+        <div class="form-group">
+            <label for="input1">标题</label>
+            <input id="input1" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="input2">名称</label>
+            <input id="input2" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="input3">根目录</label>
+            <input id="input3" type="text" class="form-control">
+        </div>
+        <div class="form-group">
+            <label for="input4">图标</label>
+            <input id="input4" type="text" class="form-control">
+        </div>
+    </form>
+</div>
 <%--正文区结束--%>
+
+
+</body>
 <script src="${pageContext.request.contextPath}/plugins/jquery.1.12.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/BootstrapMenu.min.js"></script>
@@ -288,5 +110,342 @@
 <script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.jdirk.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/jquery.cookie.js"></script>
 <script src="${pageContext.request.contextPath}/js/admin.js"></script>
-</body>
+<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
+<script>
+    $(function () {
+
+        //1.初始化Table
+        var oTable = new TableInit();
+        oTable.Init();
+
+        //2.初始化Button的点击事件
+        var oButtonInit = new ButtonInit();
+        oButtonInit.Init();
+
+        //根据窗口调整表格高度
+        $(window).resize(function () {
+            $('#mytab').bootstrapTable('resetView', {
+                height: tableHeight()
+            })
+        });
+
+
+    });
+
+
+    function tableHeight() {
+        return $(window).height() - 145;
+    }
+
+
+    var TableInit = function () {
+        var oTableInit = new Object();
+        //初始化Table
+        oTableInit.Init = function () {
+            layer.load(0, {shade: false, time: 1000}); //0代表加载的风格，支持0-2
+            $('#mytab').bootstrapTable({
+                url: '${pageContext.request.contextPath}/member/queryForAll.json',         //请求后台的URL（*）
+                method: 'get',                      //请求方式（*）
+                toolbar: '#toolbar',                //工具按钮用哪个容器
+                striped: true,                      //是否显示行间隔色
+                cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+                pagination: true,                   //是否显示分页（*）
+                smartDisplay: false,                 //是否关闭智能隐藏分页按钮
+                sortable: true,                     //是否启用排序
+                sortOrder: "asc",                   //排序方式
+                showPaginationSwitch: 'true',       //取消或者显示分页
+                height: tableHeight(),    //高度调整
+                buttonsAlign: "right",//按钮对齐方式
+                toolbarAlign: "left",//工具栏对齐方式
+                queryParams: oTableInit.queryParams,//传递参数（*）
+                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                pageNumber: 1,                       //初始化加载第一页，默认第一页
+                pageSize: 5,                       //每页的记录行数（*）
+                pageList: [5, 10, 25, 50, 100],        //可供选择的每页的行数（*）
+                search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
+                strictSearch: true,
+                showColumns: true,                  //是否显示所有的列
+                showRefresh: true,                  //是否显示刷新按钮
+                minimumCountColumns: 2,             //最少允许的列数
+                clickToSelect: true,                //是否启用点击选中行
+                singleSelect: true,           // 单选checkbox
+                //height: 500,                        行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+                uniqueId: "memberId",                     //每一行的唯一标识，一般为主键列
+                showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
+                cardView: false,                    //是否显示详细视图
+                showExport: true,                     //是否显示导出
+                exportDataType: "basic",              //basic', 'all', 'selected'.
+                detailView: false,                   //是否显示父子表
+                rowStyle: function (row, index) {
+                    //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
+                    var strclass = "";
+                    if (row.memberStatus == false) {
+                        strclass = 'danger';//还有一个active
+                    }
+                    else if (row.memberName == "已删除") {
+                        strclass = 'danger';
+                    }
+                    else {
+                        return {};
+                    }
+                    return {classes: strclass}
+                },
+                columns: [
+                    {
+                        title: "全选",
+                        field: "select",
+                        checkbox: true,
+                        width: 20,//宽度
+                        align: "center",//水平
+                        valign: "middle"//垂直
+                    },
+                    {
+                        title: "ID",//标题
+                        field: "memberId",//键名
+                        sortable: true,//是否可排序
+                        order: "desc"//默认排序方式
+                    },
+                    {
+                        field: "memberName",
+                        title: "姓名",
+                        sortable: true,
+                        titleTooltip: "this is name"
+                    },
+                    {
+                        field: "memberClassName",
+                        title: "班级名字",
+                        order: "desc"//默认排序方式
+                    },
+                    {
+                        field: "memberSex",
+//                    title: "INFO[using-formatter]",
+                        title: "性别",
+                        order: "desc",//默认排序方式
+                        formatter: 'sexFormatter' //对本列数据做格式化
+                    },
+                    {
+                        field: "memberGradeNumber",
+                        title: "年级",
+                        order: "desc"//默认排序方式
+                    },
+                    {
+                        field: "member_manager_id",
+                        title: "管理员id",
+                        order: "desc"//默认排序方式
+                    },
+                    {
+                        field: "memberDepartmentId",
+                        title: "部门",
+                        order: "desc",//默认排序方式
+                        formatter: "departmentFormatter" //格式化部门
+                    },
+                    {
+                        field: "memberStatus",
+                        title: "状态",
+                        sortable: true, //是否可排序
+                        order: "desc", //默认排序方式
+                        formatter: "memberStatusFormatter"   //格式化数据
+                    },
+                    {
+                        field: "memberRoleId",
+                        title: "角色",
+                        order: "desc",//默认排序方式
+                        formatter: "memberRoleFormatter"    //格式化角色
+                    }
+                ],
+                onClickRow: function (row, $element) {
+                    //$element是当前tr的jquery对象
+                    // $element.css("background-color", "#29a176");
+                },//单击row事件
+                locale: "zh-CN", //中文支持,
+                detailFormatter: function (index, row, element) {
+                    var html = '';
+                    $.each(row, function (key, val) {
+                        html += "<p>" + key + ":" + val + "</p>"
+                    });
+                    return html;
+                }
+            });
+        };
+
+        //得到查询的参数
+        oTableInit.queryParams = function (params) {
+            var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
+                limit: params.limit,   //页面大小
+                offset: params.offset,  //页码
+                departmentname: $("#txt_search_departmentname").val(),
+                statu: $("#txt_search_statu").val()
+            };
+            return temp;
+        };
+        return oTableInit;
+    };
+
+    /**
+     * 格式化成员状态
+     * @param  {[type]} value [description]
+     * @param  {[type]} row   [description]
+     * @param  {[type]} index [description]
+     * @return {string}       [description]
+     */
+    function memberStatusFormatter(value, row, index) {
+        var memberStatus = row.memberStatus == true ? '正常' : '冻结';
+        return memberStatus;
+    }
+
+    /**
+     * 格式化性别
+     * @param row
+     * @returns {string}
+     */
+    function sexFormatter(value, row, index) {
+        return row.memberSex == true ? "女" : "男";
+    }
+
+    /**
+     * 格式化部门
+     * @param row
+     * @returns {*}
+     */
+    function departmentFormatter(value, row, index){
+        switch(row.memberDepartmentId ){
+            case 1 :
+                return "办公室"; break;
+            case 2:
+                return "策划部"; break;
+            case 3:
+                return "组织部"; break;
+            case 4:
+                return "宣传部"; break;
+            default:
+                return "无部门"; break;
+
+        }
+    }
+
+    /**
+     * 格式化角色
+     * @param row
+     * @returns {*}
+     */
+    function memberRoleFormatter(value, row, index){
+        switch(row.memberRoleId){
+            case 1 :
+                return "干事"; break;
+            case 2:
+                return "代理部长"; break;
+            case 3:
+                return "代理会长"; break;
+            case 4:
+                return "主任"; break;
+            case 5:
+                return "副主任"; break;
+            case 6:
+                return "部长"; break;
+            case 7:
+                return "副部长"; break;
+            case 8:
+                return "会长"; break;
+            case 9:
+                return "副会长"; break;
+            case 10:
+                return "指导老师"; break;
+            default:
+                return "未知角色";  break;
+
+        }
+    }
+
+
+
+
+    //新增按钮的方法
+    $("#btn_add").click(function () {
+        var selectedRaido = $('#mytab').bootstrapTable('getSelections');
+        if (selectedRaido.length === 0) {
+            alert("请先选择要编辑的行！");
+        } else {
+            alert("你准备编辑的行是" + selectedRaido[0].memberName);
+        }
+    });
+
+
+    //编辑按钮的方法
+    $("#btn_edit").click(function () {
+        var selectedRaido = $('#mytab').bootstrapTable('getSelections');
+        var memberId = selectedRaido[0].memberId;
+        if (selectedRaido.length === 0) {
+            layer.msg('没有选择修改的成员！', function () {
+                //关闭后的操作
+            });
+        } else {
+            editMemeber(memberId);
+        }
+    });
+
+    function editMemeber(memberId) {
+        //iframe层-父子操作
+        layer.open({
+            type: 2,
+            area: ['300px', '530px'],
+            fixed: false, //不固定
+            maxmin: true,
+            content: '${pageContext.request.contextPath}/member/editMember.html/' + memberId
+        });
+    }
+
+    //删除按钮的方法
+    $("#btn_delete").click(function () {
+        var selectedRaido = $('#mytab').bootstrapTable('getSelections');
+        var memberId = selectedRaido[0].memberId;
+        if (selectedRaido.length === 0) {
+            //信息框-例5
+            layer.msg('没有选择删除的成员！', function () {
+                //关闭后的操作
+            });
+        } else {
+            //询问框
+            layer.confirm('您确定要删除【' + selectedRaido[0].memberName + "】这条成员的信息吗?", {
+                btn: ['确定', '点错了'] //按钮
+            }, function () {
+                layer.msg('准备删除了', {icon: 1});
+                deleteMember(memberId);
+            }, function () {
+                layer.msg('已经取消了', {
+                    time: 20000, //20s后自动关闭
+                });
+            });
+        }
+    });
+
+
+    function deleteMember(memberId) {
+        $.ajax({
+            type: "get",
+            url: "${pageContext.request.contextPath}/member/deleteById/" + memberId,
+            success: function (result) {
+                layer.msg(result.desc, {icon: 1});
+                layer.load(0, {shade: false});
+                $("#mytab").bootstrapTable("refresh");
+            },
+            error: function () {
+                layer.msg('你删除了一条', {icon: 1});
+            }
+        })
+    }
+
+
+    var ButtonInit = function () {
+        var oInit = new Object();
+        var postdata = {};
+
+        oInit.Init = function () {
+            //初始化页面上面的按钮事件
+        };
+
+        return oInit;
+    };
+
+
+</script>
 </html>

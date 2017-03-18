@@ -13,6 +13,121 @@
         <result property="memberRoleId" column="member_role_id"/>
 
     </resultMap>
+
+    <update id="update" parameterType="com.suny.association.pojo.po.Member">
+        UPDATE
+        <set>
+            <if test="memberName != null">
+                member_name =#{memberName}
+            </if>
+            <if test="memberClassName != null">
+                member_class_name =#{memberClassName}
+            </if>
+            <if test="memberSex != null">
+                member_sex =#{memberSex}
+            </if>
+            <if test="memberGradeNumber != null">
+                member_grade_number =#{member_grade_number}
+            </if>
+            <if test="memberManagerId != null">
+                member_manager_id =#{memberManagerId}
+            </if>
+            <if test="memberDepartmentId != null">
+                member_department_id =#{memberDepartmentId}
+            </if>
+            <if test="memberStatus != null">
+                member_status =#{memberStatus}
+            </if>
+            <if test="memberRoleId != null">
+                member_role_id =#{memberRoleId}
+            </if>
+        </set>
+        where
+        member_id
+        =#{memberId}
+    </update>
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM member
+        WHERE member_id = #{id}
+    </delete>
+
+    <select id="selectFreezeManager" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+        WHERE member_role_id > 3
+              AND
+              member_status = 0
+    </select>
+    <select id="selectNormalManager" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+        WHERE member_role_id > 3
+              AND
+              member_status = 1
+    </select>
+
+    <select id="selectFreezeMember" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+        WHERE member_status = 0
+    </select>
+
+    <select id="selectNormalMember" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+        WHERE member_status = 1
+    </select>
+
+    <select id="select" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+        WHERE member_id = #{id}
+    </select>
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT
             member_id,

@@ -64,7 +64,7 @@ window.onresize = function() {
 	resizeFrameHeight();
 	initScrollShow();
 	initScrollState();
-}
+};
 
 // ========== 选项卡操作 ==========
 $(function() {
@@ -79,6 +79,7 @@ $(function() {
 		var marginLeft = ($('#tabs').css('marginLeft').replace('px', ''));
 		// 滚动到可视区域:在左侧
 		if ($(this).position().left < marginLeft) {
+			//noinspection JSDuplicatedDeclaration
 			var left = $('.content_tab>ul').scrollLeft() + $(this).position().left - marginLeft;
 			$('.content_tab>ul').animate({scrollLeft: left}, 200, function() {
 				initScrollState();
@@ -86,6 +87,7 @@ $(function() {
 		}
 		// 滚动到可视区域:在右侧
 		if(($(this).position().left + $(this).width() - marginLeft) > document.getElementById('tabs').clientWidth) {
+			//noinspection JSDuplicatedDeclaration
 			var left = $('.content_tab>ul').scrollLeft() + (($(this).position().left + $(this).width() - marginLeft) - document.getElementById('tabs').clientWidth);
 			$('.content_tab>ul').animate({scrollLeft: left}, 200, function() {
 				initScrollState();
@@ -223,14 +225,16 @@ var Tab = {
 		}
 		initScrollShow();
 	}
-}
-/*function initScrollShow() {
+};
+
+function initScrollShow() {
 	if (document.getElementById('tabs').scrollWidth > document.getElementById('tabs').clientWidth) {
 		$('.content_tab').addClass('scroll');
 	} else {
 		$('.content_tab').removeClass('scroll');
 	}
-}*/
+}
+
 function initScrollState() {
 	if ($('.content_tab>ul').scrollLeft() == 0) {
 		$('.tab_left>a').removeClass('active');

@@ -16,8 +16,36 @@ import java.util.List;
  */
 @Repository
 public  class MemberRolesDaoImpl extends AbstractBaseDaoImpl<MemberRoles> implements IMemberRolesDao {
+    
     @Autowired
     private MemberRolesMapper memberRolesMapper;
+    
+    @Override
+    public MemberRoles select(int id) {
+        return memberRolesMapper.select(id);
+    }
+    
+    @Override
+    public void update(MemberRoles memberRoles) {
+        if(memberRoles != null){
+            memberRolesMapper.update(memberRoles);
+        }
+    }
+    
+    @Override
+    public void delete(int id) {
+        memberRolesMapper.delete(id);
+    }
+    
+    /**
+     * 查询全部的成员角色
+     * @return   所有成员角色
+     */
+    @Override
+    public List<MemberRoles> selectAll() {
+        return memberRolesMapper.selectAll();
+    }
+    
     
     public MemberRolesDaoImpl() {
     }
@@ -43,25 +71,5 @@ public  class MemberRolesDaoImpl extends AbstractBaseDaoImpl<MemberRoles> implem
         this.memberRolesMapper = memberRolesMapper;
     }
     
-    @Override
-    public MemberRoles select(int id) {
-        return memberRolesMapper.select(id);
-    }
-    
-    @Override
-    public void update(MemberRoles memberRoles) {
-        if(memberRoles != null){
-            memberRolesMapper.update(memberRoles);
-        }
-    }
-    
-    @Override
-    public void delete(int id) {
-        memberRolesMapper.delete(id);
-    }
-    
-    @Override
-    public List<MemberRoles> selectAll() {
-        return memberRolesMapper.selectAll();
-    }
+   
 }

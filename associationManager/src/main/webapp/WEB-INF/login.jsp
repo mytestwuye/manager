@@ -252,7 +252,7 @@
                     alert(data.errorMsg);
                 } else {
                     //登录成功
-                    window.parent.location.href = "${pageContext.request.contextPath}/loginsuccess.html";
+                    window.parent.location.href = "${pageContext.request.contextPath}/admin-manager.html";
                 }
             },
             error: function (data) {

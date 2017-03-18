@@ -8,6 +8,8 @@ import com.suny.association.service.interfaces.IMemberRolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Comments:
  * Author:   孙建荣
@@ -15,8 +17,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class MemberRolesServiceImpl extends AbstractBaseServiceImpl<MemberRoles> implements IMemberRolesService {
+    
     @Autowired
     private IMemberRolesDao memberRolesDao;
+    
+    /**
+     * 查询所有的成员角色列表
+     * @return
+     */
+    @Override
+    public List<MemberRoles> queryForAll() {
+        return memberRolesDao.selectAll();
+    }
     
     public MemberRolesServiceImpl() {
     }
@@ -30,7 +42,6 @@ public class MemberRolesServiceImpl extends AbstractBaseServiceImpl<MemberRoles>
     }
     
     public MemberRolesServiceImpl(IBaseDao<MemberRoles> iBaseDao) {
-    
         super(iBaseDao);
     }
 }

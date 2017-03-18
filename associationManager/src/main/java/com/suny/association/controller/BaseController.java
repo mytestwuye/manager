@@ -2,9 +2,12 @@ package com.suny.association.controller;
 
 import com.suny.association.enums.ErrorCode;
 import com.suny.association.exception.BusinessException;
-import com.suny.association.mapper.AccountMapper;
+import com.suny.association.pojo.po.Account;
+import com.suny.association.pojo.po.Member;
 import com.suny.association.service.interfaces.IAccountService;
+import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.utils.DecriptUtils;
+import com.suny.association.utils.JSONResponseUtil;
 import com.suny.association.utils.JSONUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -21,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Comments:
+ * Comments:   基础公共Controller
  * Author:   孙建荣
  * Create Date: 2017/03/05 11:05
  */
@@ -32,55 +35,66 @@ public class BaseController {
     private IAccountService accountService;
     
     @Autowired
-    private AccountMapper accountMapper;
+    private IMemberService memberService;
     
-    @RequestMapping(value = "/archives-manager.html")
-    public String systemConfig(){
-        return "/admin/archives-manager";
-    }
+  
     
-    @RequestMapping(value = "/crud.html")
-    public String crud(){
-        return "/admin/crud";
-    }
     
     /**
-     * 进入到主页面
-     *
-     * @param request 请求参数
-     * @return 页面
-     * @throws Exception
+     * 直接输入根目录的话就是直接跳转到登陆页面
+     * @return  登陆页面
      */
     @RequestMapping("/")
-    public ModelAndView getIndex(HttpServletRequest request) throws Exception {
-        ModelAndView modelAndView = new ModelAndView("redirect:login.jsp");
-        return modelAndView;
+    public String indexPage(){
+        return "/login";
+    }
+    
+    /**
+     * 进入到登陆页面
+     *
+     * @param request 请求参数
+     * @return 登陆的页面
+     * @throws Exception
+     */
+    @RequestMapping("/login.html")
+    public String getIndex(HttpServletRequest request) throws Exception {
+        return "redirect:/";
     }
     
     
-    //跳转到登录页面
-    @RequestMapping("/login")
-    public ModelAndView login() throws Exception {
-        ModelAndView mav = new ModelAndView("/login.jsp");
-        return mav;
-    }
-    
-    //跳转到登录成功页面
-    @RequestMapping("/loginsuccess.html")
-    public ModelAndView loginsuccess() throws Exception {
-        ModelAndView mav = new ModelAndView("loginsuccess");
+    /**
+     * 登陆成功后的跳转操作
+     * @return     管理页面
+     * @throws Exception
+     */
+    @RequestMapping("/admin-manager.html")
+    public ModelAndView adminManager() throws Exception {
+        ModelAndView mav = new ModelAndView("admin-manager");
         return mav;
     }
     
     
     /**
-     * 验证用户名和密码
-     *
+     * 强行访问没有权限的页面处理
+     * @return   错误页面
+     */
+    @RequestMapping(value = "/jumpError.html")
+    public String jumpErrorPage(){
+        return "error";
+    }
+    
+    
+    
+    
+    /**
+     *   验证用户输入的情况
+     * @param username   登陆的用户名
+     * @param password    登陆的用户密码
      * @return
      */
     @RequestMapping(value = "/checkLogin.json", method = RequestMethod.POST)
     @ResponseBody
-    public String checkLogin(String username, String password) {
+    public String checkLogin(String username, String password,HttpServletRequest request) {
         Map<String, Object> result = new HashMap<String, Object>();
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, DecriptUtils.encryptToMD5(password));
@@ -89,11 +103,16 @@ public class BaseController {
                 //使用shiro来验证
                 token.setRememberMe(true);
                 currentUser.login(token);//验证角色和权限
+                //通过账号表里面的memberId查询到一个成员的信息
+                Account account = accountService.selectByUserName(username);
+                Member member = memberService.queryById(account.getAccountMemberId());
+                request.getSession().setAttribute("member",member);
             }
+            
         } catch (Exception ex) {
-            System.out.println("查询出了点问题");
             throw new BusinessException(ErrorCode.LOGIN_VERIFY_FAILURE);
         }
+        
         result.put("success", true);
         return JSONUtils.toJson(result);
     }
@@ -101,14 +120,14 @@ public class BaseController {
     /**
      * 退出登录
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
     @ResponseBody
-    public String logout() {
+    public JSONResponseUtil logout() {
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("success", true);
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
-        return JSONUtils.toJson(result);
+        return JSONResponseUtil.success(result);
     }
     
     
