@@ -1,6 +1,5 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.dao.IBaseDao;
 import com.suny.association.dao.interfaces.IMemberDao;
 import com.suny.association.enums.ErrorCode;
 import com.suny.association.exception.BusinessException;
@@ -13,21 +12,43 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * Comments:
+ * Comments:  成员逻辑层类
  * Author:   孙建荣
  * Create Date: 2017/03/07 22:35
  */
 @Service
 public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implements IMemberService {
-    @Autowired
+    
     private IMemberDao memberDao;
     
+    @Autowired
+    public MemberServiceImpl(IMemberDao memberDao) {
+        this.memberDao = memberDao;
+    }
+    
+    public MemberServiceImpl() {
+    }
+    
+    
+    @Override
+    public void add(Member member) {
+        memberDao.create(member);
+    }
+    
+    
+    /**
+     * 更新一条成员信息
+     * @param member  要更新的成员信息
+     */
     @Override
     public void update(Member member) {
         if(member.getMemberId() != null || memberDao.select(member.getMemberId()) != null){
             memberDao.update(member);
         }
-        throw new BusinessException(ErrorCode.ERROR_ADD_USER);
+        else{
+            throw new BusinessException(ErrorCode.ERROR_ADD_USER);
+        }
+        
     }
     
     /**
@@ -41,7 +62,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     
     /**
      * 查找账号被冻结的管理人员账号
-     * @return
+     * @return   冻结的管理员信息
      */
     @Override
     public List<Member> selectFreezeManager() {
@@ -50,7 +71,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     
     /**
      * 查找账号正常的管理人员账号
-     * @return
+     * @return  正常的管理员信息
      */
     @Override
     public List<Member> selectNormalManager() {
@@ -61,7 +82,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     
     /**
      * 查询被冻结的普通成员账号
-     * @return
+     * @return   冻结的成员信息
      */
     @Override
     public List<Member> selectFreezeMember() {
@@ -99,18 +120,8 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
         return memberDao.selectAll();
     }
     
-    public MemberServiceImpl() {
-    }
     
-    public MemberServiceImpl(IBaseDao<Member> iBaseDao) {
-        super(iBaseDao);
-    }
     
-    public IMemberDao getMemberDao() {
-        return memberDao;
-    }
     
-    public void setMemberDao(IMemberDao memberDao) {
-        this.memberDao = memberDao;
-    }
+    
 }

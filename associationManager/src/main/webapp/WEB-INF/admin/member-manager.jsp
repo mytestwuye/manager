@@ -8,7 +8,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
 %>
 <!DOCTYPE html>
 <html>
@@ -34,7 +33,7 @@
     </style>
 </head>
 <body>
-<div class="panel-body" style="padding-bottom:0px;">
+<div class="panel-body" style="padding-bottom:0;">
     <div class="panel panel-default">
         <div class="panel-heading">查询条件</div>
         <div class="panel-body">
@@ -139,7 +138,7 @@
 
 
     var TableInit = function () {
-        var oTableInit = new Object();
+        var oTableInit = {};
         //初始化Table
         oTableInit.Init = function () {
             layer.load(0, {shade: false, time: 1000}); //0代表加载的风格，支持0-2
@@ -214,28 +213,33 @@
                     {
                         field: "memberClassName",
                         title: "班级名字",
+                        sortable: true, //是否可排序
                         order: "desc"//默认排序方式
                     },
                     {
                         field: "memberSex",
 //                    title: "INFO[using-formatter]",
                         title: "性别",
+                        sortable: true, //是否可排序
                         order: "desc",//默认排序方式
                         formatter: 'sexFormatter' //对本列数据做格式化
                     },
                     {
                         field: "memberGradeNumber",
                         title: "年级",
+                        sortable: true, //是否可排序
                         order: "desc"//默认排序方式
                     },
                     {
                         field: "member_manager_id",
-                        title: "管理员id",
+                        title: "管理员",
+                        sortable: true, //是否可排序
                         order: "desc"//默认排序方式
                     },
                     {
                         field: "memberDepartmentId",
                         title: "部门",
+                        sortable: true, //是否可排序
                         order: "desc",//默认排序方式
                         formatter: "departmentFormatter" //格式化部门
                     },
@@ -249,6 +253,7 @@
                     {
                         field: "memberRoleId",
                         title: "角色",
+                        sortable: true, //是否可排序
                         order: "desc",//默认排序方式
                         formatter: "memberRoleFormatter"    //格式化角色
                     }
@@ -304,7 +309,9 @@
 
     /**
      * 格式化部门
+     * @param value
      * @param row
+     * @param index
      * @returns {*}
      */
     function departmentFormatter(value, row, index){
@@ -361,54 +368,56 @@
 
     //新增按钮的方法
     $("#btn_add").click(function () {
-        var selectedRaido = $('#mytab').bootstrapTable('getSelections');
-        if (selectedRaido.length === 0) {
-            alert("请先选择要编辑的行！");
-        } else {
-            alert("你准备编辑的行是" + selectedRaido[0].memberName);
-        }
+            insertMember();
     });
+    function insertMember(){
+        //弹出即全屏
+        var index = layer.open({
+            type: 2,
+            content: '${pageContext.request.contextPath}/member/insertMember.html',
+            area: ['320px', '530px'],
+            maxmin: true
+        });
+    }
 
 
     //编辑按钮的方法
     $("#btn_edit").click(function () {
         var selectedRaido = $('#mytab').bootstrapTable('getSelections');
-        var memberId = selectedRaido[0].memberId;
         if (selectedRaido.length === 0) {
-            layer.msg('没有选择修改的成员！', function () {
-                //关闭后的操作
-            });
+            layer.msg('请先勾选你要编辑的一行数据。。', {icon: 5});
         } else {
+            var memberId = selectedRaido[0].memberId;
             editMemeber(memberId);
         }
     });
 
     function editMemeber(memberId) {
         //iframe层-父子操作
-        layer.open({
+        var index=layer.open({
             type: 2,
             area: ['300px', '530px'],
-            fixed: false, //不固定
+            fixed: true, //不固定
             maxmin: true,
             content: '${pageContext.request.contextPath}/member/editMember.html/' + memberId
         });
+
+//        layer.close(index);
+
     }
 
     //删除按钮的方法
     $("#btn_delete").click(function () {
         var selectedRaido = $('#mytab').bootstrapTable('getSelections');
-        var memberId = selectedRaido[0].memberId;
         if (selectedRaido.length === 0) {
-            //信息框-例5
-            layer.msg('没有选择删除的成员！', function () {
-                //关闭后的操作
-            });
+            layer.msg('请先勾选一条你要删除的数据。。', {icon: 5});
         } else {
             //询问框
             layer.confirm('您确定要删除【' + selectedRaido[0].memberName + "】这条成员的信息吗?", {
                 btn: ['确定', '点错了'] //按钮
             }, function () {
                 layer.msg('准备删除了', {icon: 1});
+                var memberId = selectedRaido[0].memberId;
                 deleteMember(memberId);
             }, function () {
                 layer.msg('已经取消了', {
@@ -422,10 +431,10 @@
     function deleteMember(memberId) {
         $.ajax({
             type: "get",
-            url: "${pageContext.request.contextPath}/member/deleteById/" + memberId,
+            url: "${pageContext.request.contextPath}/member/deleteById.json/" + memberId,
             success: function (result) {
                 layer.msg(result.desc, {icon: 1});
-                layer.load(0, {shade: false});
+                layer.load(0, {shade: false,time: 1000});
                 $("#mytab").bootstrapTable("refresh");
             },
             error: function () {
@@ -436,8 +445,7 @@
 
 
     var ButtonInit = function () {
-        var oInit = new Object();
-        var postdata = {};
+        var oInit = {};
 
         oInit.Init = function () {
             //初始化页面上面的按钮事件

@@ -8,8 +8,6 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    String path = request.getContextPath();
-    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
 %>
 <!DOCTYPE html>
 <html>
@@ -26,8 +24,10 @@
           rel="stylesheet"/>
 </head>
 <body>
-<form class="form-line col-xs-10" role="form" style="padding: 25px; text-align: center" method="post" ACTION="${pageContext.request.contextPath}/member/updateMemberInfo.json">
-    <input name="memberId" value="${member.memberId}" hidden>
+<form class="form-line col-xs-10" role="form" style="padding: 25px; text-align: center" method="post" ACTION="#">
+    <label>
+        <input name="memberId" value="${member.memberId}" hidden>
+    </label>
     <div class="form-group">
         <label for="member-name" class="col-sm-2 control-label">姓名</label>
         <input class="form-control " value="${member.memberName}" id="member-name" name="member-name" disabled>
@@ -75,7 +75,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" class="btn btn-danger" >点击修改</button>
+            <button type="submit" class="btn btn-danger" onclick="updateMemberInfo()">点击修改</button>
         </div>
     </div>
 </form>
@@ -93,7 +93,9 @@
 <script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
 <script>
 
+
     $(function () {
+
         //选中成员当前自己的所属部门
         $("#selectDepartmentOption").each(function () {
             $("#selectDepartmentOption").val(${member.memberDepartmentId});
@@ -112,43 +114,48 @@
         });
     });
 
-    var selectDepartmentOptionVal = $("#selectDepartmentOption").val();
-    var selectMemberRoleOptionVal = $("#selectMemberRoleOption").val();
-    var selectMemberManagerOptionVal = $("#selectMemberManagerOption").val();
-    var selectMemberStatusOptionVal = $("#selectMemberStatusOption").val() == true ? "1" : "0";
     var memberStatus = ${member.memberStatus}==true ? "1" : "0";
 
     function updateMemberInfo() {
-        $.ajax({
-
-            type: "POST",
-            url: '${pageContext.request.contextPath}/member/updateMemberInfo.json',
-            dataType:'json',
-            data:{
-            memberId : ${member.memberId},
-            memberManagerId : selectMemberManagerOptionVal ,
-            memberDepartmentId : selectDepartmentOptionVal ,
-            memberStatus  : selectMemberStatusOptionVal ,
-            memberRoleId  : selectMemberRoleOptionVal
-            },
-                success:function(result){
-                    if(result.status==1){
-                        alert("成功了");
-                    }
-                },
-            error:function(result){
-                if(result.status == 0){
-                    alert("失败了");
-                }
-            }
-        }
-
-
-        )
-
+            sendUpdateMemberInfo();
 
     }
 
+    function sendUpdateMemberInfo(){
+        var selectDepartmentOptionVal = $("#selectDepartmentOption").val();
+        var selectMemberRoleOptionVal = $("#selectMemberRoleOption").val();
+        var selectMemberManagerOptionVal = $("#selectMemberManagerOption").val();
+        var selectMemberStatusOptionVal = $("#selectMemberStatusOption").val() == true ? "1" : "0";
+        $.ajax({
+                    type: "POST",
+                    url: '${pageContext.request.contextPath}/member/updateMemberInfo.json',
+                    dataType: 'json',
+                    data: {
+                        memberId: ${member.memberId},
+                        memberManagerId: selectMemberManagerOptionVal,
+                        memberDepartmentId: selectDepartmentOptionVal,
+                        memberStatus: selectMemberStatusOptionVal,
+                        memberRoleId: selectMemberRoleOptionVal
+                    },
+                    success: function (result) {
+                        if (result.status == 1) {
+                            //当你在iframe页面关闭自身时
+                            window.parent.layer.alert('修改成功了，刷新下页面看效果吧', {icon: 6});
+                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                            parent.layer.close(index); //再执行关闭
+                            $("#mytab",window.parent.document).bootstrapTable("refresh");
+                            return;
+                        }
+                        window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
+                    },
+                    error: function (result) {
+                        if (result.status == 0) {
+                            window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
+                        }
+                    }
+                }
+        )
+    }
 
 </script>
 </html>

@@ -105,9 +105,9 @@
 
 </style>
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/jquery.placeholder.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/scripts/vk_loader.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.placeholder.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/js/vk_loader.js"></script>
 <script>
 
     function softkey_one() {

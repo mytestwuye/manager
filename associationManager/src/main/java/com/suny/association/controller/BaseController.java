@@ -31,13 +31,15 @@ import java.util.Map;
 @Controller
 public class BaseController {
     
-    @Autowired
-    private IAccountService accountService;
+    private final IAccountService accountService;
+    
+    private final IMemberService memberService;
     
     @Autowired
-    private IMemberService memberService;
-    
-  
+    public BaseController(IMemberService memberService, IAccountService accountService) {
+        this.memberService = memberService;
+        this.accountService = accountService;
+    }
     
     
     /**
@@ -52,12 +54,10 @@ public class BaseController {
     /**
      * 进入到登陆页面
      *
-     * @param request 请求参数
      * @return 登陆的页面
-     * @throws Exception
      */
     @RequestMapping("/login.html")
-    public String getIndex(HttpServletRequest request) throws Exception {
+    public String getIndex() {
         return "redirect:/";
     }
     
@@ -65,12 +65,11 @@ public class BaseController {
     /**
      * 登陆成功后的跳转操作
      * @return     管理页面
-     * @throws Exception
+     * @throws Exception   反正就是异常
      */
     @RequestMapping("/admin-manager.html")
     public ModelAndView adminManager() throws Exception {
-        ModelAndView mav = new ModelAndView("admin-manager");
-        return mav;
+        return new ModelAndView("admin-manager");
     }
     
     
@@ -90,12 +89,12 @@ public class BaseController {
      *   验证用户输入的情况
      * @param username   登陆的用户名
      * @param password    登陆的用户密码
-     * @return
+     * @return  经过shiro验证的结果
      */
     @RequestMapping(value = "/checkLogin.json", method = RequestMethod.POST)
     @ResponseBody
     public String checkLogin(String username, String password,HttpServletRequest request) {
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, DecriptUtils.encryptToMD5(password));
             Subject currentUser = SecurityUtils.getSubject();
@@ -123,7 +122,7 @@ public class BaseController {
     @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
     @ResponseBody
     public JSONResponseUtil logout() {
-        Map<String, Object> result = new HashMap<String, Object>();
+        Map<String, Object> result = new HashMap<>();
         result.put("success", true);
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();

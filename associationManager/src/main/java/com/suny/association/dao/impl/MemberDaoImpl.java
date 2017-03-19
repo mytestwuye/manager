@@ -3,7 +3,6 @@ package com.suny.association.dao.impl;
 import com.suny.association.dao.AbstractBaseDaoImpl;
 import com.suny.association.dao.interfaces.IMemberDao;
 import com.suny.association.mapper.MemberMapper;
-import com.suny.association.mapper.interfaces.IMapper;
 import com.suny.association.pojo.po.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -18,10 +17,16 @@ import java.util.List;
 @Repository
 public  class MemberDaoImpl extends AbstractBaseDaoImpl<Member> implements IMemberDao {
     
-    @Autowired
     private MemberMapper memberMapper;
     
     
+    public MemberDaoImpl(){
+    }
+    
+    @Autowired
+    public MemberDaoImpl(MemberMapper memberMapper) {
+        this.memberMapper = memberMapper;
+    }
     
     
     /**
@@ -45,7 +50,7 @@ public  class MemberDaoImpl extends AbstractBaseDaoImpl<Member> implements IMemb
     
     /**
      * 查询被冻结的普通账号
-     * @return
+     * @return  冻结的普通账号信息
      */
     @Override
     public List<Member> selectFreezeMember() {
@@ -55,8 +60,8 @@ public  class MemberDaoImpl extends AbstractBaseDaoImpl<Member> implements IMemb
    
     
     /**
-     * 查询所有正常的账号
-     * @return
+     * 查询所有正常的成员账号
+     * @return     正常的成员账号
      */
     @Override
     public List<Member> selectNormalMember(){
@@ -65,7 +70,7 @@ public  class MemberDaoImpl extends AbstractBaseDaoImpl<Member> implements IMemb
     
     /**
      * 创建一个新的成员信息
-     * @param member
+     * @param member   要新增的成员实体类信息
      */
     @Override
     public void create(Member member) {
@@ -86,7 +91,7 @@ public  class MemberDaoImpl extends AbstractBaseDaoImpl<Member> implements IMemb
     
     /**
      * 更新一个实体的信息
-     * @param member
+     * @param member   要新增的成员实体类信息
      */
     @Override
     public void update(Member member) {
@@ -104,33 +109,18 @@ public  class MemberDaoImpl extends AbstractBaseDaoImpl<Member> implements IMemb
         memberMapper.delete(id);
     }
     
+    /**
+     * 查询数据库里面所有的成员信息
+     * @return   所有的成员信息
+     */
     @Override
     public List<Member> selectAll() {
         return memberMapper.selectAll();
     }
     
     
+  
     
-    public MemberDaoImpl(){
-        
-    }
-    
-    public MemberDaoImpl(MemberMapper memberMapper) {
-        this.memberMapper = memberMapper;
-    }
-    
-    public MemberDaoImpl(IMapper<Member> mapper, MemberMapper memberMapper) {
-        super(mapper);
-        this.memberMapper = memberMapper;
-    }
-    
-    public MemberMapper getMemberMapper() {
-        return memberMapper;
-    }
-    
-    public void setMemberMapper(MemberMapper memberMapper) {
-        this.memberMapper = memberMapper;
-    }
-    
+   
     
 }

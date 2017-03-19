@@ -7,6 +7,7 @@ import com.suny.association.service.interfaces.IDepartmentService;
 import com.suny.association.service.interfaces.IMemberRolesService;
 import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.utils.JSONResponseUtil;
+import com.suny.association.utils.LocalDateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,29 +26,54 @@ import java.util.List;
 @RequestMapping("/member")
 public class MemberController {
     
-    @Autowired
-    private IMemberService memberService;
+    private final IMemberService memberService;
+    
+    private final IDepartmentService departmentService;
+    
+    private final IMemberRolesService memberRolesService;
     
     @Autowired
-    private IDepartmentService departmentService;
+    public MemberController(IDepartmentService departmentService, IMemberService memberService, IMemberRolesService memberRolesService) {
+        this.departmentService = departmentService;
+        this.memberService = memberService;
+        this.memberRolesService = memberRolesService;
+    }
     
-    @Autowired
-    private IMemberRolesService memberRolesService;
     
     /**
-     * 更新一条信息
-     * @param member  要更新的实体
-     * @return
+     * 插入一条成员信息
+     *
+     * @param member 成员信息
+     * @return 结果
      */
-    @RequestMapping(value = "/updateMemberInfo.json")
+    @RequestMapping(value = "/insertMemberInfo.json")
     @ResponseBody
-    public JSONResponseUtil updateMemberInfo(Member member) {
-        if(member.getMemberId()==null || member == null){
-            return JSONResponseUtil.error("没信息怎么更新");
+    public JSONResponseUtil insertMemberInfo(Member member) {
+        if (member == null) {
+            return JSONResponseUtil.error("没信息怎么插入");
         }
-        memberService.update(member);
-        return JSONResponseUtil.successMessage("更新成功了");
+        memberService.add(member);
+        return JSONResponseUtil.successMessage("插入一条信息成功了");
     }
+    
+    /**
+     * 进行新增一条成员信息页面
+     *
+     * @return 结果
+     */
+    @RequestMapping(value = "/insertMember.html")
+    public ModelAndView insertMemberInfo(ModelAndView modelAndView) {
+        List<Member> managerList = memberService.selectNormalManager();
+        List<Department> departmentList = departmentService.queryForAll();
+        List<MemberRoles> memberRolesList = memberRolesService.queryForAll();
+        modelAndView.addObject("departmentList", departmentList);
+        modelAndView.addObject("memberRolesList", memberRolesList);
+        modelAndView.addObject("managerList", managerList);
+        modelAndView.addObject("memberGradeList", LocalDateUtils.getLastYearAndThisYears());
+        modelAndView.setViewName("/admin/inser-member-info");
+        return modelAndView;
+    }
+    
     
     /**
      * 删除一个成员的信息
@@ -55,7 +81,7 @@ public class MemberController {
      * @param id 成员的id
      * @return JSON数据结果
      */
-    @RequestMapping(value = "/deleteById/{id}")
+    @RequestMapping(value = "/deleteById.json/{id}")
     @ResponseBody
     public JSONResponseUtil deleteById(@PathVariable("id") Integer id) {
         if (memberService.queryById(id) != null) {
@@ -65,6 +91,30 @@ public class MemberController {
         return JSONResponseUtil.successMessage("删除失败了");
     }
     
+    /**
+     * 更新一条信息
+     *
+     * @param member 要更新的实体
+     * @return 结果
+     */
+    @RequestMapping(value = "/updateMemberInfo.json")
+    @ResponseBody
+    public JSONResponseUtil updateMemberInfo(Member member) {
+        if (member.getMemberId() == null) {
+            return JSONResponseUtil.error("没信息怎么更新");
+        }
+        memberService.update(member);
+        return JSONResponseUtil.successMessage("更新成功了");
+    }
+    
+    
+    /**
+     * 修改一个成员的信息
+     *
+     * @param id           要修改信息的成员id
+     * @param modelAndView 模型和视图数据
+     * @return 视图跟数据
+     */
     @RequestMapping(value = "/editMember.html/{id}")
     public ModelAndView editMember(@PathVariable("id") Integer id, ModelAndView modelAndView) {
         Member member = memberService.queryById(id);
