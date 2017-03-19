@@ -1,6 +1,6 @@
 package com.suny.association.controller;
 
-import com.suny.association.enums.ErrorCode;
+import com.suny.association.enums.LoginErrorCode;
 import com.suny.association.exception.BusinessException;
 import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Member;
@@ -8,7 +8,6 @@ import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.utils.DecriptUtils;
 import com.suny.association.utils.JSONResponseUtil;
-import com.suny.association.utils.JSONUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -93,8 +92,11 @@ public class BaseController {
      */
     @RequestMapping(value = "/checkLogin.json", method = RequestMethod.POST)
     @ResponseBody
-    public String checkLogin(String username, String password,HttpServletRequest request) {
-        Map<String, Object> result = new HashMap<>();
+    public JSONResponseUtil checkLogin(String username, String password,String code,
+                             HttpServletRequest request) {
+        if(!request.getSession().getAttribute("code").equals(code)){
+            return JSONResponseUtil.error(LoginErrorCode.VALIDATE_CODE_ERROR.getValue());
+        }
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, DecriptUtils.encryptToMD5(password));
             Subject currentUser = SecurityUtils.getSubject();
@@ -109,11 +111,10 @@ public class BaseController {
             }
             
         } catch (Exception ex) {
-            throw new BusinessException(ErrorCode.LOGIN_VERIFY_FAILURE);
+            throw new BusinessException(LoginErrorCode.USERID_OR_PASSWORD_ERROR);
         }
-        
-        result.put("success", true);
-        return JSONUtils.toJson(result);
+    
+        return JSONResponseUtil.successMessage(LoginErrorCode.LOGIN_SYSTEM.getValue());
     }
     
     /**

@@ -161,6 +161,7 @@
 
   }
 
+
   function validMemberNameVal(memberNameVal){
       if(memberNameVal==null || memberNameVal =="" ){
           window.parent.layer.msg('姓名一定要输入', function(){

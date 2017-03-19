@@ -1,5 +1,6 @@
 package com.suny.association.controller;
 
+import com.suny.association.enums.MemberErrorCode;
 import com.suny.association.pojo.po.Department;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.pojo.po.MemberRoles;
@@ -10,6 +11,7 @@ import com.suny.association.utils.JSONResponseUtil;
 import com.suny.association.utils.LocalDateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,6 +42,9 @@ public class MemberController {
     }
     
     
+    
+    
+    
     /**
      * 插入一条成员信息
      *
@@ -48,12 +53,15 @@ public class MemberController {
      */
     @RequestMapping(value = "/insertMemberInfo.json")
     @ResponseBody
-    public JSONResponseUtil insertMemberInfo(Member member) {
+    public JSONResponseUtil insertMemberInfo( Member member, BindingResult bindingResult) {
+       if(bindingResult.hasErrors()){
+           return JSONResponseUtil.error(bindingResult.toString());
+       }
         if (member == null) {
-            return JSONResponseUtil.error("没信息怎么插入");
+            return JSONResponseUtil.error(MemberErrorCode.FAILD_INSERT_MEMBER_INFO.getDesc());
         }
         memberService.add(member);
-        return JSONResponseUtil.successMessage("插入一条信息成功了");
+        return JSONResponseUtil.successMessage(MemberErrorCode.SUCCESS_INSERT_MEMBER_INFO.getDesc());
     }
     
     /**
@@ -86,9 +94,9 @@ public class MemberController {
     public JSONResponseUtil deleteById(@PathVariable("id") Integer id) {
         if (memberService.queryById(id) != null) {
             memberService.deleteById(id);
-            return JSONResponseUtil.successMessage("删除成功了");
+            return JSONResponseUtil.successMessage(MemberErrorCode.SUCCESS_DELETE_MEMBER_INFO.getDesc());
         }
-        return JSONResponseUtil.successMessage("删除失败了");
+        return JSONResponseUtil.successMessage(MemberErrorCode.FAILD_DELETE_MEMBER_INFO.getDesc());
     }
     
     /**
@@ -101,10 +109,10 @@ public class MemberController {
     @ResponseBody
     public JSONResponseUtil updateMemberInfo(Member member) {
         if (member.getMemberId() == null) {
-            return JSONResponseUtil.error("没信息怎么更新");
+            return JSONResponseUtil.error(MemberErrorCode.FAILD_UPDATE_MEMBER_INFO.getDesc());
         }
         memberService.update(member);
-        return JSONResponseUtil.successMessage("更新成功了");
+        return JSONResponseUtil.successMessage(MemberErrorCode.SUCCESS_UPDATE_MEMBER_INFO.getDesc());
     }
     
     
@@ -141,7 +149,7 @@ public class MemberController {
         if (memberList != null) {
             return JSONResponseUtil.success(memberList);
         }
-        return JSONResponseUtil.error("出错了，没有查询到");
+        return JSONResponseUtil.error(MemberErrorCode.FAILD_SELECT_MEMBER_INFO.getDesc());
     }
     
     /**
@@ -156,7 +164,7 @@ public class MemberController {
         if (memberList != null) {
             return JSONResponseUtil.success(memberList);
         }
-        return JSONResponseUtil.error("出错了，没有查询到");
+        return JSONResponseUtil.error(MemberErrorCode.FAILD_SELECT_MEMBER_INFO.getDesc());
     }
     
     
@@ -172,7 +180,7 @@ public class MemberController {
         if (memberList != null) {
             return JSONResponseUtil.success(memberList);
         }
-        return JSONResponseUtil.error("出错了，没有查询到");
+        return JSONResponseUtil.error(MemberErrorCode.FAILD_SELECT_MEMBER_INFO.getDesc());
     }
     
     

@@ -1,7 +1,10 @@
 package com.suny.association.controller;
 
+import com.suny.association.enums.LoginErrorCode;
+import com.suny.association.utils.JSONResponseUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
@@ -105,5 +108,20 @@ public class CodeController {
         ServletOutputStream sos = resp.getOutputStream();
         ImageIO.write(buffImg, "jpeg", sos);
         sos.close();
+    }
+    
+    /**
+     * ajax验证输入的验证码是否正确
+     * @param request  request请求
+     * @param code  验证码
+     * @return
+     */
+    @RequestMapping("/validCode")
+    @ResponseBody
+    public JSONResponseUtil validCode(HttpServletRequest request,String code){
+        if(request.getSession().getAttribute("code").equals(code)){
+            return   JSONResponseUtil.success(LoginErrorCode.VALIDATE_CODE_SUCCESS.getValue());
+        }
+        return JSONResponseUtil.error(LoginErrorCode.VALIDATE_CODE_ERROR.getValue());
     }
 }

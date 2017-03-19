@@ -1,7 +1,7 @@
 package com.suny.association.service.impl;
 
 import com.suny.association.dao.interfaces.IMemberDao;
-import com.suny.association.enums.ErrorCode;
+import com.suny.association.enums.BaseErrorCode;
 import com.suny.association.exception.BusinessException;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.AbstractBaseServiceImpl;
@@ -46,7 +46,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
             memberDao.update(member);
         }
         else{
-            throw new BusinessException(ErrorCode.ERROR_ADD_USER);
+            throw new BusinessException(BaseErrorCode.ERROR_ADD_USER);
         }
         
     }

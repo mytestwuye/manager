@@ -64,23 +64,6 @@
 </p>--%>
 
 <style>
-    .p_key1 {
-        position: absolute;
-        right: 160px;
-        top: 60px;
-        width: 32px;
-        height: 32px;
-        background: url('${pageContext.request.contextPath}/images/keyboard.png') no-repeat;
-    }
-
-    .p_key2 {
-        position: absolute;
-        right: 160px;
-        top: 115px;
-        width: 32px;
-        height: 32px;
-        background: url('${pageContext.request.contextPath}/images/keyboard.png') no-repeat;
-    }
 
     .p_key3 {
         position: absolute;
@@ -106,44 +89,14 @@
 </style>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.placeholder.js"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/vk_loader.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
 <script>
 
-    function softkey_one() {
-        VirtualKeyboard.toggle('userName', 'softkey');
-        $('#kb_langselector,#kb_mappingselector,#copyrights').css('display', 'none');
-    }
-    function softkey_two() {
-        VirtualKeyboard.toggle('passWord', 'softkey2');
-        $('#kb_langselector,#kb_mappingselector,#copyrights').css('display', 'none');
-    }
-
-    function softkey_three() {
-        VirtualKeyboard.toggle('code', 'softkey3');
-        $('#kb_langselector,#kb_mappingselector,#copyrights').css('display', 'none');
-    }
-
-    function xlhbjsonp(url, callback, error) {
-        var callbackName;
-        do {
-            callbackName = 'jsonpCallback' + Math.floor(Math.random() * 0xffffff);
-        } while (typeof window[callbackName] != 'undefined');
-        window[callbackName] = callback;
-        var script = document.createElement('script');
-        script.onerror = error;
-        script.src = url + "&callback=" + callbackName;
-        if (document.head) {
-            document.head.appendChild(script);
-        } else if (document.getElementsByTagName('head').length) {
-            document.getElementsByTagName('head')[0].appendChild(script);
-        }
-    }
 
     //切换验证码
     $("#getcode_num").click(function () {
-     $(this).attr("src", '${pageContext.request.contextPath}/code/verifyCode?rand=' + Math.random());
-     });
+        $(this).attr("src", '${pageContext.request.contextPath}/code/verifyCode?rand=' + Math.random());
+    });
 
     //输入用户名
     document.getElementById("userName").onkeydown = function () {
@@ -159,11 +112,11 @@
         $('#error1').text('');
         $('#error3').text('');
     };
-    /*//输入验证码
-     document.getElementById("code").onkeydown = function () {
-     $('#code').css('border', '1px solid #d3d3d3');
-     $('#error2').text('');
-     };*/
+    //输入验证码
+    document.getElementById("code").onkeydown = function () {
+        $('#code').css('border', '1px solid #d3d3d3');
+        $('#error2').text('');
+    };
 
     //回车登录
     document.onkeydown = function (e) {
@@ -173,93 +126,108 @@
         }
     };
 
-    //验证登录
-    /*function checkLogin() {
-     var username = $('#userName').val();
-     var password = $('#passWord').val();
-     var code = $('#code').val();
-
-     if (username == '') {
-     $('#error3').text('请填写用户名');
-     $('#userName').focus();
-     $('#userName').css('border', '2px solid red');
-     return false;
-     }
-
-     if (password == '') {
-     $('#error1').text('请填写密码');
-     $('#passWord').focus();
-     $('#passWord').css('border', '2px solid red');
-     return false;
-     }
-     if (code == '') {
-     $('#error2').text('请填写验证码');
-     $('#code').focus();
-     $('#code').css('border', '2px solid red');
-     return false;
-     }
-
-     var _csrf = 'dWs5aFhJa0QBGXckHjoaDRJSCDBuOygSRB5QJAx/BCw2GGwwDTs4KQ==';
-     $.ajax({
-     url: '/site/login-auth.html',
-     type: 'post',
-     data: {_csrf: _csrf, username: username, password: password, code: code},
-     success: function (data) {
-     if (data == 1) {
-     //成功
-     window.location.href = '/sign/student.html';
-     } else if (data == 2) {
-     window.location.href = '/test/student.html';
-     } else if (data == 3) {
-     window.location.href = '/site/index.html';
-     } else if (data == 4) {
-     $('#error2').text('验证码错误');
-     $('#code').val('');
-     $('#code').focus();
-     $('#code').css('border', '2px solid red');
-     $("#getcode_num").attr("src", '/site/code.html?rand=' + Math.random());
-     return false;
-     } else if (data == 5) {
-     $('#error1').text('用户名或密码错误');
-     $('#code').val('');
-     $('#userName').css('border', '2px solid red');
-     $('#passWord').css('border', '2px solid red');
-     $("#getcode_num").attr("src", '/site/code.html?rand=' + Math.random());
-     return false;
-     } else if (data == 6) {
-     //登录成功，用户名不合法，进行重新设置
-     window.location.href = '/findpass/common/anew-set-username.html';
-     }
-     }
-     });
-     }*/
-
 
     $('#loginBtn').click(function () {
-        console.log($("#userName").val());
-        console.log($("#passWord").val());
+        var username = $('#userName').val();
+        var password = $('#passWord').val();
+        var code = $('#code').val();
+
+        if (username == '') {
+            $('#error3').text('请填写用户名');
+            $('#userName').focus();
+            $('#userName').css('border', '2px solid red');
+            return false;
+        }
+
+        if (password == '') {
+            $('#error1').text('请填写密码');
+            $('#passWord').focus();
+            $('#passWord').css('border', '2px solid red');
+            return false;
+        }
+        if (code == '') {
+            $('#error2').text('请填写验证码');
+            $('#code').focus();
+            $('#code').css('border', '2px solid red');
+            return false;
+        }
+        checkCode();
+
+    });
+
+    //验证码登录
+    function checkCode() {
+        alert("准备发送检查验证码");
+        var code = $('#code').val();
+        $.ajax({
+            url: '${pageContext.request.contextPath}/code/validCode',
+            type: 'post',
+            data: {code: code},
+            success: function (result) {
+                if (result.desc == 113) {
+                    layer.msg('验证码错了。。', {icon: 5});
+                    $('#error2').text('验证码错误');
+                    $('#code').val('');
+                    $('#code').focus();
+                    $('#code').css('border', '2px solid red');
+                    $("#getcode_num").attr("src", '${pageContext.request.contextPath}/code/verifyCode?rand=' + Math.random());
+                    return false;
+                }
+                else {
+                    sendLoginInfo();
+                }
+
+            },
+            error: function () {
+                layer.msg('服务器开小差了,出了点小问题。。', {icon: 5});
+            }
+        });
+    }
+
+    function sendLoginInfo() {
+        alert("准备登陆");
         var param = {
             username: $("#userName").val(),
-            password: $("#passWord").val()
+            password: $("#passWord").val(),
+            code: $('#code').val()
         };
+
         $.ajax({
             type: "post",
             url: "${pageContext.request.contextPath}/checkLogin.json",
             data: param,
             dataType: "json",
-            success: function (data) {
-                if (data.success == false) {
-                    alert(data.errorMsg);
+            success: function (result) {
+                if (result.status == 0) {
+                    alert(result.data);
+                    $('#error1').text('用户名或密码错误');
+                    $('#code').val('');
+                    $('#userName').css('border', '2px solid red');
+                    $('#passWord').css('border', '2px solid red');
+                    $("#getcode_num").attr("src", '${pageContext.request.contextPath}/code/verifyCode?rand=' + Math.random());
+                    return false;
                 } else {
                     //登录成功
-                    window.parent.location.href = "${pageContext.request.contextPath}/admin-manager.html";
+                    layer.msg('登陆成功了', function () {
+                        layer.msg('正在进入主页面', {
+                            icon: 16
+                            , shade: 0.01
+                        });
+                        var t = setTimeout("goAdminPage()", 300);
+                    });
+
                 }
             },
-            error: function (data) {
+            error: function (result) {
                 alert("调用失败....");
+
             }
         });
-    });
+    }
+
+    function goAdminPage() {
+        window.parent.location.href = "${pageContext.request.contextPath}/admin-manager.html";
+    }
 
 
 </script>
