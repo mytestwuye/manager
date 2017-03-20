@@ -1,7 +1,6 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.dao.IBaseDao;
-import com.suny.association.dao.interfaces.IMemberRolesDao;
+import com.suny.association.mapper.MemberRolesMapper;
 import com.suny.association.pojo.po.MemberRoles;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IMemberRolesService;
@@ -18,30 +17,31 @@ import java.util.List;
 @Service
 public class MemberRolesServiceImpl extends AbstractBaseServiceImpl<MemberRoles> implements IMemberRolesService {
     
+    private  MemberRolesMapper memberRolesMapper;
+    
     @Autowired
-    private IMemberRolesDao memberRolesDao;
+    public MemberRolesServiceImpl(MemberRolesMapper memberRolesMapper) {
+        this.memberRolesMapper = memberRolesMapper;
+    }
+    
+    public MemberRolesServiceImpl() {
+    }
+    
+    @Override
+    public int insertAndGetId(MemberRoles memberRoles) {
+        return memberRolesMapper.insertAndGetId(memberRoles);
+    }
     
     /**
      * 查询所有的成员角色列表
      * @return
      */
     @Override
-    public List<MemberRoles> queryForAll() {
-        return memberRolesDao.selectAll();
+    public List<MemberRoles> selectForAll() {
+        return memberRolesMapper.selectAll();
     }
     
-    public MemberRolesServiceImpl() {
-    }
+   
     
-    public IMemberRolesDao getMemberRolesDao() {
-        return memberRolesDao;
-    }
-    
-    public void setMemberRolesDao(IMemberRolesDao memberRolesDao) {
-        this.memberRolesDao = memberRolesDao;
-    }
-    
-    public MemberRolesServiceImpl(IBaseDao<MemberRoles> iBaseDao) {
-        super(iBaseDao);
-    }
+   
 }

@@ -23,7 +23,7 @@ import java.util.Random;
 @RequestMapping("/code")
 @Controller
 public class CodeController {
-    char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+    private char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
             'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
             'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
     
@@ -114,7 +114,7 @@ public class CodeController {
      * ajax验证输入的验证码是否正确
      * @param request  request请求
      * @param code  验证码
-     * @return
+     * @return  一张带有验证码的图片
      */
     @RequestMapping("/validCode")
     @ResponseBody

@@ -26,7 +26,7 @@
 
        <bean id="SqlSessionFactoryBean" class="org.mybatis.spring.SqlSessionFactoryBean">
               <property name="dataSource" ref="dataSource"/>
-              <!--<property name="mapperLocations" value="classpath*:com/suny/association/mapper/*Mapper.xml"/>-->
+              <!--<property name="mapperLocations" value="classpath*:com/suny/association/memberMapper/*Mapper.xml"/>-->
        </bean>
        <bean  id="MapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
               <property name="basePackage" value="com.suny.association.mapper"/>

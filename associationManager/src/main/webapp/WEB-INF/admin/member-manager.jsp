@@ -48,7 +48,7 @@
                         <input type="text" class="form-control" id="txt_search_statu">
                     </div>
                     <div class="col-sm-4" style="text-align:left;">
-                        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary">查询
+                        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary" onclick="refresh()">查询
                         </button>
                     </div>
                 </div>
@@ -70,27 +70,6 @@
     <table id="mytab" class="table table-hover"></table>
 </div>
 
-<!-- 新增拟态框 -->
-<div id="createDialog" class="crudDialog" hidden>
-    <form>
-        <div class="form-group">
-            <label for="input1">标题</label>
-            <input id="input1" type="text" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="input2">名称</label>
-            <input id="input2" type="text" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="input3">根目录</label>
-            <input id="input3" type="text" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="input4">图标</label>
-            <input id="input4" type="text" class="form-control">
-        </div>
-    </form>
-</div>
 <%--正文区结束--%>
 
 
@@ -111,6 +90,9 @@
 <script src="${pageContext.request.contextPath}/js/admin.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
 <script>
+    function refresh(){
+        $("#mytab").bootstrapTable("refresh");
+    }
     $(function () {
 
         //1.初始化Table
@@ -143,7 +125,7 @@
         oTableInit.Init = function () {
             layer.load(0, {shade: false, time: 1000}); //0代表加载的风格，支持0-2
             $('#mytab').bootstrapTable({
-                url: '${pageContext.request.contextPath}/member/queryForAll.json',         //请求后台的URL（*）
+                url: '${pageContext.request.contextPath}/member/selectForAll.json',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
                 striped: true,                      //是否显示行间隔色
@@ -275,6 +257,7 @@
 
         //得到查询的参数
         oTableInit.queryParams = function (params) {
+            alert("准备查询");
             var temp = {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
                 limit: params.limit,   //页面大小
                 offset: params.offset,  //页码

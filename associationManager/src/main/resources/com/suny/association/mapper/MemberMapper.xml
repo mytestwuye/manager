@@ -14,7 +14,7 @@
 
     </resultMap>
 
-    <insert id="create" parameterType="com.suny.association.pojo.po.Member">
+    <insert id="insertAndGetId" parameterType="com.suny.association.pojo.po.Member" useGeneratedKeys="true" keyProperty="memberId">
         INSERT INTO member
         <trim prefix="set" suffixOverrides=",">
             <if test="memberId != null">
@@ -48,6 +48,41 @@
 
 
     </insert>
+
+    <insert id="insert" parameterType="com.suny.association.pojo.po.Member"  >
+
+        INSERT INTO member
+        <trim prefix="set" suffixOverrides=",">
+            <if test="memberId != null">
+                memberId = member_id ,
+            </if>
+            <if test="memberName != null">
+                member_name =#{memberName},
+            </if>
+            <if test="memberClassName != null">
+                member_class_name =#{memberClassName},
+            </if>
+            <if test="memberSex != null">
+                member_sex =#{memberSex},
+            </if>
+            <if test="memberGradeNumber != null">
+                member_grade_number =#{memberGradeNumber},
+            </if>
+            <if test="memberManagerId != null">
+                member_manager_id =#{memberManagerId},
+            </if>
+            <if test="memberDepartmentId != null">
+                member_department_id =#{memberDepartmentId},
+            </if>
+            <if test="memberStatus != null">
+                member_status =#{memberStatus},
+            </if>
+            <if test="memberRoleId != null">
+                member_role_id =#{memberRoleId}
+            </if>
+        </trim>
+    </insert>
+
     <update id="update" parameterType="com.suny.association.pojo.po.Member">
         UPDATE member
         <trim prefix="set" suffixOverrides=",">

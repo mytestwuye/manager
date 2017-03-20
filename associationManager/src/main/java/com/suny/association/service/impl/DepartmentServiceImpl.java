@@ -1,6 +1,6 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.dao.interfaces.IDepartmentDao;
+import com.suny.association.mapper.DepartmentMapper;
 import com.suny.association.pojo.po.Department;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IDepartmentService;
@@ -16,14 +16,26 @@ import java.util.List;
  */
 @Service
 public class DepartmentServiceImpl extends AbstractBaseServiceImpl<Department> implements IDepartmentService {
-    @Autowired
-    private IDepartmentDao departmentDao;
+    private  DepartmentMapper departmentMapper;
     
+    @Autowired
+    public DepartmentServiceImpl(DepartmentMapper departmentMapper) {
+        this.departmentMapper = departmentMapper;
+    }
+    
+    public DepartmentServiceImpl() {
+    }
     
     @Override
-    public List<Department> queryForAll() {
-        return departmentDao.selectAll();
+    public int insertAndGetId(Department department) {
+        return departmentMapper.insertAndGetId(department);
     }
+    
+    @Override
+    public List<Department> selectForAll() {
+        return departmentMapper.selectAll();
+    }
+    
     
     
 }

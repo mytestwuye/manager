@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
  * Author:   孙建荣
  * Create Date: 2017/03/05 23:05
  */
-@Component
+
 public interface ApplicationMessageMapper extends IMapper<ApplicationMessage> {
 
 }

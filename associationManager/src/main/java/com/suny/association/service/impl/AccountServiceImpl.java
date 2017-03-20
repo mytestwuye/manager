@@ -1,7 +1,6 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.dao.IBaseDao;
-import com.suny.association.dao.interfaces.IAccountDao;
+import com.suny.association.mapper.AccountMapper;
 import com.suny.association.pojo.po.Account;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IAccountService;
@@ -15,33 +14,33 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> implements IAccountService {
-
-    @Autowired
-    private IAccountDao accountDao;
-
-    @Override
-    public Account selectByUserName(String username) {
-        return accountDao.selectByUserName(username);
-    }
     
-    @Override
-    public void add(Account account) {
-        accountDao.create(account);
-    }
+    private AccountMapper accountMapper;
     
     public AccountServiceImpl() {
-
     }
     
-    public AccountServiceImpl(IBaseDao<Account> iBaseDao) {
-        super(iBaseDao);
+    @Autowired
+    public AccountServiceImpl(AccountMapper accountMapper) {
+        this.accountMapper = accountMapper;
     }
     
-    public IAccountDao getAccountDao() {
-        return accountDao;
+    @Override
+    public Account selectByUserName(String username) {
+        return accountMapper.selectByUserName(username);
     }
     
-    public void setAccountDao(IAccountDao accountDao) {
-        this.accountDao = accountDao;
+    @Override
+    public void insert(Account account) {
+        accountMapper.insert(account);
     }
+    
+    @Override
+    public int insertAndGetId(Account account) {
+        return accountMapper.insertAndGetId(account);
+    }
+    
+   
+    
+    
 }

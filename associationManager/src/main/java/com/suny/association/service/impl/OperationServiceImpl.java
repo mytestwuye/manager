@@ -1,7 +1,6 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.dao.IBaseDao;
-import com.suny.association.dao.interfaces.IOperationDao;
+import com.suny.association.mapper.OperationMapper;
 import com.suny.association.pojo.po.Operation;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IOperationService;
@@ -15,21 +14,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OperationServiceImpl extends AbstractBaseServiceImpl<Operation> implements IOperationService {
+    private  OperationMapper operationMapper;
+    
     @Autowired
-    private IOperationDao operationDao;
+    public OperationServiceImpl(OperationMapper operationMapper) {
+        this.operationMapper = operationMapper;
+    }
     
     public OperationServiceImpl() {
     }
     
-    public OperationServiceImpl(IBaseDao<Operation> iBaseDao) {
-        super(iBaseDao);
-    }
-    
-    public IOperationDao getOperationDao() {
-        return operationDao;
-    }
-    
-    public void setOperationDao(IOperationDao operationDao) {
-        this.operationDao = operationDao;
+    @Override
+    public int insertAndGetId(Operation operation) {
+        return operationMapper.insertAndGetId(operation);
     }
 }

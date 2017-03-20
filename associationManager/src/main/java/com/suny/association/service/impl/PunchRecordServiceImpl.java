@@ -1,7 +1,6 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.dao.IBaseDao;
-import com.suny.association.dao.interfaces.IPunchRecordDao;
+import com.suny.association.mapper.PunchRecordMapper;
 import com.suny.association.pojo.po.PunchRecord;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IPunchRecordService;
@@ -15,21 +14,19 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class PunchRecordServiceImpl extends AbstractBaseServiceImpl<PunchRecord> implements IPunchRecordService {
+    
+    private  PunchRecordMapper punchRecordMapper;
+    
     @Autowired
-    private IPunchRecordDao punchRecordDao;
+    public PunchRecordServiceImpl(PunchRecordMapper punchRecordMapper) {
+        this.punchRecordMapper = punchRecordMapper;
+    }
     
     public PunchRecordServiceImpl() {
     }
     
-    public PunchRecordServiceImpl(IBaseDao<PunchRecord> iBaseDao) {
-        super(iBaseDao);
-    }
-    
-    public IPunchRecordDao getPunchRecordDao() {
-        return punchRecordDao;
-    }
-    
-    public void setPunchRecordDao(IPunchRecordDao punchRecordDao) {
-        this.punchRecordDao = punchRecordDao;
+    @Override
+    public int insertAndGetId(PunchRecord punchRecord) {
+        return punchRecordMapper.insertAndGetId(punchRecord);
     }
 }

@@ -1,6 +1,6 @@
 package com.suny.association.service;
 
-import com.suny.association.dao.IBaseDao;
+import com.suny.association.mapper.interfaces.IMapper;
 
 import java.util.List;
 
@@ -11,55 +11,41 @@ import java.util.List;
  */
 public abstract class AbstractBaseServiceImpl<T> implements IBaseService<T> {
 
-    private IBaseDao<T> iBaseDao;
+    private IMapper<T> mapper;
 
     public AbstractBaseServiceImpl() {
     }
 
-    public AbstractBaseServiceImpl(IBaseDao<T> iBaseDao) {
-        if (iBaseDao != null){
-
-            this.iBaseDao = iBaseDao;
-        }
-    }
-
-    public IBaseDao<T> getiBaseDao() {
-        return iBaseDao;
-    }
-
-    public void setiBaseDao(IBaseDao<T> iBaseDao) {
-        this.iBaseDao = iBaseDao;
-
-    }
+   
 
     @Override
-    public void add(T t) {
+    public void insert(T t) {
         if (t != null) {
-            iBaseDao.create(t);
+            mapper.insert(t);
         }
 
     }
 
     @Override
     public void deleteById(int id) {
-        iBaseDao.delete(id);
+        mapper.delete(id);
 
     }
 
     @Override
     public void update(T t) {
         if (t != null) {
-            iBaseDao.update(t);
+            mapper.update(t);
         }
     }
 
     @Override
-    public T queryById(int id) {
-        return iBaseDao.select(id);
+    public T selectById(int id) {
+        return mapper.select(id);
     }
 
     @Override
-    public List<T> queryForAll() {
-        return iBaseDao.selectAll();
+    public List<T> selectForAll() {
+        return mapper.selectAll();
     }
 }

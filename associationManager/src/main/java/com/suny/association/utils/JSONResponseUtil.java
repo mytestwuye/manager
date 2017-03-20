@@ -52,7 +52,7 @@ public class JSONResponseUtil {
     
     
     
-    public JSONResponseUtil() {
+    private JSONResponseUtil() {
     }
     
     public JSONResponseUtil(int status, Object data, String desc) {

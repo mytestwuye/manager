@@ -55,13 +55,13 @@
 </div>
 
 <!-- 底部版权 -->
-<%--<p id="copyright">公司——沪ICP备13015608号-5
-    <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=31010702001486"
+<p id="copyright">个人——赣ICP备13015608号-5
+    <a target="_blank" href="#"
        style="color: #2f2f2f; padding-left:15px">
-        <img src="Picture/authicon.png"/>
-        <span style="margin-left:10px;">沪公网安备 31010702001486号</span>
+        <img src="${pageContext.request.contextPath}/picture/authicon.png"/>
+        <span style="margin-left:10px;">赣 公网安备 31010702001486号</span>
     </a>
-</p>--%>
+</p>
 
 <style>
 
@@ -157,7 +157,6 @@
 
     //验证码登录
     function checkCode() {
-        alert("准备发送检查验证码");
         var code = $('#code').val();
         $.ajax({
             url: '${pageContext.request.contextPath}/code/validCode',
@@ -185,7 +184,6 @@
     }
 
     function sendLoginInfo() {
-        alert("准备登陆");
         var param = {
             username: $("#userName").val(),
             password: $("#passWord").val(),
@@ -198,15 +196,16 @@
             data: param,
             dataType: "json",
             success: function (result) {
-                if (result.status == 0) {
-                    alert(result.data);
+                if (result.status == 0 || result.success==false) {
+                    layer.msg('用户名或者密码错误。。', {icon: 5});
                     $('#error1').text('用户名或密码错误');
                     $('#code').val('');
                     $('#userName').css('border', '2px solid red');
                     $('#passWord').css('border', '2px solid red');
                     $("#getcode_num").attr("src", '${pageContext.request.contextPath}/code/verifyCode?rand=' + Math.random());
                     return false;
-                } else {
+                }
+                else{
                     //登录成功
                     layer.msg('登陆成功了', function () {
                         layer.msg('正在进入主页面', {

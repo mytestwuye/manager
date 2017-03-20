@@ -1,7 +1,6 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.dao.IBaseDao;
-import com.suny.association.dao.interfaces.IRolesDao;
+import com.suny.association.mapper.RolesMapper;
 import com.suny.association.pojo.po.Roles;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IRolesService;
@@ -17,21 +16,20 @@ import org.springframework.stereotype.Service;
 public class RolesServiceImpl extends AbstractBaseServiceImpl<Roles> implements IRolesService {
     
     
-    @Autowired
-    private IRolesDao rolesDao;
+    private RolesMapper rolesMapper;
     
     public RolesServiceImpl() {
     }
     
-    public RolesServiceImpl(IBaseDao<Roles> iBaseDao) {
-        super(iBaseDao);
+    @Autowired
+    public RolesServiceImpl(RolesMapper rolesMapper) {
+        this.rolesMapper = rolesMapper;
     }
     
-    public IRolesDao getRolesDao() {
-        return rolesDao;
+    
+    @Override
+    public int insertAndGetId(Roles roles) {
+        return rolesMapper.insertAndGetId(roles);
     }
     
-    public void setRolesDao(IRolesDao rolesDao) {
-        this.rolesDao = rolesDao;
-    }
 }

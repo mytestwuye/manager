@@ -1,7 +1,6 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.dao.IBaseDao;
-import com.suny.association.dao.interfaces.IPunchTypeDao;
+import com.suny.association.mapper.PunchTypeMapper;
 import com.suny.association.pojo.po.PunchType;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IPunchTypeService;
@@ -16,21 +15,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class PunchTypeServiceImpl extends AbstractBaseServiceImpl<PunchType>  implements IPunchTypeService{
     
+    private  PunchTypeMapper punchTypeMapper;
+    
     @Autowired
-    private IPunchTypeDao punchTypeDao;
+    public PunchTypeServiceImpl(PunchTypeMapper punchTypeMapper) {
+        this.punchTypeMapper = punchTypeMapper;
+    }
     
     public PunchTypeServiceImpl() {
     }
     
-    public PunchTypeServiceImpl(IBaseDao<PunchType> iBaseDao) {
-        super(iBaseDao);
-    }
-    
-    public IPunchTypeDao getPunchTypeDao() {
-        return punchTypeDao;
-    }
-    
-    public void setPunchTypeDao(IPunchTypeDao punchTypeDao) {
-        this.punchTypeDao = punchTypeDao;
+    @Override
+    public int insertAndGetId(PunchType punchType) {
+        return punchTypeMapper.insertAndGetId(punchType);
     }
 }

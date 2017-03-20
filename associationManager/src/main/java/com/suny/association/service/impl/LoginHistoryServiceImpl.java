@@ -1,7 +1,6 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.dao.IBaseDao;
-import com.suny.association.dao.interfaces.ILoginHistoryDao;
+import com.suny.association.mapper.LoginHistoryMapper;
 import com.suny.association.pojo.po.LoginHistory;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.ILoginHistoryService;
@@ -15,21 +14,18 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistory> implements ILoginHistoryService {
+    private  LoginHistoryMapper loginHistoryMapper;
+    
     @Autowired
-    private ILoginHistoryDao loginHistoryDao;
+    public LoginHistoryServiceImpl(LoginHistoryMapper loginHistoryMapper) {
+        this.loginHistoryMapper = loginHistoryMapper;
+    }
     
     public LoginHistoryServiceImpl() {
     }
     
-    public LoginHistoryServiceImpl(IBaseDao<LoginHistory> iBaseDao) {
-        super(iBaseDao);
-    }
-    
-    public ILoginHistoryDao getLoginHistoryDao() {
-        return loginHistoryDao;
-    }
-    
-    public void setLoginHistoryDao(ILoginHistoryDao loginHistoryDao) {
-        this.loginHistoryDao = loginHistoryDao;
+    @Override
+    public int insertAndGetId(LoginHistory loginHistory) {
+        return loginHistoryMapper.insertAndGetId(loginHistory);
     }
 }

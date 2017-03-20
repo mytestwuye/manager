@@ -1,8 +1,8 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.dao.interfaces.IMemberDao;
 import com.suny.association.enums.BaseErrorCode;
 import com.suny.association.exception.BusinessException;
+import com.suny.association.mapper.MemberMapper;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IMemberService;
@@ -19,20 +19,34 @@ import java.util.List;
 @Service
 public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implements IMemberService {
     
-    private IMemberDao memberDao;
+    private MemberMapper memberMapper;
     
     @Autowired
-    public MemberServiceImpl(IMemberDao memberDao) {
-        this.memberDao = memberDao;
+    public MemberServiceImpl(MemberMapper memberMapper) {
+        this.memberMapper = memberMapper;
     }
     
     public MemberServiceImpl() {
     }
     
     
+    /**
+     * 添加一条数据
+     * @param member  数据实体类
+     */
     @Override
-    public void add(Member member) {
-        memberDao.create(member);
+    public void insert(Member member) {
+        memberMapper.insert(member);
+    }
+    
+    /**
+     * 添加一条数据并且返回主键id
+     * @param member  数据实体类
+     * @return   插入数据的id
+     */
+    @Override
+    public int insertAndGetId(Member member) {
+        return memberMapper.insertAndGetId(member);
     }
     
     
@@ -42,8 +56,8 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
      */
     @Override
     public void update(Member member) {
-        if(member.getMemberId() != null || memberDao.select(member.getMemberId()) != null){
-            memberDao.update(member);
+        if(member.getMemberId() != null || memberMapper.select(member.getMemberId()) != null){
+            memberMapper.update(member);
         }
         else{
             throw new BusinessException(BaseErrorCode.ERROR_ADD_USER);
@@ -57,7 +71,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
      */
     @Override
     public void deleteById(int id) {
-        memberDao.delete(id);
+        memberMapper.delete(id);
     }
     
     /**
@@ -66,7 +80,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
      */
     @Override
     public List<Member> selectFreezeManager() {
-        return memberDao.selectFreezeManager();
+        return memberMapper.selectFreezeManager();
     }
     
     /**
@@ -75,7 +89,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
      */
     @Override
     public List<Member> selectNormalManager() {
-        return memberDao.selectNormalManager();
+        return memberMapper.selectNormalManager();
     }
     
     
@@ -86,7 +100,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
      */
     @Override
     public List<Member> selectFreezeMember() {
-        return memberDao.selectFreezeMember();
+        return memberMapper.selectFreezeMember();
     }
     
    
@@ -97,7 +111,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
      */
     @Override
     public List<Member> selectNormalMember(){
-        return memberDao.selectNormalMember();
+        return memberMapper.selectNormalMember();
     }
     
     
@@ -107,8 +121,8 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
      * @return  对应的信息
      */
     @Override
-    public Member queryById(int id) {
-        return memberDao.select(id);
+    public Member selectById(int id) {
+        return memberMapper.select(id);
     }
     
     /**
@@ -116,8 +130,8 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
      * @return   member表里面所有的记录
      */
     @Override
-    public List<Member> queryForAll() {
-        return memberDao.selectAll();
+    public List<Member> selectForAll() {
+        return memberMapper.selectAll();
     }
     
     

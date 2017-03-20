@@ -11,7 +11,6 @@ import com.suny.association.utils.JSONResponseUtil;
 import com.suny.association.utils.LocalDateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -53,14 +52,12 @@ public class MemberController {
      */
     @RequestMapping(value = "/insertMemberInfo.json")
     @ResponseBody
-    public JSONResponseUtil insertMemberInfo( Member member, BindingResult bindingResult) {
-       if(bindingResult.hasErrors()){
-           return JSONResponseUtil.error(bindingResult.toString());
-       }
+    public JSONResponseUtil insertMemberInfo( Member member) {
         if (member == null) {
             return JSONResponseUtil.error(MemberErrorCode.FAILD_INSERT_MEMBER_INFO.getDesc());
         }
-        memberService.add(member);
+        int id = memberService.insertAndGetId(member);
+        System.out.println(id);
         return JSONResponseUtil.successMessage(MemberErrorCode.SUCCESS_INSERT_MEMBER_INFO.getDesc());
     }
     
@@ -72,8 +69,8 @@ public class MemberController {
     @RequestMapping(value = "/insertMember.html")
     public ModelAndView insertMemberInfo(ModelAndView modelAndView) {
         List<Member> managerList = memberService.selectNormalManager();
-        List<Department> departmentList = departmentService.queryForAll();
-        List<MemberRoles> memberRolesList = memberRolesService.queryForAll();
+        List<Department> departmentList = departmentService.selectForAll();
+        List<MemberRoles> memberRolesList = memberRolesService.selectForAll();
         modelAndView.addObject("departmentList", departmentList);
         modelAndView.addObject("memberRolesList", memberRolesList);
         modelAndView.addObject("managerList", managerList);
@@ -92,7 +89,7 @@ public class MemberController {
     @RequestMapping(value = "/deleteById.json/{id}")
     @ResponseBody
     public JSONResponseUtil deleteById(@PathVariable("id") Integer id) {
-        if (memberService.queryById(id) != null) {
+        if (memberService.selectById(id) != null) {
             memberService.deleteById(id);
             return JSONResponseUtil.successMessage(MemberErrorCode.SUCCESS_DELETE_MEMBER_INFO.getDesc());
         }
@@ -125,10 +122,10 @@ public class MemberController {
      */
     @RequestMapping(value = "/editMember.html/{id}")
     public ModelAndView editMember(@PathVariable("id") Integer id, ModelAndView modelAndView) {
-        Member member = memberService.queryById(id);
+        Member member = memberService.selectById(id);
         List<Member> managerList = memberService.selectNormalManager();
-        List<Department> departmentList = departmentService.queryForAll();
-        List<MemberRoles> memberRolesList = memberRolesService.queryForAll();
+        List<Department> departmentList = departmentService.selectForAll();
+        List<MemberRoles> memberRolesList = memberRolesService.selectForAll();
         modelAndView.addObject("member", member);
         modelAndView.addObject("departmentList", departmentList);
         modelAndView.addObject("memberRolesList", memberRolesList);
@@ -173,10 +170,10 @@ public class MemberController {
      *
      * @return json格式的数据
      */
-    @RequestMapping(value = "/queryForAll.json")
+    @RequestMapping(value = "/selectForAll.json")
     @ResponseBody
-    public JSONResponseUtil queryForAll() {
-        List<Member> memberList = memberService.queryForAll();
+    public JSONResponseUtil selectForAll() {
+        List<Member> memberList = memberService.selectForAll();
         if (memberList != null) {
             return JSONResponseUtil.success(memberList);
         }
@@ -202,9 +199,10 @@ public class MemberController {
      */
     @RequestMapping(value = "/SelectMemberInfo.do")
     public JSONResponseUtil SelectMemberInfo(Integer memberId) {
-        Member member = memberService.queryById(memberId);
+        Member member = memberService.selectById(memberId);
         return JSONResponseUtil.success(member);
     }
+    
     
     
 }

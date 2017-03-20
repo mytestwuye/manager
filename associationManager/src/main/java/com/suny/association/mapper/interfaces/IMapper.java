@@ -13,7 +13,14 @@ public interface IMapper<T> {
      * 通用的插入方法
      * @param t  要插入的对象
      */
-     void create(T t);
+     void insert(T t);
+    
+    /**
+     * 插入一条数据并返回主键id
+     * @param t   插入的实体
+     * @return   插入数据的主键id
+     */
+     int insertAndGetId(T t);
 
     /**
      * 通用的查询方法
