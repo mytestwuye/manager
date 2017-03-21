@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.suny.association.mapper.MemberMapper">
+    <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.Member">
+        <id property="memberId" column="member_id"/>
+        <result property="memberName" column="member_name"/>
+        <result property="memberClassName" column="member_class_name"/>
+        <result property="memberSex" column="member_sex"/>
+        <result property="memberGradeNumber" column="member_grade_number"/>
+        <result property="memberManagerId" column="member_manager_id"/>
+        <result property="memberDepartmentId" column="member_department_id"/>
+        <result property="memberStatus" column="member_status"/>
+        <result property="memberRoleId" column="member_role_id"/>
+
+    </resultMap>
+
+    <insert id="insertAndGetId" parameterType="com.suny.association.pojo.po.Member" useGeneratedKeys="true"
+            keyProperty="memberId">
+        INSERT INTO member
+        <trim prefix="set" suffixOverrides=",">
+            <if test="memberId != null">
+                memberId = member_id ,
+            </if>
+            <if test="memberName != null">
+                member_name =#{memberName},
+            </if>
+            <if test="memberClassName != null">
+                member_class_name =#{memberClassName},
+            </if>
+            <if test="memberSex != null">
+                member_sex =#{memberSex},
+            </if>
+            <if test="memberGradeNumber != null">
+                member_grade_number =#{memberGradeNumber},
+            </if>
+            <if test="memberManagerId != null">
+                member_manager_id =#{memberManagerId},
+            </if>
+            <if test="memberDepartmentId != null">
+                member_department_id =#{memberDepartmentId},
+            </if>
+            <if test="memberStatus != null">
+                member_status =#{memberStatus},
+            </if>
+            <if test="memberRoleId != null">
+                member_role_id =#{memberRoleId}
+            </if>
+        </trim>
+
+
+    </insert>
+
+    <insert id="insert" parameterType="com.suny.association.pojo.po.Member">
+
+        INSERT INTO member
+        <trim prefix="set" suffixOverrides=",">
+            <if test="memberId != null">
+                memberId = member_id ,
+            </if>
+            <if test="memberName != null">
+                member_name =#{memberName},
+            </if>
+            <if test="memberClassName != null">
+                member_class_name =#{memberClassName},
+            </if>
+            <if test="memberSex != null">
+                member_sex =#{memberSex},
+            </if>
+            <if test="memberGradeNumber != null">
+                member_grade_number =#{memberGradeNumber},
+            </if>
+            <if test="memberManagerId != null">
+                member_manager_id =#{memberManagerId},
+            </if>
+            <if test="memberDepartmentId != null">
+                member_department_id =#{memberDepartmentId},
+            </if>
+            <if test="memberStatus != null">
+                member_status =#{memberStatus},
+            </if>
+            <if test="memberRoleId != null">
+                member_role_id =#{memberRoleId}
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.suny.association.pojo.po.Member">
+        UPDATE member
+        <trim prefix="set" suffixOverrides=",">
+            <if test="memberName != null">
+                member_name =#{memberName},
+            </if>
+            <if test="memberClassName != null">
+                member_class_name =#{memberClassName},
+            </if>
+            <if test="memberSex != null">
+                member_sex =#{memberSex},
+            </if>
+            <if test="memberGradeNumber != null">
+                member_grade_number =#{member_grade_number},
+            </if>
+            <if test="memberManagerId != null">
+                member_manager_id =#{memberManagerId},
+            </if>
+            <if test="memberDepartmentId != null">
+                member_department_id =#{memberDepartmentId},
+            </if>
+            <if test="memberStatus != null">
+                member_status =#{memberStatus},
+            </if>
+            <if test="memberRoleId != null">
+                member_role_id =#{memberRoleId}
+            </if>
+        </trim>
+        where member_id=#{memberId}
+
+    </update>
+    <delete id="delete" parameterType="Integer">
+        DELETE FROM member
+        WHERE member_id = #{id}
+    </delete>
+
+    <select id="selectFreezeManager" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+        WHERE member_role_id > 3
+              AND
+              member_status = 0
+    </select>
+    <select id="selectNormalManager" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+        WHERE member_role_id > 3
+              AND
+              member_status = 1
+    </select>
+
+    <select id="selectFreezeMember" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+        WHERE member_status = 0
+    </select>
+
+    <select id="selectNormalMember" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+        WHERE member_status = 1
+    </select>
+
+    <select id="select" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+        WHERE member_id = #{id}
+    </select>
+
+    <select id="selectAllByConditions" resultMap="BaseResultMap">
+        SELECT
+        member_id,
+        member_name,
+        member_class_name,
+        member_sex,
+        member_grade_number,
+        member_manager_id,
+        member_department_id,
+        member_status,
+        member_role_id
+        FROM member
+        WHERE member_department_id =
+        ( SELECT department_id
+        FROM department
+        <if test="#{departmentname}!=null || #{ departmentname}==''">
+            WHERE department_name LIKE '%#{departmentname}%') AND
+        </if>
+        member_status =1
+        LIMIT
+        #{offset},#{limit}
+
+
+    </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
+        FROM member
+    </select>
+
+</mapper>
