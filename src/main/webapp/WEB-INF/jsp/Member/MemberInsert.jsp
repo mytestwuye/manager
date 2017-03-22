@@ -102,7 +102,6 @@
 </form>
 
 
-
 <%--正文区结束--%>
 <script src="${pageContext.request.contextPath}/plugins/jquery.1.12.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
@@ -116,75 +115,76 @@
 <script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
 </body>
 <script>
-  function insertMemberInfo(){
-      var memberNameVal = $("#member-name").val();
-      var memberClassVal = $("#member-class").val();
-      var selectMemberSexVal = $("#member-sex").val();
-      var selectMemberGradeOptionVal = $("#selectMemberGradeOption").val();
-      var selectDepartmentOptionVal = $("#selectDepartmentOption").val();
-      var selectMemberRoleOptionVal = $("#selectMemberRoleOption").val();
-      var selectMemberManagerOptionVal = $("#selectMemberManagerOption").val();
-      var selectMemberStatusOptionVal = $("#selectMemberStatusOption").val() == true ? "1" : "0";
-      //验证表单
-      if(validMemberNameVal(memberNameVal) && ValidMemberClassVal(memberClassVal)){
-          $.ajax({
-              type:'post',
-              url:'${pageContext.request.contextPath}/member/insertMemberInfo.json',
-              data:{
-                  memberName : memberNameVal,
-                  memberClassName :memberClassVal,
-                  memberSex : selectMemberSexVal,
-                  memberGradeNumber :selectMemberGradeOptionVal,
-                  memberManagerId: selectMemberManagerOptionVal,
-                  memberDepartmentId: selectDepartmentOptionVal,
-                  memberStatus: selectMemberStatusOptionVal,
-                  memberRoleId: selectMemberRoleOptionVal
-              },
-              success:function(result){
-                  if (result.status == 1) {
-                      //当你在iframe页面关闭自身时
-                      window.parent.layer.alert('新增成功了，刷新下页面看效果吧', {icon: 6});
-                      var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                      parent.layer.close(index); //再执行关闭
-                      $("#mytab",window.parent.document).bootstrapTable("refresh");
-                      return;
-                  }
-                  window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
-              },
-              error:function(result){
-                  if (result.status == 0) {
-                      window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
-                  }
-              }
-          })
-      }
+    function insertMemberInfo() {
+        var memberNameVal = $("#member-name").val();
+        var memberClassVal = $("#member-class").val();
+        var selectMemberSexVal = $("#member-sex").val();
+        var selectMemberGradeOptionVal = $("#selectMemberGradeOption").val();
+        var selectDepartmentOptionVal = $("#selectDepartmentOption").val();
+        var selectMemberRoleOptionVal = $("#selectMemberRoleOption").val();
+        var selectMemberManagerOptionVal = $("#selectMemberManagerOption").val();
+        var selectMemberStatusOptionVal = $("#selectMemberStatusOption").val() == true ? "1" : "0";
+        //验证表单
+        if (validMemberNameVal(memberNameVal) && ValidMemberClassVal(memberClassVal)) {
+            $.ajax({
+                type: 'post',
+                dataType: 'json',
+                url: '${pageContext.request.contextPath}/Member/InsertMemberInfo.json',
+                data: {
+                    memberName: memberNameVal,
+                    memberClassName: memberClassVal,
+                    memberSex: selectMemberSexVal,
+                    memberGradeNumber: selectMemberGradeOptionVal,
+                    memberManagerId: selectMemberManagerOptionVal,
+                    memberDepartmentId: selectDepartmentOptionVal,
+                    memberStatus: selectMemberStatusOptionVal,
+                    memberRoleId: selectMemberRoleOptionVal
+                },
+                success: function (result) {
+                    if (result.status == 905) {
+                        //当你在iframe页面关闭自身时
+                        window.parent.layer.alert('新增成功了，刷新下页面看效果吧', {icon: 6});
+                        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                        parent.layer.close(index); //再执行关闭
+                        $("#mytab", window.parent.document).bootstrapTable("refresh");
+                        return;
+                    }
+                    window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
+                },
+                error: function (result) {
+                    if (result.status == 0) {
+                        window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
+                    }
+                }
+            })
+        }
 
-  }
-
-
-  function validMemberNameVal(memberNameVal){
-      if(memberNameVal==null || memberNameVal =="" ){
-          window.parent.layer.msg('姓名一定要输入', function(){
-              //关闭后的操作
-          });
-          return false;
-      }
-      return true
+    }
 
 
-  }
+    function validMemberNameVal(memberNameVal) {
+        if (memberNameVal == null || memberNameVal == "") {
+            window.parent.layer.msg('姓名一定要输入', function () {
+                //关闭后的操作
+            });
+            return false;
+        }
+        return true
 
-  /**
- * @return {boolean}
- */
-function ValidMemberClassVal(memberClassVal){
-      if(memberClassVal==null || memberClassVal =="" ){
-          window.parent.layer.msg('班级一定要输入', function(){
-        //关闭后的操作
-          });
-          return false;
-      }
-      return true
-  }
+
+    }
+
+    /**
+     * @return {boolean}
+     */
+    function ValidMemberClassVal(memberClassVal) {
+        if (memberClassVal == null || memberClassVal == "") {
+            window.parent.layer.msg('班级一定要输入', function () {
+                //关闭后的操作
+            });
+            return false;
+        }
+        return true
+    }
 </script>
 </html>

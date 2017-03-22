@@ -1,6 +1,6 @@
 package com.suny.association.realm;
 
-import com.suny.association.enums.BaseStatusCode;
+import com.suny.association.enums.BaseEnum;
 import com.suny.association.exception.BusinessException;
 import com.suny.association.service.interfaces.IAccountService;
 import org.apache.shiro.authc.*;
@@ -60,7 +60,7 @@ public class LoginRealm extends AuthorizingRealm {
         if (account != null ) {
             return new SimpleAuthenticationInfo(account.getAccountName(), account.getAccountPassword(), getName());
         }
-        throw new BusinessException(BaseStatusCode.LOGIN_VERIFY_FAILURE);
+        throw new BusinessException(BaseEnum.LOGIN_VERIFY_FAILURE);
     }
 }
 

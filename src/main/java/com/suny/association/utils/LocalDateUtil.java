@@ -9,7 +9,7 @@ import java.util.List;
  * Author:   孙建荣
  * Create Date: 2017/03/19 13:57
  */
-public class LocalDateUtils {
+public class LocalDateUtil {
     
     public static List<Object> getLastYearAndThisYears(){
         List<Object> yearList = new ArrayList<>();

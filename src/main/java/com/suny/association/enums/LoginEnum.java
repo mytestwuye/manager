@@ -5,7 +5,7 @@ package com.suny.association.enums;
  * Author:   孙建荣
  * Create Date: 2017/03/19 19:58
  */
-public enum LoginStatusCode {
+public enum LoginEnum {
     
             LOGIN_SYSTEM("100","登录系统成功"),
             LOGOUT_SYSTEM_SUCCESS("199","注销系统成功"),
@@ -26,7 +26,7 @@ public enum LoginStatusCode {
     String value;
     String desc;
     
-    LoginStatusCode(String value, String desc) {
+    LoginEnum(String value, String desc) {
         this.value = value;
         this.desc = desc;
     }

@@ -136,7 +136,7 @@
         var selectMemberStatusOptionVal = $("#selectMemberStatusOption").val() == true ? "1" : "0";
         $.ajax({
                     type: "POST",
-                    url: '${pageContext.request.contextPath}/member/updateMemberInfo.json',
+                    url: '${pageContext.request.contextPath}/Member/UpdateMemberInfo.json',
                     dataType: 'json',
                     data: {
                         memberId: ${member.memberId},

@@ -1,7 +1,7 @@
 package com.suny.association.controller;
 
-import com.suny.association.enums.LoginStatusCode;
-import com.suny.association.utils.JSONResponseUtil;
+import com.suny.association.enums.LoginEnum;
+import com.suny.association.utils.JSONResultUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +20,7 @@ import java.util.Random;
  * Author:   孙建荣
  * Create Date: 2017/03/14 17:02
  */
-@RequestMapping("/code")
+@RequestMapping("/Code")
 @Controller
 public class CodeController {
     private char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
@@ -33,8 +33,8 @@ public class CodeController {
      * @param resp    服务器向页面的响应请求
      * @throws IOException    处理IO流异常
      */
-    @RequestMapping("/verifyCode")
-    public void getCode(HttpServletRequest req, HttpServletResponse resp)
+    @RequestMapping("/GenerateCode")
+    public void generateCode(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         
         // 定义图像buffer
@@ -116,12 +116,12 @@ public class CodeController {
      * @param code  验证码
      * @return  一张带有验证码的图片
      */
-    @RequestMapping("/validCode")
+    @RequestMapping("/ValidCode")
     @ResponseBody
-    public JSONResponseUtil validCode(HttpServletRequest request,String code){
+    public JSONResultUtil validCode(HttpServletRequest request, String code){
         if(request.getSession().getAttribute("code").equals(code)){
-            return JSONResponseUtil.responseSuccessResult(LoginStatusCode.VALIDATE_CODE_SUCCESS);
+            return JSONResultUtil.successResult(LoginEnum.VALIDATE_CODE_SUCCESS);
         }
-        return JSONResponseUtil.responseFailResult(LoginStatusCode.VALIDATE_CODE_ERROR);
+        return JSONResultUtil.failResult(LoginEnum.VALIDATE_CODE_ERROR);
     }
 }

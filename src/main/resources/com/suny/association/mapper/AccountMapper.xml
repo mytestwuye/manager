@@ -11,6 +11,37 @@
         <result property="accountRoleId" column="account_role_id"/>
         <result property="accountMemberId" column="account_member_id"/>
     </resultMap>
+    
+    <insert id="insert" parameterType="com.suny.association.pojo.po.Account">
+        INSERT INTO  account
+                <trim prefix="set" prefixOverrides=",">
+                    <if test="accountId != null">
+                        account_id = #{accountId} ,
+                    </if>
+                    <if test="accountName != null">
+                        account_name =#{accountName},
+                    </if>
+                    <if test="accountPassword != null">
+                        account_password =#{accountPassword},
+                    </if>
+                    <if test="accountPhone != null">
+                        account_phone =#{accountPhone},
+                    </if>
+                    <if test="accountEmail != null">
+                        account_email =#{accountEmail},
+                    </if>
+                    <if test="accountStatus != null">
+                        account_status =#{accountStatus},
+                    </if>
+                    <if test="accountRoleId != null">
+                        account_role_id =#{accountRoleId},
+                    </if>
+                    <if test="accountMemberId != null">
+                        account_member_id =#{accountMemberId}
+                    </if>
+
+                </trim>
+    </insert>
 
     <select id="selectByMemberId" parameterType="int" resultMap="BaseResultMap">
         SELECT

@@ -1,6 +1,6 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.enums.BaseStatusCode;
+import com.suny.association.enums.MemberEnum;
 import com.suny.association.exception.BusinessException;
 import com.suny.association.mapper.MemberMapper;
 import com.suny.association.pojo.po.Member;
@@ -32,7 +32,8 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     
     /**
      * 添加一条数据
-     * @param member  数据实体类
+     *
+     * @param member 数据实体类
      */
     @Override
     public void insert(Member member) {
@@ -41,8 +42,9 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     
     /**
      * 添加一条数据并且返回主键id
-     * @param member  数据实体类
-     * @return   插入数据的id
+     *
+     * @param member 数据实体类
+     * @return 插入数据的id
      */
     @Override
     public int insertAndGetId(Member member) {
@@ -52,31 +54,36 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     
     /**
      * 更新一条成员信息
-     * @param member  要更新的成员信息
+     *
+     * @param member 要更新的成员信息
      */
     @Override
     public void update(Member member) {
-        if(member.getMemberId() != null || memberMapper.select(member.getMemberId()) != null){
-            memberMapper.update(member);
+        if (member.getMemberId() == null) {
+            throw new BusinessException(MemberEnum.FAIL_UPDATE_MEMBER_INFO);
+        } else if (memberMapper.select(member.getMemberId()) == null) {
+            throw new BusinessException(MemberEnum.NOT_HAVE_THIS_MEMBER_INFO);
         }
-        else{
-            throw new BusinessException(BaseStatusCode.ERROR_ADD_USER);
-        }
-        
+        memberMapper.update(member);
     }
     
     /**
      * 通过id删除一个对象
-     * @param id  要删除的对象的主键
+     *
+     * @param id 要删除的对象的主键
      */
     @Override
     public void deleteById(int id) {
+        if(selectById(id) == null){
+            throw new BusinessException(MemberEnum.NOT_HAVE_THIS_MEMBER_INFO);
+        }
         memberMapper.delete(id);
     }
     
     /**
      * 查找账号被冻结的管理人员账号
-     * @return   冻结的管理员信息
+     *
+     * @return 冻结的管理员信息
      */
     @Override
     public List<Member> selectFreezeManager() {
@@ -85,7 +92,8 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     
     /**
      * 查找账号正常的管理人员账号
-     * @return  正常的管理员信息
+     *
+     * @return 正常的管理员信息
      */
     @Override
     public List<Member> selectNormalManager() {
@@ -93,10 +101,10 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     }
     
     
-    
     /**
      * 查询被冻结的普通成员账号
-     * @return   冻结的成员信息
+     *
+     * @return 冻结的成员信息
      */
     @Override
     public List<Member> selectFreezeMember() {
@@ -105,24 +113,26 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     
     @Override
     public List<Member> selectAllByConditions(int limit, int offset, String departmentname, int status) {
-        return memberMapper.selectAllByConditions(limit,offset,departmentname,status);
+        return memberMapper.selectAllByConditions(limit, offset, departmentname, status);
     }
     
     
     /**
      * 查询成员状态正常的
-     * @return  状态正常的普通成员
+     *
+     * @return 状态正常的普通成员
      */
     @Override
-    public List<Member> selectNormalMember(){
+    public List<Member> selectNormalMember() {
         return memberMapper.selectNormalMember();
     }
     
     
     /**
      * 通过条件查询一条记录
-     * @param id  主键id
-     * @return  对应的信息
+     *
+     * @param id 主键id
+     * @return 对应的信息
      */
     @Override
     public Member selectById(int id) {
@@ -131,15 +141,13 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     
     /**
      * 查询全部的成员信息
-     * @return   member表里面所有的记录
+     *
+     * @return member表里面所有的记录
      */
     @Override
     public List<Member> selectForAll() {
         return memberMapper.selectAll();
     }
-    
-    
-    
     
     
 }

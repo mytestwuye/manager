@@ -86,17 +86,17 @@
             background: url(${pageContext.request.contextPath}/images/oss.png) left top no-repeat;
         }
 
-        /* #test #header {
-             background: test;
+        /*#test #header {
+           //  background: test;
          }
 
          #test .content_tab {
              background: test;
-         }*/
-
+         }*!
+*/
         /*#test .s-profile > a {
             background: url() left top no-repeat;
-        }*/
+        }
     </style>
 </head>
 <body>
@@ -110,7 +110,7 @@
             </div>
         </li>
         <li id="logo" class="hidden-xs">
-            <a href="${pageContext.request.contextPath}/admin-manager.html">
+            <a href="${pageContext.request.contextPath}/AdminManager.html">
                 <img src="${pageContext.request.contextPath}/images/logo.png"/>
             </a>
             <span id="system_title">协会管理系统</span>
@@ -244,10 +244,10 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts-list"></i> 成员信息管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('协会档案信息', '${pageContext.request.contextPath}/member/member-manager.html');">协会档案信息</a>
+                           href="javascript:Tab.addTab('协会档案信息', '${pageContext.request.contextPath}/Member/MemberManager.html');">协会档案信息</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('协会档案管理', '${pageContext.request.contextPath}/member/member-manager.html');">协会档案管理</a>
+                           href="javascript:Tab.addTab('协会档案管理', '${pageContext.request.contextPath}/Member/MemberManager.html');">协会档案管理</a>
                     </li>
                 </ul>
             </li>
@@ -269,7 +269,7 @@
                            href="javascript:Tab.addTab('角色管理', '${pageContext.request.contextPath}/manage/role/index');">角色管理</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('用户管理', '${pageContext.request.contextPath}/manage/user/index');">用户管理</a>
+                           href="javascript:Tab.addTab('用户管理', '${pageContext.request.contextPath}/Account/AccountManager.html');">用户管理</a>
                     </li>
                 </ul>
             </li>
@@ -396,7 +396,7 @@
     function sendLogout() {
         $.ajax({
             type: "Get",
-            url: "${pageContext.request.contextPath}/logout.do",
+            url: "${pageContext.request.contextPath}/Logout.do",
             success: function (result) {
                 if (result.status !== 199) {
                     alertFunMessage('这都能出错了。。');
@@ -410,7 +410,7 @@
         })
     }
     function login() {
-        window.parent.location.href = "${pageContext.request.contextPath}/login.html";
+        window.parent.location.href = "${pageContext.request.contextPath}/Login.html";
     }
 
 

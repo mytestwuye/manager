@@ -1,13 +1,13 @@
 package com.suny.association.controller;
 
-import com.suny.association.enums.LoginStatusCode;
+import com.suny.association.enums.LoginEnum;
 import com.suny.association.exception.BusinessException;
 import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IMemberService;
-import com.suny.association.utils.DecriptUtils;
-import com.suny.association.utils.JSONResponseUtil;
+import com.suny.association.utils.DecryptUtil;
+import com.suny.association.utils.JSONResultUtil;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
@@ -46,7 +46,7 @@ public class BaseController {
      */
     @RequestMapping("/")
     public String indexPage() {
-        return "/login";
+        return "Login";
     }
     
     /**
@@ -54,9 +54,9 @@ public class BaseController {
      *
      * @return 登陆的页面
      */
-    @RequestMapping("/login.html")
+    @RequestMapping("/Login.html")
     public String getIndex() {
-        return "redirect:/";
+        return "/Login";
     }
     
     
@@ -66,9 +66,9 @@ public class BaseController {
      * @return 管理页面
      * @throws Exception 反正就是异常
      */
-    @RequestMapping("/admin-manager.html")
+    @RequestMapping("/AdminManager.html")
     public ModelAndView adminManager() throws Exception {
-        return new ModelAndView("/admin-manager");
+        return new ModelAndView("AdminManager");
     }
     
     
@@ -77,9 +77,9 @@ public class BaseController {
      *
      * @return 错误页面
      */
-    @RequestMapping(value = "/failPage.html")
+    @RequestMapping(value = "/FailPage.html")
     public String failPage() {
-        return "/error";
+        return "Error";
     }
     
     
@@ -90,15 +90,15 @@ public class BaseController {
      * @param password 登陆的用户密码
      * @return 经过shiro验证的结果
      */
-    @RequestMapping(value = "/checkLogin.json", method = RequestMethod.POST)
+    @RequestMapping(value = "/CheckLogin.json", method = RequestMethod.POST)
     @ResponseBody
-    public JSONResponseUtil checkLogin(String username, String password, String code,
-                                       HttpServletRequest request) {
+    public JSONResultUtil checkLogin(String username, String password, String code,
+                                     HttpServletRequest request) {
         if (!request.getSession().getAttribute("code").equals(code)) {
-            return JSONResponseUtil.responseFailResult(LoginStatusCode.VALIDATE_CODE_ERROR);
+            return JSONResultUtil.failResult(LoginEnum.VALIDATE_CODE_ERROR);
         }
         try {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, DecriptUtils.encryptToMD5(password));
+            UsernamePasswordToken token = new UsernamePasswordToken(username, DecryptUtil.encryptToMD5(password));
             Subject currentUser = SecurityUtils.getSubject();
             if (!currentUser.isAuthenticated()) {
                 //使用shiro来验证
@@ -111,21 +111,21 @@ public class BaseController {
             }
             
         } catch (Exception ex) {
-            throw new BusinessException(LoginStatusCode.USERID_OR_PASSWORD_ERROR);
+            throw new BusinessException(LoginEnum.USERID_OR_PASSWORD_ERROR);
         }
         
-        return JSONResponseUtil.responseSuccessResult(LoginStatusCode.LOGIN_SYSTEM);
+        return JSONResultUtil.successResult(LoginEnum.LOGIN_SYSTEM);
     }
     
     /**
      * 退出登录
      */
-    @RequestMapping(value = "/logout.do", method = RequestMethod.GET)
+    @RequestMapping(value = "/Logout.do", method = RequestMethod.GET)
     @ResponseBody
-    public JSONResponseUtil logout() {
+    public JSONResultUtil logout() {
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
-        return JSONResponseUtil.responseSuccessResult(LoginStatusCode.LOGOUT_SYSTEM_SUCCESS);
+        return JSONResultUtil.successResult(LoginEnum.LOGOUT_SYSTEM_SUCCESS);
     }
     
     

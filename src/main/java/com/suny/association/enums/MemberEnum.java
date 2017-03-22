@@ -5,7 +5,7 @@ package com.suny.association.enums;
  * Author:   孙建荣
  * Create Date: 2017/03/19 19:54
  */
-public enum MemberStatusCode {
+public enum MemberEnum {
     
     UNKNOWN_ERROR("900","出现未知错误，请尝试重新操作！"),
     SUCCESS_DELETE_MEMBER_INFO("901","删除一条成员信息成功"),
@@ -15,7 +15,8 @@ public enum MemberStatusCode {
     SUCCESS_INSERT_MEMBER_INFO("905","插入一条成员信息成功"),
     FAIL_INSERT_MEMBER_INFO("906","插入一条成员信息失败"),
     SUCCESS_SELECT_MEMBER_INFO("907","查询记录成功"),
-    FAIL_SELECT_MEMBER_INFO("908","查询记录失败");
+    FAIL_SELECT_MEMBER_INFO("908","查询记录失败"),
+    NOT_HAVE_THIS_MEMBER_INFO("909","没有这条账号信息");
     
     
     
@@ -23,7 +24,7 @@ public enum MemberStatusCode {
     String desc;
     
     
-    MemberStatusCode(String value, String desc) {
+    MemberEnum(String value, String desc) {
         this.value = value;
         this.desc = desc;
     }

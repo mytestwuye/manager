@@ -20,15 +20,15 @@
     <!-- Shiro Filter -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/login.html"/>
-        <property name="successUrl" value="/admin-manager.html"/>
-        <property name="unauthorizedUrl" value="/failPage.html"/>
+        <property name="loginUrl" value="/Login.html"/>
+        <property name="successUrl" value="/AdminManager.html"/>
+        <property name="unauthorizedUrl" value="/FailPage.html"/>
         <property name="filterChainDefinitions">
             <value>
-                /index = anon
-                /login = anon
-                /checkLogin.json = anon
-                /loginsuccess = anon
+                /Index = anon
+                /Login = anon
+                /CheckLogin.json = anon
+                /LoginSuccess = anon
                 /logout = anon
                 /** = authc
             </value>

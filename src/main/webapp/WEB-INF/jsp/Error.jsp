@@ -14,14 +14,14 @@
 <body>
 <meta http-equiv="refresh" content="60;url=${pageContext.request.contextPath}/application/index.html" property="">
 <!-- content="60，即60秒后返回主页，可根据需要修改或者删除这段代码 -->
-<link href="${pageContext.request.contextPath}/Css/error.css" rel="stylesheet" type="text/css"/>
+<link href="${pageContext.request.contextPath}/css/error.css" rel="stylesheet" type="text/css"/>
 <!-- 代码 开始 -->
-<div id="container"><img class="png" src="${pageContext.request.contextPath}/Images/error/404.png"/> <img
-        class="png msg" src="${pageContext.request.contextPath}/Images/error/404_msg.png"/>
+<div id="container"><img class="png" src="${pageContext.request.contextPath}/images/error/404.png"/> <img
+        class="png msg" src="${pageContext.request.contextPath}/images/error/404_msg.png"/>
 
-    <p><a href="${pageContext.request.contextPath}/index.html" >
+    <p><a href="${pageContext.request.contextPath}/AdminManager.html" >
         <img class="png"
-             src="${pageContext.request.contextPath}/Images/error/404_to_index.png"/></a>
+             src="${pageContext.request.contextPath}/images/error/404_to_index.png"/></a>
     </p>
 </div>
 <div id="cloud" class="png"></div>

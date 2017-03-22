@@ -1,7 +1,7 @@
 package com.suny.association.exceptionsolver;
 
 import com.suny.association.exception.BusinessException;
-import com.suny.association.utils.JSONUtils;
+import com.suny.association.utils.JSONResultUtil;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -29,7 +29,7 @@ public class SimpleMappingExceptionSolver implements HandlerExceptionResolver {
             //就打印出log来
             ex.printStackTrace();
             //非ajax请求就跳转到error.jsp页面
-            return new ModelAndView("/error", objectMap);
+            return new ModelAndView("Error", objectMap);
         } else {
             //如果是ajax请求的话用json返回吧
             try {
@@ -39,7 +39,7 @@ public class SimpleMappingExceptionSolver implements HandlerExceptionResolver {
                 response.setContentType("application/json;charset=UTF-8");
                 PrintWriter printWriter = response.getWriter();
                 //业务异常对前端可见，否则同意为系统异常
-                printWriter.write(JSONUtils.toJson(objectMap));
+                printWriter.write(JSONResultUtil.toJson(objectMap));
                 printWriter.flush();
                 printWriter.close();
             } catch (IOException e) {

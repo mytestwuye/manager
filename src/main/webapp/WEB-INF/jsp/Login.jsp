@@ -40,7 +40,7 @@
         <div style="width: 400px;">
             <div style="float:left;width:100px; margin-left: 13px; height:42px;">
                 <img style="width:100px; height:42px; cursor: pointer;" title="点击刷新" id="getcode_num"
-                     src="${pageContext.request.contextPath}/code/verifyCode"/>
+                     src="${pageContext.request.contextPath}/Code/GenerateCode"/>
             </div>
         </div>
         <div id="softkey3"></div>
@@ -110,7 +110,7 @@
 
     //切换验证码
     $("#getcode_num").click(function () {
-        $(this).attr("src", '${pageContext.request.contextPath}/code/verifyCode?rand=' + Math.random());
+        $(this).attr("src", '${pageContext.request.contextPath}/Code/GenerateCode?rand=' + Math.random());
     });
 
     //输入用户名
@@ -178,7 +178,7 @@
     //验证码验证
     function checkCode() {
         $.ajax({
-            url: '${pageContext.request.contextPath}/code/validCode',
+            url: '${pageContext.request.contextPath}/Code/ValidCode',
             type: 'post',
             data: {code: codeValue},
             success: function (result) {
@@ -212,7 +212,7 @@
 
         $.ajax({
             type: "post",
-            url: "${pageContext.request.contextPath}/checkLogin.json",
+            url: "${pageContext.request.contextPath}/CheckLogin.json",
             data: param,
             dataType: "json",
             success: function (result) {
@@ -246,14 +246,14 @@
      * 跳转到管理页面
      */
     function goAdminPage() {
-        window.parent.location.href = "${pageContext.request.contextPath}/admin-manager.html";
+        window.parent.location.href = "${pageContext.request.contextPath}/AdminManager.html";
     }
 
     /**
      * 刷新验证码
      */
     function refresh() {
-        $("#getcode_num").attr("src", '${pageContext.request.contextPath}/code/verifyCode?rand=' + Math.random());
+        $("#getcode_num").attr("src", '${pageContext.request.contextPath}/Code/GenerateCode?rand=' + Math.random());
     }
 
     /**

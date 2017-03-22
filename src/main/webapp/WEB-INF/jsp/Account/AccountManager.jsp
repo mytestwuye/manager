@@ -1,16 +1,20 @@
 <%--
   Created by IntelliJ IDEA.
   User: 孙建荣
-  Date: 2017/3/15/015
-  Time: 20:18
+  Date: 2017/3/22/022
+  Time: 22:21
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>协会档案管理</title>
+    <title>用户管理</title>
     <link href="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
@@ -122,7 +126,7 @@
         oTableInit.Init = function () {
             layer.load(0, {shade: false, time: 1000}); //0代表加载的风格，支持0-2
             $('#mytab').bootstrapTable({
-                url: '${pageContext.request.contextPath}/member/selectForAll.json',         //请求后台的URL（*）
+                url: '${pageContext.request.contextPath}/Member/SelectForAll.json',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
                 striped: true,                      //是否显示行间隔色
@@ -347,13 +351,13 @@
 
     //新增按钮的方法
     $("#btn_add").click(function () {
-            insertMember();
+        insertMember();
     });
     function insertMember(){
         //弹出即全屏
         var index = layer.open({
             type: 2,
-            content: '${pageContext.request.contextPath}/member/insertMember.html',
+            content: '${pageContext.request.contextPath}/Member/InsertMember.html',
             area: ['320px', '530px'],
             maxmin: true
         });
@@ -381,7 +385,7 @@
             area: ['300px', '530px'],
             fixed: true, //不固定
             maxmin: true,
-            content: '${pageContext.request.contextPath}/member/editMember.html/' + memberId
+            content: '${pageContext.request.contextPath}/Member/UpdateMember.html/' + memberId
         });
 
 
@@ -415,7 +419,7 @@
     function deleteMember(memberId) {
         $.ajax({
             type: "get",
-            url: "${pageContext.request.contextPath}/member/deleteById.json/" + memberId,
+            url: "${pageContext.request.contextPath}/Member/DeleteMemberById.json/" + memberId,
             success: function (result) {
                 if(result.status ==901){
                     layer.msg(result.message, {icon: 1});

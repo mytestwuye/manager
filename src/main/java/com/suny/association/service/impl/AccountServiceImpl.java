@@ -1,5 +1,7 @@
 package com.suny.association.service.impl;
 
+import com.suny.association.enums.MemberEnum;
+import com.suny.association.exception.BusinessException;
 import com.suny.association.mapper.AccountMapper;
 import com.suny.association.pojo.po.Account;
 import com.suny.association.service.AbstractBaseServiceImpl;
@@ -43,6 +45,9 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
     
     @Override
     public void insert(Account account) {
+        if(account == null){
+            throw new BusinessException(MemberEnum.FAIL_INSERT_MEMBER_INFO);
+        }
         accountMapper.insert(account);
     }
     
