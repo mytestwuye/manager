@@ -46,7 +46,7 @@ public class BaseController {
      */
     @RequestMapping("/")
     public String indexPage() {
-        return "Login";
+        return "/Login";
     }
     
     /**
@@ -79,7 +79,7 @@ public class BaseController {
      */
     @RequestMapping(value = "/FailPage.html")
     public String failPage() {
-        return "Error";
+        return "/Error";
     }
     
     
@@ -94,7 +94,7 @@ public class BaseController {
     @ResponseBody
     public JSONResultUtil checkLogin(String username, String password, String code,
                                      HttpServletRequest request) {
-        if (!request.getSession().getAttribute("code").equals(code)) {
+       if (!request.getSession().getAttribute("code").equals(code)) {
             return JSONResultUtil.failResult(LoginEnum.VALIDATE_CODE_ERROR);
         }
         try {
@@ -105,8 +105,8 @@ public class BaseController {
                 token.setRememberMe(true);
                 currentUser.login(token);//验证角色和权限
                 //通过账号表里面的memberId查询到一个成员的信息
-                Account account = accountService.selectByUserName(username);
-                Member member = memberService.selectById(account.getAccountMemberId());
+                Account account = accountService.selectByUserName("sunybyjava");
+                Member member = memberService.selectById(account.getAccountMember().getMemberId());
                 request.getSession().setAttribute("member", member);
             }
             

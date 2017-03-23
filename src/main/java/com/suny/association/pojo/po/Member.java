@@ -11,114 +11,99 @@ public class Member {
 
     private Integer memberGradeNumber;
 
-    private Integer memberManagerId;
+    private Member memberManager;
 
-    private Integer memberDepartmentId;
+    private Department memberDepartment;
 
     private Boolean memberStatus;
 
-    private Integer memberRoleId;
-
-    public Member(Integer memberId, String memberName, String memberClassName, Boolean memberSex, Integer memberGradeNumber, Integer memberManagerId, Integer memberDepartmentId, Boolean memberStatus, Integer memberRoleId) {
+    private MemberRoles memberRoles;
+    
+    public Member() {
+    }
+    
+    public Member(Integer memberId, String memberName, String memberClassName, Boolean memberSex, Integer memberGradeNumber, Member memberManager, Department memberDepartment, Boolean memberStatus, MemberRoles memberRoles) {
         this.memberId = memberId;
         this.memberName = memberName;
         this.memberClassName = memberClassName;
         this.memberSex = memberSex;
         this.memberGradeNumber = memberGradeNumber;
-        this.memberManagerId = memberManagerId;
-        this.memberDepartmentId = memberDepartmentId;
+        this.memberManager = memberManager;
+        this.memberDepartment = memberDepartment;
         this.memberStatus = memberStatus;
-        this.memberRoleId = memberRoleId;
+        this.memberRoles = memberRoles;
     }
-
-    public Member() {
-        super();
-    }
-
+    
+    
     public Integer getMemberId() {
         return memberId;
     }
-
+    
     public void setMemberId(Integer memberId) {
         this.memberId = memberId;
     }
-
+    
     public String getMemberName() {
         return memberName;
     }
-
+    
     public void setMemberName(String memberName) {
-        this.memberName = memberName == null ? null : memberName.trim();
+        this.memberName = memberName;
     }
-
+    
     public String getMemberClassName() {
         return memberClassName;
     }
-
+    
     public void setMemberClassName(String memberClassName) {
-        this.memberClassName = memberClassName == null ? null : memberClassName.trim();
+        this.memberClassName = memberClassName;
     }
-
+    
     public Boolean getMemberSex() {
         return memberSex;
     }
-
+    
     public void setMemberSex(Boolean memberSex) {
         this.memberSex = memberSex;
     }
-
+    
     public Integer getMemberGradeNumber() {
         return memberGradeNumber;
     }
-
+    
     public void setMemberGradeNumber(Integer memberGradeNumber) {
         this.memberGradeNumber = memberGradeNumber;
     }
-
-    public Integer getMemberManagerId() {
-        return memberManagerId;
+    
+    public Member getMemberManager() {
+        return memberManager;
     }
-
-    public void setMemberManagerId(Integer memberManagerId) {
-        this.memberManagerId = memberManagerId;
+    
+    public void setMemberManager(Member memberManager) {
+        this.memberManager = memberManager;
     }
-
-    public Integer getMemberDepartmentId() {
-        return memberDepartmentId;
+    
+    public Department getMemberDepartment() {
+        return memberDepartment;
     }
-
-    public void setMemberDepartmentId(Integer memberDepartmentId) {
-        this.memberDepartmentId = memberDepartmentId;
+    
+    public void setMemberDepartment(Department memberDepartment) {
+        this.memberDepartment = memberDepartment;
     }
-
+    
     public Boolean getMemberStatus() {
         return memberStatus;
     }
-
+    
     public void setMemberStatus(Boolean memberStatus) {
         this.memberStatus = memberStatus;
     }
-
-    public Integer getMemberRoleId() {
-        return memberRoleId;
-    }
-
-    public void setMemberRoleId(Integer memberRoleId) {
-        this.memberRoleId = memberRoleId;
+    
+    public MemberRoles getMemberRoles() {
+        return memberRoles;
     }
     
-    @Override
-    public String toString() {
-        return "Member{" +
-                "memberId=" + memberId +
-                ", memberName='" + memberName + '\'' +
-                ", memberClassName='" + memberClassName + '\'' +
-                ", memberSex=" + memberSex +
-                ", memberGradeNumber=" + memberGradeNumber +
-                ", memberManagerId=" + memberManagerId +
-                ", memberDepartmentId=" + memberDepartmentId +
-                ", memberStatus=" + memberStatus +
-                ", memberRoleId=" + memberRoleId +
-                '}';
+    public void setMemberRoles(MemberRoles memberRoles) {
+        this.memberRoles = memberRoles;
     }
 }

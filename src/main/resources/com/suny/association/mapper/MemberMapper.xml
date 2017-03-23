@@ -7,12 +7,71 @@
         <result property="memberClassName" column="member_class_name"/>
         <result property="memberSex" column="member_sex"/>
         <result property="memberGradeNumber" column="member_grade_number"/>
-        <result property="memberManagerId" column="member_manager_id"/>
-        <result property="memberDepartmentId" column="member_department_id"/>
         <result property="memberStatus" column="member_status"/>
-        <result property="memberRoleId" column="member_role_id"/>
+
+        <!--部门复杂类型关联-->
+        <association property="memberDepartment" javaType="com.suny.association.pojo.po.Department"
+                     resultMap="memberDepartmentResult"/>
+
+        <!--成员角色复杂类型关联-->
+        <association property="memberRoles" javaType="com.suny.association.pojo.po.MemberRoles"
+                     resultMap="memberRolesResult"/>
+
+        <!--协会成员对应的管理员复杂类型集合-->
+        <collection property="memberManager" ofType="com.suny.association.pojo.po.Member">
+
+            <id property="memberId" column="member_id"/>
+            <result property="memberName" column="member_name"/>
+            <result property="memberClassName" column="member_class_name"/>
+            <result property="memberSex" column="member_sex"/>
+            <result property="memberGradeNumber" column="member_grade_number"/>
+            <result property="memberStatus" column="member_status"/>
+            <!--部门复杂类型关联-->
+            <association property="memberDepartment" javaType="com.suny.association.pojo.po.Department"
+                         resultMap="memberDepartmentResult"/>
+            <!--成员角色复杂类型关联-->
+            <association property="memberRoles" javaType="com.suny.association.pojo.po.MemberRoles"
+                         resultMap="memberRolesResult"/>
+
+            <!--协会成员对应的管理员复杂类型集合-->
+            <collection property="memberManager" ofType="com.suny.association.pojo.po.Member"
+                        resultMap="memberManagerResult"/>
+        </collection>
 
     </resultMap>
+
+    <!--成员管理员-->
+    <resultMap id="memberManagerResult" type="com.suny.association.pojo.po.Member">
+        <id property="memberId" column="member_id"/>
+        <result property="memberName" column="member_name"/>
+        <result property="memberClassName" column="member_class_name"/>
+        <result property="memberSex" column="member_sex"/>
+        <result property="memberGradeNumber" column="member_grade_number"/>
+        <result property="memberStatus" column="member_status"/>
+        <!--部门复杂类型关联-->
+        <association property="memberDepartment" javaType="com.suny.association.pojo.po.Department"
+                     resultMap="memberDepartmentResult"/>
+        <!--成员角色复杂类型关联-->
+        <association property="memberRoles" javaType="com.suny.association.pojo.po.MemberRoles"
+                     resultMap="memberRolesResult"/>
+
+        <!--协会成员对应的管理员复杂类型集合-->
+        <collection property="memberManager" ofType="com.suny.association.pojo.po.Member"/>
+    </resultMap>
+
+    <!--成员角色-->
+    <resultMap id="memberRolesResult" type="com.suny.association.pojo.po.MemberRoles">
+        <id property="memberRoleId" column="member_role_id"/>
+        <result property="memberRoleName" column="member_role_name"/>
+    </resultMap>
+
+    <!--部门-->
+    <resultMap id="memberDepartmentResult" type="com.suny.association.pojo.po.Department">
+        <id column="department_id" property="departmentId"/>
+        <result column="department_name" property="departmentName"/>
+    </resultMap>
+
+
 
     <insert id="insertAndGetId" parameterType="com.suny.association.pojo.po.Member" useGeneratedKeys="true"
             keyProperty="memberId">
@@ -33,17 +92,17 @@
             <if test="memberGradeNumber != null">
                 member_grade_number =#{memberGradeNumber},
             </if>
-            <if test="memberManagerId != null">
-                member_manager_id =#{memberManagerId},
+            <if test="memberManager != null">
+                member_manager_id =#{memberManager},
             </if>
-            <if test="memberDepartmentId != null">
-                member_department_id =#{memberDepartmentId},
+            <if test="memberDepartment != null">
+                member_department_id =#{memberDepartment},
             </if>
             <if test="memberStatus != null">
                 member_status =#{memberStatus},
             </if>
-            <if test="memberRoleId != null">
-                member_role_id =#{memberRoleId}
+            <if test="memberRoles != null">
+                member_role_id =#{memberRoles}
             </if>
         </trim>
 
@@ -69,17 +128,17 @@
             <if test="memberGradeNumber != null">
                 member_grade_number =#{memberGradeNumber},
             </if>
-            <if test="memberManagerId != null">
-                member_manager_id =#{memberManagerId},
+            <if test="memberManager != null">
+                member_manager_id =#{memberManager},
             </if>
-            <if test="memberDepartmentId != null">
-                member_department_id =#{memberDepartmentId},
+            <if test="memberDepartment != null">
+                member_department_id =#{memberDepartment},
             </if>
             <if test="memberStatus != null">
                 member_status =#{memberStatus},
             </if>
-            <if test="memberRoleId != null">
-                member_role_id =#{memberRoleId}
+            <if test="memberRoles != null">
+                member_role_id =#{memberRoles}
             </if>
         </trim>
     </insert>
@@ -99,17 +158,17 @@
             <if test="memberGradeNumber != null">
                 member_grade_number =#{member_grade_number},
             </if>
-            <if test="memberManagerId != null">
-                member_manager_id =#{memberManagerId},
+            <if test="memberManager != null">
+                member_manager_id =#{memberManager},
             </if>
-            <if test="memberDepartmentId != null">
-                member_department_id =#{memberDepartmentId},
+            <if test="memberDepartment != null">
+                member_department_id =#{memberDepartment},
             </if>
             <if test="memberStatus != null">
                 member_status =#{memberStatus},
             </if>
-            <if test="memberRoleId != null">
-                member_role_id =#{memberRoleId}
+            <if test="memberRoles != null">
+                member_role_id =#{memberRoles}
             </if>
         </trim>
         where member_id=#{memberId}

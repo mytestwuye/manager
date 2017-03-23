@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
+
 /**
  * Comments:  对页面产生验证码
  * Author:   孙建荣
@@ -23,15 +24,16 @@ import java.util.Random;
 @RequestMapping("/Code")
 @Controller
 public class CodeController {
-    private char[] codeSequence = { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
+    private char[] codeSequence = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
             'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
-            'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
     
     /**
-     *   处理生成验证码相关的请求
-     * @param req    包含用户请求的数据
-     * @param resp    服务器向页面的响应请求
-     * @throws IOException    处理IO流异常
+     * 处理生成验证码相关的请求
+     *
+     * @param req  包含用户请求的数据
+     * @param resp 服务器向页面的响应请求
+     * @throws IOException 处理IO流异常
      */
     @RequestMapping("/GenerateCode")
     public void generateCode(HttpServletRequest req, HttpServletResponse resp)
@@ -112,16 +114,19 @@ public class CodeController {
     
     /**
      * ajax验证输入的验证码是否正确
-     * @param request  request请求
-     * @param code  验证码
-     * @return  一张带有验证码的图片
+     *
+     * @param request request请求
+     * @param code    验证码
+     * @return 一张带有验证码的图片
      */
     @RequestMapping("/ValidCode")
     @ResponseBody
-    public JSONResultUtil validCode(HttpServletRequest request, String code){
-        if(request.getSession().getAttribute("code").equals(code)){
+    public JSONResultUtil validCode(HttpServletRequest request, String code) {
+        if (request.getSession().getAttribute("code").equals(code)) {
             return JSONResultUtil.successResult(LoginEnum.VALIDATE_CODE_SUCCESS);
         }
+        
+        
         return JSONResultUtil.failResult(LoginEnum.VALIDATE_CODE_ERROR);
     }
 }

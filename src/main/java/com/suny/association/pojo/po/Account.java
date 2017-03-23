@@ -3,6 +3,7 @@ package com.suny.association.pojo.po;
 import java.io.Serializable;
 
 public class Account implements Serializable{
+    
     private Long accountId;
 
     private String accountName;
@@ -15,100 +16,88 @@ public class Account implements Serializable{
 
     private Boolean accountStatus;
 
-    private Integer accountRoleId;
+    private Roles accountRoles;
 
-    private Integer accountMemberId;
-
-    public Account(Long accountId, String accountName, String accountPassword, Integer accountPhone, String accountEmail, Boolean accountStatus, Integer accountRoleId, Integer accountMemberId) {
+    private Member accountMember;
+    
+    
+    public Account() {
+    }
+    
+    
+    public Account(Long accountId, String accountName, String accountPassword, Integer accountPhone, String accountEmail, Boolean accountStatus, Roles accountRoles, Member accountMember) {
         this.accountId = accountId;
         this.accountName = accountName;
         this.accountPassword = accountPassword;
         this.accountPhone = accountPhone;
         this.accountEmail = accountEmail;
         this.accountStatus = accountStatus;
-        this.accountRoleId = accountRoleId;
-        this.accountMemberId = accountMemberId;
+        this.accountRoles = accountRoles;
+        this.accountMember = accountMember;
     }
-
-    public Account() {
-        super();
-    }
-
+    
+    
     public Long getAccountId() {
         return accountId;
     }
-
+    
     public void setAccountId(Long accountId) {
         this.accountId = accountId;
     }
-
+    
     public String getAccountName() {
         return accountName;
     }
-
+    
     public void setAccountName(String accountName) {
-        this.accountName = accountName == null ? null : accountName.trim();
+        this.accountName = accountName;
     }
-
+    
     public String getAccountPassword() {
         return accountPassword;
     }
-
+    
     public void setAccountPassword(String accountPassword) {
-        this.accountPassword = accountPassword == null ? null : accountPassword.trim();
+        this.accountPassword = accountPassword;
     }
-
+    
     public Integer getAccountPhone() {
         return accountPhone;
     }
-
+    
     public void setAccountPhone(Integer accountPhone) {
         this.accountPhone = accountPhone;
     }
-
+    
     public String getAccountEmail() {
         return accountEmail;
     }
-
+    
     public void setAccountEmail(String accountEmail) {
-        this.accountEmail = accountEmail == null ? null : accountEmail.trim();
+        this.accountEmail = accountEmail;
     }
-
+    
     public Boolean getAccountStatus() {
         return accountStatus;
     }
-
+    
     public void setAccountStatus(Boolean accountStatus) {
         this.accountStatus = accountStatus;
     }
-
-    public Integer getAccountRoleId() {
-        return accountRoleId;
-    }
-
-    public void setAccountRoleId(Integer accountRoleId) {
-        this.accountRoleId = accountRoleId;
-    }
-
-    public Integer getAccountMemberId() {
-        return accountMemberId;
-    }
-
-    public void setAccountMemberId(Integer accountMemberId) {
-        this.accountMemberId = accountMemberId;
+    
+    public Roles getAccountRoles() {
+        return accountRoles;
     }
     
-    @Override
-    public String toString() {
-        return "Account{" +
-                "accountId=" + accountId +
-                ", accountName='" + accountName + '\'' +
-                ", accountPassword='" + accountPassword + '\'' +
-                ", accountPhone=" + accountPhone +
-                ", accountEmail='" + accountEmail + '\'' +
-                ", accountStatus=" + accountStatus +
-                ", accountRoleId=" + accountRoleId +
-                ", accountMemberId=" + accountMemberId +
-                '}';
+    public void setAccountRoles(Roles accountRoles) {
+        this.accountRoles = accountRoles;
+    }
+    
+    public Member getAccountMember() {
+        return accountMember;
+    }
+    
+    public void setAccountMember(Member accountMember) {
+        this.accountMember = accountMember;
     }
 }

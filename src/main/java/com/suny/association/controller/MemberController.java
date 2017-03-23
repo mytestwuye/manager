@@ -68,7 +68,7 @@ public class MemberController {
      */
     private void autoCreateAccount(int memberId) {
         Account autoAccount = new Account();
-        autoAccount.setAccountMemberId(memberId);
+        autoAccount.getAccountMember().setMemberId(memberId);
         autoAccount.setAccountName(RandomID.getOrderIdByUUId());
         accountService.insert(autoAccount);
     }
@@ -176,9 +176,9 @@ public class MemberController {
      *
      * @return json格式的数据
      */
-    @RequestMapping(value = "/SelectForAll.json")
+    @RequestMapping(value = "/SelectAll.json")
     @ResponseBody
-    public JSONResultUtil selectForAll() {
+    public JSONResultUtil selectAllAccount() {
         List<Member> memberList = memberService.selectForAll();
         if (memberList != null) {
             return JSONResultUtil.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);

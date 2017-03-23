@@ -1,46 +1,156 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.suny.association.mapper.AccountMapper">
-    <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.Account" >
-        <id     property="accountId" column="account_id"/>
+    <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.Account">
+        <id property="accountId" column="account_id"/>
         <result property="accountName" column="account_name"/>
         <result property="accountPassword" column="account_password"/>
         <result property="accountPhone" column=" account_phone"/>
         <result property="accountEmail" column="account_email"/>
         <result property="accountStatus" column="account_status"/>
-        <result property="accountRoleId" column="account_role_id"/>
-        <result property="accountMemberId" column="account_member_id"/>
+        <!--账号角色复杂类型关联-->
+        <association property="accountRoles" column="account_role_id" select="getRoles"
+                     javaType="com.suny.association.pojo.po.Roles"/>
+        <!--复杂类型的集-->
+        <association property="accountMember" column="account_member_id" javaType="com.suny.association.pojo.po.Member"
+                     select="getMember">
+            <id property="memberId" column="member_id"/>
+            <result property="memberName" column="member_name"/>
+            <result property="memberClassName" column="member_class_name"/>
+            <result property="memberSex" column="member_sex"/>
+            <result property="memberGradeNumber" column="member_grade_number"/>
+            <result property="memberStatus" column="member_status"/>
+            <!--部门复杂类型关联-->
+            <association property="memberDepartment" column="member_department_id"
+                         javaType="com.suny.association.pojo.po.Department"
+                         select="getDepartment"/>
+            <!--成员角色复杂类型关联-->
+            <association property="memberRoles" column="member_role_id"
+                         javaType="com.suny.association.pojo.po.MemberRoles"
+                         select="getMemberRole"/>
+            <!--//这里有问题-->
+            <!--协会成员对应的管理员复杂类型集合-->
+            <association property="memberManager" column="member_manager_id"
+                         javaType="com.suny.association.pojo.po.Member"
+                         select="getMemberManage"/>
+        </association>
     </resultMap>
-    
-    <insert id="insert" parameterType="com.suny.association.pojo.po.Account">
-        INSERT INTO  account
-                <trim prefix="set" prefixOverrides=",">
-                    <if test="accountId != null">
-                        account_id = #{accountId} ,
-                    </if>
-                    <if test="accountName != null">
-                        account_name =#{accountName},
-                    </if>
-                    <if test="accountPassword != null">
-                        account_password =#{accountPassword},
-                    </if>
-                    <if test="accountPhone != null">
-                        account_phone =#{accountPhone},
-                    </if>
-                    <if test="accountEmail != null">
-                        account_email =#{accountEmail},
-                    </if>
-                    <if test="accountStatus != null">
-                        account_status =#{accountStatus},
-                    </if>
-                    <if test="accountRoleId != null">
-                        account_role_id =#{accountRoleId},
-                    </if>
-                    <if test="accountMemberId != null">
-                        account_member_id =#{accountMemberId}
-                    </if>
 
-                </trim>
+    <!--成员管理员-->
+    <resultMap id="memberManagerResult" type="com.suny.association.pojo.po.Member">
+        <id property="memberId" column="member_id"/>
+        <result property="memberName" column="member_name"/>
+        <result property="memberClassName" column="member_class_name"/>
+        <result property="memberSex" column="member_sex"/>
+        <result property="memberGradeNumber" column="member_grade_number"/>
+        <result property="memberStatus" column="member_status"/>
+        <!--部门复杂类型关联-->
+        <association property="memberDepartment" column="member_department_id"
+                     javaType="com.suny.association.pojo.po.Department"
+                     select="getDepartment"/>
+        <!--成员角色复杂类型关联-->
+        <association property="memberRoles" column="member_role_id" javaType="com.suny.association.pojo.po.MemberRoles"
+                     select="getMemberRole"/>
+
+        <!--协会成员对应的管理员复杂类型集合-->
+        <association property="memberManager" column="member_manager_id" javaType="com.suny.association.pojo.po.Member"
+                     select="getMember"/>
+    </resultMap>
+
+    <!--查询管理员信息-->
+    <select id="getMemberManage" resultMap="memberManagerResult">
+        SELECT *
+        FROM member
+        WHERE member_id = #{ memberManager }
+    </select>
+
+
+    <!--=============================================================================================-->
+
+
+    <!--查询角色表信息-->
+    <select id="getRoles" parameterType="int" resultMap="accountRolesResult">
+        SELECT
+            role_id,
+            role_name
+        FROM roles
+        WHERE role_id = #{ roleId }
+    </select>
+
+    <!--查询成员-->
+    <select id="getMember" parameterType="int" resultMap="memberManagerResult">
+        SELECT *
+        FROM member
+        WHERE member_id = #{ accountMember }
+    </select>
+
+    <!--查询部门-->
+    <select id="getDepartment" parameterType="int" resultMap="memberDepartmentResult">
+        SELECT
+            department_id,
+            department_name
+        FROM department
+        WHERE department_id = #{memberDepartment}
+    </select>
+
+    <!--获得成员角色-->
+    <select id="getMemberRole" parameterType="int" resultMap="memberRolesResult">
+        SELECT
+            member_role_id,
+            member_role_name
+        FROM member_roles
+        WHERE member_role_id = #{memberRoles}
+    </select>
+
+    <!--账号角色-->
+    <resultMap id="accountRolesResult" type="com.suny.association.pojo.po.Roles">
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+    </resultMap>
+
+
+    <!--成员角色-->
+    <resultMap id="memberRolesResult" type="com.suny.association.pojo.po.MemberRoles">
+        <id property="memberRoleId" column="member_role_id"/>
+        <result property="memberRoleName" column="member_role_name"/>
+    </resultMap>
+
+    <!--部门-->
+    <resultMap id="memberDepartmentResult" type="com.suny.association.pojo.po.Department">
+        <id column="department_id" property="departmentId"/>
+        <result column="department_name" property="departmentName"/>
+    </resultMap>
+
+
+    <insert id="insert" parameterType="com.suny.association.pojo.po.Account">
+        INSERT INTO account
+        <trim prefix="set" prefixOverrides=",">
+            <if test="accountId != null">
+                account_id = #{accountId} ,
+            </if>
+            <if test="accountName != null">
+                account_name =#{accountName},
+            </if>
+            <if test="accountPassword != null">
+                account_password =#{accountPassword},
+            </if>
+            <if test="accountPhone != null">
+                account_phone =#{accountPhone},
+            </if>
+            <if test="accountEmail != null">
+                account_email =#{accountEmail},
+            </if>
+            <if test="accountStatus != null">
+                account_status =#{accountStatus},
+            </if>
+            <if test="memberRoles != null">
+                account_role_id =#{accountRoles},
+            </if>
+            <if test="accountMemberId != null">
+                account_member_id =#{accountMember.memberId}
+            </if>
+
+        </trim>
     </insert>
 
     <select id="selectByMemberId" parameterType="int" resultMap="BaseResultMap">
@@ -54,7 +164,7 @@
             account_role_id,
             account_member_id
         FROM account
-        WHERE account_member_id = #{accountMemberId}
+        WHERE account_member_id = #{accountMember.memberId}
     </select>
     <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT *
@@ -71,7 +181,7 @@
             #{accountId,jdbcType=BIGINT}, #{accountName,jdbcType=VARCHAR},
             #{accountPassword,jdbcType=VARCHAR}, #{accountPhone,jdbcType=INTEGER},
             #{accountEmail,jdbcType=VARCHAR}, #{accountStatus,jdbcType=BIT},
-            #{accountRoleId,jdbcType=INTEGER}, #{accountMemberId,jdbcType=INTEGER}
+            #{memberRoles,jdbcType=INTEGER}, #{accountMember.memberId,jdbcType=INTEGER}
         )
     </insert>
 
@@ -88,8 +198,8 @@
             account_phone     = #{accountPhone,jdbcType=INTEGER},
             account_email     = #{accountEmail,jdbcType=VARCHAR},
             account_status    = #{accountStatus,jdbcType=BIT},
-            account_role_id   = #{accountRoleId,jdbcType=INTEGER},
-            account_member_id = #{accountMemberId,jdbcType=INTEGER}
+            account_role_id   = #{memberRoles,jdbcType=INTEGER},
+            account_member_id = #{accountMember.memberId,jdbcType=INTEGER}
         WHERE account_id = #{accountId,jdbcType=BIGINT}
     </update>
 
@@ -108,7 +218,15 @@
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
-        SELECT *
+        SELECT
+            account_id,
+            account_name,
+            account_password,
+            account_phone,
+            account_email,
+            account_status,
+            account_role_id,
+            account_member_id
         FROM account
     </select>
 </mapper>

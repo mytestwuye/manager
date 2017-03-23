@@ -126,7 +126,7 @@
         oTableInit.Init = function () {
             layer.load(0, {shade: false, time: 1000}); //0代表加载的风格，支持0-2
             $('#mytab').bootstrapTable({
-                url: '${pageContext.request.contextPath}/Member/SelectForAll.json',         //请求后台的URL（*）
+                url: '${pageContext.request.contextPath}/Account/selectAllAccount.json',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
                 striped: true,                      //是否显示行间隔色
@@ -183,24 +183,24 @@
                     },
                     {
                         title: "ID",//标题
-                        field: "memberId",//键名
+                        field: "accountId",//键名
                         sortable: true,//是否可排序
                         order: "desc"//默认排序方式
                     },
                     {
-                        field: "memberName",
+                        field: "accountName",
                         title: "姓名",
                         sortable: true,
                         titleTooltip: "this is name"
                     },
                     {
-                        field: "memberClassName",
+                        field: "accountPassword",
                         title: "班级名字",
                         sortable: true, //是否可排序
                         order: "desc"//默认排序方式
                     },
                     {
-                        field: "memberSex",
+                        field: "accountPhone",
 //                    title: "INFO[using-formatter]",
                         title: "性别",
                         sortable: true, //是否可排序
@@ -208,38 +208,32 @@
                         formatter: 'sexFormatter' //对本列数据做格式化
                     },
                     {
-                        field: "memberGradeNumber",
+                        field: "accountEmail",
                         title: "年级",
                         sortable: true, //是否可排序
                         order: "desc"//默认排序方式
                     },
                     {
-                        field: "member_manager_id",
+                        field: "accountStatus",
                         title: "管理员",
                         sortable: true, //是否可排序
                         order: "desc"//默认排序方式
                     },
                     {
-                        field: "memberDepartmentId",
+                        field: "accountRoleId",
                         title: "部门",
                         sortable: true, //是否可排序
                         order: "desc",//默认排序方式
                         formatter: "departmentFormatter" //格式化部门
                     },
                     {
-                        field: "memberStatus",
+                        field: "accountMemberId",
                         title: "状态",
                         sortable: true, //是否可排序
                         order: "desc", //默认排序方式
                         formatter: "memberStatusFormatter"   //格式化数据
-                    },
-                    {
-                        field: "memberRoleId",
-                        title: "角色",
-                        sortable: true, //是否可排序
-                        order: "desc",//默认排序方式
-                        formatter: "memberRoleFormatter"    //格式化角色
                     }
+
                 ],
                 onClickRow: function (row, $element) {
                     //$element是当前tr的jquery对象
