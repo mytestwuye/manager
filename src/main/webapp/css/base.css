@@ -16,7 +16,7 @@ html, body {
 }
 body, button, input, select, textarea {
 	font-size: 12px;
-	font-family: 'Microsoft Yahei', '微软雅黑', \5FAE\8F6F\96C5\9ED1, '宋体', \5b8b\4f53, arial, 'Hiragino Sans GB', Tahoma, Arial, Helvetica;
+	font-family: 'Microsoft Yahei', '微软雅黑', \5FAE\8F6F\96C5\9ED1, '宋体', \5b8b\4f53, arial, 'Hiragino Sans GB', Tahoma, Arial, Helvetica, serif;
 }
 ul, ol, li, dl, dd, dt {
 	list-style: none;

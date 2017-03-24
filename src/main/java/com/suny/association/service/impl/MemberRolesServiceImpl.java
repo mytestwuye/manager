@@ -27,18 +27,15 @@ public class MemberRolesServiceImpl extends AbstractBaseServiceImpl<MemberRoles>
     public MemberRolesServiceImpl() {
     }
     
-    @Override
-    public int insertAndGetId(MemberRoles memberRoles) {
-        return memberRolesMapper.insertAndGetId(memberRoles);
-    }
+    
     
     /**
      * 查询所有的成员角色列表
      * @return
      */
     @Override
-    public List<MemberRoles> selectForAll() {
-        return memberRolesMapper.selectAll();
+    public List<MemberRoles> queryAll() {
+        return memberRolesMapper.queryAll();
     }
     
    

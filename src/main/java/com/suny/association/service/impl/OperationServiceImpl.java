@@ -24,8 +24,5 @@ public class OperationServiceImpl extends AbstractBaseServiceImpl<Operation> imp
     public OperationServiceImpl() {
     }
     
-    @Override
-    public int insertAndGetId(Operation operation) {
-        return operationMapper.insertAndGetId(operation);
-    }
+    
 }

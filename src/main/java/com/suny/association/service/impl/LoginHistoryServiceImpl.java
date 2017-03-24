@@ -24,8 +24,5 @@ public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistor
     public LoginHistoryServiceImpl() {
     }
     
-    @Override
-    public int insertAndGetId(LoginHistory loginHistory) {
-        return loginHistoryMapper.insertAndGetId(loginHistory);
-    }
+   
 }

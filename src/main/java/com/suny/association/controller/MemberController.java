@@ -9,8 +9,8 @@ import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IDepartmentService;
 import com.suny.association.service.interfaces.IMemberRolesService;
 import com.suny.association.service.interfaces.IMemberService;
-import com.suny.association.utils.JSONResultUtil;
-import com.suny.association.utils.LocalDateUtil;
+import com.suny.association.utils.CustomDate;
+import com.suny.association.utils.JsonResult;
 import com.suny.association.utils.RandomID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ import java.util.List;
  * Create Date: 2017/03/15 20:46
  */
 @Controller
-@RequestMapping("/Member")
+@RequestMapping("/member")
 public class MemberController {
     
     private final IMemberService memberService;
@@ -47,91 +47,58 @@ public class MemberController {
     }
     
     
-    /**
-     * 插入一条成员信息
-     *
-     * @param member 成员信息
-     * @return 结果
-     */
-    @RequestMapping(value = "/InsertMemberInfo.json")
-    @ResponseBody
-    public JSONResultUtil insertMemberInfo(Member member) {
-        memberService.insertAndGetId(member);
-        autoCreateAccount(member.getMemberId());
-        return JSONResultUtil.successResult(MemberEnum.SUCCESS_INSERT_MEMBER_INFO);
+    @RequestMapping(value = "/insert.json")
+    @ResponseBody public JsonResult insert(Member member) {
+        memberService.insertReturnCount(member);
+        createAccount(member.getMemberId());
+        return JsonResult.successResult(MemberEnum.SUCCESS_INSERT_MEMBER_INFO);
     }
     
-    /**
-     * 产生一个account账号
-     *
-     * @param memberId 对应的成员id
-     */
-    private void autoCreateAccount(int memberId) {
+    
+    private void createAccount(int memberId) {
         Account autoAccount = new Account();
         autoAccount.getAccountMember().setMemberId(memberId);
         autoAccount.setAccountName(RandomID.getOrderIdByUUId());
         accountService.insert(autoAccount);
     }
     
-    /**
-     * 进行新增一条成员信息页面
-     *
-     * @return 结果
-     */
-    @RequestMapping(value = "/InsertMember.html")
-    public ModelAndView insertMemberPage(ModelAndView modelAndView) {
-        List<Member> managerList = memberService.selectNormalManager();
-        List<Department> departmentList = departmentService.selectForAll();
-        List<MemberRoles> memberRolesList = memberRolesService.selectForAll();
+    
+    @RequestMapping(value = "/insert.html")
+    public ModelAndView insertPage(ModelAndView modelAndView) {
+        List<Member> managerList = memberService.queryNormalManager();
+        List<Department> departmentList = departmentService.queryAll();
+        List<MemberRoles> memberRolesList = memberRolesService.queryAll();
         modelAndView.addObject("departmentList", departmentList);
         modelAndView.addObject("memberRolesList", memberRolesList);
         modelAndView.addObject("managerList", managerList);
-        modelAndView.addObject("memberGradeList", LocalDateUtil.getLastYearAndThisYears());
+        modelAndView.addObject("memberGradeList", CustomDate.getLastYearAndThisYears());
         modelAndView.setViewName("Member/MemberInsert");
         return modelAndView;
     }
     
     
-    /**
-     * 删除一个成员的信息
-     *
-     * @param id 成员的id
-     * @return JSON数据结果
-     */
-    @RequestMapping(value = "/DeleteMemberById.json/{id}")
+    @RequestMapping(value = "/deleteById.json/{id}")
     @ResponseBody
-    public JSONResultUtil deleteMemberById(@PathVariable("id") Integer id) {
+    public JsonResult deleteById(@PathVariable("id") Integer id) {
         memberService.deleteById(id);
-        return JSONResultUtil.successResult(MemberEnum.SUCCESS_DELETE_MEMBER_INFO);
+        return JsonResult.successResult(MemberEnum.SUCCESS_DELETE_MEMBER_INFO);
     }
     
-    /**
-     * 更新一条信息
-     *
-     * @param member 要更新的实体
-     * @return 结果
-     */
-    @RequestMapping(value = "/UpdateMemberInfo.json")
+    
+    @RequestMapping(value = "/update.json")
     @ResponseBody
-    public JSONResultUtil updateMemberInfo(Member member) {
+    public JsonResult update(Member member) {
         memberService.update(member);
-        return JSONResultUtil.successResult(MemberEnum.SUCCESS_UPDATE_MEMBER_INFO);
+        return JsonResult.successResult(MemberEnum.SUCCESS_UPDATE_MEMBER_INFO);
     }
     
     
-    /**
-     * 更新一个成员的信息
-     *
-     * @param id           要修改信息的成员id
-     * @param modelAndView 模型和视图数据
-     * @return 视图跟数据
-     */
-    @RequestMapping(value = "/UpdateMember.html/{id}")
-    public ModelAndView updateMemberPage(@PathVariable("id") Integer id, ModelAndView modelAndView) {
-        Member member = memberService.selectById(id);
-        List<Member> managerList = memberService.selectNormalManager();
-        List<Department> departmentList = departmentService.selectForAll();
-        List<MemberRoles> memberRolesList = memberRolesService.selectForAll();
+    @RequestMapping(value = "/update.html/{id}")
+    public ModelAndView updatePage(@PathVariable("id") Integer id, ModelAndView modelAndView) {
+        Member member = memberService.queryById(id);
+        List<Member> managerList = memberService.queryNormalManager();
+        List<Department> departmentList = departmentService.queryAll();
+        List<MemberRoles> memberRolesList = memberRolesService.queryAll();
         modelAndView.addObject("member", member);
         modelAndView.addObject("departmentList", departmentList);
         modelAndView.addObject("memberRolesList", memberRolesList);
@@ -140,73 +107,50 @@ public class MemberController {
         return modelAndView;
     }
     
-    /**
-     * 请求查询member数据库中所有冻结的成员信息
-     *
-     * @return json格式的数据
-     */
-    @RequestMapping(value = "/SelectFreeze.json")
-    @ResponseBody
-    public JSONResultUtil selectFreeze() {
-        List<Member> memberList = memberService.selectNormalMember();
-        if (memberList != null) {
-            return JSONResultUtil.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);
-        }
-        return JSONResultUtil.failResult(MemberEnum.FAIL_SELECT_MEMBER_INFO);
-    }
     
-    /**
-     * 请求查询member数据库中所有的未冻结的成员信息
-     *
-     * @return json格式的数据
-     */
-    @RequestMapping(value = "/SelectNormal.json")
+    @RequestMapping(value = "/querytFreeze.json")
     @ResponseBody
-    public JSONResultUtil selectNormal() {
-        List<Member> memberList = memberService.selectNormalMember();
+    public JsonResult queryFreeze() {
+        List<Member> memberList = memberService.queryNormalMember();
         if (memberList != null) {
-            return JSONResultUtil.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);
+            return JsonResult.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);
         }
-        return JSONResultUtil.failResult(MemberEnum.FAIL_SELECT_MEMBER_INFO);
+        return JsonResult.failResult(MemberEnum.FAIL_SELECT_MEMBER_INFO);
     }
     
     
-    /**
-     * 请求查询member数据库中所有的数据
-     *
-     * @return json格式的数据
-     */
-    @RequestMapping(value = "/SelectAll.json")
+    @RequestMapping(value = "/queryNormal.json")
     @ResponseBody
-    public JSONResultUtil selectAllAccount() {
-        List<Member> memberList = memberService.selectForAll();
+    public JsonResult queryNormal() {
+        List<Member> memberList = memberService.queryNormalMember();
         if (memberList != null) {
-            return JSONResultUtil.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);
+            return JsonResult.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);
         }
-        return JSONResultUtil.failResult(MemberEnum.FAIL_SELECT_MEMBER_INFO);
+        return JsonResult.failResult(MemberEnum.FAIL_SELECT_MEMBER_INFO);
     }
     
     
-    /**
-     * 进入成员管理页面的请求
-     *
-     * @return 成员管理页面
-     */
-    @RequestMapping(value = "/MemberManager.html")
-    public String memberManager() {
+    @RequestMapping(value = "/queryAll.json")
+    @ResponseBody
+    public JsonResult queryAll() {
+        List<Member> memberList = memberService.queryAll();
+        if (memberList != null) {
+            return JsonResult.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);
+        }
+        return JsonResult.failResult(MemberEnum.FAIL_SELECT_MEMBER_INFO);
+    }
+    
+    
+    @RequestMapping(value = "/memberManager.html")
+    public String managerPage() {
         return "Member/MemberManager";
     }
     
-    /**
-     * 查询对应成员的一条信息
-     *
-     * @param memberId 成员的id
-     * @return JSON格式的成员信息
-     */
-    @RequestMapping(value = "/SelectMemberInfo.do")
-    public JSONResultUtil selectMemberInfo(Integer memberId) {
-        Member member = memberService.selectById(memberId);
-        return JSONResultUtil.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, member);
+    
+    @RequestMapping(value = "/queryById.do")
+    public JsonResult queryById(Integer memberId) {
+        Member member = memberService.queryById(memberId);
+        return JsonResult.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, member);
     }
     
     

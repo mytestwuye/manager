@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
  * Author:   孙建荣
  * Create Date: 2017/03/08 16:47
  */
-public class DecryptUtil {
+public class EncryptUtil {
 
     /**
      * 进行MD5加密
@@ -369,7 +369,7 @@ public class DecryptUtil {
      * @param args
      */
     public static void main(String[] args) {
-        DecryptUtil encryptUtils = new DecryptUtil();
+        EncryptUtil encryptUtils = new EncryptUtil();
         String source = "www.putiman.com";
         System.out.println("Hello经过MD5:" + encryptUtils.encryptToMD5(source));
         System.out.println("Hello经过SHA:" + encryptUtils.encryptToSHA(source));

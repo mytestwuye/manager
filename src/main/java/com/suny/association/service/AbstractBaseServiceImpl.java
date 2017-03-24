@@ -40,12 +40,12 @@ public abstract class AbstractBaseServiceImpl<T> implements IBaseService<T> {
     }
 
     @Override
-    public T selectById(int id) {
-        return mapper.select(id);
+    public T queryById(int id) {
+        return mapper.query(id);
     }
 
     @Override
-    public List<T> selectForAll() {
-        return mapper.selectAll();
+    public List<T> queryAll() {
+        return mapper.queryAll();
     }
 }

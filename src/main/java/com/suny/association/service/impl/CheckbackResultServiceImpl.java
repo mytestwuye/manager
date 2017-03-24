@@ -26,9 +26,5 @@ public class CheckbackResultServiceImpl extends AbstractBaseServiceImpl<Checkbac
     }
     
     
-    
-    @Override
-    public int insertAndGetId(CheckbackResult checkbackResult) {
-        return checkbackResultMapper.insertAndGetId(checkbackResult);
-    }
+  
 }

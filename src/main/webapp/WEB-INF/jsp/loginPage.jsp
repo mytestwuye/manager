@@ -14,6 +14,7 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/base.css">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css">
 </head>
+
 <body>
 <!-- logo -->
 <img id="logo" src="${pageContext.request.contextPath}/picture/logo.png" alt="">
@@ -21,29 +22,25 @@
 <div id="loginBox">
     <div class="topPart">
         <h2>登陆入口</h2>
-        <a id="goback" href="#">返回</a>
+        <a id="goBack" href="javascript:;" onclick="logoutAction()">退出</a>
     </div>
 
     <input type="text" id="userName" name="LoginForm[username]" class="txt_input txt_input2" placeholder="请输入用户名"
            autocomplete="off">
 
-    <div id="softkey"></div>
-
     <input type="password" id="passWord" name="LoginForm[password]" class="txt_input" placeholder="请输入密码"
            autocomplete="new-password">
 
-    <div id="softkey2"></div>
 
     <div class="codebox">
         <input type="text" id="code" placeholder="请输入验证码">
 
         <div style="width: 400px;">
             <div style="float:left;width:100px; margin-left: 13px; height:42px;">
-                <img style="width:100px; height:42px; cursor: pointer;" title="点击刷新" id="getcode_num"
-                     src="${pageContext.request.contextPath}/Code/GenerateCode"/>
+                <img style="width:100px; height:42px; cursor: pointer;" title="点击刷新" id="codePanel"
+                     src="${pageContext.request.contextPath}/code/generateCode.do"/>
             </div>
         </div>
-        <div id="softkey3"></div>
     </div>
 
     <p id="error1"></p> <!-- 用户名密码错误提示 -->
@@ -63,22 +60,6 @@
     </a>
 </p>
 
-<style>
-
-
-    #softkey, #softkey2 {
-        position: absolute;
-    }
-
-    #softkey3 {
-        left: -160px;
-        top: -100px;
-        margin: 0 auto;
-        position: absolute;
-        text-align: center;
-    }
-
-</style>
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
@@ -109,8 +90,8 @@
     error3Value = error3.val();
 
     //切换验证码
-    $("#getcode_num").click(function () {
-        $(this).attr("src", '${pageContext.request.contextPath}/Code/GenerateCode?rand=' + Math.random());
+    $("#codePanel").click(function () {
+        $(this).attr("src", '${pageContext.request.contextPath}/code/generateCode.do?rand=' + Math.random());
     });
 
     //输入用户名
@@ -141,6 +122,23 @@
             checkCode();
         }
     };
+
+    function logoutAction(){
+        $.ajax({
+            type: "Get",
+            url: "${pageContext.request.contextPath}/base/logoutAction.do",
+            success: function (result) {
+                if (result.status !== 199) {
+                    alertFunMessage('这都能出错了。。');
+                }
+                alertMessage('已经强行退出，请尝试重新登录');
+
+            },
+            error: function () {
+                alertFunMessage('这都能出错了。。');
+            }
+        })
+    }
 
 
     //点击登陆按钮时触发的时间
@@ -178,9 +176,9 @@
     //验证码验证
     function checkCode() {
         $.ajax({
-            url: '${pageContext.request.contextPath}/Code/ValidCode',
+            url: '${pageContext.request.contextPath}/code/checkCode.do',
             type: 'post',
-            data: {code: codeValue},
+            data: {formCode: codeValue},
             success: function (result) {
                 if (result.status == 113) {
                     layer.msg('验证码错了。。', {icon: 5});
@@ -207,12 +205,12 @@
         var param = {
             username: userNameValue,
             password: passWordValue,
-            code: codeValue
+            formCode: codeValue
         };
 
         $.ajax({
             type: "post",
-            url: "${pageContext.request.contextPath}/CheckLogin.json",
+            url: "${pageContext.request.contextPath}/base/loginAction.json",
             data: param,
             dataType: "json",
             success: function (result) {
@@ -246,14 +244,14 @@
      * 跳转到管理页面
      */
     function goAdminPage() {
-        window.parent.location.href = "${pageContext.request.contextPath}/AdminManager.html";
+        window.parent.location.href = "${pageContext.request.contextPath}/base/goAdminPage.html";
     }
 
     /**
      * 刷新验证码
      */
     function refresh() {
-        $("#getcode_num").attr("src", '${pageContext.request.contextPath}/Code/GenerateCode?rand=' + Math.random());
+        $("#codePanel").attr("src", '${pageContext.request.contextPath}/code/generateCode.do?rand=' + Math.random());
     }
 
     /**
@@ -277,6 +275,14 @@
      */
     function emptyInputValue(object) {
         object.text('');
+    }
+
+    function alertMessage(message){
+        layer.alert(message, {icon: 6});
+    }
+
+    function alertFunMessage(message){
+        layer.msg(message, {icon: 5});
     }
 
 

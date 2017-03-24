@@ -15,21 +15,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class RolesServiceImpl extends AbstractBaseServiceImpl<Roles> implements IRolesService {
     
-    
-    private RolesMapper rolesMapper;
-    
-    public RolesServiceImpl() {
-    }
-    
     @Autowired
     public RolesServiceImpl(RolesMapper rolesMapper) {
-        this.rolesMapper = rolesMapper;
+        RolesMapper rolesMapper1 = rolesMapper;
     }
     
+   
     
-    @Override
-    public int insertAndGetId(Roles roles) {
-        return rolesMapper.insertAndGetId(roles);
-    }
-    
+   
 }

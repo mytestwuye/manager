@@ -22,16 +22,15 @@ import java.util.Set;
 @Component
 public class LoginRealm extends AuthorizingRealm {
     
+    private final IAccountService accountService;
+    
     @Autowired
-    private IAccountService accountService;
-    
-    
+    public LoginRealm(IAccountService accountService) {
+        this.accountService = accountService;
+    }
     
     /**
      * 授权
-     *
-     * @param principalCollection
-     * @return
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
@@ -47,17 +46,13 @@ public class LoginRealm extends AuthorizingRealm {
     
     /**
      * 登陆验证
-     *
-     * @param authenticationToken
-     * @return
-     * @throws AuthenticationException
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
         //根据用户名查询一个用户的信息
-        com.suny.association.pojo.po.Account account = accountService.selectByUserName(usernamePasswordToken.getUsername());
-        if (account != null ) {
+        com.suny.association.pojo.po.Account account = accountService.queryByName(usernamePasswordToken.getUsername());
+        if (account != null) {
             return new SimpleAuthenticationInfo(account.getAccountName(), account.getAccountPassword(), getName());
         }
         throw new BusinessException(BaseEnum.LOGIN_VERIFY_FAILURE);

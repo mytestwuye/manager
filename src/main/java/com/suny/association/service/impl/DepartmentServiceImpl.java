@@ -26,14 +26,12 @@ public class DepartmentServiceImpl extends AbstractBaseServiceImpl<Department> i
     public DepartmentServiceImpl() {
     }
     
-    @Override
-    public int insertAndGetId(Department department) {
-        return departmentMapper.insertAndGetId(department);
-    }
+    
+    
     
     @Override
-    public List<Department> selectForAll() {
-        return departmentMapper.selectAll();
+    public List<Department> queryAll() {
+        return departmentMapper.queryAll();
     }
     
     

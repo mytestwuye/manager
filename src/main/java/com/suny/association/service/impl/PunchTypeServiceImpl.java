@@ -25,8 +25,5 @@ public class PunchTypeServiceImpl extends AbstractBaseServiceImpl<PunchType>  im
     public PunchTypeServiceImpl() {
     }
     
-    @Override
-    public int insertAndGetId(PunchType punchType) {
-        return punchTypeMapper.insertAndGetId(punchType);
-    }
+    
 }

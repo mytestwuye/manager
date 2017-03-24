@@ -11,20 +11,8 @@ import com.suny.association.pojo.po.Account;
 public interface AccountMapper  extends IMapper<Account>{
     
     
-    /**
-     * 通过账号绑定的id查询账号信息
-     *
-     * @param memberId 成员id
-     * @return 账号的信息
-     */
-     Account selectByMemberId(int memberId);
     
     
-    /**
-     * 通过用户名查找用户的账号的信息
-     * @param username
-     * @return
-     */
-     Account selectByUserName(String username);
+    
     
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
 
@@ -20,16 +20,18 @@
     <!-- Shiro Filter -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
-        <property name="loginUrl" value="/Login.html"/>
-        <property name="successUrl" value="/AdminManager.html"/>
-        <property name="unauthorizedUrl" value="/FailPage.html"/>
+        <property name="loginUrl" value="/base/loginPage.html"/>
+        <property name="successUrl" value="/base/goAdminPage.html"/>
+        <property name="unauthorizedUrl" value="/base/errorPage.html"/>
         <property name="filterChainDefinitions">
             <value>
-                /Index = anon
-                /Login = anon
-                /CheckLogin.json = anon
+                /base/index = anon
+                /base/loginPage.html = anon
+                /base/loginAction.json = anon
+                /code/checkCode.do  =anon
+                /code//generateCode.do =anon
                 /LoginSuccess = anon
-                /logout = anon
+                /base/logoutAction.do = anon
                 /** = authc
             </value>
         </property>

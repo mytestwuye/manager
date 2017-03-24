@@ -24,9 +24,5 @@ public class PunchRecordServiceImpl extends AbstractBaseServiceImpl<PunchRecord>
     
     public PunchRecordServiceImpl() {
     }
-    
-    @Override
-    public int insertAndGetId(PunchRecord punchRecord) {
-        return punchRecordMapper.insertAndGetId(punchRecord);
-    }
+   
 }

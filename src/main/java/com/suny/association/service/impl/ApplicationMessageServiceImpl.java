@@ -25,8 +25,6 @@ public class ApplicationMessageServiceImpl extends AbstractBaseServiceImpl<Appli
     public ApplicationMessageServiceImpl() {
     }
     
-    @Override
-    public int insertAndGetId(ApplicationMessage applicationMessage) {
-        return applicationMessageMapper.insertAndGetId(applicationMessage);
-    }
+    
+  
 }

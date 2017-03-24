@@ -27,21 +27,15 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
         this.accountMapper = accountMapper;
     }
     
-    @Override
-    public Account selectByUserName(String username) {
-        return accountMapper.selectByUserName(username);
-    }
     
     
-    /**
-     * 通过账号绑定的id查询账号信息
-     * @param memberId  成员id
-     * @return 账号的信息
-     */
+    
     @Override
-    public Account selectByMemberId(int memberId) {
-        return accountMapper.selectByMemberId(memberId);
+    public Account queryById(int id) {
+        return accountMapper.queryById(id);
     }
+    
+   
     
     @Override
     public void insert(Account account) {
@@ -52,12 +46,9 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
     }
     
     @Override
-    public int insertAndGetId(Account account) {
-        return accountMapper.insertAndGetId(account);
+    public Account queryByName(String name) {
+        return accountMapper.queryByName(name);
     }
-    
-    
-   
     
     
 }

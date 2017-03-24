@@ -15,7 +15,7 @@ import java.util.Map;
  * Author:   孙建荣
  * Create Date: 2017/03/17 16:01
  */
-public class JSONResultUtil {
+public class JsonResult {
     
     private static final Gson GSON = new Gson();
     
@@ -44,10 +44,10 @@ public class JSONResultUtil {
      * @param resultData 返回的数据
      * @return 结果与及数据
      */
-    public static JSONResultUtil successResultAndData(Object enumObject, Object resultData) {
-        JSONResultUtil jsonResultUtil = setStatusAndMessage(enumObject);
-        jsonResultUtil.setData(resultData);
-        return jsonResultUtil;
+    public static JsonResult successResultAndData(Object enumObject, Object resultData) {
+        JsonResult jsonResult = setStatusAndMessage(enumObject);
+        jsonResult.setData(resultData);
+        return jsonResult;
     }
     
     /**
@@ -56,7 +56,7 @@ public class JSONResultUtil {
      * @param enumObject 传过来的枚举值
      * @return 仅仅只有成功的结果
      */
-    public static JSONResultUtil successResult(Object enumObject) {
+    public static JsonResult successResult(Object enumObject) {
         return setStatusAndMessage(enumObject);
     }
     
@@ -66,7 +66,7 @@ public class JSONResultUtil {
      * @param enumObject 传过来的枚举值
      * @return 仅仅只有成功的结果
      */
-    public static JSONResultUtil failResult(Object enumObject) {
+    public static JsonResult failResult(Object enumObject) {
         return setStatusAndMessage(enumObject);
     }
     
@@ -77,8 +77,8 @@ public class JSONResultUtil {
      * @param enumObject 传过来的枚举值
      * @return JSONResponseUtil实体
      */
-    private static JSONResultUtil setStatusAndMessage(Object enumObject) {
-        JSONResultUtil jsonResultUtil = new JSONResultUtil();
+    private static JsonResult setStatusAndMessage(Object enumObject) {
+        JsonResult jsonResult = new JsonResult();
         //获取枚举值的toString方法后的字符值
         String errorMessage = enumObject.toString();
         
@@ -88,9 +88,9 @@ public class JSONResultUtil {
         int errorCodeNumber = Integer.parseInt(errorCodeString);
         
         // 设置返回给前端的状态码与及消息
-        jsonResultUtil.setStatus(errorCodeNumber);
-        jsonResultUtil.setMessage(errorMessage);
-        return jsonResultUtil;
+        jsonResult.setStatus(errorCodeNumber);
+        jsonResult.setMessage(errorMessage);
+        return jsonResult;
     }
     
     
@@ -142,7 +142,7 @@ public class JSONResultUtil {
     }
     
     
-    private JSONResultUtil() {
+    private JsonResult() {
     }
     
     

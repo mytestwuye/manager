@@ -20,26 +20,26 @@ public interface MemberMapper extends IMapper<Member> {
      * 查找账号被冻结的管理人员账号
      * @return  冻结的管理人员信息
      */
-    List<Member> selectFreezeManager();
+    List<Member> queryFreezeManager();
     
     /**
      * 查找账号正常的管理人员账号
      * @return 正常的管理人员账号
      */
-    List<Member> selectNormalManager();
+    List<Member> queryNormalManager();
     
     
     /**
      * 查询被冻结的普通成员账号
      * @return   冻结的普通成员账号
      */
-    List<Member> selectFreezeMember();
+    List<Member> queryFreezeMember();
     
     /**
      * 查询正常的普通成员账号
      * @return  正常的普通成员账号
      */
-    List<Member> selectNormalMember();
+    List<Member> queryNormalMember();
     
     /**
      * 通过参数进行查询
@@ -49,7 +49,7 @@ public interface MemberMapper extends IMapper<Member> {
      * @param status   成员状态
      * @return    参数后的数据
      */
-    List<Member> selectAllByConditions(int limit, int offset, String departmentname, int status);
+    List<Member> queryAllByConditions(int limit, int offset, String departmentname, int status);
     
 
 }

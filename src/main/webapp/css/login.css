@@ -46,11 +46,11 @@
 	padding-left: 55px;
 	background: url(../images/students.png) left top no-repeat
 }
-#loginBox .topPart #goback {
+#loginBox .topPart #backHome {
 	position: absolute;
 	top: 17px;
-	left: 250px;
-	width: 51px;
+	left: 220px;
+	width: 100px;
 	height: 25px;
 	border-radius: 25px;
 	font-size: 12px;
@@ -157,7 +157,7 @@
 	color: #F5C479;
 	background-image: url(../images/adults.png);
 }
-#loginBox .adult #goback {
+#loginBox .adult #backHome {
 	background-color: #F5C479;
 }
 #loginBox #loginBtn.adult {
@@ -219,7 +219,7 @@
 	color: #FFB4C8;
 	background-image: url(../images/schools.png);
 }
-#loginBox .school #goback {
+#loginBox .school #backHome {
 	width: 25px;
 	height: 25px;
 	left: 282px;
@@ -235,7 +235,7 @@
 	color: #C796E3;
 	background-image: url(../images/admins.png);
 }
-#loginBox .admin #goback {
+#loginBox .admin #backHome {
 	background-color: #C796E3;
 }
 #loginBox #loginBtn.admin {

@@ -153,7 +153,7 @@
         </trim>
     </insert>
 
-    <select id="selectByMemberId" parameterType="int" resultMap="BaseResultMap">
+    <select id="queryById" parameterType="int" resultMap="BaseResultMap">
         SELECT
             account_id,
             account_name,
@@ -166,7 +166,7 @@
         FROM account
         WHERE account_member_id = #{accountMember.memberId}
     </select>
-    <select id="selectByUserName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    <select id="queryByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT *
         FROM account
         WHERE account_name = #{username}
@@ -185,7 +185,7 @@
         )
     </insert>
 
-    <delete id="delete" parameterType="java.lang.Integer">
+    <delete id="deleteById" parameterType="java.lang.Integer">
         DELETE FROM account
         WHERE account_id = #{accountId,jdbcType=BIGINT}
     </delete>
@@ -203,7 +203,7 @@
         WHERE account_id = #{accountId,jdbcType=BIGINT}
     </update>
 
-    <select id="select" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    <select id="queryBuId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT
             account_id,
             account_name,
@@ -217,7 +217,7 @@
         WHERE account_id = #{accountId,jdbcType=BIGINT}
     </select>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="queryAll" resultMap="BaseResultMap">
         SELECT
             account_id,
             account_name,

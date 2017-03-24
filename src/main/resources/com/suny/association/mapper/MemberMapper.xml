@@ -8,36 +8,19 @@
         <result property="memberSex" column="member_sex"/>
         <result property="memberGradeNumber" column="member_grade_number"/>
         <result property="memberStatus" column="member_status"/>
-
         <!--部门复杂类型关联-->
-        <association property="memberDepartment" javaType="com.suny.association.pojo.po.Department"
-                     resultMap="memberDepartmentResult"/>
-
+        <association property="memberDepartment" column="member_department_id"
+                     javaType="com.suny.association.pojo.po.Department"
+                     select="getDepartment"/>
         <!--成员角色复杂类型关联-->
-        <association property="memberRoles" javaType="com.suny.association.pojo.po.MemberRoles"
-                     resultMap="memberRolesResult"/>
-
+        <association property="memberRoles" column="member_role_id"
+                     javaType="com.suny.association.pojo.po.MemberRoles"
+                     select="getMemberRole"/>
+        <!--//这里有问题-->
         <!--协会成员对应的管理员复杂类型集合-->
-        <collection property="memberManager" ofType="com.suny.association.pojo.po.Member">
-
-            <id property="memberId" column="member_id"/>
-            <result property="memberName" column="member_name"/>
-            <result property="memberClassName" column="member_class_name"/>
-            <result property="memberSex" column="member_sex"/>
-            <result property="memberGradeNumber" column="member_grade_number"/>
-            <result property="memberStatus" column="member_status"/>
-            <!--部门复杂类型关联-->
-            <association property="memberDepartment" javaType="com.suny.association.pojo.po.Department"
-                         resultMap="memberDepartmentResult"/>
-            <!--成员角色复杂类型关联-->
-            <association property="memberRoles" javaType="com.suny.association.pojo.po.MemberRoles"
-                         resultMap="memberRolesResult"/>
-
-            <!--协会成员对应的管理员复杂类型集合-->
-            <collection property="memberManager" ofType="com.suny.association.pojo.po.Member"
-                        resultMap="memberManagerResult"/>
-        </collection>
-
+        <association property="memberManager" column="member_manager_id"
+                     javaType="com.suny.association.pojo.po.Member"
+                     select="getMemberManage"/>
     </resultMap>
 
     <!--成员管理员-->
@@ -49,14 +32,16 @@
         <result property="memberGradeNumber" column="member_grade_number"/>
         <result property="memberStatus" column="member_status"/>
         <!--部门复杂类型关联-->
-        <association property="memberDepartment" javaType="com.suny.association.pojo.po.Department"
-                     resultMap="memberDepartmentResult"/>
+        <association property="memberDepartment" column="member_department_id"
+                     javaType="com.suny.association.pojo.po.Department"
+                     select="getDepartment"/>
         <!--成员角色复杂类型关联-->
-        <association property="memberRoles" javaType="com.suny.association.pojo.po.MemberRoles"
-                     resultMap="memberRolesResult"/>
+        <association property="memberRoles" column="member_role_id" javaType="com.suny.association.pojo.po.MemberRoles"
+                     select="getMemberRole"/>
 
         <!--协会成员对应的管理员复杂类型集合-->
-        <collection property="memberManager" ofType="com.suny.association.pojo.po.Member"/>
+        <association property="memberManager" column="member_manager_id" javaType="com.suny.association.pojo.po.Member"
+                     select="getMember"/>
     </resultMap>
 
     <!--成员角色-->
@@ -71,9 +56,38 @@
         <result column="department_name" property="departmentName"/>
     </resultMap>
 
+    <!--查询管理员信息-->
+    <select id="getMemberManage" resultMap="memberManagerResult">
+        SELECT *
+        FROM member
+        WHERE member_id = #{ memberManager }
+    </select>
+
+    <!--查询部门-->
+    <select id="getDepartment" parameterType="int" resultMap="memberDepartmentResult">
+        SELECT
+        department_id,
+        department_name
+        FROM department
+        WHERE department_id = #{memberDepartment}
+    </select>
+
+    <!--获得成员角色-->
+    <select id="getMemberRole" parameterType="int" resultMap="memberRolesResult">
+        SELECT
+        member_role_id,
+        member_role_name
+        FROM member_roles
+        WHERE member_role_id = #{memberRoles}
+    </select>
 
 
-    <insert id="insertAndGetId" parameterType="com.suny.association.pojo.po.Member" useGeneratedKeys="true"
+
+
+
+
+
+    <insert id="insertReturnCount" parameterType="com.suny.association.pojo.po.Member" useGeneratedKeys="true"
             keyProperty="memberId">
         INSERT INTO member
         <trim prefix="set" suffixOverrides=",">
@@ -174,12 +188,12 @@
         where member_id=#{memberId}
 
     </update>
-    <delete id="delete" parameterType="Integer">
+    <delete id="deleteById" parameterType="Integer">
         DELETE FROM member
         WHERE member_id = #{id}
     </delete>
 
-    <select id="selectFreezeManager" resultMap="BaseResultMap">
+    <select id="queryFreezeManager" resultMap="BaseResultMap">
         SELECT
             member_id,
             member_name,
@@ -195,7 +209,7 @@
               AND
               member_status = 0
     </select>
-    <select id="selectNormalManager" resultMap="BaseResultMap">
+    <select id="queryNormalManager" resultMap="BaseResultMap">
         SELECT
             member_id,
             member_name,
@@ -212,7 +226,7 @@
               member_status = 1
     </select>
 
-    <select id="selectFreezeMember" resultMap="BaseResultMap">
+    <select id="queryFreezeMember" resultMap="BaseResultMap">
         SELECT
             member_id,
             member_name,
@@ -227,7 +241,7 @@
         WHERE member_status = 0
     </select>
 
-    <select id="selectNormalMember" resultMap="BaseResultMap">
+    <select id="queryNormalMember" resultMap="BaseResultMap">
         SELECT
             member_id,
             member_name,
@@ -242,7 +256,7 @@
         WHERE member_status = 1
     </select>
 
-    <select id="select" parameterType="Integer" resultMap="BaseResultMap">
+    <select id="queryById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
             member_id,
             member_name,
@@ -281,7 +295,7 @@
 
 
     </select>
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="queryAll" resultMap="BaseResultMap">
         SELECT
             member_id,
             member_name,

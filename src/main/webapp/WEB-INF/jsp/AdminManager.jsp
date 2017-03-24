@@ -1,3 +1,4 @@
+<%--@elvariable id="member" type="com.suny.association.pojo.po.Member"--%>
 <%--
   Created by IntelliJ IDEA.
   User: 孙建荣
@@ -110,7 +111,7 @@
             </div>
         </li>
         <li id="logo" class="hidden-xs">
-            <a href="${pageContext.request.contextPath}/AdminManager.html">
+            <a href="${pageContext.request.contextPath}/base/goAdminPage.html">
                 <img src="${pageContext.request.contextPath}/images/logo.png"/>
             </a>
             <span id="system_title">协会管理系统</span>
@@ -213,7 +214,7 @@
                     <img src="${pageContext.request.contextPath}/images/avatar.jpg"/>
                 </div>
                 <div class="sp-info">
-                    ${member.memberName}，您好！
+                    【${member.memberRoles.memberRoleName}】 ${member.memberName}，您好！
                     <i class="zmdi zmdi-caret-down"></i>
                 </div>
             </a>
@@ -396,7 +397,7 @@
     function sendLogout() {
         $.ajax({
             type: "Get",
-            url: "${pageContext.request.contextPath}/Logout.do",
+            url: "${pageContext.request.contextPath}/base/logoutAction.do",
             success: function (result) {
                 if (result.status !== 199) {
                     alertFunMessage('这都能出错了。。');
@@ -410,7 +411,7 @@
         })
     }
     function login() {
-        window.parent.location.href = "${pageContext.request.contextPath}/Login.html";
+        window.parent.location.href = "${pageContext.request.contextPath}/base/login.html";
     }
 
 
