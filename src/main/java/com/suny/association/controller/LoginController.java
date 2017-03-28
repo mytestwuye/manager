@@ -93,7 +93,7 @@ public class LoginController {
     
     @RequestMapping("/goAdminPage.html")
     public ModelAndView goAdminPage() throws Exception {
-        return new ModelAndView("/AdminManager");
+        return new ModelAndView("adminManager");
     }
     
     

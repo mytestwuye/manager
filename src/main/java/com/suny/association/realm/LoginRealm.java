@@ -34,7 +34,7 @@ public class LoginRealm extends AuthorizingRealm {
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        Set<String> roleNames = new HashSet<String>();
+        Set<String> roleNames = new HashSet<>();
         Set<String> permissions = new HashSet<String>();
         roleNames.add("administrator");    //角色权限
         permissions.add("newPage.jhtml");    //添加权限

@@ -6,7 +6,7 @@
         <result property="memberRoleName" column="member_role_name"/>
     </resultMap>
 
-    <select id="selectAll" resultMap="BaseResultMap">
+    <select id="queryAll" resultMap="BaseResultMap">
         SELECT
             member_role_id,
             member_role_name

@@ -12,7 +12,7 @@
     <title>错误页面</title>
 </head>
 <body>
-<meta http-equiv="refresh" content="60;url=${pageContext.request.contextPath}/application/index.html" property="">
+<meta http-equiv="refresh" content="60;url=${pageContext.request.contextPath}/index.jsp" property="">
 <!-- content="60，即60秒后返回主页，可根据需要修改或者删除这段代码 -->
 <link href="${pageContext.request.contextPath}/css/error.css" rel="stylesheet" type="text/css"/>
 <!-- 代码 开始 -->

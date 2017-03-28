@@ -44,14 +44,14 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
         if (queryById(id) == null) {
             throw new BusinessException(MemberEnum.NOT_HAVE_THIS_MEMBER_INFO);
         }
-        memberMapper.delete(id);
+        memberMapper.deleteById(id);
     }
     
     @Override
     public void update(Member member) {
         if (member.getMemberId() == null) {
             throw new BusinessException(MemberEnum.FAIL_UPDATE_MEMBER_INFO);
-        } else if (memberMapper.query(member.getMemberId()) == null) {
+        } else if (memberMapper.queryById(member.getMemberId()) == null) {
             throw new BusinessException(MemberEnum.NOT_HAVE_THIS_MEMBER_INFO);
         }
         memberMapper.update(member);
@@ -83,7 +83,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     
     @Override
     public Member queryById(int id) {
-        return memberMapper.query(id);
+        return memberMapper.queryById(id);
     }
     
   

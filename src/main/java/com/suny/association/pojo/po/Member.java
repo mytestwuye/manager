@@ -1,5 +1,7 @@
 package com.suny.association.pojo.po;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class Member {
     private Integer memberId;
 
@@ -10,7 +12,8 @@ public class Member {
     private Boolean memberSex;
 
     private Integer memberGradeNumber;
-
+    
+    @JsonIgnore
     private Member memberManager;
 
     private Department memberDepartment;

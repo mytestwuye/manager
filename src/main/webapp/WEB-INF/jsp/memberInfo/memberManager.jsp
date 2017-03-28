@@ -64,7 +64,7 @@
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
         </button>
     </div>
-    <table id="mytab" class="table table-hover"></table>
+    <table id="tabs" class="table table-hover"></table>
 </div>
 
 <%--正文区结束--%>
@@ -88,7 +88,7 @@
 <script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
 <script>
     function refresh(){
-        $("#mytab").bootstrapTable("refresh");
+        $("#tabs").bootstrapTable("refresh");
     }
     $(function () {
 
@@ -102,7 +102,7 @@
 
         //根据窗口调整表格高度
         $(window).resize(function () {
-            $('#mytab').bootstrapTable('resetView', {
+            $('#tabs').bootstrapTable('resetView', {
                 height: tableHeight()
             })
         });
@@ -121,8 +121,8 @@
         //初始化Table
         oTableInit.Init = function () {
             layer.load(0, {shade: false, time: 1000}); //0代表加载的风格，支持0-2
-            $('#mytab').bootstrapTable({
-                url: '${pageContext.request.contextPath}/Member/SelectForAll.json',         //请求后台的URL（*）
+            $('#tabs').bootstrapTable({
+                url: '${pageContext.request.contextPath}/member/queryAll.json',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
                 striped: true,                      //是否显示行间隔色
@@ -216,7 +216,7 @@
                         order: "desc"//默认排序方式
                     },
                     {
-                        field: "memberDepartmentId",
+                        field: "department",
                         title: "部门",
                         sortable: true, //是否可排序
                         order: "desc",//默认排序方式
@@ -230,7 +230,7 @@
                         formatter: "memberStatusFormatter"   //格式化数据
                     },
                     {
-                        field: "memberRoleId",
+                        field: "memberRoles",
                         title: "角色",
                         sortable: true, //是否可排序
                         order: "desc",//默认排序方式
@@ -258,90 +258,33 @@
                 limit: params.limit,   //页面大小
                 offset: params.offset,  //页码
                 departmentname: $("#txt_search_departmentname").val(),
-                status: $("#txt_search_statu").val()
+                status: $("#txt_search_status").val()
             };
             return temp;
         };
         return oTableInit;
     };
 
-    /**
-     * 格式化成员状态
-     * @param  {[type]} value [description]
-     * @param  {[type]} row   [description]
-     * @param  {[type]} index [description]
-     * @return {string}       [description]
-     */
     function memberStatusFormatter(value, row, index) {
-        var memberStatus = row.memberStatus == true ? '正常' : '冻结';
+        //noinspection JSUnresolvedVariable
+        var memberStatus = row.memberStatus == true ? '冻结' : '正常';
         return memberStatus;
     }
 
-    /**
-     * 格式化性别
-     * @param row
-     * @returns {string}
-     */
     function sexFormatter(value, row, index) {
         return row.memberSex == true ? "女" : "男";
     }
 
-    /**
-     * 格式化部门
-     * @param value
-     * @param row
-     * @param index
-     * @returns {*}
-     */
     function departmentFormatter(value, row, index){
-        switch(row.memberDepartmentId ){
-            case 1 :
-                return "办公室"; break;
-            case 2:
-                return "策划部"; break;
-            case 3:
-                return "组织部"; break;
-            case 4:
-                return "宣传部"; break;
-            default:
-                return "无部门"; break;
-
-        }
+        //noinspection JSUnresolvedVariable
+        return row.memberDepartment.departmentName;
     }
 
-    /**
-     * 格式化角色
-     * @param row
-     * @returns {*}
-     */
+
     function memberRoleFormatter(value, row, index){
-        switch(row.memberRoleId){
-            case 1 :
-                return "干事"; break;
-            case 2:
-                return "代理部长"; break;
-            case 3:
-                return "代理会长"; break;
-            case 4:
-                return "主任"; break;
-            case 5:
-                return "副主任"; break;
-            case 6:
-                return "部长"; break;
-            case 7:
-                return "副部长"; break;
-            case 8:
-                return "会长"; break;
-            case 9:
-                return "副会长"; break;
-            case 10:
-                return "指导老师"; break;
-            default:
-                return "未知角色";  break;
-
-        }
+        //noinspection JSUnresolvedVariable
+            return row.memberRoles.memberRoleName;
     }
-
 
 
 
@@ -353,7 +296,7 @@
         //弹出即全屏
         var index = layer.open({
             type: 2,
-            content: '${pageContext.request.contextPath}/Member/InsertMember.html',
+            content: '${pageContext.request.contextPath}/member/insert.html',
             area: ['320px', '530px'],
             maxmin: true
         });
@@ -362,26 +305,26 @@
 
     //编辑按钮的方法
     $("#btn_edit").click(function () {
-        var selectedRaido = $('#mytab').bootstrapTable('getSelections');
-        if (selectedRaido.length === 0) {
+        var selectedRadio = $('#tabs').bootstrapTable('getSelections');
+        if (selectedRadio.length === 0) {
             layer.msg('请先勾选你要编辑的一行数据。。', {icon: 5});
         } else {
-            var memberId = selectedRaido[0].memberId;
-            editMemeber(memberId);
+            var memberId = selectedRadio[0].memberId;
+            editMember(memberId);
         }
     });
 
     /**
      * 准备编辑表格操作
      */
-    function editMemeber(memberId) {
+    function editMember(memberId) {
         //iframe层-父子操作
         var index=layer.open({
             type: 2,
             area: ['300px', '530px'],
             fixed: true, //不固定
             maxmin: true,
-            content: '${pageContext.request.contextPath}/Member/UpdateMember.html/' + memberId
+            content: '${pageContext.request.contextPath}/member/update.html/' + memberId
         });
 
 
@@ -389,7 +332,7 @@
 
     //删除按钮的方法
     $("#btn_delete").click(function () {
-        var selectedRaido = $('#mytab').bootstrapTable('getSelections');
+        var selectedRaido = $('#tabs').bootstrapTable('getSelections');
         if (selectedRaido.length === 0) {
             layer.msg('请先勾选一条你要删除的数据。。', {icon: 5});
         } else {
@@ -415,19 +358,15 @@
     function deleteMember(memberId) {
         $.ajax({
             type: "get",
-            url: "${pageContext.request.contextPath}/Member/DeleteMemberById.json/" + memberId,
+            url: "${pageContext.request.contextPath}/member/deleteById.json/" + memberId,
             success: function (result) {
-                if(result.status ==901){
-                    layer.msg(result.message, {icon: 1});
-                    layer.load(0, {shade: false,time: 1000});
-                    $("#mytab").bootstrapTable("refresh");
-
-                }
-                else{
+                if (result.status != 901) {
                     layer.msg(result.message, {icon: 4});
+                } else {
+                    layer.msg(result.message, {icon: 1});
+                    layer.load(0, {shade: false, time: 1000});
+                    $("#tabs").bootstrapTable("refresh");
                 }
-
-
             },
             error: function () {
                 layer.msg('出错了！', {icon: 1});

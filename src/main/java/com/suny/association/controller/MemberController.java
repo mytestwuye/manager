@@ -1,7 +1,6 @@
 package com.suny.association.controller;
 
 import com.suny.association.enums.MemberEnum;
-import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Department;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.pojo.po.MemberRoles;
@@ -11,7 +10,6 @@ import com.suny.association.service.interfaces.IMemberRolesService;
 import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.utils.CustomDate;
 import com.suny.association.utils.JsonResult;
-import com.suny.association.utils.RandomID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,6 +36,9 @@ public class MemberController {
     
     private final IAccountService accountService;
     
+    
+    
+    
     @Autowired
     public MemberController(IDepartmentService departmentService, IMemberService memberService, IMemberRolesService memberRolesService, IAccountService accountService) {
         this.departmentService = departmentService;
@@ -49,19 +50,19 @@ public class MemberController {
     
     @RequestMapping(value = "/insert.json")
     @ResponseBody public JsonResult insert(Member member) {
-        memberService.insertReturnCount(member);
-        createAccount(member.getMemberId());
+        memberService.insert(member);
+        //createAccount(member.getMemberId());
         return JsonResult.successResult(MemberEnum.SUCCESS_INSERT_MEMBER_INFO);
     }
     
     
-    private void createAccount(int memberId) {
+   /* private void createAccount(int memberId) {
         Account autoAccount = new Account();
         autoAccount.getAccountMember().setMemberId(memberId);
         autoAccount.setAccountName(RandomID.getOrderIdByUUId());
         accountService.insert(autoAccount);
     }
-    
+    */
     
     @RequestMapping(value = "/insert.html")
     public ModelAndView insertPage(ModelAndView modelAndView) {
@@ -72,7 +73,7 @@ public class MemberController {
         modelAndView.addObject("memberRolesList", memberRolesList);
         modelAndView.addObject("managerList", managerList);
         modelAndView.addObject("memberGradeList", CustomDate.getLastYearAndThisYears());
-        modelAndView.setViewName("Member/MemberInsert");
+        modelAndView.setViewName("memberInfo/memberInsert");
         return modelAndView;
     }
     
@@ -103,12 +104,12 @@ public class MemberController {
         modelAndView.addObject("departmentList", departmentList);
         modelAndView.addObject("memberRolesList", memberRolesList);
         modelAndView.addObject("managerList", managerList);
-        modelAndView.setViewName("Member/MemberUpdate");
+        modelAndView.setViewName("memberInfo/memberUpdate");
         return modelAndView;
     }
     
     
-    @RequestMapping(value = "/querytFreeze.json")
+    @RequestMapping(value = "/queryFreeze.json")
     @ResponseBody
     public JsonResult queryFreeze() {
         List<Member> memberList = memberService.queryNormalMember();
@@ -134,16 +135,10 @@ public class MemberController {
     @ResponseBody
     public JsonResult queryAll() {
         List<Member> memberList = memberService.queryAll();
-        if (memberList != null) {
+        if ( memberList.size() != 0 && !memberList.isEmpty()) {
             return JsonResult.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);
         }
         return JsonResult.failResult(MemberEnum.FAIL_SELECT_MEMBER_INFO);
-    }
-    
-    
-    @RequestMapping(value = "/memberManager.html")
-    public String managerPage() {
-        return "Member/MemberManager";
     }
     
     
@@ -153,5 +148,10 @@ public class MemberController {
         return JsonResult.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, member);
     }
     
+    
+    @RequestMapping(value = "/memberManager.html")
+    public String managerPage() {
+        return "memberInfo/memberManager";
+    }
     
 }

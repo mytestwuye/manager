@@ -28,7 +28,7 @@ public abstract class AbstractBaseServiceImpl<T> implements IBaseService<T> {
 
     @Override
     public void deleteById(int id) {
-        mapper.delete(id);
+        mapper.deleteById(id);
 
     }
 
@@ -41,7 +41,7 @@ public abstract class AbstractBaseServiceImpl<T> implements IBaseService<T> {
 
     @Override
     public T queryById(int id) {
-        return mapper.query(id);
+        return mapper.queryById(id);
     }
 
     @Override

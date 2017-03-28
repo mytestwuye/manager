@@ -41,7 +41,7 @@
 
         <!--协会成员对应的管理员复杂类型集合-->
         <association property="memberManager" column="member_manager_id" javaType="com.suny.association.pojo.po.Member"
-                     select="getMember"/>
+                     select="getMemberManage"/>
     </resultMap>
 
     <!--成员角色-->
@@ -58,9 +58,18 @@
 
     <!--查询管理员信息-->
     <select id="getMemberManage" resultMap="memberManagerResult">
-        SELECT *
+        SELECT
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
         FROM member
-        WHERE member_id = #{ memberManager }
+        WHERE member_manager_id = #{ memberManager }
     </select>
 
     <!--查询部门-->
@@ -80,11 +89,6 @@
         FROM member_roles
         WHERE member_role_id = #{memberRoles}
     </select>
-
-
-
-
-
 
 
     <insert id="insertReturnCount" parameterType="com.suny.association.pojo.po.Member" useGeneratedKeys="true"
@@ -124,7 +128,6 @@
     </insert>
 
     <insert id="insert" parameterType="com.suny.association.pojo.po.Member">
-
         INSERT INTO member
         <trim prefix="set" suffixOverrides=",">
             <if test="memberId != null">
@@ -157,6 +160,11 @@
         </trim>
     </insert>
 
+    <delete id="deleteById" parameterType="Integer">
+        DELETE FROM member
+        WHERE member_id = #{id}
+    </delete>
+
     <update id="update" parameterType="com.suny.association.pojo.po.Member">
         UPDATE member
         <trim prefix="set" suffixOverrides=",">
@@ -188,10 +196,7 @@
         where member_id=#{memberId}
 
     </update>
-    <delete id="deleteById" parameterType="Integer">
-        DELETE FROM member
-        WHERE member_id = #{id}
-    </delete>
+
 
     <select id="queryFreezeManager" resultMap="BaseResultMap">
         SELECT
@@ -221,9 +226,9 @@
             member_status,
             member_role_id
         FROM member
-        WHERE member_role_id > 3
+        WHERE member_role_id > 2
               AND
-              member_status = 1
+              member_status = 0
     </select>
 
     <select id="queryFreezeMember" resultMap="BaseResultMap">

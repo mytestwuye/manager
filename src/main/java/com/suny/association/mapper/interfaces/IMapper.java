@@ -13,11 +13,9 @@ public interface IMapper<T> {
     
     int insertReturnCount(T t);
     
-    void delete(int id);
+    void deleteById(int id);
     
     void update(T t);
-    
-    T query(int id);
     
     T queryById(int id);
     
