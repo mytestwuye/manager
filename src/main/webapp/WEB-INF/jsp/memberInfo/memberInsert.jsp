@@ -23,7 +23,7 @@
           rel="stylesheet"/>
 </head>
 <body>
-<form class="form-line col-xs-10" role="form" style="padding: 25px; text-align: center" method="post" >
+<form class="form-line col-xs-10" role="form" style="padding: 25px; text-align: center">
     <label>
         <input name="memberId" value="${member.memberId}" hidden>
     </label>
@@ -68,9 +68,9 @@
     <div class="form-group">
         <label for="selectDepartmentOption" class="col-sm-2 control-label">部门</label>
         <select class="form-control" id="selectDepartmentOption" name="memberDepartmentId">
-            <c:forEach items="${departmentList}" var="department">
-                <option value="${department.departmentId}" name="departmentOption">
-                    <c:out value="${department.departmentName}"/>
+            <c:forEach items="${departmentList}" var="role">
+                <option value="${role.departmentId}" name="departmentOption">
+                    <c:out value="${role.departmentName}"/>
                 </option>
             </c:forEach>
         </select>
@@ -118,28 +118,35 @@
     function insertMemberInfo() {
         var memberNameVal = $("#member-name").val();
         var memberClassVal = $("#member-class").val();
-        var selectMemberSexVal = $("#member-sex").val();
-        var selectMemberGradeOptionVal = $("#selectMemberGradeOption").val();
-        var selectDepartmentOptionVal = $("#selectDepartmentOption").val();
-        var selectMemberRoleOptionVal = $("#selectMemberRoleOption").val();
-        var selectMemberManagerOptionVal = $("#selectMemberManagerOption").val();
-        var selectMemberStatusOptionVal = $("#selectMemberStatusOption").val() == true ? "1" : "0";
+        var selectMemberSexVal = $("#member-sex").val() == true;
+        var selectMemberGradeOptionVal = parseInt($("#selectMemberGradeOption").val());
+        var selectDepartmentOptionVal = parseInt($("#selectDepartmentOption").val());
+        var selectMemberRoleOptionVal = parseInt($("#selectMemberRoleOption").val());
+        var selectMemberManagerOptionVal = parseInt($("#selectMemberManagerOption").val());
+        var selectMemberStatusOptionVal = $("#selectMemberStatusOption").val() == true;
         //验证表单
         if (validMemberNameVal(memberNameVal) && ValidMemberClassVal(memberClassVal)) {
             $.ajax({
                 type: 'post',
                 dataType: 'json',
+                contentType: "application/json",
                 url: '${pageContext.request.contextPath}/member/insert.json',
-                data: {
+                data: JSON.stringify({
                     memberName: memberNameVal,
                     memberClassName: memberClassVal,
                     memberSex: selectMemberSexVal,
                     memberGradeNumber: selectMemberGradeOptionVal,
-                    memberManagerId: selectMemberManagerOptionVal,
-                    memberDepartmentId: selectDepartmentOptionVal,
+                    memberDepartment:{
+                        departmentId:selectDepartmentOptionVal
+                    },
                     memberStatus: selectMemberStatusOptionVal,
-                    memberRoleId: selectMemberRoleOptionVal
-                },
+                    memberRoles:{
+                        memberRoleId: selectMemberRoleOptionVal
+                    },
+                    memberManager:{
+                        memberId:selectMemberManagerOptionVal
+                    }
+                }),
                 success: function (result) {
                     if (result.status == 905) {
                         //当你在iframe页面关闭自身时
@@ -149,12 +156,13 @@
                         $("#mytab", window.parent.document).bootstrapTable("refresh");
                         return;
                     }
-                    window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
-                },
-                error: function (result) {
-                    if (result.status == 0) {
-                        window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
+                    if(result.status == 906){
+                        window.parent.layer.msg('失败了。！', {icon: 5});
                     }
+
+                },
+                error: function(result) {
+                        window.parent.layer.msg('服务器无响应！', {icon: 5});
                 }
             })
         }

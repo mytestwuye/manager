@@ -91,71 +91,72 @@
     </select>
 
 
-    <insert id="insertReturnCount" parameterType="com.suny.association.pojo.po.Member" useGeneratedKeys="true"
+    <insert id="insertAndGetId" parameterType="com.suny.association.pojo.po.Member" useGeneratedKeys="true"
             keyProperty="memberId">
         INSERT INTO member
         <trim prefix="set" suffixOverrides=",">
             <if test="memberId != null">
-                memberId = member_id ,
+                member_id = #{memberId,jdbcType=BIGINT} ,
             </if>
             <if test="memberName != null">
-                member_name =#{memberName},
+                member_name =#{memberName,jdbcType=VARCHAR},
             </if>
             <if test="memberClassName != null">
-                member_class_name =#{memberClassName},
+                member_class_name =#{memberClassName,jdbcType=VARCHAR},
             </if>
             <if test="memberSex != null">
-                member_sex =#{memberSex},
+                member_sex =#{memberSex,jdbcType=BOOLEAN},
             </if>
             <if test="memberGradeNumber != null">
-                member_grade_number =#{memberGradeNumber},
+                member_grade_number =#{memberGradeNumber,jdbcType=INTEGER},
             </if>
             <if test="memberManager != null">
-                member_manager_id =#{memberManager},
+                member_manager_id =#{memberManager,jdbcType=BIGINT},
             </if>
             <if test="memberDepartment != null">
-                member_department_id =#{memberDepartment},
+                member_department_id =#{memberDepartment.departmentId,jdbcType=INTEGER},
             </if>
             <if test="memberStatus != null">
-                member_status =#{memberStatus},
+                member_status =#{memberStatus,jdbcType=BOOLEAN},
             </if>
             <if test="memberRoles != null">
-                member_role_id =#{memberRoles}
+                member_role_id =#{memberRoles.memberRoleId,jdbcType=INTEGER}
             </if>
         </trim>
 
 
     </insert>
 
-    <insert id="insert" parameterType="com.suny.association.pojo.po.Member">
+    <insert id="insert" parameterType="com.suny.association.pojo.po.Member" useGeneratedKeys="true"
+            keyProperty="memberId">
         INSERT INTO member
         <trim prefix="set" suffixOverrides=",">
             <if test="memberId != null">
-                member_id = #{memberId} ,
+                member_id = #{memberId,jdbcType=BIGINT} ,
             </if>
             <if test="memberName != null">
-                member_name =#{memberName},
+                member_name =#{memberName,jdbcType=VARCHAR},
             </if>
             <if test="memberClassName != null">
-                member_class_name =#{memberClassName},
+                member_class_name =#{memberClassName,jdbcType=VARCHAR},
             </if>
             <if test="memberSex != null">
-                member_sex =#{memberSex},
+                member_sex =#{memberSex,jdbcType=BOOLEAN},
             </if>
             <if test="memberGradeNumber != null">
-                member_grade_number =#{memberGradeNumber},
+                member_grade_number =#{memberGradeNumber,jdbcType=INTEGER},
             </if>
             <if test="memberManager != null">
-                member_manager_id =#{memberManager},
+                member_manager_id =#{memberManager,jdbcType=BIGINT},
             </if>
             <if test="memberDepartment != null">
-                member_department_id =#{memberDepartment},
+                member_department_id =#{memberDepartment.departmentId,jdbcType=INTEGER},
             </if>
             <if test="memberStatus != null">
-                member_status =#{memberStatus},
+                member_status =#{memberStatus,jdbcType=BOOLEAN},
             </if>
             <if test="memberRoles != null">
-                member_role_id =#{memberRoles}
+                member_role_id =#{memberRoles.memberRoleId,jdbcType=INTEGER}
             </if>
         </trim>
     </insert>
@@ -168,29 +169,32 @@
     <update id="update" parameterType="com.suny.association.pojo.po.Member">
         UPDATE member
         <trim prefix="set" suffixOverrides=",">
+            <if test="memberId != null">
+                member_id = #{memberId,jdbcType=BIGINT} ,
+            </if>
             <if test="memberName != null">
-                member_name =#{memberName},
+                member_name =#{memberName,jdbcType=VARCHAR},
             </if>
             <if test="memberClassName != null">
-                member_class_name =#{memberClassName},
+                member_class_name =#{memberClassName,jdbcType=VARCHAR},
             </if>
             <if test="memberSex != null">
-                member_sex =#{memberSex},
+                member_sex =#{memberSex,jdbcType=BOOLEAN},
             </if>
             <if test="memberGradeNumber != null">
-                member_grade_number =#{member_grade_number},
+                member_grade_number =#{memberGradeNumber,jdbcType=INTEGER},
             </if>
             <if test="memberManager != null">
-                member_manager_id =#{memberManager},
+                member_manager_id =#{memberManager,jdbcType=BIGINT},
             </if>
             <if test="memberDepartment != null">
-                member_department_id =#{memberDepartment},
+                member_department_id =#{memberDepartment.departmentId,jdbcType=INTEGER},
             </if>
             <if test="memberStatus != null">
-                member_status =#{memberStatus},
+                member_status =#{memberStatus,jdbcType=BOOLEAN},
             </if>
             <if test="memberRoles != null">
-                member_role_id =#{memberRoles}
+                member_role_id =#{memberRoles.memberRoleId,jdbcType=INTEGER}
             </if>
         </trim>
         where member_id=#{memberId}
@@ -228,7 +232,7 @@
         FROM member
         WHERE member_role_id > 2
               AND
-              member_status = 0
+              member_status = 1
     </select>
 
     <select id="queryFreezeMember" resultMap="BaseResultMap">

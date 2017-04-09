@@ -94,7 +94,7 @@ $(function() {
 			});
 		}
 	});
-	// 控制选项卡滚动位置 
+	// 控制选项卡滚动位置
 	$(document).on('click', '.tab_left>a', function() {
 		$('.content_tab>ul').animate({scrollLeft: $('.content_tab>ul').scrollLeft() - 300}, 200, function() {
 			initScrollState();
@@ -107,7 +107,7 @@ $(function() {
 		});
 	});
 	// 初始化箭头状态
-	
+
 	// 选项卡右键菜单
 	var menu = new BootstrapMenu('.tabs li', {
 		fetchElementData: function(item) {

@@ -3,6 +3,8 @@ package com.suny.association.mapper;
 import com.suny.association.mapper.interfaces.IMapper;
 import com.suny.association.pojo.po.Roles;
 
+import java.util.List;
+
 /**
  * Comments:  账号角色表mapper映射接口
  * Author:   孙建荣
@@ -11,4 +13,6 @@ import com.suny.association.pojo.po.Roles;
 
 public interface RolesMapper extends IMapper<Roles> {
 
+    @Override
+    List<Roles> queryAll();
 }

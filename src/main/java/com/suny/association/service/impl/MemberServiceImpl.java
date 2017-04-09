@@ -2,12 +2,15 @@ package com.suny.association.service.impl;
 
 import com.suny.association.enums.MemberEnum;
 import com.suny.association.exception.BusinessException;
+import com.suny.association.mapper.AccountMapper;
 import com.suny.association.mapper.MemberMapper;
+import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,42 +21,59 @@ import java.util.List;
  */
 @Service
 public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implements IMemberService {
-    
-    private MemberMapper memberMapper;
+    private final MemberMapper memberMapper;
+    private final AccountMapper accountMapper;
     
     @Autowired
-    public MemberServiceImpl(MemberMapper memberMapper) {
+    public MemberServiceImpl(MemberMapper memberMapper, AccountMapper accountMapper) {
         this.memberMapper = memberMapper;
+        this.accountMapper = accountMapper;
     }
     
-    public MemberServiceImpl() {
-    }
     
+    @Transactional
     @Override
     public void insert(Member member) {
-        memberMapper.insert(member);
+        memberMapper.insertAndGetId(member);
+        Integer memberId = member.getMemberId();
+        if(memberId != null){
+            createAccount(memberId);
+        }
+        else{
+            throw new BusinessException(MemberEnum.FAIL_INSERT_MEMBER_INFO);
+        }
     }
     
+    @Transactional
+    private void createAccount(Integer memberId) {
+        Account autoAccount = new Account();
+        Member member = new Member();
+        member.setMemberId(memberId);
+        String memberIdString = String.valueOf(memberId);
+        autoAccount.setAccountName(memberIdString);      //设置账号名字
+        autoAccount.setAccountMember(member);            //设置对应的管理员账号
+        try {
+            accountMapper.insert(autoAccount);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+
+        }
     
+    @Transactional
     public int insertReturnCount(Member member) {
-        return memberMapper.insertReturnCount(member);
+        return memberMapper.insertAndGetId(member);
     }
     
+    @Transactional
     @Override
     public void deleteById(int id) {
-        if (queryById(id) == null) {
-            throw new BusinessException(MemberEnum.NOT_HAVE_THIS_MEMBER_INFO);
-        }
         memberMapper.deleteById(id);
     }
     
+    @Transactional
     @Override
     public void update(Member member) {
-        if (member.getMemberId() == null) {
-            throw new BusinessException(MemberEnum.FAIL_UPDATE_MEMBER_INFO);
-        } else if (memberMapper.queryById(member.getMemberId()) == null) {
-            throw new BusinessException(MemberEnum.NOT_HAVE_THIS_MEMBER_INFO);
-        }
         memberMapper.update(member);
     }
     

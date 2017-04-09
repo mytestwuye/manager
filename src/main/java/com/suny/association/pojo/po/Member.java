@@ -109,4 +109,7 @@ public class Member {
     public void setMemberRoles(MemberRoles memberRoles) {
         this.memberRoles = memberRoles;
     }
+    
+    
+    
 }

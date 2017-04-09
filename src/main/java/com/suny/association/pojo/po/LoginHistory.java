@@ -5,7 +5,7 @@ import java.util.Date;
 public class LoginHistory {
     private Long loginHistoryId;
 
-    private Integer historyAccountId;
+    private Account historyAccountId;
 
     private String lastLoginIp;
 
@@ -17,7 +17,10 @@ public class LoginHistory {
 
     private String loginUserAgent;
 
-    public LoginHistory(Long loginHistoryId, Integer historyAccountId, String lastLoginIp, Date lastLoginTime, String loginBrowser, String loginOsVersion, String loginUserAgent) {
+    public LoginHistory() {
+    }
+
+    public LoginHistory(Long loginHistoryId, Account historyAccountId, String lastLoginIp, Date lastLoginTime, String loginBrowser, String loginOsVersion, String loginUserAgent) {
         this.loginHistoryId = loginHistoryId;
         this.historyAccountId = historyAccountId;
         this.lastLoginIp = lastLoginIp;
@@ -25,10 +28,6 @@ public class LoginHistory {
         this.loginBrowser = loginBrowser;
         this.loginOsVersion = loginOsVersion;
         this.loginUserAgent = loginUserAgent;
-    }
-
-    public LoginHistory() {
-        super();
     }
 
     public Long getLoginHistoryId() {
@@ -39,11 +38,11 @@ public class LoginHistory {
         this.loginHistoryId = loginHistoryId;
     }
 
-    public Integer getHistoryAccountId() {
+    public Account getHistoryAccountId() {
         return historyAccountId;
     }
 
-    public void setHistoryAccountId(Integer historyAccountId) {
+    public void setHistoryAccountId(Account historyAccountId) {
         this.historyAccountId = historyAccountId;
     }
 
@@ -52,7 +51,7 @@ public class LoginHistory {
     }
 
     public void setLastLoginIp(String lastLoginIp) {
-        this.lastLoginIp = lastLoginIp == null ? null : lastLoginIp.trim();
+        this.lastLoginIp = lastLoginIp;
     }
 
     public Date getLastLoginTime() {
@@ -68,7 +67,7 @@ public class LoginHistory {
     }
 
     public void setLoginBrowser(String loginBrowser) {
-        this.loginBrowser = loginBrowser == null ? null : loginBrowser.trim();
+        this.loginBrowser = loginBrowser;
     }
 
     public String getLoginOsVersion() {
@@ -76,7 +75,7 @@ public class LoginHistory {
     }
 
     public void setLoginOsVersion(String loginOsVersion) {
-        this.loginOsVersion = loginOsVersion == null ? null : loginOsVersion.trim();
+        this.loginOsVersion = loginOsVersion;
     }
 
     public String getLoginUserAgent() {
@@ -84,6 +83,6 @@ public class LoginHistory {
     }
 
     public void setLoginUserAgent(String loginUserAgent) {
-        this.loginUserAgent = loginUserAgent == null ? null : loginUserAgent.trim();
+        this.loginUserAgent = loginUserAgent;
     }
 }

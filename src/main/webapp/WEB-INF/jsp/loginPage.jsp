@@ -22,7 +22,10 @@
 <div id="loginBox">
     <div class="topPart">
         <h2>登陆入口</h2>
-        <a id="goBack" href="javascript:;" onclick="logoutAction()">退出</a>
+        <div id="toolbar">
+            <a class="waves-effect waves-button" href="javascript:;" onclick="logoutAction()"><i class="zmdi zmdi-run"></i> 强制退出</a>
+        </div>
+        <%--<a id="goBack" href="javascript:;" onclick="logoutAction()"><i class="zmdi zmdi-run"></i> 强制退出</a></a>--%>
     </div>
 
     <input type="text" id="userName" name="LoginForm[username]" class="txt_input txt_input2" placeholder="请输入用户名"
@@ -50,7 +53,6 @@
     <a id="forget" href="#">忘记密码 ?</a>
     <a id="set_username" href="#">学号登录入口 ?</a>
 </div>
-
 <!-- 底部版权 -->
 <p id="copyright">个人——赣ICP备13015608号-5
     <a target="_blank" href="#"

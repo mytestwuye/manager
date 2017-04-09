@@ -2,6 +2,9 @@ package com.suny.association.mapper;
 
 import com.suny.association.mapper.interfaces.IMapper;
 import com.suny.association.pojo.po.LoginHistory;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * Comments:  登陆历史mapper接口映射
@@ -11,4 +14,7 @@ import com.suny.association.pojo.po.LoginHistory;
 
 public interface LoginHistoryMapper extends IMapper<LoginHistory> {
 
+    List<LoginHistory> list(@Param("offset") int offset, @Param("limit") int limit);
+
+    int queryCount();
 }

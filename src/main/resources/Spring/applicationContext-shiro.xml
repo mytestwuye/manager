@@ -32,6 +32,8 @@
                 /code//generateCode.do =anon
                 /LoginSuccess = anon
                 /base/logoutAction.do = anon
+                /member/update.json =anon
+                /account/update.json =anon
                 /** = authc
             </value>
         </property>

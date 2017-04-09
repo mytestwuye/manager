@@ -1,16 +1,50 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.suny.association.mapper.LoginHistoryMapper" >
-  <!--<resultMap id="BaseResultMap" type="com.suny.association.pojo.po.LoginHistory" >
-    <constructor >
-      <idArg column="login_history_id" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="history_account_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="last_login_ip" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="last-login_time" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="login_browser" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="login_os_version" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="login_user_agent" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>-->
+<mapper namespace="com.suny.association.mapper.LoginHistoryMapper">
+    <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.LoginHistory">
+        <id property="loginHistoryId" column="login_history_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result property="lastLoginIp" column="last_login_ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="loginBrowser" column="login_browser" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="loginOsVersion" column="login_os_version" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="loginUserAgent" column="login_user_agent" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <association property="historyAccountId" column="history_account_id" javaType="com.suny.association.pojo.po.Account" select="getAccount"/>
+    </resultMap>
+
+    <resultMap id="AccountInfo" type="com.suny.association.pojo.po.Account">
+        <id property="accountId" column="account_id"></id>
+        <result property="accountName" column="account_name"></result>
+    </resultMap>
+
+   <select id="getAccount" parameterType="int" resultMap="AccountInfo">
+       SELECT
+           account_id,
+           account_name
+       FROM account
+       WHERE account_id = #{ historyAccountId }
+   </select>
+
+
+
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+            l.login_history_id,
+            l.history_account_id,
+            l.last_login_ip,
+            l.last_login_time,
+            l.login_browser,
+            l.login_os_version,
+            l.login_user_agent
+        FROM login_history AS  l
+        LIMIT
+            #{offset},
+            #{limit}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*)
+        FROM login_history;
+
+    </select>
 
 </mapper>

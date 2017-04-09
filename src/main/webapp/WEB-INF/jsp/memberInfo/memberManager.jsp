@@ -45,7 +45,8 @@
                         <input type="text" class="form-control" id="txt_search_statu">
                     </div>
                     <div class="col-sm-4" style="text-align:left;">
-                        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary" onclick="refresh()">查询
+                        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary"
+                                onclick="refresh()">查询
                         </button>
                     </div>
                 </div>
@@ -84,10 +85,12 @@
 <script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.jdirk.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/jquery.cookie.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/select2/js/select2.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/admin.js"></script>
+<script src="${pageContext.request.contextPath}/js/common.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
 <script>
-    function refresh(){
+    function refresh() {
         $("#tabs").bootstrapTable("refresh");
     }
     $(function () {
@@ -169,73 +172,16 @@
                     return {classes: strclass}
                 },
                 columns: [
-                    {
-                        title: "全选",
-                        field: "select",
-                        checkbox: true,
-                        width: 20,//宽度
-                        align: "center",//水平
-                        valign: "middle"//垂直
-                    },
-                    {
-                        title: "ID",//标题
-                        field: "memberId",//键名
-                        sortable: true,//是否可排序
-                        order: "desc"//默认排序方式
-                    },
-                    {
-                        field: "memberName",
-                        title: "姓名",
-                        sortable: true,
-                        titleTooltip: "this is name"
-                    },
-                    {
-                        field: "memberClassName",
-                        title: "班级名字",
-                        sortable: true, //是否可排序
-                        order: "desc"//默认排序方式
-                    },
-                    {
-                        field: "memberSex",
-//                    title: "INFO[using-formatter]",
-                        title: "性别",
-                        sortable: true, //是否可排序
-                        order: "desc",//默认排序方式
-                        formatter: 'sexFormatter' //对本列数据做格式化
-                    },
-                    {
-                        field: "memberGradeNumber",
-                        title: "年级",
-                        sortable: true, //是否可排序
-                        order: "desc"//默认排序方式
-                    },
-                    {
-                        field: "member_manager_id",
-                        title: "管理员",
-                        sortable: true, //是否可排序
-                        order: "desc"//默认排序方式
-                    },
-                    {
-                        field: "department",
-                        title: "部门",
-                        sortable: true, //是否可排序
-                        order: "desc",//默认排序方式
-                        formatter: "departmentFormatter" //格式化部门
-                    },
-                    {
-                        field: "memberStatus",
-                        title: "状态",
-                        sortable: true, //是否可排序
-                        order: "desc", //默认排序方式
-                        formatter: "memberStatusFormatter"   //格式化数据
-                    },
-                    {
-                        field: "memberRoles",
-                        title: "角色",
-                        sortable: true, //是否可排序
-                        order: "desc",//默认排序方式
-                        formatter: "memberRoleFormatter"    //格式化角色
-                    }
+                    {title: "全选", field: "select", checkbox: true, width: 20,align: "center",valign: "middle" },
+                    {title: "ID",field: "memberId",sortable: true,order: "desc"},
+                    {field: "memberName", title: "姓名", sortable: true, titleTooltip: "this is name"},
+                    {field: "memberClassName", title: "班级名字", sortable: true,order: "desc"},
+                    {field: "memberSex", title: "性别", sortable: true, order: "desc",formatter: 'sexFormatter'},
+                    {field: "memberGradeNumber", title: "年级", sortable: true, order: "desc"},
+                    {field: "member_manager_id", title: "管理员", sortable: true, order: "desc"},
+                    {field: "department", title: "部门", sortable: true, order: "desc",formatter: "departmentFormatter" },
+                    {field: "memberStatus", title: "状态", sortable: true, order: "desc", formatter: "memberStatusFormatter" },
+                    {field: "memberRoles", title: "角色", sortable: true, order: "desc",formatter: "memberRoleFormatter"}
                 ],
                 onClickRow: function (row, $element) {
                     //$element是当前tr的jquery对象
@@ -267,32 +213,31 @@
 
     function memberStatusFormatter(value, row, index) {
         //noinspection JSUnresolvedVariable
-        var memberStatus = row.memberStatus == true ? '冻结' : '正常';
+        var memberStatus = row.memberStatus == true ? '正常' : '冻结';
         return memberStatus;
     }
 
     function sexFormatter(value, row, index) {
-        return row.memberSex == true ? "女" : "男";
+        return row.memberSex == true ? "男" : "女";
     }
 
-    function departmentFormatter(value, row, index){
+    function departmentFormatter(value, row, index) {
         //noinspection JSUnresolvedVariable
         return row.memberDepartment.departmentName;
     }
 
 
-    function memberRoleFormatter(value, row, index){
+    function memberRoleFormatter(value, row, index) {
         //noinspection JSUnresolvedVariable
-            return row.memberRoles.memberRoleName;
+        return row.memberRoles.memberRoleName;
     }
-
 
 
     //新增按钮的方法
     $("#btn_add").click(function () {
-            insertMember();
+        insertMember();
     });
-    function insertMember(){
+    function insertMember() {
         //弹出即全屏
         var index = layer.open({
             type: 2,
@@ -319,7 +264,7 @@
      */
     function editMember(memberId) {
         //iframe层-父子操作
-        var index=layer.open({
+        var index = layer.open({
             type: 2,
             area: ['300px', '530px'],
             fixed: true, //不固定

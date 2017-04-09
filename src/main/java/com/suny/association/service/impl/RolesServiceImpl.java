@@ -7,6 +7,8 @@ import com.suny.association.service.interfaces.IRolesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Comments:
  * Author:   孙建荣
@@ -14,13 +16,22 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class RolesServiceImpl extends AbstractBaseServiceImpl<Roles> implements IRolesService {
-    
+
+    private final RolesMapper rolesMapper;
+
     @Autowired
     public RolesServiceImpl(RolesMapper rolesMapper) {
-        RolesMapper rolesMapper1 = rolesMapper;
+        this.rolesMapper = rolesMapper;
     }
-    
-   
-    
-   
+
+
+    @Override
+    public List<Roles> queryAll() {
+        return rolesMapper.queryAll();
+    }
+
+    @Override
+    public Roles queryById(int id) {
+        return rolesMapper.queryById(id);
+    }
 }

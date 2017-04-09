@@ -7,6 +7,8 @@ import com.suny.association.service.interfaces.ILoginHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Comments:
  * Author:   孙建荣
@@ -20,7 +22,18 @@ public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistor
     public LoginHistoryServiceImpl(LoginHistoryMapper loginHistoryMapper) {
         this.loginHistoryMapper = loginHistoryMapper;
     }
-    
+
+
+    @Override
+    public List<LoginHistory> list(int offset,int limit){
+        return loginHistoryMapper.list(offset,limit);
+    }
+
+    @Override
+    public int queryCount() {
+        return loginHistoryMapper.queryCount();
+    }
+
     public LoginHistoryServiceImpl() {
     }
     

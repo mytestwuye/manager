@@ -55,9 +55,9 @@ public class LoginController {
                                   @RequestParam("formCode") String formCode,
                                   HttpServletRequest request) {
         String sessionCode = (String) request.getSession().getAttribute("code");
-        if (!matchCode(formCode, sessionCode)) {
+       /* if (!matchCode(formCode, sessionCode)) {
             return JsonResult.failResult(LoginEnum.VALIDATE_CODE_ERROR);
-        }
+        }*/
         authAction(username, password);
         saveLoginUser(request, username);
         return JsonResult.successResult(LoginEnum.LOGIN_SYSTEM);

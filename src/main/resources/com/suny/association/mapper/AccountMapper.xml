@@ -5,7 +5,7 @@
         <id property="accountId" column="account_id"/>
         <result property="accountName" column="account_name"/>
         <result property="accountPassword" column="account_password"/>
-        <result property="accountPhone" column=" account_phone"/>
+        <result property="accountPhone" column="account_phone"/>
         <result property="accountEmail" column="account_email"/>
         <result property="accountStatus" column="account_status"/>
         <!--账号角色复杂类型关联-->
@@ -61,8 +61,8 @@
     <!--查询账号角色表信息-->
     <select id="getRoles" parameterType="int" resultMap="accountRolesResult">
         SELECT
-        role_id,
-        role_name
+            role_id,
+            role_name
         FROM roles
         WHERE role_id = #{ roleId }
     </select>
@@ -77,19 +77,19 @@
     <!--获得成员角色-->
     <select id="getMemberRole" parameterType="int" resultMap="memberRolesResult">
         SELECT
-        member_role_id,
-        member_role_name
+            member_role_id,
+            member_role_name
         FROM member_roles
-        WHERE member_role_id = #{memberRoles}
+        WHERE member_role_id = #{memberRoles.memberRoleId}
     </select>
 
     <!--查询部门-->
     <select id="getDepartment" parameterType="int" resultMap="memberDepartmentResult">
         SELECT
-        department_id,
-        department_name
+            department_id,
+            department_name
         FROM department
-        WHERE department_id = #{memberDepartment}
+        WHERE department_id = #{memberDepartment.departmentId}
     </select>
 
     <!--查询管理员信息-->
@@ -122,37 +122,64 @@
     <!--=============================================================================================-->
 
 
-
     <insert id="insert" parameterType="com.suny.association.pojo.po.Account">
         INSERT INTO account
         <trim prefix="set" prefixOverrides=",">
             <if test="accountId != null">
-                account_id = #{accountId} ,
+                account_id = #{accountId,jdbcType=BIGINT} ,
             </if>
             <if test="accountName != null">
-                account_name =#{accountName},
+                account_name =#{accountName,jdbcType=VARCHAR},
             </if>
             <if test="accountPassword != null">
-                account_password =#{accountPassword},
+                account_password =#{accountPassword,jdbcType=VARCHAR},
             </if>
             <if test="accountPhone != null">
-                account_phone =#{accountPhone},
+                account_phone =#{accountPhone,jdbcType=BIGINT},
             </if>
             <if test="accountEmail != null">
-                account_email =#{accountEmail},
+                account_email =#{accountEmail,jdbcType=VARCHAR},
             </if>
             <if test="accountStatus != null">
-                account_status =#{accountStatus},
+                account_status =#{accountStatus,jdbcType=BOOLEAN},
             </if>
-            <if test="memberRoles != null">
-                account_role_id =#{accountRoles},
+            <if test="accountMember != null">
+                account_member_id =#{accountMember.memberId,jdbcType=BIGINT},
             </if>
-            <if test="accountMemberId != null">
-                account_member_id =#{accountMember.memberId}
+            <if test="accountRoles != null">
+                account_role_id =#{accountRoles.roleId,jdbcType=INTEGER}
             </if>
-
         </trim>
     </insert>
+
+    <update id="update" parameterType="com.suny.association.pojo.po.Account">
+        UPDATE account
+        <trim prefix="set" prefixOverrides=",">
+            <if test="accountName != null">
+                account_name =#{accountName,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPassword != null">
+                account_password =#{accountPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPhone != null">
+                account_phone =#{accountPhone,jdbcType=BIGINT},
+            </if>
+            <if test="accountEmail != null">
+                account_email =#{accountEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="accountStatus != null">
+                account_status =#{accountStatus,jdbcType=BOOLEAN},
+            </if>
+            <if test="accountMember != null">
+                account_member_id =#{accountMember.memberId,jdbcType=BIGINT},
+            </if>
+            <if test="accountRoles != null">
+                account_role_id =#{accountRoles.roleId,jdbcType=INTEGER}
+            </if>
+        </trim>
+        WHERE
+        account_id = #{accountId,jdbcType=BIGINT}
+    </update>
 
     <select id="queryByMemberId" parameterType="int" resultMap="BaseResultMap">
         SELECT
@@ -170,9 +197,17 @@
 
 
     <select id="queryByName" parameterType="java.lang.String" resultMap="BaseResultMap">
-        SELECT *
+        SELECT
+            account_id,
+            account_name,
+            account_password,
+            account_phone,
+            account_email,
+            account_status,
+            account_role_id,
+            account_member_id
         FROM account
-        WHERE account_name = #{username}
+        WHERE account_name = #{accountName}
     </select>
 
     <insert id="create" parameterType="com.suny.association.pojo.po.Account">
@@ -184,7 +219,7 @@
         VALUES (
             #{accountId,jdbcType=BIGINT}, #{accountName,jdbcType=VARCHAR},
             #{accountPassword,jdbcType=VARCHAR}, #{accountPhone,jdbcType=INTEGER},
-            #{accountEmail,jdbcType=VARCHAR}, #{accountStatus,jdbcType=BIT},
+            #{accountEmail,jdbcType=VARCHAR}, #{accountStatus,jdbcType=BOOLEAN},
             #{memberRoles,jdbcType=INTEGER}, #{accountMember.memberId,jdbcType=INTEGER}
         )
     </insert>
@@ -194,7 +229,7 @@
         WHERE account_id = #{accountId,jdbcType=BIGINT}
     </delete>
 
-    <update id="update" parameterType="com.suny.association.pojo.po.Account">
+    <!--<update id="update" parameterType="com.suny.association.pojo.po.Account">
         UPDATE account
         SET
             account_name      = #{accountName,jdbcType=VARCHAR},
@@ -205,7 +240,7 @@
             account_role_id   = #{memberRoles,jdbcType=INTEGER},
             account_member_id = #{accountMember.memberId,jdbcType=INTEGER}
         WHERE account_id = #{accountId,jdbcType=BIGINT}
-    </update>
+    </update>-->
 
     <select id="queryById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT
@@ -226,12 +261,13 @@
             account_id,
             account_name,
             account_password,
-            account_phone,
             account_email,
-            account_status,
+            account_phone,
             account_role_id,
+            account_status,
             account_member_id
-        FROM account
+        FROM
+            account
     </select>
 </mapper>
 

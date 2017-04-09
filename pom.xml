@@ -53,10 +53,18 @@
             <version>${mybatis-spring.version}</version>
         </dependency>
         <!--连接数据库驱动-->
+        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.8</version>
+            <version>5.1.39</version>
+        </dependency>
+
+
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>5.2.4.Final</version>
         </dependency>
         <!--log4j-->
         <!-- https://mvnrepository.com/artifact/log4j/log4j -->

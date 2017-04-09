@@ -1,11 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.suny.association.mapper.RolesMapper" >
-  <!--<resultMap id="BaseResultMap" type="com.suny.association.pojo.po.Roles" >
-    <constructor >
-      <idArg column="role_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="role_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>-->
+  <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.Roles" >
+      <id column="role_id" property="roleId"  />
+      <result column="role_name"  property="roleName"  />
+  </resultMap>
+
+  <select id="queryAll" resultMap="BaseResultMap">
+      SELECT role_id,role_name
+      FROM roles
+  </select>
+
+    <select id="queryById" parameterType="Integer">
+        SELECT role_id,role_name
+        FROM roles
+        WHERE role_id = #{roleId}
+    </select>
+
+    <select id="queryByName" parameterType="String">
+        SELECT role_id,role_name
+        FROM roles
+        WHERE role_name = #{roleName}
+    </select>
+
+
 
 </mapper>

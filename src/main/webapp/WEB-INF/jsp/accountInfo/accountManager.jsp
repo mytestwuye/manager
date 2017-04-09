@@ -35,27 +35,7 @@
 </head>
 <body>
 <div class="panel-body" style="padding-bottom:0;">
-    <div class="panel panel-default">
-        <div class="panel-heading">查询条件</div>
-        <div class="panel-body">
-            <form id="formSearch" class="form-horizontal">
-                <div class="form-group" style="margin-top:15px">
-                    <label class="control-label col-sm-1" for="txt_search_departmentname">部门名称</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="txt_search_departmentname">
-                    </div>
-                    <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="txt_search_statu">
-                    </div>
-                    <div class="col-sm-4" style="text-align:left;">
-                        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary" onclick="refresh()">查询
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+
 
     <div id="toolbar" class="btn-group">
         <button id="btn_add" type="button" class="btn btn-default">
@@ -126,7 +106,7 @@
         oTableInit.Init = function () {
             layer.load(0, {shade: false, time: 1000}); //0代表加载的风格，支持0-2
             $('#mytab').bootstrapTable({
-                url: '${pageContext.request.contextPath}/Account/selectAllAccount.json',         //请求后台的URL（*）
+                url: '${pageContext.request.contextPath}/account//queryAll.json',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
                 striped: true,                      //是否显示行间隔色
@@ -152,7 +132,7 @@
                 clickToSelect: true,                //是否启用点击选中行
                 singleSelect: true,           // 单选checkbox
                 //height: 500,                        行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
-                uniqueId: "memberId",                     //每一行的唯一标识，一般为主键列
+                uniqueId: "accountId",                     //每一行的唯一标识，一般为主键列
                 showToggle: true,                    //是否显示详细视图和列表视图的切换按钮
                 cardView: false,                    //是否显示详细视图
                 showExport: true,                     //是否显示导出
@@ -161,10 +141,10 @@
                 rowStyle: function (row, index) {
                     //这里有5个取值代表5中颜色['active', 'success', 'info', 'warning', 'danger'];
                     var strclass = "";
-                    if (row.memberStatus == false) {
+                    if (row.accountStatus == false) {
                         strclass = 'danger';//还有一个active
                     }
-                    else if (row.memberName == "已删除") {
+                    else if (row.accountName == "已删除") {
                         strclass = 'danger';
                     }
                     else {
@@ -189,49 +169,48 @@
                     },
                     {
                         field: "accountName",
-                        title: "姓名",
+                        title: "账号名",
                         sortable: true,
                         titleTooltip: "this is name"
                     },
                     {
                         field: "accountPassword",
-                        title: "班级名字",
-                        sortable: true, //是否可排序
+                        title: "密码",
                         order: "desc"//默认排序方式
                     },
                     {
                         field: "accountPhone",
-//                    title: "INFO[using-formatter]",
-                        title: "性别",
+                        title: "手机号码",
                         sortable: true, //是否可排序
                         order: "desc",//默认排序方式
                         formatter: 'sexFormatter' //对本列数据做格式化
                     },
                     {
                         field: "accountEmail",
-                        title: "年级",
+                        title: "邮箱",
                         sortable: true, //是否可排序
                         order: "desc"//默认排序方式
                     },
                     {
                         field: "accountStatus",
-                        title: "管理员",
-                        sortable: true, //是否可排序
-                        order: "desc"//默认排序方式
-                    },
-                    {
-                        field: "accountRoleId",
-                        title: "部门",
+                        title: "账号状态",
                         sortable: true, //是否可排序
                         order: "desc",//默认排序方式
-                        formatter: "departmentFormatter" //格式化部门
+                        formatter: "accountStatusFormatter" //格式化账号状态
                     },
                     {
-                        field: "accountMemberId",
-                        title: "状态",
+                        field: "accountRoles",
+                        title: "账号角色",
+                        sortable: true, //是否可排序
+                        order: "desc",//默认排序方式
+                        formatter: "rolesFormatter" //格式化部门
+                    },
+                    {
+                        field: "accountMember",
+                        title: "对应成员",
                         sortable: true, //是否可排序
                         order: "desc", //默认排序方式
-                        formatter: "memberStatusFormatter"   //格式化数据
+                        formatter: "accountStatusFormatter"   //格式化数据
                     }
 
                 ],
@@ -270,9 +249,9 @@
      * @param  {[type]} index [description]
      * @return {string}       [description]
      */
-    function memberStatusFormatter(value, row, index) {
-        var memberStatus = row.memberStatus == true ? '正常' : '冻结';
-        return memberStatus;
+    function accountStatusFormatter(value, row, index) {
+        var accountStatus = row.accountStatus == true ? '正常' : '冻结';
+        return accountStatus;
     }
 
     /**
@@ -281,77 +260,31 @@
      * @returns {string}
      */
     function sexFormatter(value, row, index) {
-        return row.memberSex == true ? "女" : "男";
+        return row.accountSex == true ? "女" : "男";
     }
 
-    /**
-     * 格式化部门
-     * @param value
-     * @param row
-     * @param index
-     * @returns {*}
-     */
-    function departmentFormatter(value, row, index){
-        switch(row.memberDepartmentId ){
-            case 1 :
-                return "办公室"; break;
-            case 2:
-                return "策划部"; break;
-            case 3:
-                return "组织部"; break;
-            case 4:
-                return "宣传部"; break;
-            default:
-                return "无部门"; break;
-
-        }
-    }
 
     /**
      * 格式化角色
      * @param row
      * @returns {*}
      */
-    function memberRoleFormatter(value, row, index){
-        switch(row.memberRoleId){
-            case 1 :
-                return "干事"; break;
-            case 2:
-                return "代理部长"; break;
-            case 3:
-                return "代理会长"; break;
-            case 4:
-                return "主任"; break;
-            case 5:
-                return "副主任"; break;
-            case 6:
-                return "部长"; break;
-            case 7:
-                return "副部长"; break;
-            case 8:
-                return "会长"; break;
-            case 9:
-                return "副会长"; break;
-            case 10:
-                return "指导老师"; break;
-            default:
-                return "未知角色";  break;
-
-        }
+    function rolesFormatter(value, row, index) {
+        return row.accountRoles.roleName;
     }
 
 
 
 
-    //新增按钮的方法
+                //新增按钮的方法
     $("#btn_add").click(function () {
-        insertMember();
+        insertaccount();
     });
-    function insertMember(){
+    function insertaccount(){
         //弹出即全屏
         var index = layer.open({
             type: 2,
-            content: '${pageContext.request.contextPath}/Member/InsertMember.html',
+            content: '${pageContext.request.contextPath}/account/insert.html',
             area: ['320px', '530px'],
             maxmin: true
         });
@@ -364,22 +297,22 @@
         if (selectedRaido.length === 0) {
             layer.msg('请先勾选你要编辑的一行数据。。', {icon: 5});
         } else {
-            var memberId = selectedRaido[0].memberId;
-            editMemeber(memberId);
+            var accountId = selectedRaido[0].accountId;
+            editMemeber(accountId);
         }
     });
 
     /**
      * 准备编辑表格操作
      */
-    function editMemeber(memberId) {
+    function editMemeber(accountId) {
         //iframe层-父子操作
         var index=layer.open({
             type: 2,
             area: ['300px', '530px'],
             fixed: true, //不固定
             maxmin: true,
-            content: '${pageContext.request.contextPath}/Member/UpdateMember.html/' + memberId
+            content: '${pageContext.request.contextPath}/account/update.html/' + accountId
         });
 
 
@@ -387,17 +320,17 @@
 
     //删除按钮的方法
     $("#btn_delete").click(function () {
-        var selectedRaido = $('#mytab').bootstrapTable('getSelections');
-        if (selectedRaido.length === 0) {
+        var selectedRadio = $('#mytab').bootstrapTable('getSelections');
+        if (selectedRadio.length === 0) {
             layer.msg('请先勾选一条你要删除的数据。。', {icon: 5});
         } else {
             //询问框
-            layer.confirm('您确定要删除【' + selectedRaido[0].memberName + "】这条成员的信息吗?", {
+            layer.confirm('您确定要删除【' + selectedRadio[0].accountName + "】这条成员的信息吗?", {
                 btn: ['确定', '点错了'] //按钮
             }, function () {
                 layer.msg('准备删除了', {icon: 1});
-                var memberId = selectedRaido[0].memberId;
-                deleteMember(memberId);
+                var accountId = selectedRadio[0].accountId;
+                delectation(accountId);
             }, function () {
                 layer.msg('已经取消了', {
                     time: 20000 //20s后自动关闭
@@ -410,12 +343,12 @@
     /**
      * 提交删除表格操作
      * */
-    function deleteMember(memberId) {
+    function delectation(accountId) {
         $.ajax({
             type: "get",
-            url: "${pageContext.request.contextPath}/Member/DeleteMemberById.json/" + memberId,
+            url: "${pageContext.request.contextPath}/account/deleteById.json/" + accountId,
             success: function (result) {
-                if(result.status ==901){
+                if(result.status ==201){
                     layer.msg(result.message, {icon: 1});
                     layer.load(0, {shade: false,time: 1000});
                     $("#mytab").bootstrapTable("refresh");

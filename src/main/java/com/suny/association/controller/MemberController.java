@@ -4,7 +4,6 @@ import com.suny.association.enums.MemberEnum;
 import com.suny.association.pojo.po.Department;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.pojo.po.MemberRoles;
-import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IDepartmentService;
 import com.suny.association.service.interfaces.IMemberRolesService;
 import com.suny.association.service.interfaces.IMemberService;
@@ -12,9 +11,7 @@ import com.suny.association.utils.CustomDate;
 import com.suny.association.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -34,35 +31,23 @@ public class MemberController {
     
     private final IMemberRolesService memberRolesService;
     
-    private final IAccountService accountService;
-    
-    
     
     
     @Autowired
-    public MemberController(IDepartmentService departmentService, IMemberService memberService, IMemberRolesService memberRolesService, IAccountService accountService) {
+    public MemberController(IDepartmentService departmentService, IMemberService memberService, IMemberRolesService memberRolesService) {
         this.departmentService = departmentService;
         this.memberService = memberService;
         this.memberRolesService = memberRolesService;
-        this.accountService = accountService;
     }
     
     
-    @RequestMapping(value = "/insert.json")
-    @ResponseBody public JsonResult insert(Member member) {
+    @RequestMapping(value = "/insert.json",method = RequestMethod.POST)
+    @ResponseBody
+    public JsonResult insert(@RequestBody Member member) {
         memberService.insert(member);
-        //createAccount(member.getMemberId());
         return JsonResult.successResult(MemberEnum.SUCCESS_INSERT_MEMBER_INFO);
     }
     
-    
-   /* private void createAccount(int memberId) {
-        Account autoAccount = new Account();
-        autoAccount.getAccountMember().setMemberId(memberId);
-        autoAccount.setAccountName(RandomID.getOrderIdByUUId());
-        accountService.insert(autoAccount);
-    }
-    */
     
     @RequestMapping(value = "/insert.html")
     public ModelAndView insertPage(ModelAndView modelAndView) {
@@ -81,20 +66,23 @@ public class MemberController {
     @RequestMapping(value = "/deleteById.json/{id}")
     @ResponseBody
     public JsonResult deleteById(@PathVariable("id") Integer id) {
+        if (memberService.queryById(id) == null) {
+            return JsonResult.failResult(MemberEnum.NOT_HAVE_THIS_MEMBER_INFO);
+        }
         memberService.deleteById(id);
         return JsonResult.successResult(MemberEnum.SUCCESS_DELETE_MEMBER_INFO);
     }
     
     
-    @RequestMapping(value = "/update.json")
+    @RequestMapping(value = "/update.json",method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult update(Member member) {
+    public JsonResult update(@RequestBody Member member) {
         memberService.update(member);
         return JsonResult.successResult(MemberEnum.SUCCESS_UPDATE_MEMBER_INFO);
     }
     
     
-    @RequestMapping(value = "/update.html/{id}")
+    @RequestMapping(value = "/update.html/{id}",method = RequestMethod.GET)
     public ModelAndView updatePage(@PathVariable("id") Integer id, ModelAndView modelAndView) {
         Member member = memberService.queryById(id);
         List<Member> managerList = memberService.queryNormalManager();
@@ -131,11 +119,11 @@ public class MemberController {
     }
     
     
-    @RequestMapping(value = "/queryAll.json")
+    @RequestMapping(value = "/queryAll.json",method = RequestMethod.GET)
     @ResponseBody
     public JsonResult queryAll() {
         List<Member> memberList = memberService.queryAll();
-        if ( memberList.size() != 0 && !memberList.isEmpty()) {
+        if (memberList.size() != 0 && !memberList.isEmpty()) {
             return JsonResult.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);
         }
         return JsonResult.failResult(MemberEnum.FAIL_SELECT_MEMBER_INFO);

@@ -10,7 +10,7 @@ public class Account implements Serializable{
 
     private String accountPassword;
 
-    private Integer accountPhone;
+    private Long accountPhone;
 
     private String accountEmail;
 
@@ -25,7 +25,7 @@ public class Account implements Serializable{
     }
     
     
-    public Account(Long accountId, String accountName, String accountPassword, Integer accountPhone, String accountEmail, Boolean accountStatus, Roles accountRoles, Member accountMember) {
+    public Account(Long accountId, String accountName, String accountPassword, Long accountPhone, String accountEmail, Boolean accountStatus, Roles accountRoles, Member accountMember) {
         this.accountId = accountId;
         this.accountName = accountName;
         this.accountPassword = accountPassword;
@@ -61,11 +61,11 @@ public class Account implements Serializable{
         this.accountPassword = accountPassword;
     }
     
-    public Integer getAccountPhone() {
+    public Long getAccountPhone() {
         return accountPhone;
     }
     
-    public void setAccountPhone(Integer accountPhone) {
+    public void setAccountPhone(Long accountPhone) {
         this.accountPhone = accountPhone;
     }
     

@@ -19,6 +19,7 @@
 
     <link href="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
           rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
@@ -101,7 +102,7 @@
     </style>
 </head>
 <body>
-<header id="header">
+<div><header id="header">
     <ul id="menu">
         <li id="guide" class="line-trigger">
             <div class="line-wrap">
@@ -270,7 +271,7 @@
                            href="javascript:Tab.addTab('角色管理', '${pageContext.request.contextPath}/manage/role/index');">角色管理</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('用户管理', '${pageContext.request.contextPath}/Account/AccountManager.html');">用户管理</a>
+                           href="javascript:Tab.addTab('用户管理', '${pageContext.request.contextPath}/account//accountManager.html');">用户管理</a>
                     </li>
                 </ul>
             </li>
@@ -289,7 +290,7 @@
                            href="javascript:Tab.addTab('公共码表', '${pageContext.request.contextPath}/manage/coder/index');">公共码表</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('会话管理', '${pageContext.request.contextPath}/manage/session/index');">会话管理</a>
+                           href="javascript:Tab.addTab('会话管理', '${pageContext.request.contextPath}/session/index');">会话管理</a>
                     </li>
                     <li><a class="waves-effect"
                            href="javascript:Tab.addTab('日志记录', '${pageContext.request.contextPath}/manage/log/index');">日志记录</a>
@@ -366,10 +367,11 @@
         </div>
     </section>
 </section>
-<footer id="footer"></footer>
+<footer id="footer"></footer></div>
 
 <script src="${pageContext.request.contextPath}/plugins/jquery.1.12.4.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/BootstrapMenu.min.js"></script>
@@ -377,8 +379,10 @@
 <script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.jdirk.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/jquery.cookie.js"></script>
-<script src="${pageContext.request.contextPath}/js/admin.js"></script>
+<script src="${pageContext.request.contextPath}/plugins/select2/js/select2.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
+<script src="${pageContext.request.contextPath}/js/common.js"></script>
+<script src="${pageContext.request.contextPath}/js/admin.js"></script>
 <script>
     function clickLogout() {
         //询问框
