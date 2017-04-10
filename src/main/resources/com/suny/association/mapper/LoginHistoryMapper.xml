@@ -4,10 +4,12 @@
     <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.LoginHistory">
         <id property="loginHistoryId" column="login_history_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
         <result property="lastLoginIp" column="last_login_ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="loginAddress" column="login_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <result property="loginBrowser" column="login_browser" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="loginOsVersion" column="login_os_version" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="loginUserAgent" column="login_user_agent" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="loginStatus" column="login_status"  jdbcType="BOOLEAN" javaType="java.lang.Boolean"/>
         <association property="historyAccountId" column="history_account_id" javaType="com.suny.association.pojo.po.Account" select="getAccount"/>
     </resultMap>
 
@@ -31,10 +33,12 @@
             l.login_history_id,
             l.history_account_id,
             l.last_login_ip,
+            l.login_address,
             l.last_login_time,
             l.login_browser,
             l.login_os_version,
-            l.login_user_agent
+            l.login_user_agent,
+            l.login_status
         FROM login_history AS  l
         LIMIT
             #{offset},

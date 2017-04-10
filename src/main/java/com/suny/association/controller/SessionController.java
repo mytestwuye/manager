@@ -1,9 +1,9 @@
 package com.suny.association.controller;
 
-import com.suny.association.enums.LoginHistoryEnum;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.suny.association.pojo.po.LoginHistory;
 import com.suny.association.service.interfaces.ILoginHistoryService;
-import com.suny.association.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,14 +33,17 @@ public class SessionController {
 
     @RequestMapping(value = "list" ,method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult query(@RequestParam(value = "offset",required = false,defaultValue = "0") int offset,
+    public  Map  query(@RequestParam(value = "offset",required = false,defaultValue = "0") int offset,
                             @RequestParam(value = "limit",required = false,defaultValue = "10") int limit){
         List<LoginHistory> loginHistoryList=loginHistoryService.list(offset,limit);
         int total = loginHistoryService.queryCount();
         Map tableDate = new HashMap();
         tableDate.put("rows", loginHistoryList);
         tableDate.put("total", total);
-        return JsonResult.successResultAndData(LoginHistoryEnum.SUCCESS_QUERY,tableDate);
+        Gson gson = new GsonBuilder().enableComplexMapKeySerialization()
+                .create();
+
+        return tableDate;
     }
 
     @RequestMapping(value = "/index" ,method = RequestMethod.GET)

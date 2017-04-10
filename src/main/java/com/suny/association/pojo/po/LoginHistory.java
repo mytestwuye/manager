@@ -9,6 +9,8 @@ public class LoginHistory {
 
     private String lastLoginIp;
 
+    private String loginAddress;
+
     private Date lastLoginTime;
 
     private String loginBrowser;
@@ -17,17 +19,21 @@ public class LoginHistory {
 
     private String loginUserAgent;
 
+    private boolean loginStatus;
+
     public LoginHistory() {
     }
 
-    public LoginHistory(Long loginHistoryId, Account historyAccountId, String lastLoginIp, Date lastLoginTime, String loginBrowser, String loginOsVersion, String loginUserAgent) {
+    public LoginHistory(Long loginHistoryId, Account historyAccountId, String lastLoginIp, String loginAddress, Date lastLoginTime, String loginBrowser, String loginOsVersion, String loginUserAgent, boolean loginStatus) {
         this.loginHistoryId = loginHistoryId;
         this.historyAccountId = historyAccountId;
         this.lastLoginIp = lastLoginIp;
+        this.loginAddress = loginAddress;
         this.lastLoginTime = lastLoginTime;
         this.loginBrowser = loginBrowser;
         this.loginOsVersion = loginOsVersion;
         this.loginUserAgent = loginUserAgent;
+        this.loginStatus = loginStatus;
     }
 
     public Long getLoginHistoryId() {
@@ -52,6 +58,14 @@ public class LoginHistory {
 
     public void setLastLoginIp(String lastLoginIp) {
         this.lastLoginIp = lastLoginIp;
+    }
+
+    public String getLoginAddress() {
+        return loginAddress;
+    }
+
+    public void setLoginAddress(String loginAddress) {
+        this.loginAddress = loginAddress;
     }
 
     public Date getLastLoginTime() {
@@ -84,5 +98,13 @@ public class LoginHistory {
 
     public void setLoginUserAgent(String loginUserAgent) {
         this.loginUserAgent = loginUserAgent;
+    }
+
+    public boolean isLoginStatus() {
+        return loginStatus;
+    }
+
+    public void setLoginStatus(boolean loginStatus) {
+        this.loginStatus = loginStatus;
     }
 }

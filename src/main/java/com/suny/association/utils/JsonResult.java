@@ -133,13 +133,7 @@ public class JsonResult {
     public static JsonObject toJsonObject(String json) {
         return JSON_PARSER.parse(json).getAsJsonObject();
     }
-    
-    /**
-     * 将JsonObject转换成Json字符串
-     */
-    public static String toJson(JsonObject jsonObject) {
-        return jsonObject.toString();
-    }
+
     
     
     private JsonResult() {

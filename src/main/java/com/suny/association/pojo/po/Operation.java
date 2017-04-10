@@ -1,5 +1,7 @@
 package com.suny.association.pojo.po;
 
+import java.util.Date;
+
 public class Operation {
     private Long operationId;
 
@@ -13,20 +15,31 @@ public class Operation {
 
     private String operationRequestUrl;
 
-    private Long operationAccountId;
+    private Date operationTime;
 
-    public Operation(Long operationId, String operationMessage, String operationBrower, String operationOsVersion, String operationUserAgent, String operationRequestUrl, Long operationAccountId) {
+    private String operationIp;
+
+    private String operationAddress;
+
+    private Boolean operationStatus;
+
+    private Account operationAccountId;
+
+    public Operation() {
+    }
+
+    public Operation(Long operationId, String operationMessage, String operationBrower, String operationOsVersion, String operationUserAgent, String operationRequestUrl, Date operationTime, String operationIp, String operationAddress, Boolean operationStatus, Account operationAccountId) {
         this.operationId = operationId;
         this.operationMessage = operationMessage;
         this.operationBrower = operationBrower;
         this.operationOsVersion = operationOsVersion;
         this.operationUserAgent = operationUserAgent;
         this.operationRequestUrl = operationRequestUrl;
+        this.operationTime = operationTime;
+        this.operationIp = operationIp;
+        this.operationAddress = operationAddress;
+        this.operationStatus = operationStatus;
         this.operationAccountId = operationAccountId;
-    }
-
-    public Operation() {
-        super();
     }
 
     public Long getOperationId() {
@@ -42,7 +55,7 @@ public class Operation {
     }
 
     public void setOperationMessage(String operationMessage) {
-        this.operationMessage = operationMessage == null ? null : operationMessage.trim();
+        this.operationMessage = operationMessage;
     }
 
     public String getOperationBrower() {
@@ -50,7 +63,7 @@ public class Operation {
     }
 
     public void setOperationBrower(String operationBrower) {
-        this.operationBrower = operationBrower == null ? null : operationBrower.trim();
+        this.operationBrower = operationBrower;
     }
 
     public String getOperationOsVersion() {
@@ -58,7 +71,7 @@ public class Operation {
     }
 
     public void setOperationOsVersion(String operationOsVersion) {
-        this.operationOsVersion = operationOsVersion == null ? null : operationOsVersion.trim();
+        this.operationOsVersion = operationOsVersion;
     }
 
     public String getOperationUserAgent() {
@@ -66,7 +79,7 @@ public class Operation {
     }
 
     public void setOperationUserAgent(String operationUserAgent) {
-        this.operationUserAgent = operationUserAgent == null ? null : operationUserAgent.trim();
+        this.operationUserAgent = operationUserAgent;
     }
 
     public String getOperationRequestUrl() {
@@ -74,14 +87,46 @@ public class Operation {
     }
 
     public void setOperationRequestUrl(String operationRequestUrl) {
-        this.operationRequestUrl = operationRequestUrl == null ? null : operationRequestUrl.trim();
+        this.operationRequestUrl = operationRequestUrl;
     }
 
-    public Long getOperationAccountId() {
+    public Date getOperationTime() {
+        return operationTime;
+    }
+
+    public void setOperationTime(Date operationTime) {
+        this.operationTime = operationTime;
+    }
+
+    public String getOperationIp() {
+        return operationIp;
+    }
+
+    public void setOperationIp(String operationIp) {
+        this.operationIp = operationIp;
+    }
+
+    public String getOperationAddress() {
+        return operationAddress;
+    }
+
+    public void setOperationAddress(String operationAddress) {
+        this.operationAddress = operationAddress;
+    }
+
+    public Boolean getOperationStatus() {
+        return operationStatus;
+    }
+
+    public void setOperationStatus(Boolean operationStatus) {
+        this.operationStatus = operationStatus;
+    }
+
+    public Account getOperationAccountId() {
         return operationAccountId;
     }
 
-    public void setOperationAccountId(Long operationAccountId) {
+    public void setOperationAccountId(Account operationAccountId) {
         this.operationAccountId = operationAccountId;
     }
 }

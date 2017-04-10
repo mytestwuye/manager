@@ -7,6 +7,8 @@ import com.suny.association.service.interfaces.IOperationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Comments:
  * Author:   孙建荣
@@ -14,15 +16,23 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class OperationServiceImpl extends AbstractBaseServiceImpl<Operation> implements IOperationService {
-    private  OperationMapper operationMapper;
+
+    private final OperationMapper operationMapper;
     
+
     @Autowired
     public OperationServiceImpl(OperationMapper operationMapper) {
         this.operationMapper = operationMapper;
     }
-    
-    public OperationServiceImpl() {
+
+
+    @Override
+    public List<Operation> list(int offset, int limit) {
+        return operationMapper.list(offset,limit);
     }
-    
-    
+
+    @Override
+    public int queryCount() {
+        return operationMapper.queryCount();
+    }
 }

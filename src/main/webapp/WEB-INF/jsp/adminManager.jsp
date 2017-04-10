@@ -243,10 +243,10 @@
                     首页</a>
             </li>
             <li class="sub-menu system_menus system_1 0">
-                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts-list"></i> 成员信息管理</a>
+                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts-list"></i> 协会信息管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('协会档案信息', '${pageContext.request.contextPath}/member/memberManager.html');">协会档案信息</a>
+                           href="javascript:Tab.addTab('协会成员信息', '${pageContext.request.contextPath}/member/memberManager.html');">协会成员信息</a>
                     </li>
                     <li><a class="waves-effect"
                            href="javascript:Tab.addTab('协会档案管理', '${pageContext.request.contextPath}/Member/MemberManager.html');">协会档案管理</a>
@@ -265,13 +265,13 @@
                 </ul>
             </li>
             <li class="sub-menu system_menus system_1 3">
-                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 角色用户管理</a>
+                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 用户管理</a>
                 <ul>
                     <li><a class="waves-effect"
                            href="javascript:Tab.addTab('角色管理', '${pageContext.request.contextPath}/manage/role/index');">角色管理</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('用户管理', '${pageContext.request.contextPath}/account//accountManager.html');">用户管理</a>
+                           href="javascript:Tab.addTab('用户信息管理', '${pageContext.request.contextPath}/account/accountManager.html');">用户信息管理</a>
                     </li>
                 </ul>
             </li>
@@ -290,10 +290,10 @@
                            href="javascript:Tab.addTab('公共码表', '${pageContext.request.contextPath}/manage/coder/index');">公共码表</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('会话管理', '${pageContext.request.contextPath}/session/index');">会话管理</a>
+                           href="javascript:Tab.addTab('登录日志', '${pageContext.request.contextPath}/session/index.html');">登录日志</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('日志记录', '${pageContext.request.contextPath}/manage/log/index');">日志记录</a>
+                           href="javascript:Tab.addTab('日志记录', '${pageContext.request.contextPath}/operations/log/index.html');">日志记录</a>
                     </li>
                     <li><a class="waves-effect"
                            href="javascript:Tab.addTab('键值设置', '${pageContext.request.contextPath}/manage/map/index');">键值设置</a>

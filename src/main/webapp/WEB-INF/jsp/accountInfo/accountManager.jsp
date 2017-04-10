@@ -183,7 +183,6 @@
                         title: "手机号码",
                         sortable: true, //是否可排序
                         order: "desc",//默认排序方式
-                        formatter: 'sexFormatter' //对本列数据做格式化
                     },
                     {
                         field: "accountEmail",
@@ -208,9 +207,7 @@
                     {
                         field: "accountMember",
                         title: "对应成员",
-                        sortable: true, //是否可排序
-                        order: "desc", //默认排序方式
-                        formatter: "accountStatusFormatter"   //格式化数据
+                        formatter: "memberFormatter"   //格式化数据
                     }
 
                 ],
@@ -242,130 +239,27 @@
         return oTableInit;
     };
 
-    /**
-     * 格式化成员状态
-     * @param  {[type]} value [description]
-     * @param  {[type]} row   [description]
-     * @param  {[type]} index [description]
-     * @return {string}       [description]
-     */
     function accountStatusFormatter(value, row, index) {
         var accountStatus = row.accountStatus == true ? '正常' : '冻结';
         return accountStatus;
     }
 
-    /**
-     * 格式化性别
-     * @param row
-     * @returns {string}
-     */
-    function sexFormatter(value, row, index) {
-        return row.accountSex == true ? "女" : "男";
+
+    function memberFormatter(value,row, index) {
+        console.log(row.accountMember);
+        if(row.accountMember.memberName != null){
+            return row.accountMember.memberName;
+        }
+        else{
+            return "暂无";
+        }
+
     }
 
 
-    /**
-     * 格式化角色
-     * @param row
-     * @returns {*}
-     */
     function rolesFormatter(value, row, index) {
         return row.accountRoles.roleName;
     }
-
-
-
-
-                //新增按钮的方法
-    $("#btn_add").click(function () {
-        insertaccount();
-    });
-    function insertaccount(){
-        //弹出即全屏
-        var index = layer.open({
-            type: 2,
-            content: '${pageContext.request.contextPath}/account/insert.html',
-            area: ['320px', '530px'],
-            maxmin: true
-        });
-    }
-
-
-    //编辑按钮的方法
-    $("#btn_edit").click(function () {
-        var selectedRaido = $('#mytab').bootstrapTable('getSelections');
-        if (selectedRaido.length === 0) {
-            layer.msg('请先勾选你要编辑的一行数据。。', {icon: 5});
-        } else {
-            var accountId = selectedRaido[0].accountId;
-            editMemeber(accountId);
-        }
-    });
-
-    /**
-     * 准备编辑表格操作
-     */
-    function editMemeber(accountId) {
-        //iframe层-父子操作
-        var index=layer.open({
-            type: 2,
-            area: ['300px', '530px'],
-            fixed: true, //不固定
-            maxmin: true,
-            content: '${pageContext.request.contextPath}/account/update.html/' + accountId
-        });
-
-
-    }
-
-    //删除按钮的方法
-    $("#btn_delete").click(function () {
-        var selectedRadio = $('#mytab').bootstrapTable('getSelections');
-        if (selectedRadio.length === 0) {
-            layer.msg('请先勾选一条你要删除的数据。。', {icon: 5});
-        } else {
-            //询问框
-            layer.confirm('您确定要删除【' + selectedRadio[0].accountName + "】这条成员的信息吗?", {
-                btn: ['确定', '点错了'] //按钮
-            }, function () {
-                layer.msg('准备删除了', {icon: 1});
-                var accountId = selectedRadio[0].accountId;
-                delectation(accountId);
-            }, function () {
-                layer.msg('已经取消了', {
-                    time: 20000 //20s后自动关闭
-                });
-            });
-        }
-    });
-
-
-    /**
-     * 提交删除表格操作
-     * */
-    function delectation(accountId) {
-        $.ajax({
-            type: "get",
-            url: "${pageContext.request.contextPath}/account/deleteById.json/" + accountId,
-            success: function (result) {
-                if(result.status ==201){
-                    layer.msg(result.message, {icon: 1});
-                    layer.load(0, {shade: false,time: 1000});
-                    $("#mytab").bootstrapTable("refresh");
-
-                }
-                else{
-                    layer.msg(result.message, {icon: 4});
-                }
-
-
-            },
-            error: function () {
-                layer.msg('出错了！', {icon: 1});
-            }
-        })
-    }
-
 
     /**
      * 初始化表格
