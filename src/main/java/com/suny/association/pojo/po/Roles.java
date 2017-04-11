@@ -1,17 +1,21 @@
 package com.suny.association.pojo.po;
 
+import java.util.Date;
+
 public class Roles {
     private Integer roleId;
 
     private String roleName;
 
-    public Roles(Integer roleId, String roleName) {
-        this.roleId = roleId;
-        this.roleName = roleName;
-    }
+    private Date createTime;
 
     public Roles() {
-        super();
+    }
+
+    public Roles(Integer roleId, String roleName, Date createTime) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+        this.createTime = createTime;
     }
 
     public Integer getRoleId() {
@@ -27,6 +31,14 @@ public class Roles {
     }
 
     public void setRoleName(String roleName) {
-        this.roleName = roleName == null ? null : roleName.trim();
+        this.roleName = roleName;
+    }
+
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
     }
 }

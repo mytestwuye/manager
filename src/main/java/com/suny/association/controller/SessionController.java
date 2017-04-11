@@ -1,7 +1,5 @@
 package com.suny.association.controller;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.suny.association.pojo.po.LoginHistory;
 import com.suny.association.service.interfaces.ILoginHistoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +29,7 @@ public class SessionController {
         this.loginHistoryService = loginHistoryService;
     }
 
-    @RequestMapping(value = "list" ,method = RequestMethod.GET)
+    @RequestMapping(value = "list.json" ,method = RequestMethod.GET)
     @ResponseBody
     public  Map  query(@RequestParam(value = "offset",required = false,defaultValue = "0") int offset,
                             @RequestParam(value = "limit",required = false,defaultValue = "10") int limit){
@@ -40,13 +38,10 @@ public class SessionController {
         Map tableDate = new HashMap();
         tableDate.put("rows", loginHistoryList);
         tableDate.put("total", total);
-        Gson gson = new GsonBuilder().enableComplexMapKeySerialization()
-                .create();
-
         return tableDate;
     }
 
-    @RequestMapping(value = "/index" ,method = RequestMethod.GET)
+    @RequestMapping(value = "/index.html" ,method = RequestMethod.GET)
     public String index(){
         return "/session/sessionList";
     }

@@ -62,7 +62,8 @@
     <select id="getRoles" parameterType="int" resultMap="accountRolesResult">
         SELECT
             role_id,
-            role_name
+            role_name,
+            role_create_time
         FROM roles
         WHERE role_id = #{ roleId }
     </select>
@@ -103,6 +104,7 @@
     <resultMap id="accountRolesResult" type="com.suny.association.pojo.po.Roles">
         <id property="roleId" column="role_id"/>
         <result property="roleName" column="role_name"/>
+        <result column="role_create_time"  property="createTime"  />
     </resultMap>
 
 
@@ -228,19 +230,6 @@
         DELETE FROM account
         WHERE account_id = #{accountId,jdbcType=BIGINT}
     </delete>
-
-    <!--<update id="update" parameterType="com.suny.association.pojo.po.Account">
-        UPDATE account
-        SET
-            account_name      = #{accountName,jdbcType=VARCHAR},
-            account_password  = #{accountPassword,jdbcType=VARCHAR},
-            account_phone     = #{accountPhone,jdbcType=INTEGER},
-            account_email     = #{accountEmail,jdbcType=VARCHAR},
-            account_status    = #{accountStatus,jdbcType=BIT},
-            account_role_id   = #{memberRoles,jdbcType=INTEGER},
-            account_member_id = #{accountMember.memberId,jdbcType=INTEGER}
-        WHERE account_id = #{accountId,jdbcType=BIGINT}
-    </update>-->
 
     <select id="queryById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT

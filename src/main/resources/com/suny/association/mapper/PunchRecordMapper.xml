@@ -1,15 +1,65 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.suny.association.mapper.PunchRecordMapper" >
-  <!--<resultMap id="BaseResultMap" type="com.suny.association.pojo.po.PunchRecord" >
-    <constructor >
-      <idArg column="punch_record_id" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="punch_datetime" jdbcType="TIMESTAMP" javaType="java.util.Date" />
-      <arg column="punch_today_date" jdbcType="DATE" javaType="java.util.Date" />
-      <arg column="punch_is_come" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="punch_type_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="punch_member_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-    </constructor>
-  </resultMap>-->
+<mapper namespace="com.suny.association.mapper.PunchRecordMapper">
+    <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.PunchRecord">
+        <id property="punchRecordId" column="punch_record_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result property="punchDatetime" column="punch_datetime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="punchTodayDate" column="punch_today_date" jdbcType="DATE" javaType="java.util.Date"/>
+        <result property="punchIsCome" column="punch_is_come" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association property="punchTypeId" column="punch_type_id" javaType="com.suny.association.pojo.po.PunchType"
+                     select="queryPunchTypeInfo"/>
+        <association property="punchMemberId" column="punch_member_id" javaType="com.suny.association.pojo.po.Member"
+                     select="queryMember"/>
+    </resultMap>
 
+    <resultMap id="memberInfo" type="com.suny.association.pojo.po.Member">
+        <id property="memberId" column="member_id"/>
+        <result property="memberName" column="member_name"/>
+        <result property="memberGradeNumber" column="member_grade_number"/>
+    </resultMap>
+
+    <select id="queryMember" resultMap="memberInfo" parameterType="int">
+        SELECT
+            member_id,
+            member_name,
+            member_grade_number,
+            member_manager_id
+        FROM member
+        WHERE
+            member_id = #{ punchMemberId }
+    </select>
+
+    <resultMap id="punchTypeInfo" type="com.suny.association.pojo.po.PunchType">
+        <id property="punchTypeId" column="punch_type_id"/>
+        <result property="punchTypeName" column="punch_type_name"/>
+    </resultMap>
+
+    <select id="queryPunchTypeInfo" resultMap="punchTypeInfo" parameterType="int">
+        SELECT
+            type.punch_type_id,
+            type.punch_type_name
+        FROM punchtype AS type
+        WHERE
+            punch_type_id = #{ punchTypeId }
+    </select>
+
+
+    <select id="list" parameterType="map" resultMap="BaseResultMap">
+        SELECT
+            record.punch_record_id,
+            record.punch_today_date,
+            record.punch_datetime,
+            record.punch_is_come,
+            record.punch_type_id,
+            record.punch_member_id
+        FROM punch_record AS record
+        LIMIT
+            #{offset},
+            #{limit}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*)
+        FROM punch_record;
+    </select>
 </mapper>

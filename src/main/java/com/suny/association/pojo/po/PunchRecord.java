@@ -4,28 +4,22 @@ import java.util.Date;
 
 public class PunchRecord {
     private Long punchRecordId;
-
     private Date punchDatetime;
-
     private Date punchTodayDate;
-
     private Boolean punchIsCome;
+    private PunchType punchTypeId;
+    private Member punchMemberId;
 
-    private Integer punchTypeId;
+    public PunchRecord() {
+    }
 
-    private Integer punchMemberId;
-
-    public PunchRecord(Long punchRecordId, Date punchDatetime, Date punchTodayDate, Boolean punchIsCome, Integer punchTypeId, Integer punchMemberId) {
+    public PunchRecord(Long punchRecordId, Date punchDatetime, Date punchTodayDate, Boolean punchIsCome, PunchType punchTypeId, Member punchMemberId) {
         this.punchRecordId = punchRecordId;
         this.punchDatetime = punchDatetime;
         this.punchTodayDate = punchTodayDate;
         this.punchIsCome = punchIsCome;
         this.punchTypeId = punchTypeId;
         this.punchMemberId = punchMemberId;
-    }
-
-    public PunchRecord() {
-        super();
     }
 
     public Long getPunchRecordId() {
@@ -60,19 +54,19 @@ public class PunchRecord {
         this.punchIsCome = punchIsCome;
     }
 
-    public Integer getPunchTypeId() {
+    public PunchType getPunchTypeId() {
         return punchTypeId;
     }
 
-    public void setPunchTypeId(Integer punchTypeId) {
+    public void setPunchTypeId(PunchType punchTypeId) {
         this.punchTypeId = punchTypeId;
     }
 
-    public Integer getPunchMemberId() {
+    public Member getPunchMemberId() {
         return punchMemberId;
     }
 
-    public void setPunchMemberId(Integer punchMemberId) {
+    public void setPunchMemberId(Member punchMemberId) {
         this.punchMemberId = punchMemberId;
     }
 }

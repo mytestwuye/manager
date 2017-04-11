@@ -34,4 +34,14 @@ public class RolesServiceImpl extends AbstractBaseServiceImpl<Roles> implements 
     public Roles queryById(int id) {
         return rolesMapper.queryById(id);
     }
+
+    @Override
+    public List<Roles> list(int offset, int limit) {
+        return rolesMapper.list(offset,limit);
+    }
+
+    @Override
+    public int queryCount() {
+        return rolesMapper.queryCount();
+    }
 }

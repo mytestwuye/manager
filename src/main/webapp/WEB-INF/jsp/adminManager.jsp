@@ -251,6 +251,9 @@
                     <li><a class="waves-effect"
                            href="javascript:Tab.addTab('协会档案管理', '${pageContext.request.contextPath}/Member/MemberManager.html');">协会档案管理</a>
                     </li>
+                    <li><a class="waves-effect"
+                           href="javascript:Tab.addTab('考勤记录', '${pageContext.request.contextPath}/punchLog/index.html');">考勤记录</a>
+                    </li>
                 </ul>
             </li>
             <li class="sub-menu system_menus system_1 0">
@@ -268,7 +271,7 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 用户管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('角色管理', '${pageContext.request.contextPath}/manage/role/index');">角色管理</a>
+                           href="javascript:Tab.addTab('用户角色管理', '${pageContext.request.contextPath}/account/role/index.html');">用户角色管理</a>
                     </li>
                     <li><a class="waves-effect"
                            href="javascript:Tab.addTab('用户信息管理', '${pageContext.request.contextPath}/account/accountManager.html');">用户信息管理</a>
