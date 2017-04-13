@@ -7,6 +7,39 @@
         <result column="role_create_time" property="createTime"/>
     </resultMap>
 
+    <resultMap id="AccountQuote" type="com.suny.association.pojo.po.Account">
+        <id property="accountId" column="account_id"/>
+        <result property="accountName" column="account_name"/>
+    </resultMap>
+
+    <select id="queryQuote" parameterType="Integer" resultMap="AccountQuote">
+        SELECT
+            account_id,
+            account_name
+        FROM account
+        WHERE account_role_id = #{ roleId}
+    </select>
+
+    <insert id="insert" parameterType="com.suny.association.pojo.po.Roles">
+        INSERT INTO roles
+        (role_name)
+        VALUES
+            (#{roleName})
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM roles
+        WHERE role_id = #{roleId}
+    </delete>
+
+
+    <update id="update" parameterType="com.suny.association.pojo.po.Roles">
+        UPDATE roles
+        SET role_name = #{roleName}
+        WHERE
+            role_id = #{roleId}
+    </update>
+
 
     <select id="queryAll" resultMap="BaseResultMap">
         SELECT
@@ -16,7 +49,7 @@
         FROM roles AS role
     </select>
 
-    <select id="queryById" parameterType="Integer">
+    <select id="queryById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
             role.role_id,
             role.role_name,
@@ -25,13 +58,13 @@
         WHERE role_id = #{roleId}
     </select>
 
-    <select id="queryByName" parameterType="String">
+    <select id="queryByName" parameterType="String" resultMap="BaseResultMap">
         SELECT
             role.role_id,
             role.role_name,
             role.role_create_time
         FROM roles AS role
-        WHERE role_name = #{roleName}
+        WHERE role_name LIKE CONCAT(CONCAT('%', #{roleName}), '%')
     </select>
 
 
@@ -48,7 +81,7 @@
 
     <select id="queryCount" resultType="int">
         SELECT count(*)
-        FROM operation;
+        FROM roles;
     </select>
 
 

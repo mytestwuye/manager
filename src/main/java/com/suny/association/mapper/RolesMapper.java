@@ -1,6 +1,7 @@
 package com.suny.association.mapper;
 
 import com.suny.association.mapper.interfaces.IMapper;
+import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Roles;
 import org.apache.ibatis.annotations.Param;
 
@@ -13,6 +14,8 @@ import java.util.List;
  */
 
 public interface RolesMapper extends IMapper<Roles> {
+
+     List<Account> queryQuote(@Param("roleId") Integer roleId);
 
     @Override
     List<Roles> queryAll();

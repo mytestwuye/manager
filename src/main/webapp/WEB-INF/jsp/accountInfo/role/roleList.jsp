@@ -18,35 +18,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>操作记录查看</title>
-    <link href="${basePath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
     <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
           rel="stylesheet"/>
     <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
           rel="stylesheet"/>
-    <link href="${basePath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
-          rel="stylesheet"/>
     <link href="${basePath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
     <link href="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
           rel="stylesheet"/>
-    <link href="${basePath}/plugins/jquery-confirm/jquery-confirm.min.css" rel="stylesheet"/>
-    <link href="${basePath}/css/admin.css" rel="stylesheet"/>
     <link href="${basePath}/css/common.css" rel="stylesheet"/>
+    <style>
+        form {
+            padding: 29px;
+        }
+    </style>
 </head>
 <body>
 <div>
     <div class="panel-body">
-            <div id="toolbar" class="btn-group">
-                <button id="btn_add" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-                </button>
-                <button id="btn_edit" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
-                </button>
-                <button id="btn_delete" type="button" class="btn btn-default">
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
-                </button>
-            </div>
+        <div id="toolbar" class="btn-group">
+            <button id="btn_add" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+            </button>
+            <button id="btn_edit" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+            </button>
+            <button id="btn_delete" type="button" class="btn btn-default">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+            </button>
+        </div>
         <table id="table"></table>
     </div>
 </div>
@@ -59,16 +59,17 @@
             <input id="roleId" type="text" class="form-control" value="">
         </div>
         <div class="form-group">
-            <label for="roleName">角色名字</label>
-            <input id="roleName" type="text" class="form-control" value="">
+            <label for="roleName1">角色名字</label>
+            <input id="roleName1" type="text" class="form-control">
         </div>
+        <button type="button" class="btn btn-warning btn-block" id="submit">点击新增</button>
     </form>
 </div>
 
 
 </body>
 
-<script src="${basePath}/plugins/jquery.1.12.4.min.js"></script>
+<script src="${basePath}/plugins/jquery-3.2.1.min.js"></script>
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
 <script src="${basePath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
@@ -78,13 +79,8 @@
 <script src="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
 <script src="${basePath}/plugins/device.min.js"></script>
-<script src="${basePath}/plugins/waves-0.7.5/waves.min.css"></script>
-<script src="${basePath}/plugins/fullPage/jquery.fullPage.min.js"></script>
-<script src="${basePath}/plugins/fullPage/jquery.jdirk.min.js"></script>
 <script src="${basePath}/plugins/jquery-confirm/jquery-confirm.min.js"></script>
 <script src="${basePath}/plugins/select2/js/select2.min.js"></script>
-<script src="${basePath}/plugins/jquery.cookie.js"></script>
-<script src="${basePath}/js/admin.js"></script>
 <script src="${basePath}/js/common.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
 
@@ -113,11 +109,9 @@
 
     });
 
-
     function tableHeight() {
         return $(window).height() - 20;
     }
-
 
     var TableInit = function () {
         var oTableInit = {};
@@ -148,7 +142,7 @@
                 showColumns: true,                  //是否显示所有的列
                 showRefresh: true,                  //是否显示刷新按钮
                 minimumCountColumns: 2,             //最少允许的列数
-                //clickToSelect: true,                //是否启用点击选中行
+                clickToSelect: true,                //是否启用点击选中行
                 singleSelect: true,           // 单选checkbox
                 //height: 500,                        行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
                 uniqueId: "roleId",                     //每一行的唯一标识，一般为主键列
@@ -172,10 +166,10 @@
                     return {classes: strclass}
                 },
                 columns: [
-                    {title: "全选", field: "select", checkbox: true, width: 20,align: "center",valign: "middle"},
+                    {title: "全选", field: "select", checkbox: true, width: 20, align: "center", valign: "middle"},
                     {field: 'roleId', title: '角色ID', sortable: true, align: 'center'},
                     {field: 'roleName', title: '角色名字', sortable: true, align: 'center'},
-                    {field: 'createTime', title: '创建时间', sortable: true, align: 'center',formatter: 'dateFormat'},
+                    {field: 'createTime', title: '创建时间', sortable: true, align: 'center', formatter: 'dateFormat'},
                 ],
                 onClickRow: function (row, $element) {
                     //$element是当前tr的jquery对象
@@ -217,97 +211,56 @@
     }
     //新增按钮的方法
     $("#btn_add").click(function () {
-        createAction();
+        //弹出即全屏
+        layer.open({
+            type: 2,
+            content: '${pageContext.request.contextPath}/account/role/insert.html',
+            area: ['320px', '300px'],
+            fixed: true,
+            maxmin: true
+        });
     });
 
-    function createAction() {
-        $.confirm({
-            type: 'dark',
-            animationSpeed: 300,
-            title: '新增系统',
-            content: $('#createDialog').html(),
-            buttons: {
-                confirm: {
-                    text: '确认',
-                    btnClass: 'waves-effect waves-button',
-                    action: function () {
-                        $.alert('确认');
-                    }
-                },
-                cancel: {
-                    text: '取消',
-                    btnClass: 'waves-effect waves-button'
-                }
-            }
-        });
-    }
-
+    //新增按钮的方法
     $("#btn_edit").click(function () {
-        updateAction();
-    })
-    function updateAction() {
-    }
-
-    
-    // 删除
-    function deleteAction() {
-        var rows = $table.bootstrapTable('getSelections');
-        if (rows.length == 0) {
-            $.confirm({
-                title: false,
-                content: '请至少选择一条记录！',
-                autoClose: 'cancel|3000',
-                backgroundDismiss: true,
-                buttons: {
-                    cancel: {
-                        text: '取消',
-                        btnClass: 'waves-effect waves-button'
-                    }
-                }
-            });
+        var selectedRadio = $('#table').bootstrapTable('getSelections');
+        if (selectedRadio.length === 0) {
+            layer.msg('请先勾选你要编辑的一行数据。。', {icon: 5});
         } else {
-            $.confirm({
-                type: 'red',
-                animationSpeed: 300,
-                title: false,
-                content: '确认删除该系统吗？',
-                buttons: {
-                    confirm: {
-                        text: '确认',
-                        btnClass: 'waves-effect waves-button',
-                        action: function () {
-                            var ids = new Array();
-                            for (var i in rows) {
-                                ids.push(rows[i].systemId);
-                            }
-                            $.alert('删除：id=' + ids.join("-"));
-                        }
-                    },
-                    cancel: {
-                        text: '取消',
-                        btnClass: 'waves-effect waves-button'
-                    }
-                }
-            });
+            var roleId = selectedRadio[0].roleId;
+            update(roleId);
         }
+    });
+
+    /**
+     * 准备编辑表格操作
+     */
+    function update(roleId) {
+        //iframe层-父子操作
+        layer.open({
+            type: 2,
+            area: ['300px', '530px'],
+            fixed: true, //不固定
+            maxmin: true,
+            content: '${pageContext.request.contextPath}/account/role/update.html/' + roleId
+        });
+
     }
-
-
 
 
     //删除按钮的方法
     $("#btn_delete").click(function () {
-        var selectedRadio = $('#mytab').bootstrapTable('getSelections');
+        var selectedRadio = $('#table').bootstrapTable('getSelections');
         if (selectedRadio.length === 0) {
             layer.msg('请先勾选一条你要删除的数据。。', {icon: 5});
         } else {
             //询问框
-            layer.confirm('您确定要删除【' + selectedRadio[0].accountName + "】这条成员的信息吗?", {
+            layer.confirm('您确定要删除【' + selectedRadio[0].roleName + "】这条成员的信息吗?", {
                 btn: ['确定', '点错了'] //按钮
             }, function () {
                 layer.msg('准备删除了', {icon: 1});
-                var accountId = selectedRadio[0].accountId;
-                delectation(accountId);
+                var roleId = selectedRadio[0].roleId;
+                delectation(roleId);
             }, function () {
                 layer.msg('已经取消了', {
                     time: 20000 //20s后自动关闭
@@ -320,23 +273,25 @@
     /**
      * 提交删除表格操作
      * */
-    function delectation(accountId) {
+    function delectation(roleId) {
         $.ajax({
                     type: "get",
-                    url: "${basePath}/account/deleteById.json/" + accountId,
+                    url: "${basePath}/account/role/delete.json/" + roleId,
                     success: function (result) {
-                        if (result.status == 201) {
-                            layer.msg(result.message, {icon: 1});
+                        if (result.status == 103) {
+                            layer.msg("删除成功，请刷新查看效果", {icon: 1});
                             layer.load(0, {shade: false, time: 1000});
-                            $("#mytab").bootstrapTable("refresh");
-
+                            $("#table").bootstrapTable("refresh");
+                        }
+                        else if (result.status == 204) {
+                            layer.msg("此角色被引用，无法被删除", {icon: 4});
                         }
                         else {
-                            layer.msg(result.message, {icon: 4});
+                            layer.msg("删除失败", {icon: 4});
                         }
                     },
                     error: function () {
-                        layer.msg('出错了！', {icon: 1});
+                        layer.msg('出错了,请重试', {icon: 1});
                     }
                 }
         )

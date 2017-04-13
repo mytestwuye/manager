@@ -6,12 +6,22 @@ package com.suny.association.enums;
  * Create Date: 2017/03/08 18:10
  */
 public enum BaseEnum {
-    
-    NULL_OBJ("0001","对象为空"),
-    ERROR_ADD_USER("0002","添加用户失败"),
-    ERROR_DELETE_USER("000","删除用户失败"),
-    LOGIN_VERIFY_FAILURE("0003","登陆验证失败，请检查用户名密码是否正确"),
-    UNKNOWN_ERROR("0999","系统繁忙....");
+
+    LOGIN_FAILURE("001", "登陆验证失败，请检查用户名密码是否正确"),
+    ADD_FAILURE("002", "添加失败"),
+    DELETE_FAILURE("003", "删除失败"),
+    UPDATE_DELETE("004", "更新失败"),
+    SELECT_FAILURE("005", "查询失败"),
+    REPEAT_ADD("006", "重复添加"),
+    ADD_SUCCESS("102", "添加成功"),
+    DELETE_SUCCESS("103", "删除成功"),
+    UPDATE_SUCCESS("104", "更新成功"),
+    SELECT_SUCCESS("105", "查询成功"),
+    NULL_OBJ("201", "对象为空"),
+    FIELD_NULL("202","必要字段为空"),
+    PRIMARY_NULL("203","主键字段为空"),
+    HAVA_QUOTE("204","存在引用"),
+    UNKNOWN_ERROR("999", "系统繁忙....");
 
     String value;
     String desc;
@@ -37,11 +47,11 @@ public enum BaseEnum {
     public void setDesc(String desc) {
         this.desc = desc;
     }
-    
+
     @Override
     public String toString() {
-        return "系统代码:" + value +"," + desc ;
+        return "系统代码:" + value + "," + desc;
     }
-    
-    
+
+
 }
