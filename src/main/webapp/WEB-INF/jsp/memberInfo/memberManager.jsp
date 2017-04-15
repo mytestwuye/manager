@@ -22,7 +22,6 @@
     <link href="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
           rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet"/>
     <style>
         .panel {
             margin-bottom: 0;
@@ -30,19 +29,27 @@
     </style>
 </head>
 <body>
-<div class="panel-body" style="padding-bottom:0;">
+<div class="panel-body container" style="padding-bottom:0;">
     <div class="panel panel-default">
         <div class="panel-heading">查询条件</div>
         <div class="panel-body">
             <form id="formSearch" class="form-horizontal">
-                <div class="form-group" style="margin-top:15px">
+                <div class="form-group" >
                     <label class="control-label col-sm-1" for="txt_search_departmentname">部门名称</label>
                     <div class="col-sm-3">
                         <input type="text" class="form-control" id="txt_search_departmentname">
                     </div>
-                    <label class="control-label col-sm-1" for="txt_search_statu">状态</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="txt_search_statu">
+                    <label class="control-label col-sm-1" for="txt_search_status"></label>
+                    <div class="btn-group" id="txt_search_status">
+                        <label class="radio-inline">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="2" checked="checked"> 全部状态
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="1"> 正常状态
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="0"> 冻结状态
+                        </label>
                     </div>
                     <div class="col-sm-4" style="text-align:left;">
                         <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary"
@@ -139,9 +146,9 @@
                 buttonsAlign: "right",//按钮对齐方式
                 toolbarAlign: "left",//工具栏对齐方式
                 queryParams: oTableInit.queryParams,//传递参数（*）
-                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber: 1,                       //初始化加载第一页，默认第一页
-                pageSize: 5,                       //每页的记录行数（*）
+                pageSize: 10,                       //每页的记录行数（*）
                 pageList: [5, 10, 25, 50, 100],        //可供选择的每页的行数（*）
                 search: true,                       //是否显示表格搜索，此搜索是客户端搜索，不会进服务端，所以，个人感觉意义不大
                 strictSearch: true,
@@ -172,16 +179,22 @@
                     return {classes: strclass}
                 },
                 columns: [
-                    {title: "全选", field: "select", checkbox: true, width: 20,align: "center",valign: "middle" },
-                    {title: "ID",field: "memberId",sortable: true,order: "desc"},
+                    {title: "全选", field: "select", checkbox: true, width: 20, align: "center", valign: "middle"},
+                    {title: "ID", field: "memberId", sortable: true, order: "desc"},
                     {field: "memberName", title: "姓名", sortable: true, titleTooltip: "this is name"},
-                    {field: "memberClassName", title: "班级名字", sortable: true,order: "desc"},
-                    {field: "memberSex", title: "性别", sortable: true, order: "desc",formatter: 'sexFormatter'},
+                    {field: "memberClassName", title: "班级名字", sortable: true, order: "desc"},
+                    {field: "memberSex", title: "性别", sortable: true, order: "desc", formatter: 'sexFormatter'},
                     {field: "memberGradeNumber", title: "年级", sortable: true, order: "desc"},
                     {field: "member_manager_id", title: "管理员", sortable: true, order: "desc"},
-                    {field: "department", title: "部门", sortable: true, order: "desc",formatter: "departmentFormatter" },
-                    {field: "memberStatus", title: "状态", sortable: true, order: "desc", formatter: "memberStatusFormatter" },
-                    {field: "memberRoles", title: "角色", sortable: true, order: "desc",formatter: "memberRoleFormatter"}
+                    {field: "department", title: "部门", sortable: true, order: "desc", formatter: "departmentFormatter"},
+                    {
+                        field: "memberStatus",
+                        title: "状态",
+                        sortable: true,
+                        order: "desc",
+                        formatter: "memberStatusFormatter"
+                    },
+                    {field: "memberRoles", title: "角色", sortable: true, order: "desc", formatter: "memberRoleFormatter"}
                 ],
                 onClickRow: function (row, $element) {
                     //$element是当前tr的jquery对象
@@ -204,7 +217,7 @@
                 limit: params.limit,   //页面大小
                 offset: params.offset,  //页码
                 departmentname: $("#txt_search_departmentname").val(),
-                status: $("#txt_search_status").val()
+                status: parseInt($("#txt_search_status").find("input:radio:checked").val())
             };
             return temp;
         };
@@ -213,8 +226,13 @@
 
     function memberStatusFormatter(value, row, index) {
         //noinspection JSUnresolvedVariable
-        var memberStatus = row.memberStatus == true ? '正常' : '冻结';
-        return memberStatus;
+        var memberStatus = row.memberStatus;
+        if (memberStatus == true) {
+            return '<span class="label label-success account-status">正常</span>';
+        }
+        if (memberStatus == false) {
+            return '<span class="label label-default account-status">冻结</span>';
+        }
     }
 
     function sexFormatter(value, row, index) {

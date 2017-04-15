@@ -17,10 +17,17 @@ public enum BaseEnum {
     DELETE_SUCCESS("103", "删除成功"),
     UPDATE_SUCCESS("104", "更新成功"),
     SELECT_SUCCESS("105", "查询成功"),
+    REPEAT_EMAIL("106","邮箱重复"),
+    REPEAT_PHONE("107","手机号码重复"),
+    REPEAT_USERNAME("108","用户名重复"),
     NULL_OBJ("201", "对象为空"),
     FIELD_NULL("202","必要字段为空"),
     PRIMARY_NULL("203","主键字段为空"),
-    HAVA_QUOTE("204","存在引用"),
+    HAVE_QUOTE("204","存在引用"),
+    VALIDATE_CODE_ERROR("994","存在引用"),
+    LOGIN_SYSTEM("995","登录成功"),
+    PASS_ERROR("996","密码错误"),
+    REPEAT_LOGIN("998","重复登录"),
     UNKNOWN_ERROR("999", "系统繁忙....");
 
     String value;

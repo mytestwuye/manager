@@ -1,4 +1,4 @@
-package com.suny.association.realm;
+package com.suny.association.shiro;
 
 import com.suny.association.enums.BaseEnum;
 import com.suny.association.exception.BusinessException;

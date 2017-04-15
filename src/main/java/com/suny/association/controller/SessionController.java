@@ -31,11 +31,11 @@ public class SessionController {
 
     @RequestMapping(value = "list.json" ,method = RequestMethod.GET)
     @ResponseBody
-    public  Map  query(@RequestParam(value = "offset",required = false,defaultValue = "0") int offset,
+    public  Map<Object,Object>  query(@RequestParam(value = "offset",required = false,defaultValue = "0") int offset,
                             @RequestParam(value = "limit",required = false,defaultValue = "10") int limit){
         List<LoginHistory> loginHistoryList=loginHistoryService.list(offset,limit);
         int total = loginHistoryService.queryCount();
-        Map tableDate = new HashMap();
+        Map<Object,Object> tableDate = new HashMap<>();
         tableDate.put("rows", loginHistoryList);
         tableDate.put("total", total);
         return tableDate;

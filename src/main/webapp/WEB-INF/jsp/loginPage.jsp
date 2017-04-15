@@ -121,7 +121,7 @@
     document.onkeydown = function (e) {
         var ev = document.all ? window.event : e;
         if (ev.keyCode == 13) {
-            checkCode();
+            checkForm();
         }
     };
 
@@ -145,7 +145,10 @@
 
     //点击登陆按钮时触发的时间
     $('#loginBtn').click(function () {
+        checkForm();
+    });
 
+    function checkForm() {
         userNameValue = userName.val();
         passWordValue = passWord.val();
         codeValue = code.val();
@@ -173,7 +176,7 @@
         //当所有的框都填满了的时候首先检查验证码
         checkCode();
 
-    });
+    };
 
     //验证码验证
     function checkCode() {
@@ -182,7 +185,7 @@
             type: 'post',
             data: {formCode: codeValue},
             success: function (result) {
-                if (result.status == 113) {
+                if (result.status == 994) {
                     layer.msg('验证码错了。。', {icon: 5});
                     error2.text('验证码错误');
                     emptyInputValue(code);
@@ -216,7 +219,8 @@
             data: param,
             dataType: "json",
             success: function (result) {
-                if (!(result.success == false)) {
+                var statusCode=result.status;
+                if (statusCode == 995) {
                     //登录成功
                     layer.msg('登陆成功了', function () {
                         layer.msg('正在进入主页面', {
@@ -226,14 +230,18 @@
                         setTimeout("goAdminPage()", 300);
                     });
 
-                } else {
+                } else if(result.errorCode == 996){
                     layer.msg('用户名或者密码错误。。', {icon: 5});
                     error1.text('用户名或密码错误');
                     emptyInputValue(code);
                     redStyleWarn(userName);
                     redStyleWarn(passWord);
                     refresh();
-                    return false;
+                }else if(result.errorCode == 998){
+                    layer.msg('您已经登录过了，请不要重复登录', {icon: 5});
+                }
+                else{
+                    layer.msg('登录失败,服务器出了点小插曲', {icon: 5});
                 }
             },
             error: function () {

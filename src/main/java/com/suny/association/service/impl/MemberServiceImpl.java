@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Comments:  成员逻辑层类
@@ -59,7 +60,12 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
         }
 
         }
-    
+
+    @Override
+    public int queryCount() {
+        return memberMapper.queryCount();
+    }
+
     @Transactional
     public int insertReturnCount(Member member) {
         return memberMapper.insertAndGetId(member);
@@ -105,17 +111,15 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     public Member queryById(int id) {
         return memberMapper.queryById(id);
     }
-    
-  
-    
+
     @Override
     public List<Member> queryAll() {
         return memberMapper.queryAll();
     }
     
     @Override
-    public List<Member> queryAll(int limit, int offset, String departmentname, int status) {
-        return memberMapper.queryAllByConditions(limit, offset, departmentname, status);
+    public List<Member> queryAllByCriteria(Map<Object,Object> criteriaMap) {
+        return memberMapper.queryAllByCriteria(criteriaMap);
     }
     
     

@@ -4,6 +4,7 @@ import com.suny.association.mapper.interfaces.IMapper;
 import com.suny.association.pojo.po.Member;
 
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -13,7 +14,7 @@ import java.util.List;
  */
 
 public interface MemberMapper extends IMapper<Member> {
-    
+    int queryCount();
     List<Member> queryFreezeManager();
    
     List<Member> queryNormalManager();
@@ -22,7 +23,7 @@ public interface MemberMapper extends IMapper<Member> {
     
     List<Member> queryNormalMember();
     
-    List<Member> queryAllByConditions(int limit, int offset, String departmentname, int status);
+    List<Member> queryAllByCriteria(Map<Object,Object> criteriaMap);
     
 
 }

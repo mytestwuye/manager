@@ -13,7 +13,7 @@
     </bean>
 
     <!-- 項目自定义的Realm -->
-    <bean id="myShiroRealm" class="com.suny.association.realm.LoginRealm">
+    <bean id="myShiroRealm" class="com.suny.association.shiro.LoginRealm">
         <property name="cacheManager" ref="cacheManager"/>
     </bean>
 

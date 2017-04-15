@@ -17,6 +17,7 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath",basePath);
 %>
 <!DOCTYPE html>
 <html>
@@ -40,7 +41,7 @@
 <body>
 
 <!-- 新增 -->
-<div id="createDialog" class="crudDialog">
+<div id="createDialog" class="crudDialog container">
     <form>
         <div class="form-group">
             <label for="roleId"></label>
@@ -94,7 +95,7 @@
                     });
                 }
             },
-            error:function(result){
+            error: function () {
                 window.parent.layer.msg('服务器异常，请重试！', {icon: 5});
             }
         })

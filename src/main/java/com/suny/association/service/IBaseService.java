@@ -15,8 +15,7 @@ public interface IBaseService<T> {
     void update(T t);
     
     T queryById(int id);
-    
-    
-    
+
+
     List<T> queryAll();
 }

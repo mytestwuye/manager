@@ -268,13 +268,13 @@
                 </ul>
             </li>
             <li class="sub-menu system_menus system_1 3">
-                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 用户管理</a>
+                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 账号管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('用户角色管理', '${pageContext.request.contextPath}/account/role/index.html');">用户角色管理</a>
+                           href="javascript:Tab.addTab('账号角色管理', '${pageContext.request.contextPath}/account/role/index.html');">账号角色管理</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('用户信息管理', '${pageContext.request.contextPath}/account/accountManager.html');">用户信息管理</a>
+                           href="javascript:Tab.addTab('账号信息管理', '${pageContext.request.contextPath}/account/accountManager.html');">账号信息管理</a>
                     </li>
                 </ul>
             </li>

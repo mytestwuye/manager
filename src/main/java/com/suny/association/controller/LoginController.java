@@ -1,5 +1,6 @@
 package com.suny.association.controller;
 
+import com.suny.association.enums.BaseEnum;
 import com.suny.association.enums.LoginEnum;
 import com.suny.association.exception.BusinessException;
 import com.suny.association.pojo.po.Member;
@@ -56,11 +57,11 @@ public class LoginController {
                                   HttpServletRequest request) {
         String sessionCode = (String) request.getSession().getAttribute("code");
        /* if (!matchCode(formCode, sessionCode)) {
-            return JsonResult.failResult(LoginEnum.VALIDATE_CODE_ERROR);
+            return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);
         }*/
         authAction(username, password);
         saveLoginUser(request, username);
-        return JsonResult.successResult(LoginEnum.LOGIN_SYSTEM);
+        return JsonResult.successResult(BaseEnum.LOGIN_SYSTEM);
     }
     
     
@@ -69,7 +70,7 @@ public class LoginController {
     }
     
     private void authAction(String username, String password) {
-        try {
+//        try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
             Subject currentUser = SecurityUtils.getSubject();
             //如果还没有登录就 //使用shiro来验证
@@ -78,11 +79,11 @@ public class LoginController {
                 currentUser.login(token);      //验证角色和权限
             }
             else{
-                throw new BusinessException(LoginEnum.REPEAT_LOGIN);
+                throw new BusinessException(BaseEnum.REPEAT_LOGIN);
             }
-        } catch (Exception ex) {
-            throw new BusinessException(LoginEnum.UNDERPASS_ERROR);
-        }
+//        } catch (Exception ex) {
+//            throw new BusinessException(BaseEnum.PASS_ERROR);
+//        }
     }
     
     private void saveLoginUser(HttpServletRequest request, String username) {

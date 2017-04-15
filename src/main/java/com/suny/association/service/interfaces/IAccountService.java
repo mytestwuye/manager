@@ -3,6 +3,9 @@ package com.suny.association.service.interfaces;
 import com.suny.association.pojo.po.Account;
 import com.suny.association.service.IBaseService;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Comments:
  * Author:   孙建荣
@@ -10,9 +13,18 @@ import com.suny.association.service.IBaseService;
  */
 
 public interface IAccountService extends IBaseService<Account> {
-    
-    
+
+    Account queryByPhone(Long phoneNumber);
+
+    Account queryByMail(String email);
+
+    Account queryByLongId(Long id);
+
+    Account queryQuote(Long accountId);
+
     Account queryByName(String name);
-    
-    
+
+    void deleteByLongId(Long id);
+
+    List<Account> queryAllByCriteria(Map<Object,Object> criteriaMap);
 }

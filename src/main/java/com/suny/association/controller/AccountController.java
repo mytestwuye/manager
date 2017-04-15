@@ -1,19 +1,26 @@
 package com.suny.association.controller;
 
-import com.suny.association.enums.AccountEnum;
+import com.suny.association.enums.BaseEnum;
 import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.pojo.po.Roles;
 import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.service.interfaces.IRolesService;
+import com.suny.association.utils.DecideUtil;
 import com.suny.association.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+
+import static com.suny.association.utils.JsonResult.*;
+import static com.suny.association.utils.JsonResult.failResult;
 
 /**
  * Comments:
@@ -23,13 +30,13 @@ import java.util.List;
 @Controller
 @RequestMapping("/account")
 public class AccountController {
-    
+
     private final IAccountService accountService;
 
     private final IMemberService memberService;
 
     private final IRolesService rolesService;
-    
+
     @Autowired
     public AccountController(IAccountService accountService, IMemberService memberService, IRolesService rolesService) {
         this.accountService = accountService;
@@ -37,22 +44,22 @@ public class AccountController {
         this.rolesService = rolesService;
     }
 
-    @RequestMapping(value = "/insert.json",method = RequestMethod.POST)
+    @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult insert(@RequestBody Account account) {
-        if(account.getAccountName().equals("") && account.getAccountName() == null){
-            return JsonResult.failResult(AccountEnum.FAIL_INSERT_ACCOUNT_INFO);
+        Map resultMap = updateOrInsert(account);
+        if (!(Boolean) resultMap.get("status")) {
+            return (JsonResult) resultMap.get("result");
         }
-        if(accountService.queryByName(account.getAccountName()) != null){
-            return JsonResult.failResult(AccountEnum.REPEAT_ADD);
+        if ("".equals(account.getAccountPassword())) {
+            account.setAccountPassword(null);
         }
         accountService.insert(account);
-        return JsonResult.successResult(AccountEnum.SUCCESS_INSERT_ACCOUNT_INFO);
+        return successResult(BaseEnum.ADD_SUCCESS);
     }
 
 
-
-    @RequestMapping(value = "/insert.html",method = RequestMethod.GET)
+    @RequestMapping(value = "/insert.html", method = RequestMethod.GET)
     public ModelAndView insertPage(ModelAndView modelAndView) {
         List<Account> account = accountService.queryAll();
         List<Member> memberList = memberService.queryAll();
@@ -65,28 +72,66 @@ public class AccountController {
     }
 
 
-    @RequestMapping(value = "/deleteById.json/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/deleteById.json/{accountId}", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult deleteById(@PathVariable("id") Integer id) {
-        if (accountService.queryById(id) == null) {
-            return JsonResult.failResult(AccountEnum.NOT_HAVE_THIS_ACCOUNT_INFO);
+    public JsonResult deleteById(@PathVariable("accountId") Long accountId) {
+        Account accountQuote = accountService.queryQuote(accountId);
+        if ((accountQuote == null) && (null != accountQuote.getAccountMember())) {
+            return failResult(BaseEnum.HAVE_QUOTE);
         }
-        accountService.deleteById(id);
-        return JsonResult.successResult(AccountEnum.SUCCESS_DELETE_ACCOUNT_INFO);
+        if (accountService.queryByLongId(accountId) == null) {
+            return failResult(BaseEnum.SELECT_FAILURE);
+        }
+        accountService.deleteByLongId(accountId);
+        return successResult(BaseEnum.DELETE_SUCCESS);
+    }
+
+    private Map updateOrInsert(Account account) {
+        Map<Object, Object> resultMap = new HashMap<>();
+        Account byNameResult = accountService.queryByName(account.getAccountName());
+        Account byPhoneResult = accountService.queryByPhone(account.getAccountPhone());
+        Account byMailResult = accountService.queryByMail(account.getAccountEmail());
+        if ("".equals(account.getAccountName()) || (account.getAccountName() == null)) {
+            resultMap.put("result", failResult(BaseEnum.FIELD_NULL));
+            resultMap.put("status", Boolean.FALSE);
+            return resultMap;
+        }
+        if (null != byNameResult && !Objects.equals(byNameResult.getAccountId(), account.getAccountId())) {
+            resultMap.put("result", failResult(BaseEnum.REPEAT_USERNAME));
+            resultMap.put("status", Boolean.FALSE);
+            return resultMap;
+        }
+        if (null != byPhoneResult && !Objects.equals(byPhoneResult.getAccountId(), account.getAccountId())) {
+            resultMap.put("result", failResult(BaseEnum.REPEAT_PHONE));
+            resultMap.put("status", Boolean.FALSE);
+            return resultMap;
+        }
+        if (null != byMailResult && !Objects.equals(byMailResult.getAccountId(), account.getAccountId())) {
+            resultMap.put("result", failResult(BaseEnum.REPEAT_EMAIL));
+            resultMap.put("status", Boolean.FALSE);
+            return resultMap;
+        }
+        resultMap.put("status", Boolean.TRUE);
+        return resultMap;
     }
 
 
-    @RequestMapping(value = "/update.json",method = RequestMethod.POST)
+    @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult update(@RequestBody Account account) {
-        if (accountService.queryByName(account.getAccountName()) == null) {
-            return JsonResult.failResult(AccountEnum.NOT_HAVE_THIS_ACCOUNT_INFO);
+        Map resultMap = updateOrInsert(account);
+        Account byIdResult = accountService.queryByLongId(account.getAccountId());
+        if (byIdResult == null) {
+            return failResult(BaseEnum.SELECT_FAILURE);
+        }
+        if (!(Boolean) resultMap.get("status")) {
+            return (JsonResult) resultMap.get("result");
         }
         accountService.update(account);
-        return JsonResult.successResult(AccountEnum.SUCCESS_UPDATE_ACCOUNT_INFO);
+        return successResult(BaseEnum.UPDATE_SUCCESS);
     }
 
-    @RequestMapping(value = "/update.html/{id}",method = RequestMethod.GET)
+    @RequestMapping(value = "/update.html/{id}", method = RequestMethod.GET)
     public ModelAndView updatePage(@PathVariable("id") Integer id, ModelAndView modelAndView) {
         Account account = accountService.queryById(id);
         List<Member> memberList = memberService.queryAll();
@@ -99,20 +144,18 @@ public class AccountController {
     }
 
 
-    @RequestMapping(value = "/queryAll.json",method = RequestMethod.GET)
+    @RequestMapping(value = "/queryAll.json", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult queryAll() {
-        List<Account> accountList = accountService.queryAll();
-        if (accountList.size() >0 && accountList != null) {
-            return JsonResult.successResultAndData(AccountEnum.SUCCESS_DELETE_ACCOUNT_INFO, accountList);
+    public JsonResult queryAll(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
+                               @RequestParam(value = "limit", required = false, defaultValue = "10") int limit,
+                               @RequestParam(value = "status", required = false, defaultValue = "3") int status) {
+        List<Account> accountList = accountService.queryAllByCriteria(DecideUtil.pushToMap(offset, limit, status));
+        if (accountList.size() > 0) {
+            return successResultAndData(BaseEnum.SELECT_SUCCESS, accountList);
         }
-        return JsonResult.failResult(AccountEnum.FAIL_SELECT_ACCOUNT_INFO);
+        return failResult(BaseEnum.SELECT_FAILURE);
     }
-        public void main(){
 
-        }
-    
-   
     @RequestMapping(value = "/accountManager.html")
     public String accountManager() {
         return "accountInfo/accountManager";

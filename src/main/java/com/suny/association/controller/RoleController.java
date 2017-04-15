@@ -32,12 +32,12 @@ public class RoleController {
         this.rolesService = rolesService;
     }
 
-    @RequestMapping(value = "/delete.json/{roleId}",method = RequestMethod.GET)
-    public JsonResult delete(@PathVariable Integer roleId){
-        if(rolesService.queryQuote(roleId).size() >= 1){
-            return failResult(BaseEnum.HAVA_QUOTE);
-        }
-        else if(rolesService.queryById(roleId) == null ){
+    @RequestMapping(value = "/delete.json/{roleId}", method = RequestMethod.GET)
+    @ResponseBody
+    public JsonResult delete(@PathVariable("roleId") Integer roleId) {
+        if (rolesService.queryQuote(roleId).size() >= 1) {
+            return failResult(BaseEnum.HAVE_QUOTE);
+        } else if (rolesService.queryById(roleId) == null) {
             return failResult(BaseEnum.DELETE_FAILURE);
         }
         rolesService.deleteById(roleId);
@@ -68,7 +68,7 @@ public class RoleController {
             modelAndView.addObject("role", role);
             return modelAndView;
         }
-        modelAndView.addObject("role",role);
+        modelAndView.addObject("role", role);
         modelAndView.setViewName("/accountInfo/role/roleUpdate");
         return modelAndView;
     }

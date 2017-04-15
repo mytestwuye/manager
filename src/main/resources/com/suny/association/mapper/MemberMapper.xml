@@ -75,8 +75,8 @@
     <!--查询部门-->
     <select id="getDepartment" parameterType="int" resultMap="memberDepartmentResult">
         SELECT
-        department_id,
-        department_name
+            department_id,
+            department_name
         FROM department
         WHERE department_id = #{memberDepartment}
     </select>
@@ -84,8 +84,8 @@
     <!--获得成员角色-->
     <select id="getMemberRole" parameterType="int" resultMap="memberRolesResult">
         SELECT
-        member_role_id,
-        member_role_name
+            member_role_id,
+            member_role_name
         FROM member_roles
         WHERE member_role_id = #{memberRoles}
     </select>
@@ -316,6 +316,36 @@
             member_status,
             member_role_id
         FROM member
+    </select>
+
+    <select id="queryAllByCriteria" parameterType="hashmap" resultMap="BaseResultMap">
+        SELECT
+        m.member_id,
+        m.member_name,
+        m.member_class_name,
+        m.member_sex,
+        m.member_grade_number,
+        m.member_manager_id,
+        m.member_department_id,
+        m.member_status,
+        m.member_role_id
+        FROM member as m
+        <where>
+            1=1
+            <if test="departmentname!=null">
+                AND m.member_department_id = ( SELECT d.department_id FROM department as d WHERE
+                department_name=#{departmentname,jdbcType=VARCHAR} )
+            </if>
+            <if test="status !=null">
+                AND m.member_status =#{status}
+            </if>
+        </where>
+        LIMIT #{offset},#{limit}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*)
+        FROM member;
     </select>
 
 </mapper>

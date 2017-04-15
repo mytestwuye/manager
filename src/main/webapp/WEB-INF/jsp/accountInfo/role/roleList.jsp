@@ -34,16 +34,16 @@
     </style>
 </head>
 <body>
-<div>
+<div class="container">
     <div class="panel-body">
         <div id="toolbar" class="btn-group">
-            <button id="btn_add" type="button" class="btn btn-default">
+            <button id="btn_add" type="button" class="btn btn-default btn-info">
                 <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
             </button>
-            <button id="btn_edit" type="button" class="btn btn-default">
+            <button id="btn_edit" type="button" class="btn btn-default btn-warning">
                 <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
             </button>
-            <button id="btn_delete" type="button" class="btn btn-default">
+            <button id="btn_delete" type="button" class="btn btn-default btn-danger">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
             </button>
         </div>
