@@ -24,6 +24,7 @@ public enum BaseEnum {
     FIELD_NULL("202","必要字段为空"),
     PRIMARY_NULL("203","主键字段为空"),
     HAVE_QUOTE("204","存在引用"),
+    MUST_CHINESE("205","一定要是中文"),
     VALIDATE_CODE_ERROR("994","存在引用"),
     LOGIN_SYSTEM("995","登录成功"),
     PASS_ERROR("996","密码错误"),

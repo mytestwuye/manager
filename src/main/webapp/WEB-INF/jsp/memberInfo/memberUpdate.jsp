@@ -73,7 +73,7 @@
     </div>
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button class="btn btn-danger" id="submit" onclick="sendUpdate()">点击修改</button>
+            <button class="btn btn-danger" type="button" id="submit" onclick="sendUpdate()">点击修改</button>
         </div>
     </div>
 </form>
@@ -109,7 +109,7 @@
         });
     });
 
-    var memberStatus = ${member.memberStatus} ==true ? "1":"0";
+    var memberStatus =${member.memberStatus} ==true ? "1" : "0";
     /**
      * 发送更新请求
      */
@@ -117,29 +117,30 @@
         var selectDepartmentOptionVal = parseInt($("#selectDepartmentOption").val());
         var selectMemberRoleOptionVal = parseInt($("#selectMemberRoleOption").val());
         var selectMemberStatusOptionVal = $("#selectMemberStatusOption").val() == true;
-       var  memberId =${member.memberId} ;
+        var memberNameVal = $("#member-name").val();
         $.ajax({
             type: 'post',
             contentType: "application/json",
             url: '${pageContext.request.contextPath}/member/update.json',
             data: JSON.stringify({
-                memberId: memberId,
-                memberDepartment:{
-                    departmentId:selectDepartmentOptionVal
+                memberId: ${member.memberId},
+                memberName: memberNameVal,
+                memberDepartment: {
+                    departmentId: selectDepartmentOptionVal
                 },
                 memberStatus: selectMemberStatusOptionVal,
-                memberRoles:{
+                memberRoles: {
                     memberRoleId: selectMemberRoleOptionVal
                 }
             }),
             success: function (result) {
-                if (result.status == 903) {
+                if (result.status == 104) {
                     //当你在iframe页面关闭自身时
                     window.parent.layer.alert('更新成功了，刷新下页面看效果吧', {icon: 6});
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                     parent.layer.close(index); //再执行关闭
                     refreshTable();
-                    return  ;
+                    return;
                 }
                 window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
 

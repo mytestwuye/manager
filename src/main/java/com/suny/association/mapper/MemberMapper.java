@@ -14,6 +14,11 @@ import java.util.Map;
  */
 
 public interface MemberMapper extends IMapper<Member> {
+    void deleteByLongId(Long id);
+
+    Member queryByLongId(Long id);
+
+    Member queryQuote(int memberId);
     int queryCount();
     List<Member> queryFreezeManager();
    

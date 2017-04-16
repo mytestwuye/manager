@@ -61,10 +61,10 @@
     <!--查询账号角色表信息-->
     <select id="getRoles" parameterType="int" resultMap="accountRolesResult">
         SELECT
-            role_id,
-            role_name,
-            role_create_time
-        FROM roles
+            r.role_id,
+            r.role_name,
+            r.role_create_time
+        FROM roles AS r
         WHERE role_id = #{ roleId }
     </select>
 
@@ -78,26 +78,26 @@
     <!--获得成员角色-->
     <select id="getMemberRole" parameterType="int" resultMap="memberRolesResult">
         SELECT
-            member_role_id,
-            member_role_name
-        FROM member_roles
-        WHERE member_role_id = #{memberRoles.memberRoleId}
+            m.member_role_id,
+            m.member_role_name
+        FROM member_roles AS m
+        WHERE m.member_role_id = #{memberRoles.memberRoleId}
     </select>
 
     <!--查询部门-->
     <select id="getDepartment" parameterType="int" resultMap="memberDepartmentResult">
         SELECT
-            department_id,
-            department_name
-        FROM department
-        WHERE department_id = #{memberDepartment.departmentId}
+            d.department_id,
+            d.department_name
+        FROM department AS d
+        WHERE d.department_id = #{memberDepartment.departmentId}
     </select>
 
     <!--查询管理员信息-->
     <select id="getMemberManage" resultMap="memberManagerResult">
         SELECT *
-        FROM member
-        WHERE member_id = #{ memberManager }
+        FROM member AS m
+        WHERE m.member_id = #{ memberManager }
     </select>
 
     <!--账号角色-->
@@ -126,30 +126,56 @@
 
     <insert id="insert" parameterType="com.suny.association.pojo.po.Account">
         INSERT INTO account
-        <trim prefix="set" prefixOverrides=",">
+        <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="accountId != null">
-                account_id = #{accountId,jdbcType=BIGINT} ,
+                account_id ,
             </if>
             <if test="accountName != null">
-                account_name =#{accountName,jdbcType=VARCHAR},
+                account_name ,
             </if>
             <if test="accountPassword != null">
-                account_password =#{accountPassword,jdbcType=VARCHAR},
+                account_password ,
             </if>
             <if test="accountPhone != null">
-                account_phone =#{accountPhone,jdbcType=BIGINT},
+                account_phone ,
             </if>
             <if test="accountEmail != null">
-                account_email =#{accountEmail,jdbcType=VARCHAR},
+                account_email,
             </if>
             <if test="accountStatus != null">
-                account_status =#{accountStatus,jdbcType=BOOLEAN},
+                account_status,
             </if>
             <if test="accountMember != null">
-                account_member_id =#{accountMember.memberId,jdbcType=BIGINT},
+                account_member_id,
             </if>
             <if test="accountRoles != null">
-                account_role_id =#{accountRoles.roleId,jdbcType=INTEGER}
+                account_role_id,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="accountId != null">
+                #{accountId,jdbcType=BIGINT},
+            </if>
+            <if test="accountName != null">
+                #{accountName,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPassword != null">
+                #{accountPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPhone != null">
+                #{accountPhone,jdbcType=BIGINT},
+            </if>
+            <if test="accountEmail != null">
+                #{accountEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="accountStatus != null">
+                #{accountStatus,jdbcType=BOOLEAN},
+            </if>
+            <if test="accountMember != null">
+                #{accountMember.memberId,jdbcType=BIGINT},
+            </if>
+            <if test="accountRoles != null">
+                #{accountRoles.roleId,jdbcType=INTEGER},
             </if>
         </trim>
     </insert>
@@ -176,140 +202,134 @@
                 account_member_id =#{accountMember.memberId,jdbcType=BIGINT},
             </if>
             <if test="accountRoles != null">
-                account_role_id =#{accountRoles.roleId,jdbcType=INTEGER}
+                account_role_id =#{accountRoles.roleId,jdbcType=INTEGER},
             </if>
         </trim>
         WHERE
-        account_id = #{accountId,jdbcType=BIGINT}
+        a.account_id = #{accountId,jdbcType=BIGINT}
     </update>
 
     <select id="queryByMemberId" parameterType="int" resultMap="BaseResultMap">
         SELECT
-            account_id,
-            account_name,
-            account_password,
-            account_phone,
-            account_email,
-            account_status,
-            account_role_id,
-            account_member_id
-        FROM account
-        WHERE account_member_id = #{accountMember.memberId}
+            a.account_id,
+            a.account_name,
+            a.account_password,
+            a.account_phone,
+            a.account_email,
+            a.account_status,
+            a.account_role_id,
+            a.account_member_id
+        FROM account AS a
+        WHERE a.account_member_id = #{accountMember.memberId}
     </select>
 
-    <select id="queryQuote" parameterType="Long" resultMap="BaseResultMap">
+    <select id="queryQuoteByAccountId" parameterType="Long" resultMap="BaseResultMap">
         SELECT
-            account_id,
-            account_member_id
-        FROM account
-        WHERE account_id = #{accountId,jdbcType=BIGINT}
+            a.account_id,
+            a.account_member_id
+        FROM account AS a
+        WHERE a.account_id = #{accountId,jdbcType=BIGINT}
+    </select>
+
+    <select id="queryQuoteByMemberId" parameterType="Long" resultMap="BaseResultMap">
+        SELECT
+            a.account_id,
+            a.account_member_id
+        FROM account AS a
+         WHERE a.account_member_id =#{memberId}
     </select>
 
 
     <select id="queryByName" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
-            account_id,
-            account_name,
-            account_password,
-            account_phone,
-            account_email,
-            account_status,
-            account_role_id,
-            account_member_id
-        FROM account
-        WHERE account_name = #{accountName}
+            a.account_id,
+            a.account_name,
+            a.account_password,
+            a.account_phone,
+            a.account_email,
+            a.account_status,
+            a.account_role_id,
+            a.account_member_id
+        FROM account AS a
+        WHERE a.account_name = #{accountName}
     </select>
 
-    <insert id="create" parameterType="com.suny.association.pojo.po.Account">
-        INSERT INTO account (
-            account_id, account_name,
-            account_password,
-            account_phone,
-            account_email, account_status,
-            account_role_id, account_member_id)
-        VALUES (
-            #{accountId,jdbcType=BIGINT}, #{accountName,jdbcType=VARCHAR},
-            #{accountPassword,jdbcType=VARCHAR},
-            #{accountPhone,jdbcType=INTEGER},
-            #{accountEmail,jdbcType=VARCHAR}, #{accountStatus,jdbcType=BOOLEAN},
-            #{memberRoles,jdbcType=INTEGER}, #{accountMember.memberId,jdbcType=INTEGER}
-        )
-    </insert>
 
     <delete id="deleteById" parameterType="java.lang.Integer">
-        DELETE FROM account
-        WHERE account_id = #{accountId,jdbcType=BIGINT}
+        DELETE FROM account AS a
+        WHERE a.account_id = #{accountId,jdbcType=BIGINT}
     </delete>
 
+
     <delete id="deleteByLongId" parameterType="java.lang.Long">
-        DELETE FROM account
-        WHERE account_id = #{accountId,jdbcType=BIGINT}
+        DELETE FROM account AS a
+        WHERE a.account_id = #{accountId,jdbcType=BIGINT}
     </delete>
 
     <select id="queryById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         SELECT
-            account_id,
-            account_name,
-            account_password,
-            account_phone,
-            account_email,
-            account_status,
-            account_role_id,
-            account_member_id
-        FROM account
-        WHERE account_id = #{accountId,jdbcType=BIGINT}
+            a.account_id,
+            a.account_name,
+            a.account_password,
+            a.account_phone,
+            a.account_email,
+            a.account_status,
+            a.account_role_id,
+            a.account_member_id
+        FROM account AS a
+        WHERE a.account_id = #{accountId,jdbcType=BIGINT}
     </select>
 
     <select id="queryByLongId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
-            account_id,
-            account_name
-        FROM account
-        WHERE account_id = #{accountId,jdbcType=BIGINT}
+            a.account_id,
+            a.account_name
+        FROM account AS a
+        WHERE a.account_id = #{accountId,jdbcType=BIGINT}
     </select>
 
     <select id="queryByPhone" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
-            account_id,
-            account_phone
-        FROM account
-        WHERE account_phone = #{phoneNumber}
+            a.account_id,
+            a.account_phone
+        FROM account AS a
+        WHERE a.account_phone = #{phoneNumber}
     </select>
 
     <select id="queryByMail" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT
-            account_id,
-            account_email
-        FROM account
-        WHERE account_email = #{email}
+            a.account_id,
+            a.account_email
+        FROM account AS a
+        WHERE a.account_email = #{email}
     </select>
 
 
     <select id="queryAll" resultMap="BaseResultMap">
         SELECT
-            account_id,
-            account_name,
-            account_password,
-            account_email,
-            account_phone,
-            account_role_id,
-            account_status,
-            account_member_id
+            a.account_id,
+            a.account_name,
+            a.account_password,
+            a.account_email,
+            a.account_phone,
+            a.account_role_id,
+            a.account_status,
+            a.account_member_id
         FROM
-            account
+            account AS a
     </select>
     <select id="queryAllByCriteria" parameterType="hashmap" resultMap="BaseResultMap">
         SELECT
-        account_id,
-        account_name,
-        account_password,
-        account_email,
-        account_phone,
-        account_role_id,
-        account_status,
-        account_member_id
+        a.account_id,
+        a.account_name,
+        a.account_password,
+        a.account_email,
+        a.account_phone,
+        a.account_role_id,
+        a.account_status,
+        a.account_member_id
         FROM
-        account
+        account AS a
         <where>
             1=1
             <if test="status != null">
@@ -318,6 +338,12 @@
         </where>
         LIMIT #{offset},#{limit}
     </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*)
+        FROM account;
+    </select>
+
 </mapper>
 
 

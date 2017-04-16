@@ -1,29 +1,33 @@
 package com.suny.association.pojo.po;
 
+import java.util.Date;
+
 public class ApplicationMessage {
-    private Integer applicationId;
+    private Integer applicationId;    //主键id
 
-    private Long punchRecordId;
+    private PunchRecord punchRecordId;   //成员有异议的考勤记录id
 
-    private Integer punchTypeId;
+    private PunchType punchTypeId;       //有异议的考勤类型
 
-    private String applicationReson;
+    private String applicationReason;    //有异议的理由
 
-    private Boolean applicationResult;
+    private CallbackResult applicationResult;    //审批的结果
 
-    private Integer changePunchType;
+    private PunchType changePunchType;    //希望更改为什么类型的考勤
 
-    public ApplicationMessage(Integer applicationId, Long punchRecordId, Integer punchTypeId, String applicationReson, Boolean applicationResult, Integer changePunchType) {
+    private Date applyForTime;       //提出申请的时间
+
+    public ApplicationMessage() {
+    }
+
+    public ApplicationMessage(Integer applicationId, PunchRecord punchRecordId, PunchType punchTypeId, String applicationReason, CallbackResult applicationResult, PunchType changePunchType, Date applyForTime) {
         this.applicationId = applicationId;
         this.punchRecordId = punchRecordId;
         this.punchTypeId = punchTypeId;
-        this.applicationReson = applicationReson;
+        this.applicationReason = applicationReason;
         this.applicationResult = applicationResult;
         this.changePunchType = changePunchType;
-    }
-
-    public ApplicationMessage() {
-        super();
+        this.applyForTime = applyForTime;
     }
 
     public Integer getApplicationId() {
@@ -34,43 +38,51 @@ public class ApplicationMessage {
         this.applicationId = applicationId;
     }
 
-    public Long getPunchRecordId() {
+    public PunchRecord getPunchRecordId() {
         return punchRecordId;
     }
 
-    public void setPunchRecordId(Long punchRecordId) {
+    public void setPunchRecordId(PunchRecord punchRecordId) {
         this.punchRecordId = punchRecordId;
     }
 
-    public Integer getPunchTypeId() {
+    public PunchType getPunchTypeId() {
         return punchTypeId;
     }
 
-    public void setPunchTypeId(Integer punchTypeId) {
+    public void setPunchTypeId(PunchType punchTypeId) {
         this.punchTypeId = punchTypeId;
     }
 
-    public String getApplicationReson() {
-        return applicationReson;
+    public String getApplicationReason() {
+        return applicationReason;
     }
 
-    public void setApplicationReson(String applicationReson) {
-        this.applicationReson = applicationReson == null ? null : applicationReson.trim();
+    public void setApplicationReason(String applicationReason) {
+        this.applicationReason = applicationReason;
     }
 
-    public Boolean getApplicationResult() {
+    public CallbackResult getApplicationResult() {
         return applicationResult;
     }
 
-    public void setApplicationResult(Boolean applicationResult) {
+    public void setApplicationResult(CallbackResult applicationResult) {
         this.applicationResult = applicationResult;
     }
 
-    public Integer getChangePunchType() {
+    public PunchType getChangePunchType() {
         return changePunchType;
     }
 
-    public void setChangePunchType(Integer changePunchType) {
+    public void setChangePunchType(PunchType changePunchType) {
         this.changePunchType = changePunchType;
+    }
+
+    public Date getApplyForTime() {
+        return applyForTime;
+    }
+
+    public void setApplyForTime(Date applyForTime) {
+        this.applyForTime = applyForTime;
     }
 }

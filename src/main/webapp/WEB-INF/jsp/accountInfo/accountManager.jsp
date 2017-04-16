@@ -107,7 +107,7 @@
                 buttonsAlign: "right",//按钮对齐方式
                 toolbarAlign: "left",//工具栏对齐方式
                 queryParams: oTableInit.queryParams,//传递参数（*）
-                sidePagination: "client",           //分页方式：client客户端分页，server服务端分页（*）
+                sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
                 pageNumber: 1,                       //初始化加载第一页，默认第一页
                 pageSize: 10,                       //每页的记录行数（*）
                 pageList: [5, 10, 25, 50, 100],        //可供选择的每页的行数（*）
@@ -155,7 +155,7 @@
                         , align: "center",
                     },
                     {field: "accountRoles", title: "账号角色", sortable: true, order: "desc", formatter: "rolesFormatter", align: "center"},
-                    {field: "accountMember", title: "对应成员", formatter: "memberFormatter",formatter:'accountMember', align: "center"}
+                    {field: "accountMember", title: "对应成员", formatter:'accountMember', align: "center"}
 
                 ],
                 onClickRow: function (row, $element) {
@@ -178,8 +178,7 @@
             return {   //这里的键的名字和控制器的变量名必须一直，这边改动，控制器也需要改成一样的
                 limit: params.limit,   //页面大小
                 offset: params.offset,  //页码
-                departmentname: $("#txt_search_departmentname").val(),
-                status: $("#txt_search_statu").val()
+                status: $("#txt_search_status").val()
             };
         };
         return oTableInit;

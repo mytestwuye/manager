@@ -1,7 +1,6 @@
 package com.suny.association.service.impl;
 
 import com.suny.association.enums.BaseEnum;
-import com.suny.association.enums.MemberEnum;
 import com.suny.association.exception.BusinessException;
 import com.suny.association.mapper.AccountMapper;
 import com.suny.association.pojo.po.Account;
@@ -31,7 +30,7 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
     }
 
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public void insert(Account account) {
         if (account == null) {
@@ -44,11 +43,13 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
         }
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public void deleteById(int id) {
         accountMapper.deleteById(id);
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public void update(Account account) {
         accountMapper.update(account);
@@ -77,8 +78,13 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
     }
 
     @Override
-    public Account queryQuote(Long accountId) {
-        return accountMapper.queryQuote(accountId);
+    public Account queryQuoteByAccountId(Long accountId) {
+        return accountMapper.queryQuoteByAccountId(accountId);
+    }
+
+    @Override
+    public Account queryQuoteByMemberId(Long memberId) {
+        return accountMapper.queryQuoteByMemberId(memberId);
     }
 
     @Override
@@ -86,6 +92,7 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
         return accountMapper.queryByName(name);
     }
 
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public void deleteByLongId(Long id) {
          accountMapper.deleteByLongId(id);
@@ -94,5 +101,10 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
     @Override
     public List<Account> queryAllByCriteria(Map<Object,Object> criteriaMap) {
         return accountMapper.queryAllByCriteria(criteriaMap);
+    }
+
+    @Override
+    public int queryCount() {
+        return accountMapper.queryCount();
     }
 }

@@ -249,10 +249,10 @@
                            href="javascript:Tab.addTab('协会成员信息', '${pageContext.request.contextPath}/member/memberManager.html');">协会成员信息</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('协会档案管理', '${pageContext.request.contextPath}/Member/MemberManager.html');">协会档案管理</a>
+                           href="javascript:Tab.addTab('考勤记录查看', '${pageContext.request.contextPath}/punchLog/index.html');">考勤记录查看</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('考勤记录', '${pageContext.request.contextPath}/punchLog/index.html');">考勤记录</a>
+                           href="javascript:Tab.addTab('异议考勤审批', '${pageContext.request.contextPath}/punchLog/applicationMessage/index.html');">异议考勤审批</a>
                     </li>
                 </ul>
             </li>
@@ -268,7 +268,7 @@
                 </ul>
             </li>
             <li class="sub-menu system_menus system_1 3">
-                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 账号管理</a>
+                <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 账号信息管理</a>
                 <ul>
                     <li><a class="waves-effect"
                            href="javascript:Tab.addTab('账号角色管理', '${pageContext.request.contextPath}/account/role/index.html');">账号角色管理</a>

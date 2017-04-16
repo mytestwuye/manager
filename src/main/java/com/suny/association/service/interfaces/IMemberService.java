@@ -12,13 +12,24 @@ import java.util.Map;
  * Create Date: 2017/03/07 22:12
  */
 public interface IMemberService extends IBaseService<Member> {
+    void deleteByLongId(Long id);
+
+    Member queryByLongId(Long id);
+
+    Member queryQuote(int memberId);
 
     int queryCount();
+
     int insertReturnCount(Member member);
+
     List<Member> queryFreezeManager();
+
     List<Member> queryNormalManager();
+
     List<Member> queryNormalMember();
+
     List<Member> queryFreezeMember();
-    List<Member> queryAllByCriteria(Map<Object,Object> criteriaMap);
+
+    List<Member> queryAllByCriteria(Map<Object, Object> criteriaMap);
 
 }

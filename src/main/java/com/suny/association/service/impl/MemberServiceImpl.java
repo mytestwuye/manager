@@ -32,7 +32,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     }
     
     
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public void insert(Member member) {
         memberMapper.insertAndGetId(member);
@@ -40,12 +40,9 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
         if(memberId != null){
             createAccount(memberId);
         }
-        else{
-            throw new BusinessException(MemberEnum.FAIL_INSERT_MEMBER_INFO);
-        }
     }
     
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     private void createAccount(Integer memberId) {
         Account autoAccount = new Account();
         Member member = new Member();
@@ -53,31 +50,41 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
         String memberIdString = String.valueOf(memberId);
         autoAccount.setAccountName(memberIdString);      //设置账号名字
         autoAccount.setAccountMember(member);            //设置对应的管理员账号
-        try {
             accountMapper.insert(autoAccount);
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
+            System.out.println(autoAccount.getAccountMember().getMemberId());
 
         }
+
+    @Override
+    public Member queryQuote(int memberId) {
+        return memberMapper.queryQuote(memberId);
+    }
 
     @Override
     public int queryCount() {
         return memberMapper.queryCount();
     }
 
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     public int insertReturnCount(Member member) {
         return memberMapper.insertAndGetId(member);
     }
     
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public void deleteById(int id) {
         memberMapper.deleteById(id);
     }
+
+    @Transactional(rollbackFor = {Exception.class})
+    @Override
+    public void deleteByLongId(Long id) {
+        memberMapper.deleteByLongId(id);
+    }
+
+
     
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     @Override
     public void update(Member member) {
         memberMapper.update(member);
@@ -110,6 +117,11 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     @Override
     public Member queryById(int id) {
         return memberMapper.queryById(id);
+    }
+
+    @Override
+    public Member queryByLongId(Long id) {
+        return memberMapper.queryByLongId(id);
     }
 
     @Override

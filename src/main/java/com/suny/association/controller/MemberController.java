@@ -1,15 +1,17 @@
 package com.suny.association.controller;
 
-import com.suny.association.enums.MemberEnum;
+import com.suny.association.enums.BaseEnum;
 import com.suny.association.pojo.po.Department;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.pojo.po.MemberRoles;
+import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IDepartmentService;
 import com.suny.association.service.interfaces.IMemberRolesService;
 import com.suny.association.service.interfaces.IMemberService;
+import com.suny.association.utils.ConversionUtil;
 import com.suny.association.utils.CustomDate;
-import com.suny.association.utils.DecideUtil;
 import com.suny.association.utils.JsonResult;
+import com.suny.association.utils.ValidActionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,20 +36,31 @@ public class MemberController {
 
     private final IMemberRolesService memberRolesService;
 
+    private final IAccountService accountService;
+
 
     @Autowired
-    public MemberController(IDepartmentService departmentService, IMemberService memberService, IMemberRolesService memberRolesService) {
+    public MemberController(IDepartmentService departmentService, IMemberService memberService, IMemberRolesService memberRolesService, IAccountService accountService) {
         this.departmentService = departmentService;
         this.memberService = memberService;
         this.memberRolesService = memberRolesService;
+        this.accountService = accountService;
     }
 
 
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult insert(@RequestBody Member member) {
+        if (member.getMemberName() == null || "".equals(member.getMemberName())) {
+            return JsonResult.failResult(BaseEnum.FIELD_NULL);
+        } else if ("".equals(member.getMemberClassName()) || member.getMemberClassName() == null) {
+            return JsonResult.failResult(BaseEnum.FIELD_NULL);
+        }
+        if (!(ValidActionUtil.isContainChinese(member.getMemberName()))) {
+            return JsonResult.failResult(BaseEnum.MUST_CHINESE);
+        }
         memberService.insert(member);
-        return JsonResult.successResult(MemberEnum.SUCCESS_INSERT_MEMBER_INFO);
+        return JsonResult.successResult(BaseEnum.ADD_SUCCESS);
     }
 
 
@@ -67,20 +80,28 @@ public class MemberController {
 
     @RequestMapping(value = "/deleteById.json/{id}")
     @ResponseBody
-    public JsonResult deleteById(@PathVariable("id") Integer id) {
-        if (memberService.queryById(id) == null) {
-            return JsonResult.failResult(MemberEnum.NOT_HAVE_THIS_MEMBER_INFO);
+    public JsonResult deleteById(@PathVariable("id") Long id) {
+        if (memberService.queryByLongId(id) == null) {
+            return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
         }
-        memberService.deleteById(id);
-        return JsonResult.successResult(MemberEnum.SUCCESS_DELETE_MEMBER_INFO);
+        if (accountService.queryQuoteByMemberId(id) != null) {
+            return JsonResult.failResult(BaseEnum.HAVE_QUOTE);
+        }
+        memberService.deleteByLongId(id);
+        return JsonResult.successResult(BaseEnum.DELETE_SUCCESS);
     }
 
 
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult update(@RequestBody Member member) {
+        if (member.getMemberName() == null || "".equals(member.getMemberName())) {
+            return JsonResult.failResult(BaseEnum.FIELD_NULL);
+        } else if (!member.getMemberStatus() || "".equals(member.getMemberStatus())) {
+            return JsonResult.failResult(BaseEnum.FIELD_NULL);
+        }
         memberService.update(member);
-        return JsonResult.successResult(MemberEnum.SUCCESS_UPDATE_MEMBER_INFO);
+        return JsonResult.successResult(BaseEnum.UPDATE_SUCCESS);
     }
 
 
@@ -104,9 +125,9 @@ public class MemberController {
     public JsonResult queryFreeze() {
         List<Member> memberList = memberService.queryNormalMember();
         if (memberList != null) {
-            return JsonResult.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);
+            return JsonResult.successResultAndData(BaseEnum.SELECT_SUCCESS, memberList);
         }
-        return JsonResult.failResult(MemberEnum.FAIL_SELECT_MEMBER_INFO);
+        return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
     }
 
 
@@ -115,9 +136,9 @@ public class MemberController {
     public JsonResult queryNormal() {
         List<Member> memberList = memberService.queryNormalMember();
         if (memberList != null) {
-            return JsonResult.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, memberList);
+            return JsonResult.successResultAndData(BaseEnum.SELECT_SUCCESS, memberList);
         }
-        return JsonResult.failResult(MemberEnum.FAIL_SELECT_MEMBER_INFO);
+        return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
     }
 
 
@@ -131,7 +152,7 @@ public class MemberController {
         if ("".equals(departmentname)) {
             departmentname = null;
         }
-        List<Member> memberList = memberService.queryAllByCriteria(DecideUtil.pushToMap(offset, limit, departmentname, status));
+        List<Member> memberList = memberService.queryAllByCriteria(ConversionUtil.convertToCriteriaMap(offset, limit, departmentname, status));
         if (memberList.size() != 0 && !memberList.isEmpty()) {
             int total = memberService.queryCount();
             tableDate.put("rows", memberList);
@@ -147,7 +168,7 @@ public class MemberController {
     @RequestMapping(value = "/queryById.do")
     public JsonResult queryById(Integer memberId) {
         Member member = memberService.queryById(memberId);
-        return JsonResult.successResultAndData(MemberEnum.SUCCESS_SELECT_MEMBER_INFO, member);
+        return JsonResult.successResultAndData(BaseEnum.SELECT_SUCCESS, member);
     }
 
 

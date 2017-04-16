@@ -28,7 +28,7 @@
 
 
 
-    <select id="list" parameterType="map" resultMap="BaseResultMap">
+    <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
         SELECT
             l.login_history_id,
             l.history_account_id,

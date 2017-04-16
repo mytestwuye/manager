@@ -14,8 +14,11 @@ import java.util.Map;
 public interface AccountMapper  extends IMapper<Account>{
     Account queryByPhone(Long phoneNumber);
     Account queryByMail(String email);
-    Account queryQuote(Long accountId);
+    Account queryQuoteByAccountId(Long accountId);
+    Account  queryQuoteByMemberId(Long memberId);
+
     Account queryByLongId(Long id);
     void deleteByLongId(Long id);
     List<Account> queryAllByCriteria(Map<Object,Object> criteriaMap);
+    int queryCount();
 }

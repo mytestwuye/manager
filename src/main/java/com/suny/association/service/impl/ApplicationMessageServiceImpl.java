@@ -7,6 +7,9 @@ import com.suny.association.service.interfaces.IApplicationMessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Comments:
  * Author:   孙建荣
@@ -24,7 +27,15 @@ public class ApplicationMessageServiceImpl extends AbstractBaseServiceImpl<Appli
     
     public ApplicationMessageServiceImpl() {
     }
-    
-    
-  
+
+
+    @Override
+    public int queryCount() {
+        return applicationMessageMapper.queryCount();
+    }
+
+    @Override
+    public List<ApplicationMessage> queryAllByCriteria(Map<Object, Object> criteriaMap) {
+        return applicationMessageMapper.queryAllByCriteria(criteriaMap);
+    }
 }

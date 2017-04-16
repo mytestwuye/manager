@@ -7,7 +7,6 @@ import com.suny.association.pojo.po.Roles;
 import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.service.interfaces.IRolesService;
-import com.suny.association.utils.DecideUtil;
 import com.suny.association.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,8 +18,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-import static com.suny.association.utils.JsonResult.*;
+import static com.suny.association.utils.ConversionUtil.convertToBootstrapTableResult;
+import static com.suny.association.utils.ConversionUtil.convertToCriteriaMap;
 import static com.suny.association.utils.JsonResult.failResult;
+import static com.suny.association.utils.JsonResult.successResult;
 
 /**
  * Comments:
@@ -75,8 +76,8 @@ public class AccountController {
     @RequestMapping(value = "/deleteById.json/{accountId}", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult deleteById(@PathVariable("accountId") Long accountId) {
-        Account accountQuote = accountService.queryQuote(accountId);
-        if ((accountQuote == null) && (null != accountQuote.getAccountMember())) {
+        Account accountQuote = accountService.queryQuoteByAccountId(accountId);
+        if (accountQuote != null && (null != accountQuote.getAccountMember())) {
             return failResult(BaseEnum.HAVE_QUOTE);
         }
         if (accountService.queryByLongId(accountId) == null) {
@@ -146,14 +147,13 @@ public class AccountController {
 
     @RequestMapping(value = "/queryAll.json", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult queryAll(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
-                               @RequestParam(value = "limit", required = false, defaultValue = "10") int limit,
-                               @RequestParam(value = "status", required = false, defaultValue = "3") int status) {
-        List<Account> accountList = accountService.queryAllByCriteria(DecideUtil.pushToMap(offset, limit, status));
-        if (accountList.size() > 0) {
-            return successResultAndData(BaseEnum.SELECT_SUCCESS, accountList);
-        }
-        return failResult(BaseEnum.SELECT_FAILURE);
+    public Map<Object, Object> queryAll(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
+                                        @RequestParam(value = "limit", required = false, defaultValue = "10") int limit,
+                                        @RequestParam(value = "status", required = false, defaultValue = "3") int status) {
+        int totalCount = accountService.queryCount();
+        Map<Object, Object> criteriaMap = convertToCriteriaMap(offset, limit, status);
+        List<Account> accountList = accountService.queryAllByCriteria(criteriaMap);
+        return convertToBootstrapTableResult(accountList, totalCount);
     }
 
     @RequestMapping(value = "/accountManager.html")

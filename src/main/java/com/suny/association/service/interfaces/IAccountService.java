@@ -20,11 +20,14 @@ public interface IAccountService extends IBaseService<Account> {
 
     Account queryByLongId(Long id);
 
-    Account queryQuote(Long accountId);
+    Account queryQuoteByAccountId(Long accountId);
+
+    Account queryQuoteByMemberId(Long memberId);
 
     Account queryByName(String name);
 
     void deleteByLongId(Long id);
 
     List<Account> queryAllByCriteria(Map<Object,Object> criteriaMap);
+    int queryCount();
 }

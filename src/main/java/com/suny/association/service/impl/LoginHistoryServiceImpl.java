@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Comments:
@@ -25,8 +26,8 @@ public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistor
 
 
     @Override
-    public List<LoginHistory> list(int offset,int limit){
-        return loginHistoryMapper.list(offset,limit);
+    public List<LoginHistory> list(Map<Object,Object> criteriaMap){
+        return loginHistoryMapper.list(criteriaMap);
     }
 
     @Override

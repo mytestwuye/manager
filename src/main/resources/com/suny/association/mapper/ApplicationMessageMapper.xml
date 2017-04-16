@@ -1,15 +1,194 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.suny.association.mapper.ApplicationMessageMapper" >
-  <!--<resultMap id="BaseResultMap" type="com.suny.association.pojo.po.ApplicationMessage" >
-    <constructor >
-      <idArg column="application_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="punch_record_id" jdbcType="BIGINT" javaType="java.lang.Long" />
-      <arg column="punch_type_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="application_reson" jdbcType="VARCHAR" javaType="java.lang.String" />
-      <arg column="application_result" jdbcType="BIT" javaType="java.lang.Boolean" />
-      <arg column="change_punch_type" jdbcType="INTEGER" javaType="java.lang.Integer" />
-    </constructor>
-  </resultMap>-->
+<mapper namespace="com.suny.association.mapper.ApplicationMessageMapper">
+    <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.ApplicationMessage">
+        <id property="applicationId" column="application_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result property="applicationReason" column="application_reason" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+        <result jdbcType="BOOLEAN"
+                javaType="java.lang.Boolean"/>
+        <result property="applyForTime" column="apply_for_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <association property="punchRecordId" column="punch_record_id"
+                     javaType="com.suny.association.pojo.po.PunchRecord"
+                     select="queryRecord"/>
+        <association property="punchTypeId" column="punch_type_id" javaType="com.suny.association.pojo.po.PunchType"
+                     select="queryPunchTypeInfo"/>
+        <association property="changePunchType" column="change_punch_type"
+                     javaType="com.suny.association.pojo.po.PunchType" select="queryPunchTypeInfo"/>
+        <association property="applicationResult" column="application_result"
+                     javaType="com.suny.association.pojo.po.CallbackResult" select="queryCallBack"/>
+    </resultMap>
+
+    <select id="queryRecord" parameterType="int" resultMap="queryRecordMap">
+        SELECT
+            p.punch_record_id,
+            p.punch_datetime,
+            p.punch_today_date,
+            p.punch_is_come,
+            p.punch_type_id,
+            p.punch_member_id
+        FROM punch_record AS p
+        WHERE p.punch_record_id = #{punchRecordId}
+    </select>
+
+    <resultMap id="queryRecordMap" type="com.suny.association.pojo.po.PunchRecord">
+        <id property="punchRecordId" column="punch_record_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result property="punchDatetime" column="punch_datetime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="punchTodayDate" column="punch_today_date" jdbcType="DATE" javaType="java.util.Date"/>
+        <result property="punchIsCome" column="punch_is_come" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <association property="punchTypeId" column="punch_type_id" javaType="com.suny.association.pojo.po.PunchType"
+                     select="queryPunchTypeInfo"/>
+        <association property="punchMemberId" column="punch_member_id" javaType="com.suny.association.pojo.po.Member"
+                     select="queryMember"/>
+    </resultMap>
+
+    <resultMap id="memberInfo" type="com.suny.association.pojo.po.Member">
+        <id property="memberId" column="member_id"/>
+        <result property="memberName" column="member_name"/>
+        <result property="memberGradeNumber" column="member_grade_number"/>
+    </resultMap>
+
+    <select id="queryMember" resultMap="memberInfo" parameterType="int">
+        SELECT
+            m.member_id,
+            m.member_name,
+            m.member_grade_number,
+            m.member_manager_id
+        FROM member AS m
+        WHERE
+            m.member_id = #{ punchMemberId }
+    </select>
+
+    <resultMap id="punchTypeInfo" type="com.suny.association.pojo.po.PunchType">
+        <id property="punchTypeId" column="punch_type_id"/>
+        <result property="punchTypeName" column="punch_type_name"/>
+    </resultMap>
+
+    <select id="queryPunchTypeInfo" resultMap="punchTypeInfo" parameterType="int">
+        SELECT
+            type.punch_type_id,
+            type.punch_type_name
+        FROM punchtype AS type
+        WHERE
+            punch_type_id = #{ punchTypeId }
+    </select>
+
+    <resultMap id="queryCallBackMap" type="com.suny.association.pojo.po.CallbackResult">
+        <id property="callbackId" column="callback_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
+        <result property="callbackResult" column="callback_result" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
+        <result property="callbackReason" column="callback_reason" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="callbackTime" column="callback_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <association property="callbackManagerId" column="callback_manager_id"
+                     javaType="com.suny.association.pojo.po.Member"
+                     select="getMemberManage"/>
+        <association property="applicationMessageId" column="application_message_id"
+                     javaType="com.suny.association.pojo.po.ApplicationMessage" select="queryApplication"/>
+    </resultMap>
+
+    <!--成员管理员-->
+    <resultMap id="memberManagerResult" type="com.suny.association.pojo.po.Member">
+        <id property="memberId" column="member_id"/>
+        <result property="memberName" column="member_name"/>
+        <result property="memberClassName" column="member_class_name"/>
+        <result property="memberSex" column="member_sex"/>
+        <result property="memberGradeNumber" column="member_grade_number"/>
+        <result property="memberStatus" column="member_status"/>
+        <!--部门复杂类型关联-->
+        <association property="memberDepartment" column="member_department_id"
+                     javaType="com.suny.association.pojo.po.Department"
+                     select="getDepartment"/>
+        <!--成员角色复杂类型关联-->
+        <association property="memberRoles" column="member_role_id" javaType="com.suny.association.pojo.po.MemberRoles"
+                     select="getMemberRole"/>
+
+        <!--协会成员对应的管理员复杂类型集合-->
+        <association property="memberManager" column="member_manager_id" javaType="com.suny.association.pojo.po.Member"
+                     select="getMemberManage"/>
+    </resultMap>
+
+    <!--成员角色-->
+    <resultMap id="memberRolesResult" type="com.suny.association.pojo.po.MemberRoles">
+        <id property="memberRoleId" column="member_role_id"/>
+        <result property="memberRoleName" column="member_role_name"/>
+    </resultMap>
+
+    <!--部门-->
+    <resultMap id="memberDepartmentResult" type="com.suny.association.pojo.po.Department">
+        <id column="department_id" property="departmentId"/>
+        <result column="department_name" property="departmentName"/>
+    </resultMap>
+
+    <!--查询管理员信息-->
+    <select id="getMemberManage" resultMap="memberManagerResult">
+        SELECT
+            m.member_id,
+            m.member_name,
+            m.member_class_name,
+            m.member_sex,
+            m.member_grade_number,
+            m.member_manager_id,
+            m.member_department_id,
+            m.member_status,
+            m.member_role_id
+        FROM member AS m
+        WHERE m.member_manager_id = #{ memberManager }
+    </select>
+
+    <!--查询部门-->
+    <select id="getDepartment" parameterType="int" resultMap="memberDepartmentResult">
+        SELECT
+            d.department_id,
+            d.department_name
+        FROM department AS d
+        WHERE d.department_id = #{memberDepartment}
+    </select>
+
+    <!--获得成员角色-->
+    <select id="getMemberRole" parameterType="int" resultMap="memberRolesResult">
+        SELECT
+            mr.member_role_id,
+            mr.member_role_name
+        FROM member_roles AS mr
+        WHERE member_role_id = #{memberRoles}
+    </select>
+
+    <resultMap id="queryApplicationMap" type="com.suny.association.pojo.po.ApplicationMessage">
+        <id property="applicationId" column="application_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+    </resultMap>
+    <select id="queryApplication" parameterType="int" resultMap="queryApplicationMap">
+        SELECT a.application_id
+        FROM application_message AS a
+        WHERE a.application_id = #{applicationMessageId}
+    </select>
+
+    <select id="queryCallBack" resultMap="queryCallBackMap">
+        SELECT
+            cr.callback_id,
+            cr.application_message_id,
+            cr.callback_result,
+            cr.callback_manager_id,
+            cr.callback_reason,
+            cr.callback_time
+        FROM callback_result AS cr;
+    </select>
+
+    <select id="queryAllByCriteria" parameterType="hashmap" resultMap="BaseResultMap">
+        SELECT
+            a.application_id,
+            a.punch_type_id,
+            a.punch_record_id,
+            a.application_reason,
+            a.apply_for_time,
+            a.change_punch_type,
+            a.application_result
+        FROM application_message AS a
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*)
+        FROM application_message
+    </select>
+
 
 </mapper>

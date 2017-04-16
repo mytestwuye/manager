@@ -2,7 +2,9 @@ package com.suny.association.mapper;
 
 import com.suny.association.mapper.interfaces.IMapper;
 import com.suny.association.pojo.po.ApplicationMessage;
-import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * Comments:   申请修改考勤类型mapper接口映射
@@ -11,5 +13,6 @@ import org.springframework.stereotype.Component;
  */
 
 public interface ApplicationMessageMapper extends IMapper<ApplicationMessage> {
-
+    int queryCount();
+    List<ApplicationMessage> queryAllByCriteria(Map<Object,Object> criteriaMap);
 }

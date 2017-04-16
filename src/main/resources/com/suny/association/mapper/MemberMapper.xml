@@ -166,6 +166,11 @@
         WHERE member_id = #{id}
     </delete>
 
+    <delete id="deleteByLongId" parameterType="Long">
+        DELETE FROM member
+        WHERE member_id = #{id}
+    </delete>
+
     <update id="update" parameterType="com.suny.association.pojo.po.Member">
         UPDATE member
         <trim prefix="set" suffixOverrides=",">
@@ -280,6 +285,21 @@
         WHERE member_id = #{id}
     </select>
 
+    <select id="queryByLongId" parameterType="Long" resultMap="BaseResultMap">
+        SELECT
+        member_id,
+        member_name,
+        member_class_name,
+        member_sex,
+        member_grade_number,
+        member_manager_id,
+        member_department_id,
+        member_status,
+        member_role_id
+        FROM member
+        WHERE member_id = #{id}
+    </select>
+
     <select id="selectAllByConditions" resultMap="BaseResultMap">
         SELECT
         member_id,
@@ -334,7 +354,7 @@
             1=1
             <if test="departmentname!=null">
                 AND m.member_department_id = ( SELECT d.department_id FROM department as d WHERE
-                department_name=#{departmentname,jdbcType=VARCHAR} )
+                department_name like '%' #{departmentname,jdbcType=VARCHAR} '%')
             </if>
             <if test="status !=null">
                 AND m.member_status =#{status}
@@ -347,5 +367,6 @@
         SELECT count(*)
         FROM member;
     </select>
+
 
 </mapper>
