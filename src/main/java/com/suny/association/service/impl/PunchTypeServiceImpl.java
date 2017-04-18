@@ -24,6 +24,9 @@ public class PunchTypeServiceImpl extends AbstractBaseServiceImpl<PunchType>  im
     
     public PunchTypeServiceImpl() {
     }
-    
-    
+
+    @Override
+    public void update(PunchType punchType) {
+        punchTypeMapper.update(punchType);
+    }
 }

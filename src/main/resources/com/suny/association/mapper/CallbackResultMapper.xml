@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.suny.association.pojo.po.CallbackResult">
+<mapper namespace="com.suny.association.mapper.CallbackResultMapper">
     <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.CallbackResult">
         <id property="callbackId" column="callback_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         <result property="callbackResult" column="callback_result" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
@@ -10,7 +10,8 @@
                      javaType="com.suny.association.pojo.po.Member"
                      select="getMemberManage"/>
         <association property="applicationMessageId" column="application_message_id"
-                     javaType="com.suny.association.pojo.po.ApplicationMessage" select="queryApplication"/>
+                     javaType="com.suny.association.pojo.po.ApplicationMessage"
+                     select="queryApplication"/>
     </resultMap>
 
     <!--成员管理员-->
@@ -58,7 +59,7 @@
             m.member_department_id,
             m.member_status,
             m.member_role_id
-        FROM member as m
+        FROM member AS m
         WHERE m.member_manager_id = #{ memberManager }
     </select>
 
@@ -76,28 +77,80 @@
         SELECT
             mr.member_role_id,
             mr.member_role_name
-        FROM member_roles AS  mr
+        FROM member_roles AS mr
         WHERE mr.member_role_id = #{memberRoles}
     </select>
 
     <resultMap id="queryApplicationMap" type="com.suny.association.pojo.po.ApplicationMessage">
         <id property="applicationId" column="application_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
     </resultMap>
+
     <select id="queryApplication" parameterType="int" resultMap="queryApplicationMap">
         SELECT a.application_id
         FROM application_message AS a
-        WHERE application_id =#{applicationMessageId}
+        WHERE a.application_id = #{applicationMessageId.applicationId,jdbcType=INTEGER}
     </select>
 
     <select id="queryAll" resultMap="BaseResultMap">
-        select
+        SELECT
             cr.callback_id,
             cr.application_message_id,
             cr.callback_result,
             cr.callback_manager_id,
             cr.callback_reason,
             cr.callback_time
-        from callback_result AS cr;
+        FROM callback_result AS cr;
+    </select>
+
+    <insert id="insert" parameterType="com.suny.association.pojo.po.CallbackResult" useGeneratedKeys="true"
+            keyProperty="callbackId">
+        INSERT INTO callback_result
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test=" callbackId != null">
+                callback_id ,
+            </if>
+            <if test="applicationMessageId.applicationId != null">
+                application_message_id ,
+            </if>
+            <if test=" callbackResult != null">
+                callback_result ,
+            </if>
+            <if test=" callbackManagerId.memberId != null">
+                callback_manager_id ,
+            </if>
+            <if test=" callbackReason != null">
+                callback_reason ,
+            </if>
+            <if test=" callbackTime != null">
+                callback_time ,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test=" callbackId != null">
+                #{callbackId,jdbcType=BIGINT},
+            </if>
+            <if test=" applicationMessageId.applicationId != null">
+                #{applicationMessageId.applicationId,jdbcType=INTEGER},
+            </if>
+            <if test=" callbackResult != null">
+                #{callbackResult,jdbcType=BOOLEAN},
+            </if>
+            <if test=" callbackManagerId.memberId != null">
+                #{callbackManagerId.memberId,jdbcType=BIGINT},
+            </if>
+            <if test=" callbackReason != null">
+                #{callbackReason,jdbcType=VARCHAR},
+            </if>
+            <if test=" callbackTime != null">
+                #{callbackTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="queryById" parameterType="int" resultMap="BaseResultMap">
+        SELECT cr.application_message_id
+        FROM callback_result AS cr
+        WHERE cr.application_message_id = #{applicationMessageId}
     </select>
 
 </mapper>

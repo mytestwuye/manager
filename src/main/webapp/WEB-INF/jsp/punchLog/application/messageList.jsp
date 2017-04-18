@@ -28,58 +28,30 @@
     <link href="${basePath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
     <link href="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
           rel="stylesheet"/>
-    <style>
-        .panel {
-            margin-bottom: 0;
-        }
-    </style>
 </head>
 <body>
 <div class="panel-body container" style="padding-bottom:0;">
-    <div class="panel panel-default">
-        <div class="panel-heading">查询条件</div>
-        <div class="panel-body">
-            <form id="formSearch" class="form-horizontal">
-                <div class="form-group" >
-                    <label class="control-label col-sm-1" for="txt_search_departmentname">部门名称</label>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" id="txt_search_departmentname">
-                    </div>
-                    <label class="control-label col-sm-1" for="txt_search_status"></label>
-                    <div class="btn-group" id="txt_search_status">
-                        <label class="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="2" checked="checked"> 全部状态
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="1"> 正常状态
-                        </label>
-                        <label class="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="0"> 冻结状态
-                        </label>
-                    </div>
-                    <div class="col-sm-4" style="text-align:left;">
-                        <button type="button" style="margin-left:50px" id="btn_query" class="btn btn-primary"
-                                onclick="refresh()">查询
-                        </button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <div id="toolbar" class="btn-group">
-        <button id="btn_add" type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
-        </button>
-        <button id="btn_edit" type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
-        </button>
-        <button id="btn_delete" type="button" class="btn btn-default">
-            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
-        </button>
-    </div>
     <table id="tabs" class="table table-hover"></table>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title">填写审批理由</h4>
+                </div>
+                <div class="modal-body">
+                    <label id="">请在这里输入批示的理由</label>
+                    <input type="text" id="textReason" class="form-control" title="reason">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="submitReason" class="btn btn-primary">提交</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 </div>
+
 
 <%--正文区结束--%>
 
@@ -140,7 +112,7 @@
                 striped: true,                      //是否显示行间隔色
                 cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
                 pagination: true,                   //是否显示分页（*）
-                smartDisplay: false,                 //是否关闭智能隐藏分页按钮
+                smartDisplay: true,                 //是否关闭智能隐藏分页按钮
                 sortable: true,                     //是否启用排序
                 sortOrder: "asc",                   //排序方式
                 showPaginationSwitch: 'true',       //取消或者显示分页
@@ -181,22 +153,33 @@
                     return {classes: strclass}
                 },
                 columns: [
-                    {title: "全选", field: "select", checkbox: true, width: 20, align: "center", valign: "middle"},
-                    {title: "ID", field: "applicationId", sortable: true, order: "desc"},
-                    {field: "punchRecordId", title: "对应考勤记录id", sortable: true, titleTooltip: "this is name"},
-                    {field: "punchTypeId", title: "考勤类型", sortable: true, order: "desc"},
-                    {field: "applicationReason", title: "异议理由", sortable: true, order: "desc", formatter: 'sexFormatter'},
-                    {field: "applicationResult", title: "申请结果", sortable: true, order: "desc"},
-                    {field: "changePunchType", title: "管理员", sortable: true, order: "desc"},
-                    {field: "applyForTime", title: "部门", sortable: true, order: "desc", formatter: "departmentFormatter"},
+                    {title: "选择", field: "select", checkbox: true, width: 20, align: "center", valign: "middle"},
+                    {field: "punchRecordId", title: "考勤人", align: "center", formatter: 'punchRecordFormatter'},
+                    {field: "department", title: "所属部门", align: "center", formatter: 'departmentFormatter'},
                     {
-                        field: "memberStatus",
-                        title: "状态",
+                        field: "punchTypeId",
+                        title: "当前考勤",
                         sortable: true,
                         order: "desc",
-                        formatter: "memberStatusFormatter"
+                        align: "center",
+                        formatter: 'punchTypeFormatter'
+                    }, {
+                        field: "changePunchType",
+                        title: "希望类型",
+                        sortable: true,
+                        align: "center",
+                        formatter: 'changePunchTypeFormatter'
                     },
-                    {field: "memberRoles", title: "角色", sortable: true, order: "desc", formatter: "memberRoleFormatter"}
+                    {field: "applicationReason", title: "异议理由", align: "center"},
+                    {field: "punchTodayDate", title: "考勤日期", align: "center", formatter: 'punchTodayDateFormatter'},
+                    {
+                        field: "applyForTime",
+                        title: "提出申请时间",
+                        sortable: true,
+                        align: "center",
+                        formatter: "applyForTimeFormat"
+                    },
+                    {field: "operation", title: "操作", align: "center", formatter: "operaFormat"}
                 ],
                 onClickRow: function (row, $element) {
                     //$element是当前tr的jquery对象
@@ -226,124 +209,129 @@
         return oTableInit;
     };
 
-    function memberStatusFormatter(value, row, index) {
-        //noinspection JSUnresolvedVariable
-        var memberStatus = row.memberStatus;
-        if (memberStatus == true) {
-            return '<span class="label label-success account-status">正常</span>';
-        }
-        if (memberStatus == false) {
-            return '<span class="label label-default account-status">冻结</span>';
-        }
-    }
-
-    function sexFormatter(value, row, index) {
-        return row.memberSex == true ? "男" : "女";
-    }
-
     function departmentFormatter(value, row, index) {
         //noinspection JSUnresolvedVariable
-        return row.memberDepartment.departmentName;
+        return row.punchRecordId.punchMemberId.memberDepartment.departmentName;
     }
 
-
-    function memberRoleFormatter(value, row, index) {
+    function punchRecordFormatter(value, row, index) {
         //noinspection JSUnresolvedVariable
-        return row.memberRoles.memberRoleName;
+        return row.punchRecordId.punchMemberId.memberName;
+    }
+
+    function applyForTimeFormat(value, row, index) {
+        //noinspection JSUnresolvedVariable
+        var date = new Date(row.applyForTime);
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' ';
+        var h = date.getHours() + ':';
+        var m = date.getMinutes() + ':';
+        var s = date.getSeconds();
+        return Y + M + D + h + m + s;
+    }
+
+    function punchTypeFormatter(value, row, index) {
+        //noinspection JSUnresolvedVariable
+        switch (row.punchTypeId.punchTypeId) {
+            case 0:
+                return '<span class="label label-danger ">缺勤</span>';
+                break;
+            case 1:
+                return '<span class="label label-success ">正常</span>';
+                break;
+            case 2:
+                return '<span class="label label-warning ">迟到</span>';
+                break;
+            case 3:
+                return '<span class="label label-info ">请假</span>';
+                break;
+            default:
+                return '<span class="label label-default ">未知</span>';
+                break;
+        }
+    }
+
+    function changePunchTypeFormatter(value, row, index) {
+        //noinspection JSUnresolvedVariable
+        switch (row.changePunchType.punchTypeId) {
+            case 0:
+                return '<span class="label label-danger ">缺勤</span>';
+                break;
+            case 1:
+                return '<span class="label label-success ">正常</span>';
+                break;
+            case 2:
+                return '<span class="label label-warning ">迟到</span>';
+                break;
+            case 3:
+                return '<span class="label label-info ">请假</span>';
+                break;
+            default:
+                return '<span class="label label-default ">未知</span>';
+                break;
+        }
     }
 
 
-    //新增按钮的方法
-    $("#btn_add").click(function () {
-        insertMember();
-    });
-    function insertMember() {
-        //弹出即全屏
-        var index = layer.open({
-            type: 2,
-            content: '${basePath}/member/insert.html',
-            area: ['260px', '500px'],
-            maxmin: true
-        });
+    function punchTodayDateFormatter(value, row, index) {
+        //noinspection JSUnresolvedVariable
+        var date = new Date(row.punchRecordId.punchDatetime);
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' ';
+        return Y + M + D;
     }
 
+    function operaFormat() {
+        return '<button type=\'button\' onclick=\'agree(true)\' class=\'btn btn-xs btn-success\' >同意</button><button onclick="agree(false)" id=\'ignoreButton\' type=\'button\' class=\'btn btn-xs btn-danger\' >拒绝</button>';
+    }
 
-    //编辑按钮的方法
-    $("#btn_edit").click(function () {
-        var selectedRadio = $('#tabs').bootstrapTable('getSelections');
+    function agree(status) {
+        var selectedRadio = $("#tabs").bootstrapTable("getSelections");
+        var memberIdVal = parseInt(${member.memberId});
+        var resultStatus = status;
         if (selectedRadio.length === 0) {
-            layer.msg('请先勾选你要编辑的一行数据。。', {icon: 5});
+            layer.msg('请先勾选你一行数据。。', {icon: 5});
         } else {
-            var memberId = selectedRadio[0].memberId;
-            editMember(memberId);
+            //noinspection JSUnresolvedVariable
+            var applicationId = parseInt(selectedRadio[0].applicationId);
+            $.ajax({
+                        type: 'post',
+                        cache: false,
+                        dataType: 'json',  //数据传输格式
+                        url: "${basePath}/punchLog/applicationMessage/setResult.json",
+                        data: {
+                            applicationId: applicationId,
+                            memberId: memberIdVal,
+                            result: resultStatus
+                        },
+                        success: function (result) {
+                            var statusCode = result.status;
+                            if (statusCode == 104) {
+                                layer.msg("审批成功，请刷新后查看效果", {icon: 1});
+                                layer.load(0, {shade: false, time: 1000});
+                                $("#tabs").bootstrapTable("refresh");
+                            }
+                            else if (statusCode == 202) {
+                                layer.msg("缺少参数！", {icon: 4});
+                            }
+                            else if (statusCode == 206) {
+                                layer.msg("您在部门的角色不能执行此操作", {icon: 4});
+                            }
+                            else if (statusCode == 5) {
+                                layer.msg("没有你要操作的记录", {icon: 4});
+                            }
+                            else if (statusCode == 6) {
+                                layer.msg("重复处理记录，该记录已被处理完成!", {icon: 4});
+                            }
+                        },
+                        error: function () {
+                            layer.msg('出了点小问题！', {icon: 1});
+                        }
+                    }
+            )
         }
-    });
-
-    /**
-     * 准备编辑表格操作
-     */
-    function editMember(memberId) {
-        //iframe层-父子操作
-        var index = layer.open({
-            type: 2,
-            area: ['300px', '530px'],
-            fixed: true, //不固定
-            maxmin: true,
-            content: '${basePath}/member/update.html/' + memberId
-        });
-
-
-    }
-
-    //删除按钮的方法
-    $("#btn_delete").click(function () {
-        var selectedRaido = $('#tabs').bootstrapTable('getSelections');
-        if (selectedRaido.length === 0) {
-            layer.msg('请先勾选一条你要删除的数据。。', {icon: 5});
-        } else {
-            //询问框
-            layer.confirm('您确定要删除【' + selectedRaido[0].memberName + "】这条成员的信息吗?", {
-                btn: ['确定', '点错了'] //按钮
-            }, function () {
-                layer.msg('准备删除了', {icon: 1});
-                var memberId = selectedRaido[0].memberId;
-                deleteMember(memberId);
-            }, function () {
-                layer.msg('已经取消了', {
-                    time: 20000 //20s后自动关闭
-                });
-            });
-        }
-    });
-
-
-    /**
-     * 提交删除表格操作
-     * */
-    function deleteMember(memberId) {
-        $.ajax({
-            type: "get",
-            url: "${basePath}/member/deleteById.json/" + memberId,
-            success: function (result) {
-                if (result.status == 5) {
-                    layer.msg("没有你要删除的信息", {icon: 4});
-
-                } else if(result.status==103){
-                    layer.msg("删除成功了，请刷新", {icon: 1});
-                    layer.load(0, {shade: false, time: 1000});
-                    $("#tabs").bootstrapTable("refresh");
-
-                }else if(result.status==204){
-                    layer.msg("存在引用账号，无法删除", {icon: 4});
-                }
-                else{
-                    layer.msg("出了点小问题", {icon: 4});
-                }
-            },
-            error: function () {
-                layer.msg('出错了！', {icon: 1});
-            }
-        })
     }
 
 

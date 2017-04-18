@@ -1,7 +1,9 @@
 package com.suny.association.utils;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,5 +21,10 @@ public class CustomDate {
         yearList.add(0, thisYear);
         yearList.add(1, lastYear);
         return yearList;
+    }
+
+    public static Date getCurrentDateTime() {
+        Date date = new Date();
+        return new Timestamp(date.getTime());
     }
 }

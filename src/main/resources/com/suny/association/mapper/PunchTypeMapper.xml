@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.suny.association.mapper.PunchTypeMapper" >
-  <!--<resultMap id="BaseResultMap" type="com.suny.association.pojo.po.PunchType" >
-    <constructor >
-      <idArg column="punch_type_id" jdbcType="INTEGER" javaType="java.lang.Integer" />
-      <arg column="punch_type_name" jdbcType="VARCHAR" javaType="java.lang.String" />
-    </constructor>
-  </resultMap>-->
+    <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.PunchType">
+        <id column="punch_type_id" property="punchTypeId" jdbcType="INTEGER" javaType="java.lang.Integer"/>
+        <result column="punch_type_name" property="punchTypeName" jdbcType="VARCHAR" javaType="java.lang.String"/>
+    </resultMap>
+
 
 </mapper>

@@ -151,8 +151,8 @@
                         title: "账号状态",
                         sortable: true,
                         order: "desc",
-                        formatter: "accountStatusFormatter"
-                        , align: "center",
+                        formatter: "accountStatusFormatter",
+                        align: "center"
                     },
                     {field: "accountRoles", title: "账号角色", sortable: true, order: "desc", formatter: "rolesFormatter", align: "center"},
                     {field: "accountMember", title: "对应成员", formatter:'accountMember', align: "center"}

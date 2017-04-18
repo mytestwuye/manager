@@ -8,6 +8,6 @@ import com.suny.association.pojo.po.CallbackResult;
  * Author:   孙建荣
  * Create Date: 2017/03/05 23:05
  */
-public interface CheckbackResultMapper extends IMapper<CallbackResult> {
+public interface CallbackResultMapper extends IMapper<CallbackResult> {
 
 }

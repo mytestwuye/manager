@@ -5,8 +5,6 @@
         <id property="applicationId" column="application_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
         <result property="applicationReason" column="application_reason" jdbcType="VARCHAR"
                 javaType="java.lang.String"/>
-        <result jdbcType="BOOLEAN"
-                javaType="java.lang.Boolean"/>
         <result property="applyForTime" column="apply_for_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
         <association property="punchRecordId" column="punch_record_id"
                      javaType="com.suny.association.pojo.po.PunchRecord"
@@ -46,14 +44,30 @@
         <id property="memberId" column="member_id"/>
         <result property="memberName" column="member_name"/>
         <result property="memberGradeNumber" column="member_grade_number"/>
+        <association property="memberDepartment" column="member_department_id"
+                     javaType="com.suny.association.pojo.po.Department" select="queryDepartment"/>
     </resultMap>
+
+    <resultMap id="departmentMap" type="com.suny.association.pojo.po.Department">
+        <id column="department_id" property="departmentId"/>
+        <result column="department_name" property="departmentName"/>
+    </resultMap>
+
+    <select id="queryDepartment" resultMap="departmentMap" parameterType="int">
+        SELECT
+        d.department_id,
+        d.department_name
+        FROM department AS d
+        WHERE department_id = #{memberDepartment}
+    </select>
 
     <select id="queryMember" resultMap="memberInfo" parameterType="int">
         SELECT
             m.member_id,
             m.member_name,
             m.member_grade_number,
-            m.member_manager_id
+        m.member_manager_id,
+        m.member_department_id
         FROM member AS m
         WHERE
             m.member_id = #{ punchMemberId }
@@ -169,7 +183,8 @@
             cr.callback_manager_id,
             cr.callback_reason,
             cr.callback_time
-        FROM callback_result AS cr;
+        FROM callback_result AS cr
+        WHERE cr.application_message_id = #{applicationResult.applicationMessageId.applicationId,jdbcType=INTEGER}
     </select>
 
     <select id="queryAllByCriteria" parameterType="hashmap" resultMap="BaseResultMap">
@@ -182,13 +197,37 @@
             a.change_punch_type,
             a.application_result
         FROM application_message AS a
+        WHERE application_result IS NULL
         LIMIT #{offset}, #{limit}
     </select>
 
     <select id="queryCount" resultType="int">
         SELECT count(*)
         FROM application_message
+        WHERE application_result IS NULL
     </select>
+
+
+    <select id="queryById" parameterType="int" resultMap="BaseResultMap">
+        SELECT
+        a.application_id,
+        a.punch_type_id,
+        a.punch_record_id,
+        a.application_reason,
+        a.apply_for_time,
+        a.change_punch_type,
+        a.application_result
+        FROM application_message AS a
+        WHERE application_id = #{applicationId}
+    </select>
+
+    <update id="update" parameterType="com.suny.association.pojo.po.ApplicationMessage">
+        UPDATE application_message
+        SET
+        application_result = #{applicationResult.callbackId,jdbcType=INTEGER}
+
+        WHERE application_id = #{applicationId,jdbcType=INTEGER}
+    </update>
 
 
 </mapper>
