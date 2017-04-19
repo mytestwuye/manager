@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Comments:   考勤记录逻辑
@@ -42,19 +43,25 @@ public class PunchRecordServiceImpl extends AbstractBaseServiceImpl<PunchRecord>
         this.update(punchRecord);
     }
 
-    @Override
-    public List<PunchRecord> list(int offset, int limit) {
-        return punchRecordMapper.list(offset, limit);
-    }
 
     @Override
     public int queryCount() {
         return punchRecordMapper.queryCount();
     }
 
+    @Override
+    public List<PunchRecord> list(Map<Object, Object> criteriaMap) {
+        return punchRecordMapper.list(criteriaMap);
+    }
+
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public void update(PunchRecord punchRecord) {
         punchRecordMapper.update(punchRecord);
+    }
+
+    @Override
+    public PunchRecord queryByName(String name) {
+        return punchRecordMapper.queryByName(name);
     }
 }

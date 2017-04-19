@@ -16,7 +16,6 @@ public abstract class AbstractBaseServiceImpl<T> implements IBaseService<T> {
     public AbstractBaseServiceImpl() {
     }
 
-   
 
     @Override
     public void insert(T t) {

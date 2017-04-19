@@ -9,23 +9,23 @@
         <result property="loginBrowser" column="login_browser" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="loginOsVersion" column="login_os_version" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="loginUserAgent" column="login_user_agent" jdbcType="VARCHAR" javaType="java.lang.String"/>
-        <result property="loginStatus" column="login_status"  jdbcType="BOOLEAN" javaType="java.lang.Boolean"/>
-        <association property="historyAccountId" column="history_account_id" javaType="com.suny.association.pojo.po.Account" select="getAccount"/>
+        <result property="loginStatus" column="login_status" jdbcType="BOOLEAN" javaType="java.lang.Boolean"/>
+        <association property="historyAccountId" column="history_account_id"
+                     javaType="com.suny.association.pojo.po.Account" select="getAccount"/>
     </resultMap>
 
     <resultMap id="AccountInfo" type="com.suny.association.pojo.po.Account">
-        <id property="accountId" column="account_id"></id>
-        <result property="accountName" column="account_name"></result>
+        <id property="accountId" column="account_id"/>
+        <result property="accountName" column="account_name"/>
     </resultMap>
 
-   <select id="getAccount" parameterType="int" resultMap="AccountInfo">
-       SELECT
-           account_id,
-           account_name
-       FROM account
-       WHERE account_id = #{ historyAccountId }
-   </select>
-
+    <select id="getAccount" parameterType="int" resultMap="AccountInfo">
+        SELECT
+        a.account_id,
+        a.account_name
+        FROM account AS a
+        WHERE a.account_id = #{ historyAccountId }
+    </select>
 
 
     <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
@@ -39,7 +39,7 @@
             l.login_os_version,
             l.login_user_agent,
             l.login_status
-        FROM login_history AS  l
+        FROM login_history AS l
         LIMIT
             #{offset},
             #{limit}

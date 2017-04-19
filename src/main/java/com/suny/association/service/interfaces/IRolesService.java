@@ -13,10 +13,4 @@ import java.util.List;
  */
 public interface IRolesService extends IBaseService<Roles> {
     List<Account> queryQuote(Integer roleId);
-
-    Roles queryByName(String name);
-
-    List<Roles> list(int offset, int limit);
-
-    int queryCount();
 }

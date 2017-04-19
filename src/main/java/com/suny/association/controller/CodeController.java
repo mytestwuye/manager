@@ -112,7 +112,7 @@ public class CodeController {
     @ResponseBody
     public JsonResult checkCode(HttpServletRequest request,
                                 @RequestParam String formCode) {
-        String sessionCode = (String) request.getSession().getAttribute("code");
+//        String sessionCode = (String) request.getSession().getAttribute("code");
        /* if (matchCode(formCode, sessionCode)) {
             return JsonResult.successResult(LoginEnum.VALIDATE_CODE_SUCCESS);
         }

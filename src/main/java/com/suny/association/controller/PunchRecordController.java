@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Comments:  考勤记录
+ * Comments:  考勤记录控制器
  * Author:   孙建荣
  * Create Date: 2017/04/11 13:16
  */
@@ -30,17 +30,17 @@ public class PunchRecordController {
         this.punchRecordService = punchRecordService;
     }
 
-    @RequestMapping(value = "list.json" ,method = RequestMethod.GET)
+    @RequestMapping(value = "list.json", method = RequestMethod.GET)
     @ResponseBody
-    public Map query(@RequestParam(value = "offset",required = false,defaultValue = "0") int offset,
-                     @RequestParam(value = "limit",required = false,defaultValue = "10") int limit){
-        List<PunchRecord> punchRecordList=punchRecordService.list(offset,limit);
+    public Map query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
+                     @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
+        List<PunchRecord> punchRecordList = punchRecordService.list(ConversionUtil.convertToCriteriaMap(offset, limit));
         int total = punchRecordService.queryCount();
-        return ConversionUtil.convertToBootstrapTableResult(punchRecordList,total);
+        return ConversionUtil.convertToBootstrapTableResult(punchRecordList, total);
     }
 
-    @RequestMapping(value = "/index.html" ,method = RequestMethod.GET)
-    public String index(){
+    @RequestMapping(value = "/index.html", method = RequestMethod.GET)
+    public String index() {
         return "/punchLog/punchLogList";
     }
 }

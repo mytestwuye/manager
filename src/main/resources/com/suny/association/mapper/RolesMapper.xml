@@ -14,10 +14,10 @@
 
     <select id="queryQuote" parameterType="Integer" resultMap="AccountQuote">
         SELECT
-            account_id,
-            account_name
-        FROM account
-        WHERE account_role_id = #{ roleId}
+        a.account_id,
+        a.account_name
+        FROM account AS
+        WHERE a.account_role_id = #{ roleId}
     </select>
 
     <insert id="insert" parameterType="com.suny.association.pojo.po.Roles">
@@ -28,8 +28,8 @@
     </insert>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM roles
-        WHERE role_id = #{roleId}
+        DELETE FROM roles AS r
+        WHERE r.role_id = #{roleId}
     </delete>
 
 
@@ -43,37 +43,37 @@
 
     <select id="queryAll" resultMap="BaseResultMap">
         SELECT
-            role.role_id,
-            role.role_name,
-            role.role_create_time
-        FROM roles AS role
+        r.role_id,
+        r.role_name,
+        r.role_create_time
+        FROM roles AS r
     </select>
 
     <select id="queryById" parameterType="Integer" resultMap="BaseResultMap">
         SELECT
-            role.role_id,
-            role.role_name,
-            role.role_create_time
-        FROM roles AS role
-        WHERE role_id = #{roleId}
+        r.role_id,
+        r.role_name,
+        r.role_create_time
+        FROM roles AS r
+        WHERE r.role_id = #{roleId}
     </select>
 
     <select id="queryByName" parameterType="String" resultMap="BaseResultMap">
         SELECT
-            role.role_id,
-            role.role_name,
-            role.role_create_time
-        FROM roles AS role
-        WHERE role_name LIKE CONCAT(CONCAT('%', #{roleName}), '%')
+        r.role_id,
+        r.role_name,
+        r.role_create_time
+        FROM roles AS r
+        WHERE r.role_name LIKE CONCAT(CONCAT('%', #{roleName}), '%')
     </select>
 
 
-    <select id="list" parameterType="map" resultMap="BaseResultMap">
+    <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
         SELECT
-            role.role_id,
-            role.role_name,
-            role.role_create_time
-        FROM roles AS role
+        r.role_id,
+        r.role_name,
+        r.role_create_time
+        FROM roles AS r
         LIMIT
             #{offset},
             #{limit}

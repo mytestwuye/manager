@@ -18,7 +18,7 @@ import java.util.Map;
 import static com.suny.association.utils.ConversionUtil.convertToCriteriaMap;
 
 /**
- * Comments:   异议考勤结果控制
+ * Comments:   异议考勤结果控制器
  * Author:   孙建荣
  * Create Date: 2017/04/16 20:55
  */
@@ -101,7 +101,7 @@ public class ApplicationController {
     public Map query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
                      @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
         Map<Object, Object> criteriaMap = convertToCriteriaMap(offset, limit);
-        List<ApplicationMessage> punchRecordList = applicationMessageService.queryAllByCriteria(criteriaMap);
+        List<ApplicationMessage> punchRecordList = applicationMessageService.list(criteriaMap);
         int total = applicationMessageService.queryCount();
         return ConversionUtil.convertToBootstrapTableResult(punchRecordList, total);
     }

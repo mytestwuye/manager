@@ -24,7 +24,7 @@ import static com.suny.association.utils.JsonResult.failResult;
 import static com.suny.association.utils.JsonResult.successResult;
 
 /**
- * Comments:
+ * Comments:   账号控制器
  * Author:   孙建荣
  * Create Date: 2017/03/22 22:12
  */
@@ -45,6 +45,12 @@ public class AccountController {
         this.rolesService = rolesService;
     }
 
+    /**
+     * 插入一条账号信息
+     *
+     * @param account 要插入的账号信息
+     * @return 插入的json数据结果
+     */
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult insert(@RequestBody Account account) {
@@ -60,6 +66,12 @@ public class AccountController {
     }
 
 
+    /**
+     * 新增账号页面
+     *
+     * @param modelAndView 模型数据跟视图
+     * @return 新增账号页面
+     */
     @RequestMapping(value = "/insert.html", method = RequestMethod.GET)
     public ModelAndView insertPage(ModelAndView modelAndView) {
         List<Account> account = accountService.queryAll();
@@ -73,6 +85,12 @@ public class AccountController {
     }
 
 
+    /**
+     * 删除一条账号信息请求
+     *
+     * @param accountId 账号
+     * @return 操作结果
+     */
     @RequestMapping(value = "/deleteById.json/{accountId}", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult deleteById(@PathVariable("accountId") Long accountId) {
@@ -87,6 +105,12 @@ public class AccountController {
         return successResult(BaseEnum.DELETE_SUCCESS);
     }
 
+    /**
+     * 插入账号 || 更新账号信息 通用的验证
+     *
+     * @param account 账号信息
+     * @return 验证结果，是一个map，包含枚举结果跟Boolean类型验证结果
+     */
     private Map updateOrInsert(Account account) {
         Map<Object, Object> resultMap = new HashMap<>();
         Account byNameResult = accountService.queryByName(account.getAccountName());
@@ -117,6 +141,12 @@ public class AccountController {
     }
 
 
+    /**
+     * 更新账号信息
+     *
+     * @param account 账号实体信息
+     * @return 更新数据的结果
+     */
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult update(@RequestBody Account account) {
@@ -132,6 +162,13 @@ public class AccountController {
         return successResult(BaseEnum.UPDATE_SUCCESS);
     }
 
+    /**
+     * 请求更新一个账号页面
+     *
+     * @param id           要更新信息的账号
+     * @param modelAndView 模型数据跟视图地址
+     * @return 模型数据跟视图地址
+     */
     @RequestMapping(value = "/update.html/{id}", method = RequestMethod.GET)
     public ModelAndView updatePage(@PathVariable("id") Integer id, ModelAndView modelAndView) {
         Account account = accountService.queryById(id);
@@ -145,6 +182,14 @@ public class AccountController {
     }
 
 
+    /**
+     * 带查询条件的查询
+     *
+     * @param offset 从第几行开始查询
+     * @param limit  查询几条数据
+     * @param status 查询的账号状态
+     * @return 带查询条件的结果集
+     */
     @RequestMapping(value = "/queryAll.json", method = RequestMethod.GET)
     @ResponseBody
     public Map<Object, Object> queryAll(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
@@ -152,12 +197,12 @@ public class AccountController {
                                         @RequestParam(value = "status", required = false, defaultValue = "3") int status) {
         int totalCount = accountService.queryCount();
         Map<Object, Object> criteriaMap = convertToCriteriaMap(offset, limit, status);
-        List<Account> accountList = accountService.queryAllByCriteria(criteriaMap);
+        List<Account> accountList = accountService.list(criteriaMap);
         return convertToBootstrapTableResult(accountList, totalCount);
     }
 
     @RequestMapping(value = "/accountManager.html")
-    public String accountManager() {
+    public String index() {
         return "accountInfo/accountManager";
     }
 }

@@ -3,13 +3,13 @@ package com.suny.association.controller;
 import com.suny.association.enums.BaseEnum;
 import com.suny.association.pojo.po.Roles;
 import com.suny.association.service.interfaces.IRolesService;
+import com.suny.association.utils.ConversionUtil;
 import com.suny.association.utils.JsonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,7 +17,7 @@ import static com.suny.association.utils.JsonResult.failResult;
 import static com.suny.association.utils.JsonResult.successResult;
 
 /**
- * Comments:
+ * Comments:  账号角色控制器
  * Author:   孙建荣
  * Create Date: 2017/04/11 18:15
  */
@@ -74,6 +74,12 @@ public class RoleController {
     }
 
 
+    /**
+     * 插入数据请求
+     *
+     * @param roles 数据
+     * @return 插入数据的结果
+     */
     @ResponseBody
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     public JsonResult insert(@RequestBody Roles roles) {
@@ -93,16 +99,20 @@ public class RoleController {
         return modelAndView;
     }
 
+    /**
+     * 带查询条件的查询
+     *
+     * @param offset 从第几条记录开始查询
+     * @param limit  查询几条数据
+     * @return 带查询条件的数据
+     */
     @RequestMapping(value = "/list.json", method = RequestMethod.GET)
     @ResponseBody
-    public Map<String, Object> query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
+    public Map<Object, Object> query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
                                      @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
-        List<Roles> rolesList = rolesService.list(offset, limit);
+        List<Roles> rolesList = rolesService.list(ConversionUtil.convertToCriteriaMap(offset, limit));
         int total = rolesService.queryCount();
-        Map<String, Object> tableDate = new HashMap<>();
-        tableDate.put("rows", rolesList);
-        tableDate.put("total", total);
-        return tableDate;
+        return ConversionUtil.convertToBootstrapTableResult(rolesList, total);
     }
 
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)

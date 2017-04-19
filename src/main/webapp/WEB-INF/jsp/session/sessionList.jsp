@@ -191,12 +191,12 @@
 
     function dateFormat(value,row,index){
         var date = new Date(row.lastLoginTime);
-        Y = date.getFullYear() + '-';
-        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-        D = date.getDate() + ' ';
-        h = date.getHours() + ':';
-        m = date.getMinutes() + ':';
-        s = date.getSeconds();
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' ';
+        var h = date.getHours() + ':';
+        var m = date.getMinutes() + ':';
+        var s = date.getSeconds();
         return Y+M+D+h+m+s;
     }
 
@@ -241,7 +241,7 @@
                         text: '确认',
                         btnClass: 'waves-effect waves-button',
                         action: function () {
-                            var ids = new Array();
+                            var ids = [];
                             for (var i in rows) {
                                 ids.push(rows[i].id);
                             }

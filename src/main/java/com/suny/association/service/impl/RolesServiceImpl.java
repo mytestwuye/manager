@@ -10,9 +10,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * Comments:
+ * Comments:   账号角色业务逻辑
  * Author:   孙建荣
  * Create Date: 2017/03/07 22:41
  */
@@ -34,7 +35,7 @@ public class RolesServiceImpl extends AbstractBaseServiceImpl<Roles> implements 
     @Transactional
     @Override
     public void update(Roles roles) {
-        if(roles.getRoleId() == null ){
+        if (roles.getRoleId() == null) {
             throw new RuntimeException();
         }
         rolesMapper.update(roles);
@@ -51,14 +52,15 @@ public class RolesServiceImpl extends AbstractBaseServiceImpl<Roles> implements 
     }
 
     @Override
+    public List<Roles> list(Map criteriaMap) {
+        return rolesMapper.list(criteriaMap);
+    }
+
+    @Override
     public Roles queryById(int id) {
         return rolesMapper.queryById(id);
     }
 
-    @Override
-    public List<Roles> list(int offset, int limit) {
-        return rolesMapper.list(offset,limit);
-    }
 
     @Override
     public int queryCount() {

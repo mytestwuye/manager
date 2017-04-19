@@ -97,7 +97,7 @@ public class MemberController {
     public JsonResult update(@RequestBody Member member) {
         if (member.getMemberName() == null || "".equals(member.getMemberName())) {
             return JsonResult.failResult(BaseEnum.FIELD_NULL);
-        } else if (!member.getMemberStatus() || "".equals(member.getMemberStatus())) {
+        } else if (!member.getMemberStatus() || java.util.Objects.equals("", member.getMemberStatus())) {
             return JsonResult.failResult(BaseEnum.FIELD_NULL);
         }
         memberService.update(member);
@@ -152,7 +152,7 @@ public class MemberController {
         if ("".equals(departmentname)) {
             departmentname = null;
         }
-        List<Member> memberList = memberService.queryAllByCriteria(ConversionUtil.convertToCriteriaMap(offset, limit, departmentname, status));
+        List<Member> memberList = memberService.list(ConversionUtil.convertToCriteriaMap(offset, limit, departmentname, status));
         if (memberList.size() != 0 && !memberList.isEmpty()) {
             int total = memberService.queryCount();
             tableDate.put("rows", memberList);

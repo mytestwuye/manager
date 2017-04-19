@@ -20,11 +20,11 @@
 
     <select id="queryMember" resultMap="memberInfo" parameterType="int">
         SELECT
-            member_id,
-            member_name,
-            member_grade_number,
-            member_manager_id
-        FROM member
+        m.member_id,
+        m.member_name,
+        m.member_grade_number,
+        m.member_manager_id
+        FROM member AS m
         WHERE
             member_id = #{ punchMemberId }
     </select>
@@ -36,23 +36,23 @@
 
     <select id="queryPunchTypeInfo" resultMap="punchTypeInfo" parameterType="int">
         SELECT
-            type.punch_type_id,
-            type.punch_type_name
-        FROM punchtype AS type
+        t.punch_type_id,
+        t.punch_type_name
+        FROM punchtype AS t
         WHERE
-            punch_type_id = #{ punchTypeId }
+        t.punch_type_id = #{ punchTypeId }
     </select>
 
 
-    <select id="list" parameterType="map" resultMap="BaseResultMap">
+    <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
         SELECT
-            record.punch_record_id,
-            record.punch_today_date,
-            record.punch_datetime,
-            record.punch_is_come,
-            record.punch_type_id,
-            record.punch_member_id
-        FROM punch_record AS record
+        r.punch_record_id,
+        r.punch_today_date,
+        r.punch_datetime,
+        r.punch_is_come,
+        r.punch_type_id,
+        r.punch_member_id
+        FROM punch_record AS r
         LIMIT
             #{offset},
             #{limit}

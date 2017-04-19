@@ -8,9 +8,9 @@
 
     <select id="queryAll" resultMap="BaseResultMap">
         SELECT
-            department_id,
-            department_name
-        FROM department
+        d.department_id,
+        d.department_name
+        FROM department AS d
     </select>
 
 </mapper>

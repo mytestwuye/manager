@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Comments:
@@ -26,19 +27,37 @@ public class MemberRolesServiceImpl extends AbstractBaseServiceImpl<MemberRoles>
     
     public MemberRolesServiceImpl() {
     }
-    
-    
-    
+
+
+    @Override
+    public MemberRoles queryByName(String name) {
+        return memberRolesMapper.queryByName(name);
+    }
+
+    @Override
+    public int queryCount() {
+        return memberRolesMapper.queryCount();
+    }
+
     /**
      * 查询所有的成员角色列表
-     * @return
+     * @return 所有的成员角色数据
      */
     @Override
     public List<MemberRoles> queryAll() {
         return memberRolesMapper.queryAll();
     }
-    
-   
-    
-   
+
+    /**
+     * 根据查询条件查询成员角色
+     *
+     * @param criteriaMap 封装的查询条件
+     * @return 成员角色
+     */
+    @Override
+    public List<MemberRoles> list(Map criteriaMap) {
+        return memberRolesMapper.list(criteriaMap);
+    }
+
+
 }

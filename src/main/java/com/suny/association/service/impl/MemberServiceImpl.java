@@ -1,7 +1,5 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.enums.MemberEnum;
-import com.suny.association.exception.BusinessException;
 import com.suny.association.mapper.AccountMapper;
 import com.suny.association.mapper.MemberMapper;
 import com.suny.association.pojo.po.Account;
@@ -24,24 +22,24 @@ import java.util.Map;
 public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implements IMemberService {
     private final MemberMapper memberMapper;
     private final AccountMapper accountMapper;
-    
+
     @Autowired
     public MemberServiceImpl(MemberMapper memberMapper, AccountMapper accountMapper) {
         this.memberMapper = memberMapper;
         this.accountMapper = accountMapper;
     }
-    
-    
+
+
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public void insert(Member member) {
         memberMapper.insertAndGetId(member);
         Integer memberId = member.getMemberId();
-        if(memberId != null){
+        if (memberId != null) {
             createAccount(memberId);
         }
     }
-    
+
     @Transactional(rollbackFor = {Exception.class})
     private void createAccount(Integer memberId) {
         Account autoAccount = new Account();
@@ -50,10 +48,10 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
         String memberIdString = String.valueOf(memberId);
         autoAccount.setAccountName(memberIdString);      //设置账号名字
         autoAccount.setAccountMember(member);            //设置对应的管理员账号
-            accountMapper.insert(autoAccount);
-            System.out.println(autoAccount.getAccountMember().getMemberId());
+        accountMapper.insert(autoAccount);
+        System.out.println(autoAccount.getAccountMember().getMemberId());
 
-        }
+    }
 
     @Override
     public Member queryQuote(int memberId) {
@@ -69,7 +67,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     public int insertReturnCount(Member member) {
         return memberMapper.insertAndGetId(member);
     }
-    
+
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public void deleteById(int id) {
@@ -83,40 +81,44 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     }
 
 
-    
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public void update(Member member) {
         memberMapper.update(member);
     }
-    
-    
+
+
     @Override
     public List<Member> queryFreezeManager() {
         return memberMapper.queryFreezeManager();
     }
-    
-    
+
+
     @Override
     public List<Member> queryNormalManager() {
         return memberMapper.queryNormalManager();
     }
-    
-    
+
+
     @Override
     public List<Member> queryFreezeMember() {
         return memberMapper.queryFreezeMember();
     }
-    
-    
+
+
     @Override
     public List<Member> queryNormalMember() {
         return memberMapper.queryNormalMember();
     }
-    
+
     @Override
     public Member queryById(int id) {
         return memberMapper.queryById(id);
+    }
+
+    @Override
+    public Member queryByName(String name) {
+        return memberMapper.queryByName(name);
     }
 
     @Override
@@ -128,11 +130,11 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     public List<Member> queryAll() {
         return memberMapper.queryAll();
     }
-    
+
     @Override
-    public List<Member> queryAllByCriteria(Map<Object,Object> criteriaMap) {
-        return memberMapper.queryAllByCriteria(criteriaMap);
+    public List<Member> list(Map<Object, Object> criteriaMap) {
+        return memberMapper.list(criteriaMap);
     }
-    
-    
+
+
 }

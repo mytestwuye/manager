@@ -8,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
- * Comments:
+ * Comments:  操作记录业务逻辑
  * Author:   孙建荣
  * Create Date: 2017/03/07 22:38
  */
@@ -18,7 +19,7 @@ import java.util.List;
 public class OperationServiceImpl extends AbstractBaseServiceImpl<Operation> implements IOperationService {
 
     private final OperationMapper operationMapper;
-    
+
 
     @Autowired
     public OperationServiceImpl(OperationMapper operationMapper) {
@@ -27,12 +28,17 @@ public class OperationServiceImpl extends AbstractBaseServiceImpl<Operation> imp
 
 
     @Override
-    public List<Operation> list(int offset, int limit) {
-        return operationMapper.list(offset,limit);
+    public Operation queryByName(String name) {
+        return operationMapper.queryByName(name);
     }
 
     @Override
     public int queryCount() {
         return operationMapper.queryCount();
+    }
+
+    @Override
+    public List<Operation> list(Map<Object, Object> criteriaMap) {
+        return operationMapper.list(criteriaMap);
     }
 }

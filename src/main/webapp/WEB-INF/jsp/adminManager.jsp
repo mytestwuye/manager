@@ -254,6 +254,9 @@
                     <li><a class="waves-effect"
                            href="javascript:Tab.addTab('异议考勤审批', '${pageContext.request.contextPath}/punchLog/applicationMessage/index.html');">异议考勤审批</a>
                     </li>
+                    <li><a class="waves-effect"
+                           href="javascript:Tab.addTab('考勤审批记录', '${pageContext.request.contextPath}/punchLog/applyForResult/index.html');">考勤审批记录</a>
+                    </li>
                 </ul>
             </li>
             <li class="sub-menu system_menus system_1 0">

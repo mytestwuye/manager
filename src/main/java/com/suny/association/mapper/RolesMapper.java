@@ -15,12 +15,6 @@ import java.util.List;
 
 public interface RolesMapper extends IMapper<Roles> {
 
-     List<Account> queryQuote(@Param("roleId") Integer roleId);
+    List<Account> queryQuote(@Param("roleId") Integer roleId);
 
-    @Override
-    List<Roles> queryAll();
-
-    List<Roles> list(@Param("offset") int offset, @Param("limit") int limit);
-
-    int queryCount();
 }

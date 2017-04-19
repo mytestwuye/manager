@@ -338,7 +338,7 @@
         FROM member
     </select>
 
-    <select id="queryAllByCriteria" parameterType="hashmap" resultMap="BaseResultMap">
+    <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
         SELECT
         m.member_id,
         m.member_name,

@@ -15,16 +15,10 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>考勤记录</title>
-    <link href="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
           rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
           rel="stylesheet"/>
     <link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet"/>
 </head>
@@ -47,13 +41,8 @@
 <script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/device.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.jdirk.min.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/select2/js/select2.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/jquery.cookie.js"></script>
 <script src="${pageContext.request.contextPath}/js/admin.js"></script>
 <script src="${pageContext.request.contextPath}/js/common.js"></script>
 <script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
@@ -237,7 +226,7 @@
                         text: '确认',
                         btnClass: 'waves-effect waves-button',
                         action: function () {
-                            var ids = new Array();
+                            var ids = [];
                             for (var i in rows) {
                                 ids.push(rows[i].id);
                             }

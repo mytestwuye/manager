@@ -14,14 +14,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Comments:  账号表service类
+ * Comments:  账号表业务逻辑控制
  * Author:   孙建荣
  * Create Date: 2017/03/07 22:18
  */
 @Service
 public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> implements IAccountService {
     private final AccountMapper accountMapper;
-
 
 
     @Autowired
@@ -95,16 +94,17 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public void deleteByLongId(Long id) {
-         accountMapper.deleteByLongId(id);
+        accountMapper.deleteByLongId(id);
     }
 
-    @Override
-    public List<Account> queryAllByCriteria(Map<Object,Object> criteriaMap) {
-        return accountMapper.queryAllByCriteria(criteriaMap);
-    }
 
     @Override
     public int queryCount() {
         return accountMapper.queryCount();
+    }
+
+    @Override
+    public List<Account> list(Map<Object, Object> criteriaMap) {
+        return accountMapper.list(criteriaMap);
     }
 }

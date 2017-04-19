@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Map;
+
 /**
  * Comments:   审批结果逻辑控制
  * Author:   孙建荣
@@ -64,5 +67,26 @@ public class CallbackResultServiceImpl extends AbstractBaseServiceImpl<CallbackR
     @Override
     public CallbackResult queryById(int id) {
         return callbackResultMapper.queryById(id);
+    }
+
+    @Override
+    public CallbackResult queryByName(String name) {
+        return callbackResultMapper.queryByName(name);
+    }
+
+    @Override
+    public int queryCount() {
+        return callbackResultMapper.queryCount();
+    }
+
+    /**
+     * 条件查询审批记录
+     *
+     * @param criteriaMap 封装的查询条件
+     * @return 审批记录
+     */
+    @Override
+    public List<CallbackResult> list(Map criteriaMap) {
+        return callbackResultMapper.list(criteriaMap);
     }
 }

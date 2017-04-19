@@ -8,10 +8,10 @@
 
     <select id="queryAll" resultMap="BaseResultMap">
         SELECT
-            member_role_id,
-            member_role_name
+        mr.member_role_id,
+        mr.member_role_name
         FROM
-            member_roles
+        member_roles AS mr
     </select>
 
 </mapper>

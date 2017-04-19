@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Comments:
+ * Comments:   考勤记录异议申请业务逻辑
  * Author:   孙建荣
  * Create Date: 2017/03/07 22:30
  */
@@ -42,6 +42,11 @@ public class ApplicationMessageServiceImpl extends AbstractBaseServiceImpl<Appli
     }
 
     @Override
+    public ApplicationMessage queryByName(String name) {
+        return applicationMessageMapper.queryByName(name);
+    }
+
+    @Override
     public int queryCount() {
         return applicationMessageMapper.queryCount();
     }
@@ -53,9 +58,10 @@ public class ApplicationMessageServiceImpl extends AbstractBaseServiceImpl<Appli
      * @return 带查询条件的记录
      */
     @Override
-    public List<ApplicationMessage> queryAllByCriteria(Map<Object, Object> criteriaMap) {
-        return applicationMessageMapper.queryAllByCriteria(criteriaMap);
+    public List<ApplicationMessage> list(Map<Object, Object> criteriaMap) {
+        return applicationMessageMapper.list(criteriaMap);
     }
+
 
     /**
      * 更新异议考勤申请数据中的结果

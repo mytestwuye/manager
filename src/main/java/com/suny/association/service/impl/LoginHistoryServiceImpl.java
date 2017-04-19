@@ -11,23 +11,31 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Comments:
+ * Comments:  登录历史记录业务逻辑
  * Author:   孙建荣
  * Create Date: 2017/03/07 22:34
  */
 @Service
 public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistory> implements ILoginHistoryService {
-    private  LoginHistoryMapper loginHistoryMapper;
-    
+    private LoginHistoryMapper loginHistoryMapper;
+
     @Autowired
     public LoginHistoryServiceImpl(LoginHistoryMapper loginHistoryMapper) {
         this.loginHistoryMapper = loginHistoryMapper;
     }
 
+    public LoginHistoryServiceImpl() {
+    }
+
 
     @Override
-    public List<LoginHistory> list(Map<Object,Object> criteriaMap){
+    public List<LoginHistory> list(Map<Object, Object> criteriaMap) {
         return loginHistoryMapper.list(criteriaMap);
+    }
+
+    @Override
+    public LoginHistory queryByName(String name) {
+        return loginHistoryMapper.queryByName(name);
     }
 
     @Override
@@ -35,8 +43,5 @@ public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistor
         return loginHistoryMapper.queryCount();
     }
 
-    public LoginHistoryServiceImpl() {
-    }
-    
-   
+
 }

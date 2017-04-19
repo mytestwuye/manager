@@ -2,9 +2,6 @@ package com.suny.association.mapper;
 
 import com.suny.association.mapper.interfaces.IMapper;
 import com.suny.association.pojo.po.Operation;
-import org.apache.ibatis.annotations.Param;
-
-import java.util.List;
 
 
 /**
@@ -14,9 +11,5 @@ import java.util.List;
  */
 
 public interface OperationMapper extends IMapper<Operation>{
-
-    List<Operation> list(@Param("offset") int offset, @Param("limit") int limit);
-
-    int queryCount();
 
 }
