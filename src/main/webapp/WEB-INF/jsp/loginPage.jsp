@@ -6,18 +6,23 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath", basePath);
+%>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>协会管理系统</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/base.css">
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/login.css">
+    <link rel="stylesheet" type="text/css" href="${basePath}/css/base.css">
+    <link rel="stylesheet" type="text/css" href="${basePath}/css/login.css">
 </head>
 
 <body>
 <!-- logo -->
-<img id="logo" src="${pageContext.request.contextPath}/picture/logo.png" alt="">
+<img id="logo" src="${basePath}/picture/logo.png" alt="">
 <!-- 登录框 -->
 <div id="loginBox">
     <div class="topPart">
@@ -41,7 +46,7 @@
         <div style="width: 400px;">
             <div style="float:left;width:100px; margin-left: 13px; height:42px;">
                 <img style="width:100px; height:42px; cursor: pointer;" title="点击刷新" id="codePanel"
-                     src="${pageContext.request.contextPath}/code/generateCode.do"/>
+                     src="${basePath}/code/generateCode.do"/>
             </div>
         </div>
     </div>
@@ -57,14 +62,14 @@
 <p id="copyright">个人——赣ICP备13015608号-5
     <a target="_blank" href="#"
        style="color: #2f2f2f; padding-left:15px">
-        <img src="${pageContext.request.contextPath}/picture/authicon.png"/>
+        <img src="${basePath}/picture/authicon.png"/>
         <span style="margin-left:10px;">赣 公网安备 31010702001486号</span>
     </a>
 </p>
 
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/jquery.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
+<script type="text/javascript" src="${basePath}/js/jquery.js"></script>
+<script src="${basePath}/plugins/layer/layer.js"></script>
 <script>
     var userName;
     userName = $("#userName");
@@ -93,7 +98,7 @@
 
     //切换验证码
     $("#codePanel").click(function () {
-        $(this).attr("src", '${pageContext.request.contextPath}/code/generateCode.do?rand=' + Math.random());
+        $(this).attr("src", '${basePath}/code/generateCode.do?rand=' + Math.random());
     });
 
     //输入用户名
@@ -128,7 +133,7 @@
     function logoutAction(){
         $.ajax({
             type: "Get",
-            url: "${pageContext.request.contextPath}/base/logoutAction.do",
+            url: "${basePath}/base/logoutAction.do",
             success: function (result) {
                 if (result.status !== 199) {
                     alertFunMessage('这都能出错了。。');
@@ -176,12 +181,11 @@
         //当所有的框都填满了的时候首先检查验证码
         checkCode();
 
-    };
-
+    }
     //验证码验证
     function checkCode() {
         $.ajax({
-            url: '${pageContext.request.contextPath}/code/checkCode.do',
+            url: '${basePath}/code/checkCode.do',
             type: 'post',
             data: {formCode: codeValue},
             success: function (result) {
@@ -215,7 +219,7 @@
 
         $.ajax({
             type: "post",
-            url: "${pageContext.request.contextPath}/base/loginAction.json",
+            url: "${basePath}/base/loginAction.json",
             data: param,
             dataType: "json",
             success: function (result) {
@@ -254,14 +258,14 @@
      * 跳转到管理页面
      */
     function goAdminPage() {
-        window.parent.location.href = "${pageContext.request.contextPath}/base/goAdminPage.html";
+        window.parent.location.href = "${basePath}/base/goAdminPage.html";
     }
 
     /**
      * 刷新验证码
      */
     function refresh() {
-        $("#codePanel").attr("src", '${pageContext.request.contextPath}/code/generateCode.do?rand=' + Math.random());
+        $("#codePanel").attr("src", '${basePath}/code/generateCode.do?rand=' + Math.random());
     }
 
     /**

@@ -16,7 +16,7 @@
         SELECT
         a.account_id,
         a.account_name
-        FROM account AS
+        FROM account AS a
         WHERE a.account_role_id = #{ roleId}
     </select>
 
@@ -28,8 +28,8 @@
     </insert>
 
     <delete id="deleteById" parameterType="int">
-        DELETE FROM roles AS r
-        WHERE r.role_id = #{roleId}
+        DELETE FROM roles
+        WHERE role_id = #{roleId}
     </delete>
 
 

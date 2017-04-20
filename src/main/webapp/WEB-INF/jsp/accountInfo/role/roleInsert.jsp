@@ -17,7 +17,7 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
-    pageContext.setAttribute("basePath",basePath);
+    pageContext.setAttribute("basePath", basePath);
 %>
 <!DOCTYPE html>
 <html>
@@ -28,12 +28,8 @@
     <title>操作记录查看</title>
     <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${basePath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
-          rel="stylesheet"/>
-    <link href="${basePath}/plugins/jquery-confirm/jquery-confirm.min.css" rel="stylesheet"/>
-    <link href="${basePath}/css/common.css" rel="stylesheet"/>
     <style>
-        form{
+        form {
             padding: 29px;
         }
     </style>
@@ -49,7 +45,7 @@
         </div>
         <div class="form-group">
             <label for="roleName1">角色名字</label>
-            <input id="roleName1" type="text" class="form-control" >
+            <input id="roleName1" type="text" class="form-control">
         </div>
         <button type="button" class="btn btn-warning btn-block" id="submit">点击新增</button>
     </form>
@@ -59,39 +55,35 @@
 </body>
 <script src="${basePath}/plugins/jquery-3.2.1.min.js"></script>
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
-<script src="${basePath}/plugins/waves-0.7.5/waves.min.js"></script>
-<script src="${basePath}/plugins/device.min.js"></script>
-<script src="${basePath}/plugins/select2/js/select2.min.js"></script>
-<script src="${basePath}/js/common.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
 <script>
-    $(document).on('click','#submit',function () {
-        var roleNameVal=$("#roleName1").val();
-        if(roleNameVal == '' || roleNameVal == null){
-            layer.msg('角色名字不能为空',{icon:5});
+    $(document).on('click', '#submit', function () {
+        var roleNameVal = $("#roleName1").val();
+        if (roleNameVal == '' || roleNameVal == null) {
+            layer.msg('角色名字不能为空', {icon: 5});
             return false;
         }
         $.ajax({
-            type:'post',
+            type: 'post',
             contentType: "application/json",
             url: '${pageContext.request.contextPath}/account/role/insert.json',
-            data:JSON.stringify({
-                roleName : roleNameVal
+            data: JSON.stringify({
+                roleName: roleNameVal
             }),
-            success :function(result){
-                if(result.status == 102){
+            success: function (result) {
+                if (result.status == 102) {
                     window.parent.layer.alert('添加成功', {icon: 6});
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                     parent.layer.close(index);  //再执行关闭
                 }
-                else if(result.status ==006 ){
+                else if (result.status == 006) {
                     window.parent.layer.msg('重复添加角色');
                 }
-                else if(result.status == 0x2){
+                else if (result.status == 0x2) {
                     window.parent.layer.msg('失败了，检查下哪里错了', {icon: 5});
                 }
                 else {
-                    window.parent.layer.msg('服务器异常，请重试', function(){
+                    window.parent.layer.msg('服务器异常，请重试', function () {
                     });
                 }
             },

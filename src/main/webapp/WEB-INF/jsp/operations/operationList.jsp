@@ -9,24 +9,19 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath", basePath);
 %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>操作记录查看</title>
-    <link href="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
+    <link href="${basePath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
+    <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
           rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
+    <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
           rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet"/>
 </head>
 <body>
 <div>
@@ -40,23 +35,14 @@
 </div>
 </body>
 
-<script src="${pageContext.request.contextPath}/plugins/jquery.1.12.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/device.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.jdirk.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/select2/js/select2.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/jquery.cookie.js"></script>
-<script src="${pageContext.request.contextPath}/js/admin.js"></script>
-<script src="${pageContext.request.contextPath}/js/common.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
+<script src="${basePath}/plugins/jquery.1.12.4.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
+<script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
+<script src="${basePath}/plugins/layer/layer.js"></script>
 
 <script>
 
@@ -95,7 +81,7 @@
         oTableInit.Init = function () {
             layer.load(0, {shade: false, time: 1000}); //0代表加载的风格，支持0-2
             $('#table').bootstrapTable({
-                url: '${pageContext.request.contextPath}/operations/log/list.json',         //请求后台的URL（*）
+                url: '${basePath}/operations/log/list.json',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
                 striped: true,                      //是否显示行间隔色
@@ -206,105 +192,6 @@
         }
         if (value == 'force_logout') {
             return '<span class="label label-danger">踢离</span>';
-        }
-    }
-    // 强制退出
-    var forceoutDialog;
-    function forceoutAction() {
-        var rows = $table.bootstrapTable('getSelections');
-        if (rows.length == 0) {
-            $.confirm({
-                title: false,
-                content: '请至少选择一条记录！',
-                autoClose: 'cancel|3000',
-                backgroundDismiss: true,
-                buttons: {
-                    cancel: {
-                        text: '取消',
-                        btnClass: 'waves-effect waves-button'
-                    }
-                }
-            });
-        } else {
-            forceoutDialog = $.confirm({
-                type: 'red',
-                animationSpeed: 300,
-                title: false,
-                content: '确认强制退出该会话吗？',
-                buttons: {
-                    confirm: {
-                        text: '确认',
-                        btnClass: 'waves-effect waves-button',
-                        action: function () {
-                            var ids = new Array();
-                            for (var i in rows) {
-                                ids.push(rows[i].id);
-                            }
-                            $.ajax({
-                                type: 'get',
-                                url: '${basePath}/manage/session/forceout/' + ids.join(","),
-                                success: function (result) {
-                                    if (result.code != 1) {
-                                        if (result.data instanceof Array) {
-                                            $.each(result.data, function (index, value) {
-                                                $.confirm({
-                                                    theme: 'dark',
-                                                    animation: 'rotateX',
-                                                    closeAnimation: 'rotateX',
-                                                    title: false,
-                                                    content: value.errorMsg,
-                                                    buttons: {
-                                                        confirm: {
-                                                            text: '确认',
-                                                            btnClass: 'waves-effect waves-button waves-light'
-                                                        }
-                                                    }
-                                                });
-                                            });
-                                        } else {
-                                            $.confirm({
-                                                theme: 'dark',
-                                                animation: 'rotateX',
-                                                closeAnimation: 'rotateX',
-                                                title: false,
-                                                content: result.data.errorMsg,
-                                                buttons: {
-                                                    confirm: {
-                                                        text: '确认',
-                                                        btnClass: 'waves-effect waves-button waves-light'
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    } else {
-                                        forceoutDialog.close();
-                                        $table.bootstrapTable('refresh');
-                                    }
-                                },
-                                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                    $.confirm({
-                                        theme: 'dark',
-                                        animation: 'rotateX',
-                                        closeAnimation: 'rotateX',
-                                        title: false,
-                                        content: textStatus,
-                                        buttons: {
-                                            confirm: {
-                                                text: '确认',
-                                                btnClass: 'waves-effect waves-button waves-light'
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    },
-                    cancel: {
-                        text: '取消',
-                        btnClass: 'waves-effect waves-button'
-                    }
-                }
-            });
         }
     }
 

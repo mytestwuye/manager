@@ -181,8 +181,8 @@
     </insert>
 
     <update id="update" parameterType="com.suny.association.pojo.po.Account">
-        UPDATE account
-        <trim prefix="set" prefixOverrides=",">
+        UPDATE account as a
+        <trim prefix="set" suffixOverrides=",">
             <if test="accountName != null">
                 account_name =#{accountName,jdbcType=VARCHAR},
             </if>
@@ -236,7 +236,7 @@
             a.account_id,
             a.account_member_id
         FROM account AS a
-         WHERE a.account_member_id =#{memberId}
+        WHERE a.account_member_id = #{memberId}
     </select>
 
 
@@ -318,7 +318,7 @@
         FROM
             account AS a
     </select>
-    <select id="queryAllByCriteria" parameterType="hashmap" resultMap="BaseResultMap">
+    <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
         SELECT
         a.account_id,
         a.account_name,

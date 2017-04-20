@@ -107,4 +107,9 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
     public List<Account> list(Map<Object, Object> criteriaMap) {
         return accountMapper.list(criteriaMap);
     }
+
+    @Override
+    public List<Account> queryAll() {
+        return accountMapper.queryAll();
+    }
 }

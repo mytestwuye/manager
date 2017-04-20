@@ -23,33 +23,10 @@
           rel="stylesheet"/>
     <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
           rel="stylesheet"/>
-    <link href="${basePath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
-          rel="stylesheet"/>
-    <link href="${basePath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
-          rel="stylesheet"/>
 </head>
 <body>
-<div class="panel-body container" style="padding-bottom:0;">
+<div class="panel-body" style="padding-bottom:0;">
     <table id="tabs" class="table table-hover"></table>
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h4 class="modal-title">填写审批理由</h4>
-                </div>
-                <div class="modal-body">
-                    <label id="">请在这里输入批示的理由</label>
-                    <input type="text" id="textReason" class="form-control" title="reason">
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                    <button type="button" id="submitReason" class="btn btn-primary">提交</button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 </div>
 
 
@@ -63,12 +40,7 @@
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
-<script src="${basePath}/plugins/waves-0.7.5/waves.min.js"></script>
-<script src="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${basePath}/plugins/device.min.js"></script>
-<script src="${basePath}/plugins/select2/js/select2.min.js"></script>
-<script src="${basePath}/js/common.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
 <script>
     function refresh() {

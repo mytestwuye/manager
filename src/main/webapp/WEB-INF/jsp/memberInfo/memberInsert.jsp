@@ -8,17 +8,17 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath", basePath);
+%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>新增成员信息</title>
-    <link href="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
-          rel="stylesheet"/>
+    <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <style>
         .strongText {
             color: #ff0000;
@@ -107,13 +107,9 @@
 </div>
 
 <%--正文区结束--%>
-<script src="${pageContext.request.contextPath}/plugins/jquery.1.12.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/device.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
+<script src="${basePath}/plugins/jquery.1.12.4.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="${basePath}/plugins/layer/layer.js"></script>
 </body>
 <script>
     function insertMemberInfo() {
@@ -131,7 +127,7 @@
                 type: 'post',
                 dataType: 'json',
                 contentType: "application/json",
-                url: '${pageContext.request.contextPath}/member/insert.json',
+                url: '${basePath}/member/insert.json',
                 data: JSON.stringify({
                     memberName: memberNameVal,
                     memberClassName: memberClassVal,

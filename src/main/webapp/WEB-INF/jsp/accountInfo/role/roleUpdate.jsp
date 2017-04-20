@@ -9,6 +9,7 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath", basePath);
 %>
 <!DOCTYPE html>
 <html>
@@ -18,11 +19,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>角色修改</title>
     <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${basePath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
-          rel="stylesheet"/>
-    <link href="${basePath}/plugins/jquery-confirm/jquery-confirm.min.css" rel="stylesheet"/>
-    <link href="${basePath}/css/common.css" rel="stylesheet"/>
     <style>
         form{
             padding: 29px;
@@ -55,11 +51,6 @@
 
 </body>
 <script src="${basePath}/plugins/jquery-3.2.1.min.js"></script>
-<script src="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
-<script src="${basePath}/plugins/waves-0.7.5/waves.min.js"></script>
-<script src="${basePath}/plugins/device.min.js"></script>
-<script src="${basePath}/plugins/select2/js/select2.min.js"></script>
-<script src="${basePath}/js/common.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
 <script>
     $(document).on('click','#submit',function () {
@@ -76,7 +67,7 @@
         $.ajax({
             type:'post',
             contentType: "application/json",
-            url: '${pageContext.request.contextPath}/account/role/update.json',
+            url: '${basePath}/account/role/update.json',
             data:JSON.stringify({
                 roleId:roleIdVal,
                 roleName:roleNameVal
@@ -84,15 +75,17 @@
             success :function(result){
                 if(result.status == 104){
                     window.parent.layer.alert('修改成功', {icon: 6});
+                    //noinspection JSDuplicatedDeclaration
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                     parent.layer.close(index);  //再执行关闭
                 }
-                else if(result.status == 005){
+                else if (result.status == 5) {
                     window.parent.layer.alert('恶意篡改数据，不存在角色id', {icon: 5});
+                    //noinspection JSDuplicatedDeclaration
                     var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
                     parent.layer.close(index);  //再执行关闭
                 }
-                else if(result.status == 0x4){
+                else if (result.status == 4) {
                     window.parent.layer.msg('失败了，检查下哪里错了', {icon: 5});
                 }
                 else if(result.status == 202){

@@ -11,13 +11,19 @@ import java.util.Map;
 public interface IMapper<T> {
 
     void insert(T t);
+
     int insertAndGetId(T t);
+
     void deleteById(int id);
+
     void update(T t);
+
     T queryById(int id);
+
     T queryByName(String name);
 
     int queryCount();
+
     List<T> queryAll();
 
     List<T> list(Map<Object, Object> criteriaMap);

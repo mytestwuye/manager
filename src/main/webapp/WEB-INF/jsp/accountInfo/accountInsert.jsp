@@ -1,3 +1,4 @@
+<%--suppress JSJQueryEfficiency --%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -10,20 +11,14 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath", basePath);
 %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>增加账号信息</title>
-    <link href="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
-          rel="stylesheet"/>
+    <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <style>
         .strongText {
             color: #ff0000;
@@ -78,19 +73,15 @@
 
     <div class="form-group">
         <div class="col-sm-offset-2 col-sm-10">
-            <button class="btn btn-danger" type="button" id="submit">点击修改</button>
+            <button class="btn btn-danger" type="button" id="submit">点击新增一条账号信息</button>
         </div>
     </div>
 </form>
 
 </body>
-<script src="${pageContext.request.contextPath}/plugins/jquery.1.12.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/device.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
+<script src="${basePath}/plugins/jquery.1.12.4.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="${basePath}/plugins/layer/layer.js"></script>
 <script>
     /**
      * 发送更新请求
@@ -104,7 +95,9 @@
                 var accountPasswordVal = $("#account_password").val();
                 var accountNameVal = $("#account_name").val();
                 if (accountNameVal == '' || accountNameVal.length <6){
+                    //noinspection JSDuplicatedDeclaration
                     var nowLength=parseInt(accountNameVal.length);
+                    //noinspection JSDuplicatedDeclaration
                     var mustLength=6-nowLength;
                     layer.alert('用户名必须为英文，并且长度大于<span style="color:red;font-size: 22px">6</span>位,你当前输入的号码长度为为【<span style="color:red;font-size: 22px">'+nowLength+'</span>】位，至少还需要输入【<span style="color:red;font-size: 22px">'+mustLength+'</span>】位', {icon: 5});
                     $("#account_name").focus();
@@ -112,15 +105,17 @@
                     return false;
                 }
                 else if (accountPhoneVal == '' || !/^1[34578]\d{9}$/.test(accountPhoneVal)) {
+                    //noinspection JSDuplicatedDeclaration
                     var nowLength=parseInt(accountPhoneVal.length);
+                    //noinspection JSDuplicatedDeclaration
                     var mustLength=11-nowLength;
                     $("#account_password").css('border', '');
-                    $("#account_phone").focus();
+                    $('#account_phone').focus();
                     $("#account_phone").css('border', '2px solid red');
                     if(mustLength>0){
                         layer.alert("手机号码必填,格式为【11位以13，14，15，17，18开头】的手机号码,你当前输入的号码长度为为【<span style='color:red;font-size: 22px'>"+nowLength+"</span>】位，还需要输入【<span style='color:red;font-size: 22px'>"+mustLength+"</span>】位", {icon: 5});
                     }
-                    else if(mustLength <0){
+                    else {
                         layer.alert('手机号码格式有误', {icon: 5});
                     }
                     return false;
@@ -137,7 +132,7 @@
                     cache: false,
                     dataType: 'json',  //数据传输格式
                     contentType: "application/json ; charset=utf-8",
-                    url: '${pageContext.request.contextPath}/account/insert.json',
+                    url: '${basePath}/account/insert.json',
                     data: JSON.stringify({
                         accountName: accountNameVal,
                         accountPassword: accountPasswordVal,

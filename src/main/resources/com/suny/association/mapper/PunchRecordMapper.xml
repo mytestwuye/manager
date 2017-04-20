@@ -16,6 +16,9 @@
         <id property="memberId" column="member_id"/>
         <result property="memberName" column="member_name"/>
         <result property="memberGradeNumber" column="member_grade_number"/>
+        <association property="memberDepartment" column="member_department_id"
+                     javaType="com.suny.association.pojo.po.Department"
+                     select="getDepartment"/>
     </resultMap>
 
     <select id="queryMember" resultMap="memberInfo" parameterType="int">
@@ -23,11 +26,26 @@
         m.member_id,
         m.member_name,
         m.member_grade_number,
-        m.member_manager_id
+        m.member_manager_id,
+        m.member_department_id
         FROM member AS m
         WHERE
             member_id = #{ punchMemberId }
     </select>
+
+    <!--查询部门-->
+    <select id="getDepartment" parameterType="int" resultMap="memberDepartmentResult">
+        SELECT
+        d.department_id,
+        d.department_name
+        FROM department AS d
+        WHERE d.department_id = #{memberDepartment.departmentId}
+    </select>
+    <!--部门-->
+    <resultMap id="memberDepartmentResult" type="com.suny.association.pojo.po.Department">
+        <id column="department_id" property="departmentId"/>
+        <result column="department_name" property="departmentName"/>
+    </resultMap>
 
     <resultMap id="punchTypeInfo" type="com.suny.association.pojo.po.PunchType">
         <id property="punchTypeId" column="punch_type_id"/>

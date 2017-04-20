@@ -7,19 +7,17 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath", basePath);
+%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>编辑信息</title>
-    <link href="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
-          rel="stylesheet"/>
+    <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
 </head>
 <body>
 <form class="form-line col-xs-10" role="form" style="padding: 25px; text-align: center">
@@ -31,17 +29,6 @@
         <input class="form-control " value="${member.memberName}" id="member-name" name="member-name" disabled>
     </div>
 
-    <%-- <div class="form-group">
-         <label for="selectMemberManagerOption" class="col-sm-2 control-label">管理员</label>
-         <select class="form-control" id="selectMemberManagerOption" name="memberManagerId">
-             <option value="">自己就是管理</option>
-             <c:forEach items="${managerList}" var="manager">
-                 <option value="${manager.memberId}" name="memberManagerOption">
-                     <c:out value="${manager.memberName}"/>
-                 </option>
-             </c:forEach>
-         </select>
-     </div>--%>
     <div class="form-group">
         <label for="selectDepartmentOption" class="col-sm-2 control-label">部门</label>
         <select class="form-control" id="selectDepartmentOption" name="memberDepartment.departmentId">
@@ -79,16 +66,9 @@
 </form>
 
 </body>
-<script src="${pageContext.request.contextPath}/plugins/jquery.1.12.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/device.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.jdirk.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/jquery.cookie.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
+<script src="${basePath}/plugins/jquery.1.12.4.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
+<script src="${basePath}/plugins/layer/layer.js"></script>
 <script>
     $(function () {
         //选中成员当前自己的所属部门
@@ -121,7 +101,7 @@
         $.ajax({
             type: 'post',
             contentType: "application/json",
-            url: '${pageContext.request.contextPath}/member/update.json',
+            url: '${basePath}/member/update.json',
             data: JSON.stringify({
                 memberId: ${member.memberId},
                 memberName: memberNameVal,

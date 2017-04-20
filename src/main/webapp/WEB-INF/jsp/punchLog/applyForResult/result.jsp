@@ -23,7 +23,6 @@
           rel="stylesheet"/>
     <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
           rel="stylesheet"/>
-    <link href="${basePath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
 </head>
 <body>
 <div>
@@ -122,13 +121,27 @@
                     return {classes: strclass}
                 },
                 columns: [
-                    {field: 'callbackId', title: '日志编号', sortable: true, align: 'center'},
+//                    {field: 'callbackId', title: '日志编号', sortable: true, align: 'center'},
+                    {
+                        field: 'callbackTime',
+                        title: '申请时间',
+                        sortable: true,
+                        align: 'center',
+                        formatter: 'callbackTimeFormat'
+                    },
                     {
                         field: 'punchMemberId',
                         title: '考勤人',
                         sortable: true,
                         align: 'center',
                         formatter: 'punchMemberFormat'
+                    },
+                    {
+                        field: 'punchMemberGrade',
+                        title: '考勤人年级',
+                        sortable: true,
+                        align: 'center',
+                        formatter: 'punchMemberGradeFormat'
                     },
                     {
                         field: 'punchMemberDepartment',
@@ -146,15 +159,27 @@
                     },
                     {
                         field: 'applicationMessageId',
-                        title: '更改类型',
+                        title: '申请修改考勤类型',
                         sortable: true,
                         align: 'center',
                         formatter: 'changePunchTypeFormat'
                     },
                     {field: 'callbackResult', title: '申请结果', formatter: 'resultStatusFormat'},
                     {field: 'callbackManagerId', title: '审批人', align: 'center', formatter: 'punchManagerFormat'},
+                    {
+                        field: 'callbackManagerGrade',
+                        title: '审批人年级',
+                        align: 'center',
+                        formatter: 'punchManagerGradeFormat'
+                    },
+                    {
+                        field: 'callbackManagerRole',
+                        title: '审批人角色',
+                        align: 'center',
+                        formatter: 'punchManagerRoleFormat'
+                    },
                     {field: 'callbackReason', title: '审批理由', align: 'center'},
-                    {field: 'callbackTime', title: '审批时间', align: 'center', formatter: 'timeFormat'}
+                    {field: 'callbackTime', title: '审批时间', align: 'center', formatter: 'applyTimeFormat'}
                 ],
                 onClickRow: function (row, $element) {
                     //$element是当前tr的jquery对象
@@ -185,11 +210,21 @@
     };
 
 
-    function timeFormat(value, row, index) {
+    function applyTimeFormat(value, row, index) {
         var date = new Date(row.callbackTime);
-        Y = date.getFullYear() + '-';
-        M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-        D = date.getDate() + ' ';
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' ';
+        var h = date.getHours() + ':';
+        var m = date.getMinutes() + ':';
+        var s = date.getSeconds();
+        return Y + M + D + h + m + s;
+    }
+    function callbackTimeFormat(value, row, index) {
+        var date = new Date(row.applicationMessageId.applyForTime);
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' ';
         var h = date.getHours() + ':';
         var m = date.getMinutes() + ':';
         var s = date.getSeconds();
@@ -219,10 +254,22 @@
         //noinspection JSUnresolvedVariable
         return row.applicationMessageId.punchRecordId.punchMemberId.memberName;
     }
+    function punchMemberGradeFormat(value, row, index) {
+        //noinspection JSUnresolvedVariable
+        return row.applicationMessageId.punchRecordId.punchMemberId.memberGradeNumber;
+    }
 
     function punchManagerFormat(value, row, index) {
         //noinspection JSUnresolvedVariable
         return row.callbackManagerId.memberName;
+    }
+    function punchManagerGradeFormat(value, row, index) {
+        //noinspection JSUnresolvedVariable
+        return row.callbackManagerId.memberGradeNumber;
+    }
+    function punchManagerRoleFormat(value, row, index) {
+        //noinspection JSUnresolvedVariable
+        return row.callbackManagerId.memberRoles.memberRoleName;
     }
 
     function punchMemberDepartmentFormat(value, row, index) {

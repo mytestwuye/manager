@@ -7,7 +7,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath", basePath);
+%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
@@ -17,15 +21,15 @@
     <meta name="MobileOptimized" content="320">
     <title>江西现代技术学院软件技术协会管理系统</title>
 
-    <link href="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
+    <link href="${basePath}/plugins/fullPage/jquery.fullPage.css" rel="stylesheet"/>
+    <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css" rel="stylesheet"/>
+    <link href="${basePath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
           rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
+    <link href="${basePath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
+    <link href="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
           rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet"/>
+    <link href="${basePath}/css/admin.css" rel="stylesheet"/>
     <style>
         /** skins **/
        #zheng-upms-server #header {
@@ -37,7 +41,7 @@
         }
 
         #zheng-upms-server .s-profile > a {
-            background: url(${pageContext.request.contextPath}/images/upms.png) left top no-repeat;
+            background: url(${basePath}/images/upms.png) left top no-repeat;
         }
 
         #zheng-cms-admin #header {
@@ -49,7 +53,7 @@
         }
 
         #zheng-cms-admin .s-profile > a {
-            background: url(${pageContext.request.contextPath}/images/cms.png) left top no-repeat;
+            background: url(${basePath}/images/cms.png) left top no-repeat;
         }
 
         #zheng-pay-admin #header {
@@ -61,7 +65,7 @@
         }
 
         #zheng-pay-admin .s-profile > a {
-            background: url(${pageContext.request.contextPath}/images/pay.png) left top no-repeat;
+            background: url(${basePath}/images/pay.png) left top no-repeat;
         }
 
         #zheng-ucenter-home #header {
@@ -73,7 +77,7 @@
         }
 
         #zheng-ucenter-home .s-profile > a {
-            background: url(${pageContext.request.contextPath}/images/ucenter.png) left top no-repeat;
+            background: url(${basePath}/images/ucenter.png) left top no-repeat;
         }
 
         #zheng-oss-web #header {
@@ -85,7 +89,7 @@
         }
 
         #zheng-oss-web .s-profile > a {
-            background: url(${pageContext.request.contextPath}/images/oss.png) left top no-repeat;
+            background: url(${basePath}/images/oss.png) left top no-repeat;
         }
 
         /*#test #header {
@@ -112,8 +116,8 @@
             </div>
         </li>
         <li id="logo" class="hidden-xs">
-            <a href="${pageContext.request.contextPath}/base/goAdminPage.html">
-                <img src="${pageContext.request.contextPath}/images/logo.png"/>
+            <a href="${basePath}/base/goAdminPage.html">
+                <img src="${basePath}/images/logo.png"/>
             </a>
             <span id="system_title">协会管理系统</span>
         </li>
@@ -212,7 +216,7 @@
         <div class="s-profile">
             <a class="waves-effect waves-light" href="javascript:;">
                 <div class="sp-pic">
-                    <img src="${pageContext.request.contextPath}/images/avatar.jpg"/>
+                    <img src="${basePath}/images/avatar.jpg"/>
                 </div>
                 <div class="sp-info">
                     【${member.memberRoles.memberRoleName}】 ${member.memberName}，您好！
@@ -246,16 +250,16 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts-list"></i> 协会信息管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('协会成员信息', '${pageContext.request.contextPath}/member/memberManager.html');">协会成员信息</a>
+                           href="javascript:Tab.addTab('协会成员信息', '${basePath}/member/memberManager.html');">协会成员信息</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('考勤记录查看', '${pageContext.request.contextPath}/punchLog/index.html');">考勤记录查看</a>
+                           href="javascript:Tab.addTab('考勤记录查看', '${basePath}/punchLog/index.html');">考勤记录查看</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('异议考勤审批', '${pageContext.request.contextPath}/punchLog/applicationMessage/index.html');">异议考勤审批</a>
+                           href="javascript:Tab.addTab('异议考勤审批', '${basePath}/punchLog/applicationMessage/index.html');">异议考勤审批</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('考勤审批记录', '${pageContext.request.contextPath}/punchLog/applyForResult/index.html');">考勤审批记录</a>
+                           href="javascript:Tab.addTab('考勤审批记录', '${basePath}/punchLog/applyForResult/index.html');">考勤审批记录</a>
                     </li>
                 </ul>
             </li>
@@ -263,10 +267,10 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts-list"></i> 系统组织管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('系统管理', '${pageContext.request.contextPath}/systemConfig.html');">系统管理</a>
+                           href="javascript:Tab.addTab('系统管理', '${basePath}/systemConfig.html');">系统管理</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('组织管理', '${pageContext.request.contextPath}/manage/organization/index');">组织管理</a>
+                           href="javascript:Tab.addTab('组织管理', '${basePath}/manage/organization/index');">组织管理</a>
                     </li>
                 </ul>
             </li>
@@ -274,10 +278,10 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 账号信息管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('账号角色管理', '${pageContext.request.contextPath}/account/role/index.html');">账号角色管理</a>
+                           href="javascript:Tab.addTab('账号角色管理', '${basePath}/account/role/index.html');">账号角色管理</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('账号信息管理', '${pageContext.request.contextPath}/account/accountManager.html');">账号信息管理</a>
+                           href="javascript:Tab.addTab('账号信息管理', '${basePath}/account/accountManager.html');">账号信息管理</a>
                     </li>
                 </ul>
             </li>
@@ -285,7 +289,7 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-lock-outline"></i> 权限资源管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('权限管理', '${pageContext.request.contextPath}/manage/permission/index');">权限管理</a>
+                           href="javascript:Tab.addTab('权限管理', '${basePath}/manage/permission/index');">权限管理</a>
                     </li>
                 </ul>
             </li>
@@ -293,16 +297,16 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-more"></i> 其他数据管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('公共码表', '${pageContext.request.contextPath}/manage/coder/index');">公共码表</a>
+                           href="javascript:Tab.addTab('公共码表', '${basePath}/manage/coder/index');">公共码表</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('登录日志', '${pageContext.request.contextPath}/session/index.html');">登录日志</a>
+                           href="javascript:Tab.addTab('登录日志', '${basePath}/session/index.html');">登录日志</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('日志记录', '${pageContext.request.contextPath}/operations/log/index.html');">日志记录</a>
+                           href="javascript:Tab.addTab('日志记录', '${basePath}/operations/log/index.html');">日志记录</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('键值设置', '${pageContext.request.contextPath}/manage/map/index');">键值设置</a>
+                           href="javascript:Tab.addTab('键值设置', '${basePath}/manage/map/index');">键值设置</a>
                     </li>
                 </ul>
             </li>
@@ -310,10 +314,10 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-menu"></i> 标签类目管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('标签管理', '${pageContext.request.contextPath}/manage/tag/index');">标签管理</a>
+                           href="javascript:Tab.addTab('标签管理', '${basePath}/manage/tag/index');">标签管理</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('类目管理', '${pageContext.request.contextPath}/manage/category/index');">类目管理</a>
+                           href="javascript:Tab.addTab('类目管理', '${basePath}/manage/category/index');">类目管理</a>
                     </li>
                 </ul>
             </li>
@@ -321,10 +325,10 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-collection-text"></i> 文章内容管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('文章管理', '${pageContext.request.contextPath}/manage/article/index');">文章管理</a>
+                           href="javascript:Tab.addTab('文章管理', '${basePath}/manage/article/index');">文章管理</a>
                     </li>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('回收管理', '${pageContext.request.contextPath}/manage/article/recycle');">回收管理</a>
+                           href="javascript:Tab.addTab('回收管理', '${basePath}/manage/article/recycle');">回收管理</a>
                     </li>
                 </ul>
             </li>
@@ -353,7 +357,7 @@
         </div>
         <div class="content_main">
             <div id="iframe_home" class="iframe cur">
-                <p><h4>江西现代技术学院软件技术协会管理系统 <i style="color:#c00">(此站仅为演示)</i></h4></p>
+                <p><h4>江西现代技术学院软件技术协会管理系统 <i style="color:#c00"></i></h4></p>
                 <p><b>演示地址</b>：<a href="http://182.254.149.200" target="_blank">点击访问我的网站首页</a></p>
                 <p><b>系统简介</b>：本系统是基于RBAC授权和基于用户授权的细粒度权限控制通用平台，并提供单点登录、会话管理和日志管理。接入的系统可自由定义组织、角色、权限、资源等。</p><br/>
                 <p><h4>系统功能概述：</h4></p>
@@ -375,20 +379,20 @@
 </section>
 <footer id="footer"></footer></div>
 
-<script src="${pageContext.request.contextPath}/plugins/jquery.1.12.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/device.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.jdirk.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/jquery.cookie.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/select2/js/select2.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
-<script src="${pageContext.request.contextPath}/js/common.js"></script>
-<script src="${pageContext.request.contextPath}/js/admin.js"></script>
+<script src="${basePath}/plugins/jquery.1.12.4.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
+<script src="${basePath}/plugins/waves-0.7.5/waves.min.js"></script>
+<script src="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
+<script src="${basePath}/plugins/device.min.js"></script>
+<script src="${basePath}/plugins/fullPage/jquery.fullPage.min.js"></script>
+<script src="${basePath}/plugins/fullPage/jquery.jdirk.min.js"></script>
+<script src="${basePath}/plugins/jquery.cookie.js"></script>
+<script src="${basePath}/plugins/select2/js/select2.min.js"></script>
+<script src="${basePath}/plugins/layer/layer.js"></script>
+<script src="${basePath}/js/common.js"></script>
+<script src="${basePath}/js/admin.js"></script>
 <script>
     function clickLogout() {
         //询问框
@@ -407,7 +411,7 @@
     function sendLogout() {
         $.ajax({
             type: "Get",
-            url: "${pageContext.request.contextPath}/base/logoutAction.do",
+            url: "${basePath}/base/logoutAction.do",
             success: function (result) {
                 if (result.status !== 199) {
                     alertFunMessage('这都能出错了。。');
@@ -421,7 +425,7 @@
         })
     }
     function login() {
-        window.parent.location.href = "${pageContext.request.contextPath}/base/login.html";
+        window.parent.location.href = "${basePath}/base/login.html";
     }
 
 

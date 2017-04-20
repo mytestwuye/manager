@@ -24,9 +24,6 @@
           rel="stylesheet"/>
     <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
           rel="stylesheet"/>
-    <link href="${basePath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
-          rel="stylesheet"/>
     <style>
         .account-status{
             font-size: 12px;
@@ -60,9 +57,7 @@
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
-<script src="${basePath}/plugins/waves-0.7.5/waves.min.js"></script>
 <script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${basePath}/plugins/device.min.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
 <script>
     function refresh() {

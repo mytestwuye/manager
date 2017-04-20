@@ -6,20 +6,20 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath", basePath);
+%>
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>协会档案管理</title>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
+    <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
           rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
-          rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
+    <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
           rel="stylesheet"/>
     <style>
         .panel {
@@ -78,23 +78,14 @@
 
 
 </body>
-<script src="${pageContext.request.contextPath}/plugins/jquery.1.12.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/device.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.fullPage.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/fullPage/jquery.jdirk.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/jquery.cookie.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/select2/js/select2.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/admin.js"></script>
-<script src="${pageContext.request.contextPath}/js/common.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
+<script src="${basePath}/plugins/jquery.1.12.4.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
+<script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
+<script src="${basePath}/plugins/layer/layer.js"></script>
 <script>
     function refresh() {
         $("#tabs").bootstrapTable("refresh");
@@ -131,7 +122,7 @@
         oTableInit.Init = function () {
             layer.load(0, {shade: false, time: 1000}); //0代表加载的风格，支持0-2
             $('#tabs').bootstrapTable({
-                url: '${pageContext.request.contextPath}/member/queryAll.json',         //请求后台的URL（*）
+                url: '${basePath}/member/queryAll.json',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
                 striped: true,                      //是否显示行间隔色
@@ -258,7 +249,7 @@
         //弹出即全屏
         var index = layer.open({
             type: 2,
-            content: '${pageContext.request.contextPath}/member/insert.html',
+            content: '${basePath}/member/insert.html',
             area: ['260px', '500px'],
             maxmin: true
         });
@@ -286,7 +277,7 @@
             area: ['300px', '530px'],
             fixed: true, //不固定
             maxmin: true,
-            content: '${pageContext.request.contextPath}/member/update.html/' + memberId
+            content: '${basePath}/member/update.html/' + memberId
         });
 
 
@@ -320,7 +311,7 @@
     function deleteMember(memberId) {
         $.ajax({
             type: "get",
-            url: "${pageContext.request.contextPath}/member/deleteById.json/" + memberId,
+            url: "${basePath}/member/deleteById.json/" + memberId,
             success: function (result) {
                 if (result.status == 5) {
                     layer.msg("没有你要删除的信息", {icon: 4});

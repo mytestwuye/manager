@@ -10,6 +10,7 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath", basePath);
 %>
 <!DOCTYPE html>
 <html>
@@ -21,12 +22,6 @@
     <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
           rel="stylesheet"/>
-    <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
-          rel="stylesheet"/>
-    <link href="${basePath}/plugins/waves-0.7.5/waves.min.css" rel="stylesheet"/>
-    <link href="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css"
-          rel="stylesheet"/>
-    <link href="${basePath}/css/common.css" rel="stylesheet"/>
     <style>
         form {
             padding: 29px;
@@ -75,13 +70,6 @@
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
-<script src="${basePath}/plugins/waves-0.7.5/waves.min.js"></script>
-<script src="${basePath}/plugins/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.concat.min.js"></script>
-<script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${basePath}/plugins/device.min.js"></script>
-<script src="${basePath}/plugins/jquery-confirm/jquery-confirm.min.js"></script>
-<script src="${basePath}/plugins/select2/js/select2.min.js"></script>
-<script src="${basePath}/js/common.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
 
 <script>
@@ -169,7 +157,7 @@
                     {title: "全选", field: "select", checkbox: true, width: 20, align: "center", valign: "middle"},
                     {field: 'roleId', title: '角色ID', sortable: true, align: 'center'},
                     {field: 'roleName', title: '角色名字', sortable: true, align: 'center'},
-                    {field: 'createTime', title: '创建时间', sortable: true, align: 'center', formatter: 'dateFormat'},
+                    {field: 'createTime', title: '创建时间', sortable: true, align: 'center', formatter: 'dateFormat'}
                 ],
                 onClickRow: function (row, $element) {
                     //$element是当前tr的jquery对象

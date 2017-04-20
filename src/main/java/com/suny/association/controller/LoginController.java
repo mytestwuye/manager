@@ -28,27 +28,27 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/base")
 public class LoginController {
-    
+
     private final IAccountService accountService;
-    
+
     @Autowired
     public LoginController(IAccountService accountService) {
         this.accountService = accountService;
     }
-    
-    
+
+
     @RequestMapping("/loginPage.html")
     public ModelAndView loginPage() {
         return new ModelAndView("/loginPage");
     }
-    
-    
+
+
     @RequestMapping(value = "/errorPage.html")
     public ModelAndView errorPage() {
         return new ModelAndView("/errorPage");
     }
-    
-    
+
+
     @RequestMapping(value = "/loginAction.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult loginAction(@RequestParam("username") String username,
@@ -63,49 +63,48 @@ public class LoginController {
         saveLoginUser(request, username);
         return JsonResult.successResult(BaseEnum.LOGIN_SYSTEM);
     }
-    
-    
+
+
     private boolean matchCode(String formCode, String sessionCode) {
         return !formCode.equals("") && sessionCode.equals(formCode);
     }
-    
+
     private void authAction(String username, String password) {
 //        try {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
-            Subject currentUser = SecurityUtils.getSubject();
-            //如果还没有登录就 //使用shiro来验证
-            if (!currentUser.isAuthenticated()) {
-                token.setRememberMe(true);
-                currentUser.login(token);      //验证角色和权限
-            }
-            else{
-                throw new BusinessException(BaseEnum.REPEAT_LOGIN);
-            }
+        UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
+        Subject currentUser = SecurityUtils.getSubject();
+        //如果还没有登录就 //使用shiro来验证
+        if (!currentUser.isAuthenticated()) {
+            token.setRememberMe(true);
+            currentUser.login(token);      //验证角色和权限
+        } else {
+            throw new BusinessException(BaseEnum.REPEAT_LOGIN);
+        }
 //        } catch (Exception ex) {
 //            throw new BusinessException(BaseEnum.PASS_ERROR);
 //        }
     }
-    
+
     private void saveLoginUser(HttpServletRequest request, String username) {
         Member member = accountService.queryByName(username).getAccountMember();
         request.getSession().setAttribute("member", member);
     }
-    
-    
+
+
     @RequestMapping("/goAdminPage.html")
     public ModelAndView goAdminPage() throws Exception {
         return new ModelAndView("adminManager");
     }
-    
-    
+
+
     @RequestMapping(value = "/logoutAction.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult logoutAction() {
         SecurityUtils.getSubject().logout();
         return JsonResult.successResult(LoginEnum.LOGOUT_SUCCESS);
     }
-    
-    
+
+
 }
 
 

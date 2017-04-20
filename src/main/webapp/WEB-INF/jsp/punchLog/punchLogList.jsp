@@ -9,18 +9,19 @@
 <%
     String path = request.getContextPath();
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    pageContext.setAttribute("basePath", basePath);
 %>
 <!DOCTYPE html>
 <html>
 <head lang="en">
     <meta charset="UTF-8">
     <title>考勤记录</title>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
+    <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
           rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
+    <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
           rel="stylesheet"/>
-    <link href="${pageContext.request.contextPath}/css/admin.css" rel="stylesheet"/>
+    <link href="${basePath}/css/admin.css" rel="stylesheet"/>
 </head>
 <body>
 <div>
@@ -34,18 +35,14 @@
 </div>
 </body>
 
-<script src="${pageContext.request.contextPath}/plugins/jquery.1.12.4.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/waves-0.7.5/waves.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/BootstrapMenu.min.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/select2/js/select2.min.js"></script>
-<script src="${pageContext.request.contextPath}/js/admin.js"></script>
-<script src="${pageContext.request.contextPath}/js/common.js"></script>
-<script src="${pageContext.request.contextPath}/plugins/layer/layer.js"></script>
+<script src="${basePath}/plugins/jquery.1.12.4.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/locale/bootstrap-table-zh-CN.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/export/bootstrap-table-export.js"></script>
+<script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
+<script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
+<script src="${basePath}/plugins/layer/layer.js"></script>
 
 <script>
 
@@ -84,7 +81,7 @@
         oTableInit.Init = function () {
             layer.load(0, {shade: false, time: 1000}); //0代表加载的风格，支持0-2
             $('#table').bootstrapTable({
-                url: '${pageContext.request.contextPath}/punchLog/list.json',         //请求后台的URL（*）
+                url: '${basePath}/punchLog/list.json',         //请求后台的URL（*）
                 method: 'get',                      //请求方式（*）
                 toolbar: '#toolbar',                //工具按钮用哪个容器
                 striped: true,                      //是否显示行间隔色
@@ -137,6 +134,12 @@
                     {field: 'punchIsCome', title: '是否考勤',formatter:'punchTypeStatusFormat'},
                     {field: 'punchTypeId', title: '考勤类型', align: 'center',formatter:'punchTypeFormat'},
                     {field: 'punchMemberId', title: '考勤成员', align: 'center',formatter:'punchMemberFormat'},
+                    {
+                        field: 'punchMemberDepartment',
+                        title: '考勤成员部门',
+                        align: 'center',
+                        formatter: 'punchMemberDepartmentFormat'
+                    },
                 ],
                 onClickRow: function (row, $element) {
                     //$element是当前tr的jquery对象
@@ -168,16 +171,16 @@
 
     function dateFormat(value,row,index){
         var date = new Date(row.punchTodayDate);
-        Y = date.getFullYear() + '-';
-        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-        D = date.getDate() + ' ';
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = date.getDate() + ' ';
         return Y+M+D;
     }
     function timeFormat(value,row,index){
         var date = new Date(row.punchDatetime);
-        h = date.getHours() + ':';
-        m = date.getMinutes() + ':';
-        s = date.getSeconds();
+        var h = date.getHours() + ':';
+        var m = date.getMinutes() + ':';
+        var s = date.getSeconds();
         return h+m+s;
     }
 
@@ -196,106 +199,13 @@
     }
 
     function punchMemberFormat(value, row, index) {
+        //noinspection JSUnresolvedVariable
         return row.punchMemberId.memberName;
     }
-    // 强制退出
-    var forceoutDialog;
-    function forceoutAction() {
-        var rows = $table.bootstrapTable('getSelections');
-        if (rows.length == 0) {
-            $.confirm({
-                title: false,
-                content: '请至少选择一条记录！',
-                autoClose: 'cancel|3000',
-                backgroundDismiss: true,
-                buttons: {
-                    cancel: {
-                        text: '取消',
-                        btnClass: 'waves-effect waves-button'
-                    }
-                }
-            });
-        } else {
-            forceoutDialog = $.confirm({
-                type: 'red',
-                animationSpeed: 300,
-                title: false,
-                content: '确认强制退出该会话吗？',
-                buttons: {
-                    confirm: {
-                        text: '确认',
-                        btnClass: 'waves-effect waves-button',
-                        action: function () {
-                            var ids = [];
-                            for (var i in rows) {
-                                ids.push(rows[i].id);
-                            }
-                            $.ajax({
-                                type: 'get',
-                                url: '${basePath}/manage/session/forceout/' + ids.join(","),
-                                success: function (result) {
-                                    if (result.code != 1) {
-                                        if (result.data instanceof Array) {
-                                            $.each(result.data, function (index, value) {
-                                                $.confirm({
-                                                    theme: 'dark',
-                                                    animation: 'rotateX',
-                                                    closeAnimation: 'rotateX',
-                                                    title: false,
-                                                    content: value.errorMsg,
-                                                    buttons: {
-                                                        confirm: {
-                                                            text: '确认',
-                                                            btnClass: 'waves-effect waves-button waves-light'
-                                                        }
-                                                    }
-                                                });
-                                            });
-                                        } else {
-                                            $.confirm({
-                                                theme: 'dark',
-                                                animation: 'rotateX',
-                                                closeAnimation: 'rotateX',
-                                                title: false,
-                                                content: result.data.errorMsg,
-                                                buttons: {
-                                                    confirm: {
-                                                        text: '确认',
-                                                        btnClass: 'waves-effect waves-button waves-light'
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    } else {
-                                        forceoutDialog.close();
-                                        $table.bootstrapTable('refresh');
-                                    }
-                                },
-                                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                    $.confirm({
-                                        theme: 'dark',
-                                        animation: 'rotateX',
-                                        closeAnimation: 'rotateX',
-                                        title: false,
-                                        content: textStatus,
-                                        buttons: {
-                                            confirm: {
-                                                text: '确认',
-                                                btnClass: 'waves-effect waves-button waves-light'
-                                            }
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    },
-                    cancel: {
-                        text: '取消',
-                        btnClass: 'waves-effect waves-button'
-                    }
-                }
-            });
-        }
+
+    function punchMemberDepartmentFormat(value, row, index) {
+        //noinspection JSUnresolvedVariable
+        return row.punchMemberId.memberDepartment.departmentName;
     }
 
     /**
