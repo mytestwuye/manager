@@ -5,6 +5,7 @@ import com.suny.association.enums.LoginEnum;
 import com.suny.association.exception.BusinessException;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.interfaces.IAccountService;
+import com.suny.association.service.interfaces.ILoginHistoryService;
 import com.suny.association.utils.EncryptUtil;
 import com.suny.association.utils.JsonResult;
 import org.apache.shiro.SecurityUtils;
@@ -20,6 +21,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 
+import static com.suny.association.utils.LoginUtils.getClientIpAdder;
+
 /**
  * Comments:   基础公共Controller
  * Author:   孙建荣
@@ -31,9 +34,12 @@ public class LoginController {
 
     private final IAccountService accountService;
 
+    private final ILoginHistoryService loginHistoryService;
+
     @Autowired
-    public LoginController(IAccountService accountService) {
+    public LoginController(IAccountService accountService, ILoginHistoryService loginHistoryService) {
         this.accountService = accountService;
+        this.loginHistoryService = loginHistoryService;
     }
 
 
@@ -60,8 +66,20 @@ public class LoginController {
             return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);
         }*/
         authAction(username, password);
+        saveLoginInfo(request, username);
         saveLoginUser(request, username);
         return JsonResult.successResult(BaseEnum.LOGIN_SYSTEM);
+    }
+
+    /**
+     * 报存用户登录信息
+     *
+     * @param request  请求数据
+     * @param username 登录的用户名
+     */
+    private void saveLoginInfo(HttpServletRequest request, String username) {
+        String loginIp = getClientIpAdder(request);
+        loginHistoryService.makeUpLoginInfo(request.getHeader("user-agent"), username, loginIp);
     }
 
 

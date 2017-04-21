@@ -55,6 +55,7 @@ public class LoginRealm extends AuthorizingRealm {
         if (account != null) {
             return new SimpleAuthenticationInfo(account.getAccountName(), account.getAccountPassword(), getName());
         }
+
         throw new BusinessException(BaseEnum.LOGIN_FAILURE);
     }
 }

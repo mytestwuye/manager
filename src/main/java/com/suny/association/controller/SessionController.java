@@ -29,17 +29,17 @@ public class SessionController {
         this.loginHistoryService = loginHistoryService;
     }
 
-    @RequestMapping(value = "list.json" ,method = RequestMethod.GET)
+    @RequestMapping(value = "list.json", method = RequestMethod.GET)
     @ResponseBody
-    public  Map<Object,Object>  query(@RequestParam(value = "offset",required = false,defaultValue = "0") int offset,
-                            @RequestParam(value = "limit",required = false,defaultValue = "10") int limit){
-        List<LoginHistory> loginHistoryList=loginHistoryService.list(ConversionUtil.convertToCriteriaMap(offset,limit));
+    public Map<Object, Object> query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
+                                     @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
+        List<LoginHistory> loginHistoryList = loginHistoryService.list(ConversionUtil.convertToCriteriaMap(offset, limit));
         int total = loginHistoryService.queryCount();
-        return ConversionUtil.convertToBootstrapTableResult(loginHistoryList,total);
+        return ConversionUtil.convertToBootstrapTableResult(loginHistoryList, total);
     }
 
-    @RequestMapping(value = "/index.html" ,method = RequestMethod.GET)
-    public String index(){
+    @RequestMapping(value = "/index.html", method = RequestMethod.GET)
+    public String index() {
         return "/session/sessionList";
     }
 }
