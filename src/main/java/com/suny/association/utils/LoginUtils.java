@@ -1,8 +1,14 @@
 package com.suny.association.utils;
 
+import com.google.gson.Gson;
+import com.suny.association.pojo.po.baiduLocation.GeneralLocationResult;
+
 import javax.servlet.http.HttpServletRequest;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
 import java.util.Objects;
 
 /**
@@ -11,6 +17,87 @@ import java.util.Objects;
  * Create Date: 2017/04/20 19:57
  */
 public class LoginUtils {
+
+    public static GeneralLocationResult getGeneralLocation(String ip) {
+        String city;   //定位到的城市
+        String status;    //定位的状态
+        String ipString = null;    // ip地址
+        String jsonData = null;    //服务器返回的json数据
+        try {
+            ipString = URLEncoder.encode(ip, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        String key = "8256e813b3dec54c5a6aac371c05e5eaa";   // 百度定位密匙
+        String url = String.format("http://api.map.baidu.com/location/ip?ak=%s&ip=%s&coor=bd09ll", key, ipString);
+        URL myUrl = null;
+        URLConnection urlConnection = null;
+        try {
+            myUrl = new URL(url);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        InputStreamReader inputStreamReader = null;
+        BufferedReader bufferedReader = null;
+        try {
+            urlConnection = myUrl != null ? myUrl.openConnection() : null;   //　不使用代理进行访问
+            if (urlConnection != null) {
+                inputStreamReader = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
+                bufferedReader = new BufferedReader(inputStreamReader);
+                String data;
+                while ((data = bufferedReader.readLine()) != null) {
+                    jsonData += data;
+                }
+                return parseJsonDate(jsonData);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStreamReader != null) {
+                try {
+                    inputStreamReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (bufferedReader != null) {
+                try {
+                    bufferedReader.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 解析百度传回来的json数据
+     *
+     * @param jsonData json数据
+     * @return 得到的结果
+     */
+    private static GeneralLocationResult parseJsonDate(String jsonData) {
+        GeneralLocationResult generalLocationResult = new GeneralLocationResult();
+        /*这里对文本进行解析，因为此时返回的是一个返回的是请求出错的json数据
+            * 返回格式是统一的类型，所以我们进行切割得到状态码
+            * 统一状态码大概是这样的：   null{"status":2,"message":"Request Parameter Error:ip illegal"}
+            * 其中status后面的数字是会变的，然后message也是根据不同的状态码来变的   */
+        int statusTextIndex = jsonData.indexOf("status\":");
+        int messageTextIndex = jsonData.indexOf(",\"message");
+        int statusCode = Integer.parseInt(jsonData.substring(statusTextIndex + 8, messageTextIndex));
+        /*   如果返回的文本不等于空的话，并且包含状态码0的话就说明百度成功定位了  */
+        if (statusCode == 0) {
+            Gson gson = new Gson();
+        /*  使用Google的 Gson 把json数据封装到实体类里面去   */
+            generalLocationResult = gson.fromJson(jsonData, GeneralLocationResult.class);
+            return generalLocationResult;
+        } else {
+            generalLocationResult.setStatus(200);
+            return generalLocationResult;
+        }
+    }
+
 
     /**
      * 获取客户端ip地址(可以穿透代理)

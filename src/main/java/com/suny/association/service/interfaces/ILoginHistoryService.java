@@ -9,5 +9,5 @@ import com.suny.association.service.IBaseService;
  * Create Date: 2017/03/07 22:12
  */
 public interface ILoginHistoryService extends IBaseService<LoginHistory> {
-    void makeUpLoginInfo(String userAgent, String username, String loginIp);
+    void makeUpLoginInfo(String userAgent, String username, String loginIp, boolean authStatus);
 }

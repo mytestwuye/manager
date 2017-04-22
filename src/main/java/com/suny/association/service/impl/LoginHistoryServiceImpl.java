@@ -4,6 +4,7 @@ import com.suny.association.mapper.AccountMapper;
 import com.suny.association.mapper.LoginHistoryMapper;
 import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.LoginHistory;
+import com.suny.association.pojo.po.baiduLocation.GeneralLocationResult;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.ILoginHistoryService;
 import com.suny.association.utils.CustomDate;
@@ -11,7 +12,6 @@ import com.suny.association.utils.LoginUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -66,20 +66,26 @@ public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistor
      * @param loginIp   登录的ip
      */
     @Override
-    public void makeUpLoginInfo(String userAgent, String username, String loginIp) {
-        Date loginTime = CustomDate.getCurrentDateTime();
+    public void makeUpLoginInfo(String userAgent, String username, String loginIp, boolean authStatus) {
         String loginBrowser = LoginUtils.getBrowserInfo(userAgent);
-        String loginOSVersion = getOSVersion(userAgent);
         LoginHistory loginHistory = new LoginHistory();
         loginHistory.setLoginUserAgent(userAgent);
         loginHistory.setLastLoginIp(loginIp);
-        loginHistory.setLastLoginTime(loginTime);
+        loginHistory.setLastLoginTime(CustomDate.getCurrentDateTime());
         loginHistory.setLoginBrowser(loginBrowser);
-        loginHistory.setLoginOsVersion(loginOSVersion);
-        loginHistory.setLoginStatus(true);
-        loginHistory.setLoginAddress("南昌县创新二路");
+        loginHistory.setLoginOsVersion(getOSVersion(userAgent));
+        loginHistory.setLoginStatus(authStatus);
         Account account = accountMapper.queryByName(username);
         loginHistory.setHistoryAccountId(account);
+        GeneralLocationResult generalLocation = LoginUtils.getGeneralLocation(loginIp);
+//        GeneralLocationResult generalLocation=new GeneralLocationResult();
+//        generalLocation.setStatus(0);
+//        generalLocation.setAddress("江西现代职业技术学院");
+        if (generalLocation != null) {
+            loginHistory.setLoginAddress(generalLocation.getStatus() == 0 ? generalLocation.getAddress() : "未知位置");
+        } else {
+            loginHistory.setLoginAddress("未知位置");
+        }
         insert(loginHistory);
     }
 }

@@ -65,8 +65,8 @@ public class LoginController {
        /* if (!matchCode(formCode, sessionCode)) {
             return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);
         }*/
-        authAction(username, password);
-        saveLoginInfo(request, username);
+        authAction(request, username, password);
+        saveLoginInfo(request, username, true);
         saveLoginUser(request, username);
         return JsonResult.successResult(BaseEnum.LOGIN_SYSTEM);
     }
@@ -77,9 +77,10 @@ public class LoginController {
      * @param request  请求数据
      * @param username 登录的用户名
      */
-    private void saveLoginInfo(HttpServletRequest request, String username) {
+    private void saveLoginInfo(HttpServletRequest request, String username, boolean authStatus) {
         String loginIp = getClientIpAdder(request);
-        loginHistoryService.makeUpLoginInfo(request.getHeader("user-agent"), username, loginIp);
+        String userAgent = request.getHeader("user-agent");
+        loginHistoryService.makeUpLoginInfo(userAgent, username, loginIp, authStatus);
     }
 
 
@@ -87,20 +88,22 @@ public class LoginController {
         return !formCode.equals("") && sessionCode.equals(formCode);
     }
 
-    private void authAction(String username, String password) {
-//        try {
-        UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
-        Subject currentUser = SecurityUtils.getSubject();
-        //如果还没有登录就 //使用shiro来验证
-        if (!currentUser.isAuthenticated()) {
-            token.setRememberMe(true);
-            currentUser.login(token);      //验证角色和权限
-        } else {
-            throw new BusinessException(BaseEnum.REPEAT_LOGIN);
+    private void authAction(HttpServletRequest request, String username, String password) {
+        try {
+            UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
+            Subject currentUser = SecurityUtils.getSubject();
+            //如果还没有登录就 //使用shiro来验证
+            if (!currentUser.isAuthenticated()) {
+                token.setRememberMe(true);
+                currentUser.login(token);      //验证角色和权限
+            } else {
+                saveLoginInfo(request, username, false);
+                throw new BusinessException(BaseEnum.REPEAT_LOGIN);
+            }
+        } catch (Exception ex) {
+            saveLoginInfo(request, username, false);
+            throw new BusinessException(BaseEnum.PASS_ERROR);
         }
-//        } catch (Exception ex) {
-//            throw new BusinessException(BaseEnum.PASS_ERROR);
-//        }
     }
 
     private void saveLoginUser(HttpServletRequest request, String username) {
