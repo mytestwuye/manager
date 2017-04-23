@@ -105,6 +105,11 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
         return memberMapper.queryFreezeMember();
     }
 
+    @Override
+    public List<Member> quoteByMemberRoleId(Integer memberRoleId) {
+        return memberMapper.quoteByMemberRoleId(memberRoleId);
+    }
+
 
     @Override
     public List<Member> queryNormalMember() {

@@ -18,6 +18,7 @@ public interface MemberMapper extends IMapper<Member> {
     Member queryByLongId(Long id);
 
     Member queryQuote(int memberId);
+
     List<Member> queryFreezeManager();
    
     List<Member> queryNormalManager();
@@ -25,6 +26,8 @@ public interface MemberMapper extends IMapper<Member> {
     List<Member> queryFreezeMember();
     
     List<Member> queryNormalMember();
+
+    List<Member> quoteByMemberRoleId(Integer memberRoleId);
 
 
 }

@@ -367,6 +367,13 @@
         SELECT count(*)
         FROM member;
     </select>
+    <select id="quoteByMemberRoleId" parameterType="int" resultType="com.suny.association.pojo.po.Member">
+        SELECT
+        m.member_id,
+        m.member_id
+        FROM member AS m
+        WHERE m.member_role_id = #{memberRoleId}
+    </select>
 
 
 </mapper>

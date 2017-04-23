@@ -6,12 +6,67 @@
         <result property="memberRoleName" column="member_role_name"/>
     </resultMap>
 
+
+    <insert id="insert" parameterType="com.suny.association.pojo.po.MemberRoles">
+        INSERT INTO member_roles
+        (member_role_name)
+        VALUES
+        (#{memberRoleName})
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM member_roles
+        WHERE member_role_id = #{memberRoleId}
+    </delete>
+
+    <update id="update" parameterType="com.suny.association.pojo.po.MemberRoles">
+        UPDATE member_roles
+        SET member_role_name = #{memberRoleName}
+        WHERE member_role_id = #{memberRoleId}
+    </update>
+
     <select id="queryAll" resultMap="BaseResultMap">
         SELECT
         mr.member_role_id,
         mr.member_role_name
-        FROM
-        member_roles AS mr
+        FROM member_roles AS mr
     </select>
+
+    <select id="queryById" parameterType="Integer" resultMap="BaseResultMap">
+        SELECT
+        mr.member_role_id,
+        mr.member_role_name
+        FROM member_roles AS mr
+        WHERE mr.member_role_id = #{memberRoleId}
+    </select>
+
+    <select id="queryByName" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+        mr.member_role_id,
+        mr.member_role_name
+        FROM member_roles AS mr
+        WHERE mr.member_role_name LIKE CONCAT(CONCAT('%', #{memberRoleName}), '%')
+    </select>
+
+    <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
+        SELECT
+        mr.member_role_id,
+        mr.member_role_name
+        FROM member_roles AS mr
+        LIMIT
+        #{offset},
+        #{limit}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*)
+        FROM member_roles;
+    </select>
+    <select id="queryQuote" parameterType="int" resultType="com.suny.association.pojo.po.MemberRoles">
+        SELECT *
+        FROM member_roles
+        WHERE member_role_id = #{memberRoleId}
+    </select>
+
 
 </mapper>

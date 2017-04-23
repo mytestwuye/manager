@@ -119,7 +119,7 @@ public class ConversionUtil {
             }
             return true;
         }
-        return null;
+        return true;
     }
 }
 

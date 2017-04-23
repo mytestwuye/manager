@@ -27,5 +27,7 @@ public interface IMemberService extends IBaseService<Member> {
 
     List<Member> queryFreezeMember();
 
+    List<Member> quoteByMemberRoleId(Integer memberRoleId);
+
 
 }

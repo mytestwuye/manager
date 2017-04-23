@@ -28,6 +28,10 @@ public class MemberRolesServiceImpl extends AbstractBaseServiceImpl<MemberRoles>
     public MemberRolesServiceImpl() {
     }
 
+    @Override
+    public void deleteById(int memberRoleId) {
+        memberRolesMapper.deleteById(memberRoleId);
+    }
 
     @Override
     public MemberRoles queryByName(String name) {
@@ -37,6 +41,11 @@ public class MemberRolesServiceImpl extends AbstractBaseServiceImpl<MemberRoles>
     @Override
     public int queryCount() {
         return memberRolesMapper.queryCount();
+    }
+
+    @Override
+    public MemberRoles queryById(int id) {
+        return memberRolesMapper.queryById(id);
     }
 
     /**
@@ -59,5 +68,18 @@ public class MemberRolesServiceImpl extends AbstractBaseServiceImpl<MemberRoles>
         return memberRolesMapper.list(criteriaMap);
     }
 
+    @Override
+    public void insert(MemberRoles memberRoles) {
+        memberRolesMapper.insert(memberRoles);
+    }
 
+    @Override
+    public List<MemberRoles> queryQuote(Integer memberRoleId) {
+        return memberRolesMapper.queryQuote(memberRoleId);
+    }
+
+    @Override
+    public void update(MemberRoles memberRoles) {
+        memberRolesMapper.update(memberRoles);
+    }
 }
