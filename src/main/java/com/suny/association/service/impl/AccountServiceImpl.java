@@ -91,6 +91,11 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
         return accountMapper.queryByName(name);
     }
 
+    @Override
+    public Account queryByMemberId(int memberId) {
+        return accountMapper.queryByMemberId(memberId);
+    }
+
     @Transactional(rollbackFor = {Exception.class})
     @Override
     public void deleteByLongId(Long id) {

@@ -1,5 +1,7 @@
 package com.suny.association.mapper.interfaces;
 
+import com.suny.association.pojo.po.Account;
+
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +29,7 @@ public interface IMapper<T> {
     List<T> queryAll();
 
     List<T> list(Map<Object, Object> criteriaMap);
+
 
 }
 

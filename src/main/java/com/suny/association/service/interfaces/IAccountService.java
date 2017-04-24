@@ -21,6 +21,8 @@ public interface IAccountService extends IBaseService<Account> {
 
     Account queryQuoteByMemberId(Long memberId);
 
+    Account queryByMemberId(int memberId);
+
     void deleteByLongId(Long id);
 
 }

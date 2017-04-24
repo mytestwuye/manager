@@ -110,6 +110,25 @@
         SELECT count(*)
         FROM login_history;
     </select>
+    <select id="queryByMemberId" parameterType="int" resultMap="BaseResultMap">
+        SELECT
+        lh.login_history_id,
+        lh.history_account_id,
+        lh.last_login_ip,
+        lh.login_address,
+        lh.last_login_time,
+        lh.login_browser,
+        lh.login_os_version,
+        lh.login_user_agent,
+        lh.login_status
+        FROM login_history AS lh
+        WHERE
+        lh.history_account_id = (SELECT account_id
+        FROM account AS a
+        WHERE a.account_member_id = #{memberId})
+        ORDER BY lh.last_login_time DESC
+        LIMIT 0, 5
+    </select>
 
 
 </mapper>

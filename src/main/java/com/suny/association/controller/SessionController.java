@@ -1,6 +1,7 @@
 package com.suny.association.controller;
 
 import com.suny.association.pojo.po.LoginHistory;
+import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.ILoginHistoryService;
 import com.suny.association.utils.ConversionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +25,12 @@ public class SessionController {
 
     private final ILoginHistoryService loginHistoryService;
 
+    private final IAccountService accountService;
+
     @Autowired
-    public SessionController(ILoginHistoryService loginHistoryService) {
+    public SessionController(ILoginHistoryService loginHistoryService, IAccountService accountService) {
         this.loginHistoryService = loginHistoryService;
+        this.accountService = accountService;
     }
 
     @RequestMapping(value = "list.json", method = RequestMethod.GET)
@@ -36,6 +40,13 @@ public class SessionController {
         List<LoginHistory> loginHistoryList = loginHistoryService.list(ConversionUtil.convertToCriteriaMap(offset, limit));
         int total = loginHistoryService.queryCount();
         return ConversionUtil.convertToBootstrapTableResult(loginHistoryList, total);
+    }
+
+    @RequestMapping(value = "/queryByMemberId.json", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<Object, Object> queryById(@RequestParam("memberId") int memberId) {
+        List<LoginHistory> loginHistoryList = loginHistoryService.queryByMemberId(memberId);
+        return ConversionUtil.convertToBootstrapTableResult(loginHistoryList, 5);
     }
 
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)

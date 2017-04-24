@@ -88,4 +88,9 @@ public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistor
         }
         insert(loginHistory);
     }
+
+    @Override
+    public List<LoginHistory> queryByMemberId(int memberId) {
+        return loginHistoryMapper.queryByMemberId(memberId);
+    }
 }

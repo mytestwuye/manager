@@ -220,7 +220,7 @@
             a.account_role_id,
             a.account_member_id
         FROM account AS a
-        WHERE a.account_member_id = #{accountMember.memberId}
+        WHERE a.account_member_id = #{memberId}
     </select>
 
     <select id="queryQuoteByAccountId" parameterType="Long" resultMap="BaseResultMap">

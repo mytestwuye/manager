@@ -20,4 +20,6 @@ public interface AccountMapper extends IMapper<Account> {
     Account queryByLongId(Long id);
 
     void deleteByLongId(Long id);
+
+    Account queryByMemberId(int memberId);
 }

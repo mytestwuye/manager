@@ -1,0 +1,1189 @@
+.mYmoneyLeft {
+    width: 245px;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    background: #fff;
+    min-height: 850px
+}
+
+.mYmoneyLeft .mYmoneyuser {
+    position: relative
+}
+
+.mYmoneyLeft .mYmoneyuser .mYmoneyuserimg {
+    width: 86px;
+    height: 86px;
+    margin: 40px auto 0 auto;
+    border: 2px solid #d7ebff;
+    border-radius: 90px
+}
+
+.mYmoneyLeft .mYmoneyuser .mYmoneyuseredit {
+    position: absolute;
+    left: 140px;
+    bottom: 6px
+}
+
+.mYmoneyLeft .mYmoneyapprove {
+    margin: 30px 0;
+    color: #484848
+}
+
+.mYmoneyLeft .mYmoneyapprove span {
+    display: inline-block
+}
+
+.mYmoneyLeft .mYmoneyapprove span.moneyapprove1 {
+    padding-left: 18px;
+}
+
+.mYmoneyLeft .mYmoneyapprove span.moneyapprove2 {
+    padding: 0 5px;
+    color: #cbcbcb;
+    font-size: 12px
+}
+
+.mYmoneyLeft .mYmoneyNavList {
+    border-top: 1px solid #ebebeb;
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav {
+    margin: 20px 0 0 78px;
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.on00 {
+    color: #379aff;
+    background-position: 0 -281px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.on01 {
+    color: #379aff;
+    background-position: 0 -331px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.on02 {
+    color: #379aff;
+    background-position: 0 -381px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.on03 {
+    color: #379aff;
+    background-position: 0 -430px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.on04 {
+    color: #379aff;
+    background-position: 0 -479px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.on05 {
+    color: #379aff;
+    background-position: 0 -530px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a {
+    display: block;
+    line-height: 30px;
+    padding: 10px 0 10px 30px;
+    color: #696969
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a:hover {
+    color: #379aff
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.mynav00 {
+    background-position: 0 19px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a:hover.mynav00 {
+    background-position: 0 -281px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.mynav01 {
+    background-position: 0 -31px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a:hover.mynav01 {
+    background-position: 0 -331px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.mynav02 {
+    background-position: 0 -81px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a:hover.mynav02 {
+    background-position: 0 -381px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.mynav03 {
+    background-position: 0 -130px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a:hover.mynav03 {
+    background-position: 0 -430px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.mynav04 {
+    background-position: 0 -179px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a:hover.mynav04 {
+    background-position: 0 -479px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a.mynav05 {
+    background-position: 0 -230px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav dt a:hover.mynav05 {
+    background-position: 0 -530px
+}
+
+.mYmoneyRight {
+    width: 930px;
+    min-height: 850px
+}
+
+.mYmoneyRone {
+    border: 1px solid #ebebeb;
+    background: #fff;
+    border-radius: 3px;
+    margin-bottom: 22px
+}
+
+.mYmoneyRone h1.mYmoneyRtitle {
+    padding-left: 30px;
+    line-height: 54px;
+    font-size: 18px;
+    border-bottom: 1px solid #ebebeb
+}
+
+.qbbanner {
+    height: 270px
+}
+
+.qbbannerT1 {
+    width: 245px;
+    font-size: 18px;
+    color: #3d3d3d;
+    margin: 0 auto;
+    line-height: 18px;
+    padding-top: 30px;
+}
+
+.qbbannerT2 {
+    width: 245px;
+    font-size: 36px;
+    color: #3e9dff;
+    margin: 0 auto;
+    line-height: 70px;
+    border-bottom: 1px dashed #3e9dff
+}
+
+.qbbannerT3 {
+    width: 245px;
+    font-size: 14px;
+    color: #3e9dff;
+    margin: 0 auto;
+    line-height: 45px;
+}
+
+.qbbannerT4 {
+    width: 335px;
+    margin: 60px auto 0 auto;
+}
+
+.qbbannerT4 a.left {
+    width: 105px;
+    line-height: 26px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    color: #fff
+}
+
+.qbbannerT4 a.right {
+    padding: 0 12px 0 40px;
+    line-height: 26px;
+    border: 1px solid #fff;
+    border-radius: 3px;
+    color: #fff;
+}
+
+.mYmoneyRlist {
+    padding: 21px 0
+}
+
+.mYmoneyRlist a {
+    display: inline-block;
+    width: 295px;
+    height: 84px;
+    color: #696969
+}
+
+.mYmoneyRlist a img {
+    display: block;
+    width: 57px;
+    margin: 0 auto 5px auto
+}
+
+.mYmoneyRlist a span {
+    color: #ff1414
+}
+
+.mYmoneyRlist a.mycenter {
+    border-left: 1px solid #ebebeb;
+    border-right: 1px solid #ebebeb
+}
+
+.mYmoneyRlistxq {
+    padding: 21px 18px
+}
+
+.mYmoneyRlistxq a {
+    display: inline-block;
+    width: 180px;
+    height: 197px;
+    color: #696969;
+    margin: 0 20px;
+    text-align: center;
+}
+
+.mYmoneyRlistxq a .mYmtitle {
+    padding-left: 22px;
+    line-height: 41px;
+    font-weight: normal;
+    font-size: 14px;
+    display: inline-block;
+    color: #fff
+}
+
+.mYmoneyRlistxq a .mYmcontent {
+    padding: 13px 16px 0 16px;
+    display: block;
+    height: 122px;
+    border-bottom: 1px dashed #ebebeb;
+    line-height: 24px;
+    text-align: left;
+    color: #848484;
+    font-size: 14px
+}
+
+.mYmoneyRlistxq a .mYmdate {
+    padding-left: 18px;
+    line-height: 36px;
+    font-weight: normal;
+    font-size: 12px;
+    display: inline-block;
+    text-align: center;
+    color: #696969
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 {
+    margin: 20px 0 0 78px;
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a.on00 {
+    color: #379aff;
+    background-position: 0 -281px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a.on01 {
+    color: #379aff;
+    background-position: 0 -331px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a.on02 {
+    color: #379aff;
+    background-position: 0 -381px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a.on03 {
+    color: #379aff;
+    background-position: 0 -430px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a.on04 {
+    color: #379aff;
+    background-position: 0 -479px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a {
+    display: block;
+    line-height: 30px;
+    padding: 10px 0 10px 30px;
+    color: #696969
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a:hover {
+    color: #379aff
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a.mynav00 {
+    background-position: 0 19px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a:hover.mynav00 {
+    background-position: 0 -281px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a.mynav01 {
+    background-position: 0 -32px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a:hover.mynav01 {
+    background-position: 0 -332px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a.mynav02 {
+    background-position: 0 -81px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a:hover.mynav02 {
+    background-position: 0 -381px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a.mynav03 {
+    background-position: 0 -131px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a:hover.mynav03 {
+    background-position: 0 -431px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a.mynav04 {
+    background-position: 0 -181px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dt a:hover.mynav04 {
+    background-position: 0 -481px
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dd a {
+    display: block;
+    line-height: 20px;
+    padding: 0 0 10px 30px;
+    color: #696969
+}
+
+.mYmoneyLeft .mYmoneyNavList .mYmoneyNav1 dd a:hover {
+    text-decoration: underline;
+    color: #3e9dff
+}
+
+a.mYmoneyRtitleMore {
+    display: block;
+    position: absolute;
+    right: 20px;
+    height: 54px;
+    line-height: 54px;
+    top: 0;
+    color: #696969;
+    cursor: pointer
+}
+
+a:hover.mYmoneyRtitleMore {
+    color: #3e9dff;
+    text-decoration: none
+}
+
+.mYmoneyRoneList .last {
+    border-bottom: 0;
+}
+
+.mYmoneyRoneList li {
+    display: block;
+    border-bottom: 1px solid #e6e6e6;
+    overflow: hidden;
+    zoom: 1;
+    position: relative
+}
+
+.mYmoneyRoneList li .listLeft {
+    margin: 0 28px;
+    border-bottom: 1px dashed #e6e6e6;
+    line-height: 40px;
+    color: #696969
+}
+
+.mYmoneyRoneList li .listLeft span {
+    display: inline
+}
+
+.mYmoneyRoneList li .listLeft02 {
+    margin-left: 30px;
+    padding-left: 20px;
+}
+
+.listRight {
+    display: block;
+    position: absolute;
+    right: 60px;
+    height: 40px;
+    line-height: 40px;
+    top: 0;
+}
+
+.listCenter {
+    margin: 20px 28px;
+}
+
+.listCenterleft {
+    overflow: hidden;
+    zoom: 1;
+}
+
+.listCenter .uesrimg {
+    width: 73px;
+    height: 73px;
+    border-radius: 73px;
+    display: inline
+}
+
+.listCenter .uesrtext {
+    display: inline;
+    margin-left: 20px;
+    width: 635px;
+}
+
+.listCenter .uesrh1 {
+    font-size: 18px;
+    color: #696969;
+    line-height: 28px;
+}
+
+.listCenter .uesrh2 {
+    font-size: 14px;
+    color: #696969;
+    font-weight: normal;
+    line-height: 22px;
+}
+
+.listCenter .uesrp {
+    font-size: 14px;
+    color: #2b2b2b;
+    line-height: 22px;
+}
+
+.uesrpright {
+    width: 87px;
+    text-align: center;
+    height: auto
+}
+
+.uesrpright .pingjia {
+    color: #379aff;
+    font-size: 14px;
+    display: block;
+}
+
+.uesrpright .xiangqing {
+    background: #379aff;
+    color: #fff;
+    font-size: 14px;
+    display: block;
+    width: 87px;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 18px;
+}
+
+.green {
+    color: #70b257;
+}
+
+.MyticketListBox a {
+    display: block;
+    width: 270px;
+    margin: 20px 19px;
+    height: 188px;
+    background: #fff;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    float: left;
+    position: relative
+}
+
+.MyticketListBox a .ticket01 {
+    margin: 31px 0 0 -6px
+}
+
+.MyticketListBox a .ticket01 .ticketL {
+    color: #fff;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.MyticketListBox a .ticket01 .ticketC {
+    color: #fff;
+    font-size: 40px;
+    line-height: 34px;
+    font-weight: bold
+}
+
+.MyticketListBox a .ticketR {
+    margin-top: 15px;
+}
+
+.MyticketListBox a .ticketR .orange02 {
+    color: #6c6c6c
+}
+
+.MyticketListBox a .ticketR1 {
+    margin-top: 5px;
+}
+
+.MyticketListBox a .ticketA {
+    width: 257px;
+    margin: 24px auto 0 25px;
+    color: #6c6c6c;
+    line-height: 27px;
+}
+
+.MyticketListBox a:hover {
+    text-decoration: none
+}
+
+.MyticketListBox .ticketListBoxL1 {
+}
+
+.MyticketListBox .ticketListBoxR1 {
+    width: 18px;
+    height: 80px;
+    color: #fff;
+    font-size: 14px;
+    margin-right: 27px;
+    margin-top: 33px;
+    line-height: 20px
+}
+
+/* 滚动 */
+.main001 {
+    MARGIN: 0 auto 0px;
+    WIDTH: 940px;
+    HEIGHT: auto;
+    CLEAR: both
+}
+
+.hl_scrool_leftbtn {
+    MARGIN-TOP: 0;
+    WIDTH: 20px;
+    FLOAT: left;
+    HEIGHT: 73px;
+    CURSOR: pointer;
+    MARGIN-RIGHT: 2px;
+}
+
+.hl_scrool_rightbtn {
+    MARGIN-TOP: 0;
+    MARGIN-LEFT: 6px;
+    WIDTH: 20px;
+    FLOAT: left;
+    HEIGHT: 73px;
+    CURSOR: pointer
+}
+
+.hl_main5_content1 {
+    WIDTH: 850px;
+    FLOAT: left;
+    OVERFLOW: hidden
+}
+
+.hl_main5_content1 UL {
+    WIDTH: 1400px;
+    OVERFLOW: hidden
+}
+
+.hl_main5_content1 UL LI {
+    DISPLAY: inline;
+    FLOAT: left;
+    MARGIN: 0 3px;
+    height: 73px;
+    border-right: 1px solid #cbcbcb;
+    padding-right: 15px
+}
+
+.hl_main5_content1 UL LI a {
+    display: block;
+    width: 270px;
+    height: 73px;
+    line-height: 46px;
+    font-weight: bold;
+    color: #FFF;
+    font-size: 16px
+}
+
+/*.textbox .textc01{ padding:15px;}
+.textbox .textc01 a{ display:block; background:url(../images/ico_2.png) left center no-repeat; padding-left:14px; width:128px; line-height:30px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden; margin-right:10px; color:#555; border:1px solid #0080be;}
+
+
+.textbox .textc01 a{ display:block; background:#68bfe9 url(../images/ico_33.png) 5px center no-repeat; padding-left:19px; width:125px; line-height:25px;white-space: nowrap;text-overflow: ellipsis;overflow: hidden; margin-right:10px; color:#fff; margin-bottom:10px}*/
+
+.textbox .textc01 {
+    padding: 15px;
+}
+
+.textbox .textc01 a {
+    display: block;
+    padding-left: 19px;
+    width: 123px;
+    line-height: 30px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin-right: 10px;
+    color: #555;
+    border: 1px solid #0080be;
+    margin-bottom: 10px
+}
+
+.textbox .textc44 {
+    padding: 15px 0;
+}
+
+.textbox .textc44 a {
+    display: block;
+    padding-left: 19px;
+    width: 119px;
+    line-height: 30px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    margin: 0 5px;
+    color: #555;
+    border: 1px solid #0080be;
+    margin-bottom: 10px
+}
+
+.zhuanjai01 {
+    float: left;
+    margin-left: 15px
+}
+
+.zhuanjaileft {
+    width: 135px;
+    margin-left: 25px;
+    margin-top: 12px;
+}
+
+.zhuanjaih1 {
+    font-size: 14px;
+    color: #696969;
+    font-weight: bold
+}
+
+.zhuanjaip {
+    font-size: 14px;
+    color: #696969;
+    font-weight: normal
+}
+
+.tab {
+    border: 1px solid #ebebeb;
+    background: #fff;
+    border-radius: 5px
+}
+
+.tab-title {
+    height: 45px;
+    border-bottom: 1px solid #ebebeb;
+}
+
+.tab-title .item {
+    display: inline-block;
+    padding: 0 25px;
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+    color: #696969;
+    font-size: 16px;
+}
+
+.tab-title .item-cur {
+    color: #ffb516;
+    text-decoration: underline
+}
+
+.tab-cont {
+    position: relative;
+    min-height: 927px;
+    overflow: hidden;
+}
+
+.tab-cont__wrap {
+    position: absolute;
+}
+
+.tab-cont .item {
+    text-align: center;
+    padding: 15px
+}
+
+.tab-cont .itemTextBox .itemTexttitle {
+    padding-left: 26px;
+    background: #f4f4f4;
+    height: 35px;
+    line-height: 35px;
+    color: #696969;
+    margin-bottom: 15px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle .itemTextname1 {
+    width: 250px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle .itemTextname2 {
+    width: 170px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle .itemTextname3 {
+    width: 165px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle .itemTextname4 {
+    width: 205px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle .itemTextname5 {
+    width: 82px;
+}
+
+.tab-cont .itemTextBox .itemTextList li {
+    overflow: hidden;
+    zoom: 1;
+    text-align: left;
+    border: 1px solid #dddddd;
+    margin-bottom: 15px;
+}
+
+.tab-cont .itemTextBox .itemTextList li .itemTextListTitle {
+    padding: 0 24px;
+    border-bottom: 1px dashed #dddddd;
+    line-height: 33px;
+    color: #696969;
+    background: #f4f4f4
+}
+
+.tab-cont .itemTextBox .itemTextList li .itemTextListTitle span {
+    display: inline
+}
+
+.tab-cont .itemTextBox .itemTextList li .itemTextListTitle .listLeft02 {
+    margin-left: 30px;
+    padding-left: 20px;
+}
+
+.tab-cont .itemTextBox .itemTextList li .listCenterleft .uesrimg {
+    width: 73px;
+    height: 73px;
+    margin: 15px 28px
+}
+
+.tab-cont .itemTextBox .itemTextList li .listCenterleft .uesrtext {
+    width: 257px;
+}
+
+.tab-cont .itemTextBox .itemTextList li .listCenterleft .uesrtext .uesrh1 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #696969;
+    line-height: 30px;
+    margin-top: 25px;
+}
+
+.tab-cont .itemTextBox .itemTextList li .listCenterleft .uesrtext .uesrh2 {
+    font-size: 14px;
+    font-weight: normal;
+    color: #696969;
+    line-height: 20px;
+}
+
+.tab-cont .itemTextBox .itemTextList li .uesrtextadd {
+    width: 185px;
+    border-left: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
+    color: #696969;
+    height: 104px;
+    padding-left: 10px;
+    padding-right: 10px
+}
+
+.tab-cont .itemTextBox .itemTextList li .add01 {
+    padding-top: 42px;
+}
+
+.tab-cont .itemTextBox .itemTextList li .add02 {
+    padding-top: 30px;
+}
+
+.tab-cont .itemTextBox .itemTextList li .add03 {
+    padding-top: 24px;
+}
+
+.tab-cont .itemTextBox .itemTextList li .uesrtextmon {
+    width: 180px;
+    border-right: 1px solid #dddddd;
+    color: #696969;
+    height: 104px;
+    line-height: 104px;
+    text-align: center;
+    cursor: pointer
+}
+
+.tab-cont .itemTextBox .itemTextList li .uesrtextbut {
+    width: 87px;
+    text-align: center;
+    height: auto;
+    margin-right: 29px;
+    margin-top: 21px;
+    cursor: pointer
+}
+
+.tab-cont .itemTextBox .itemTextList li .uesrtextbut .pingjia {
+    color: #979797;
+    font-size: 14px;
+    display: block;
+}
+
+.tab-cont .itemTextBox .itemTextList li .uesrtextbut .xiangqing1 {
+    background: #ffa826;
+    color: #fff;
+    font-size: 14px;
+    display: block;
+    width: 87px;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 7px;
+}
+
+.tab-cont .itemTextBox .itemTextList li .uesrtextbut .xiangqing2 {
+    background: #77d068;
+    color: #fff;
+    font-size: 14px;
+    display: block;
+    width: 87px;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 7px;
+}
+
+.tab-cont .itemTextBox .itemTextList li .uesrtextbut .xiangqing3 {
+    background: #379aff;
+    color: #fff;
+    font-size: 14px;
+    display: block;
+    width: 87px;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 7px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle1 {
+    background: #f4f4f4;
+    height: 35px;
+    line-height: 35px;
+    color: #696969;
+    margin-bottom: 15px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle1 .itemTextname1 {
+    width: 305px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle1 .itemTextname2 {
+    width: 147px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle1 .itemTextname3 {
+    width: 263px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle1 .itemTextname4 {
+    width: 183px;
+}
+
+.tab-cont .itemTextBox .itemTextList1 li {
+    overflow: hidden;
+    zoom: 1;
+    text-align: left;
+    border: 1px solid #dddddd;
+    margin-bottom: 15px;
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .listCenterleft {
+    width: 305px;
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .listCenterleft .uesrimg {
+    width: 53px;
+    height: 53px;
+    margin: 15px 18px
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .listCenterleft .uesrtext {
+    width: 205px;
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .listCenterleft .uesrtext .uesrh1 {
+    font-size: 14px;
+    font-weight: bold;
+    color: #696969;
+    line-height: 22px;
+    margin-top: 20px;
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .uesrtextadd {
+    width: 147px;
+    border-left: 1px solid #dddddd;
+    border-right: 1px solid #dddddd;
+    color: #696969;
+    height: 83px;
+    line-height: 83px
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .add01 {
+    padding-top: 42px;
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .add03 {
+    padding-top: 24px;
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .uesrtextmon {
+    width: 262px;
+    border-right: 1px solid #dddddd;
+    color: #696969;
+    height: 83px;
+    line-height: 83px;
+    text-align: center;
+    cursor: pointer
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .uesrtextbut {
+    width: 87px;
+    text-align: center;
+    height: auto;
+    margin-right: 46px;
+    margin-top: 12px;
+    cursor: pointer
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .uesrtextbut .pingjia {
+    color: #979797;
+    font-size: 14px;
+    display: block;
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .uesrtextbut .xiangqing1 {
+    background: #ffa826;
+    color: #fff;
+    font-size: 14px;
+    display: block;
+    width: 87px;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 7px;
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .uesrtextbut .xiangqing2 {
+    background: #77d068;
+    color: #fff;
+    font-size: 14px;
+    display: block;
+    width: 87px;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 7px;
+}
+
+.tab-cont .itemTextBox .itemTextList1 li .uesrtextbut .xiangqing3 {
+    background: #379aff;
+    color: #fff;
+    font-size: 14px;
+    display: block;
+    width: 87px;
+    padding: 3px 10px;
+    border-radius: 50px;
+    margin-top: 7px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle2 {
+    background: #f4f4f4;
+    height: 35px;
+    line-height: 35px;
+    color: #696969;
+    margin-bottom: 15px;
+    padding-left: 13px;
+    width: 900px;
+}
+
+.tab-cont .itemTextBox .itemTexttitle2 a {
+    margin-right: 30px;
+    color: #696969
+}
+
+.tab-cont .itemTextBox .itemTexttitle2 a:hover {
+    color: #ffb516
+}
+
+.tab-cont .itemTextBox .itemTexttitle2 a.on {
+    color: #ffb516;
+    font-weight: bold
+}
+
+.MyticketListBox1 a.have00 {
+    display: block;
+    width: 279px;
+    margin: 5px 10px 20px 10px;
+    height: 286px;
+    background: #fff;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    float: left;
+    position: relative
+}
+
+.MyticketListBox1 a.have00 .ticket01 {
+    margin: 31px 0 0 -6px
+}
+
+.MyticketListBox1 a.have00 .ticket01 .ticketL {
+    color: #fff;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.MyticketListBox1 a.have00 .ticket01 .ticketC {
+    color: #fff;
+    font-size: 40px;
+    line-height: 34px;
+    font-weight: bold
+}
+
+.MyticketListBox1 a.have00 .ticketR {
+    margin-top: 15px;
+}
+
+.MyticketListBox1 a.have00 .ticketR .orange02 {
+    color: #ffba00
+}
+
+.MyticketListBox1 a.have00 .ticketR1 {
+    margin-top: 5px;
+}
+
+.MyticketListBox1 a.have00 .ticketA {
+    width: 230px;
+    margin: 45px auto 0 25px;
+    color: #6c6c6c;
+    line-height: 27px;
+}
+
+.MyticketListBox1 a.have00:hover {
+    text-decoration: none
+}
+
+.MyticketListBox1 a.have01 {
+    display: block;
+    width: 279px;
+    margin: 5px 10px 20px 10px;
+    height: 286px;
+    background: #fff;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    float: left;
+    position: relative
+}
+
+.MyticketListBox1 a.have01 .ticket01 {
+    margin: 31px 0 0 -6px
+}
+
+.MyticketListBox1 a.have01 .ticket01 .ticketL {
+    color: #fff;
+    font-size: 16px;
+    line-height: 20px;
+}
+
+.MyticketListBox1 a.have01 .ticket01 .ticketC {
+    color: #fff;
+    font-size: 40px;
+    line-height: 34px;
+    font-weight: bold
+}
+
+.MyticketListBox1 a.have01 .ticketR {
+    margin-top: 15px;
+}
+
+.MyticketListBox1 a.have01 .ticketR .orange02 {
+    color: #ffba00
+}
+
+.MyticketListBox1 a.have01 .ticketR1 {
+    margin-top: 5px;
+}
+
+.MyticketListBox1 a.have01 .ticketA {
+    width: 230px;
+    margin: 45px auto 0 25px;
+    color: #6c6c6c;
+    line-height: 27px;
+}
+
+.MyticketListBox1 a.have01:hover {
+    text-decoration: none
+}
+
+.itemTextListTitle005 {
+    padding: 0 10px;
+    line-height: 33px;
+    color: #696969;
+    background: #f4f4f4
+}
+
+.itemTextListTitle005 span {
+    display: inline
+}
+
+.itemTextListTitle005 .listLeft02 {
+    margin-left: 30px;
+    padding-left: 20px;
+}
+
+.myyuyue {
+    margin-top: 17px;
+}
+
+.myyuyue li {
+    display: block;
+    border-bottom: 1px solid #ededed;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    zoom: 1
+}
+
+.myyuyue li .mylistleft {
+    width: 125px;
+    margin-left: 10px;
+    color: #a3a3a3
+}
+
+.myyuyue li .mylistright {
+    width: 750px;
+    color: #444
+}
+
+.myyuyuebutton {
+    width: 90px;
+    height: 30px;
+    background: #9c9fa0;
+    color: #fff;
+    margin: 20px auto;
+    display: block;
+    border-radius: 5px;
+}

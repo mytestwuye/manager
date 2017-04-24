@@ -3,6 +3,8 @@ package com.suny.association.mapper;
 import com.suny.association.mapper.interfaces.IMapper;
 import com.suny.association.pojo.po.LoginHistory;
 
+import java.util.List;
+
 /**
  * Comments:  登陆历史mapper接口映射
  * Author:   孙建荣
@@ -10,4 +12,5 @@ import com.suny.association.pojo.po.LoginHistory;
  */
 
 public interface LoginHistoryMapper extends IMapper<LoginHistory> {
+    List<LoginHistory> queryByMemberId(int memberId);
 }

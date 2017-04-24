@@ -19,10 +19,6 @@
     <link href="${basePath}/plugins/bootstrap-3.3.0/css/bootstrap.min.css" rel="stylesheet"/>
     <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-table.min.css"
           rel="stylesheet"/>
-    <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
-          rel="stylesheet"/>
-    <link href="${basePath}/plugins/material-design-iconic-font-2.2.0/css/material-design-iconic-font.min.css"
-          rel="stylesheet"/>
 </head>
 <body>
 <div>
@@ -44,7 +40,7 @@
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
 <script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
-
+<%--由于宽带运营商不定期调整网络，我们获取IP所在地可能不准确，请通过登录时间与产品判断是否为您本人操作--%>
 <script>
 
     function refresh() {

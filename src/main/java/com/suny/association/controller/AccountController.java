@@ -201,6 +201,13 @@ public class AccountController {
         return convertToBootstrapTableResult(accountList, totalCount);
     }
 
+
+    @RequestMapping("/getUserInfo.html")
+    public ModelAndView getUserInfo(ModelAndView modelAndView) {
+        modelAndView.setViewName("/user/userInfo");
+        return modelAndView;
+    }
+
     @RequestMapping(value = "/accountManager.html")
     public String index() {
         return "accountInfo/accountManager";

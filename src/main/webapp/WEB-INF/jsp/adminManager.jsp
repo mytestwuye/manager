@@ -225,7 +225,9 @@
             </a>
             <ul class="main-menu">
                 <li>
-                    <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-account"></i> 个人资料</a>
+                    <a class="waves-effect"
+                       href="javascript:Tab.addTab('个人信息', '${basePath}/account/getUserInfo.html');"><i
+                            class="zmdi zmdi-account"></i> 个人资料</a>
                 </li>
                 <li>
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-face"></i> 隐私管理</a>
