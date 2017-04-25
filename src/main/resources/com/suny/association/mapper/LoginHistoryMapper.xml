@@ -101,6 +101,7 @@
             l.login_user_agent,
             l.login_status
         FROM login_history AS l
+        ORDER BY l.last_login_time DESC
         LIMIT
             #{offset},
             #{limit}

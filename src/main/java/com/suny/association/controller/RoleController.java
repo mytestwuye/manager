@@ -1,5 +1,6 @@
 package com.suny.association.controller;
 
+import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.enums.BaseEnum;
 import com.suny.association.pojo.po.Roles;
 import com.suny.association.service.interfaces.IRolesService;
@@ -32,6 +33,7 @@ public class RoleController {
         this.rolesService = rolesService;
     }
 
+    @SystemControllerLog(description = "删除账号角色")
     @RequestMapping(value = "/delete.json/{roleId}", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult delete(@PathVariable("roleId") Integer roleId) {
@@ -44,6 +46,7 @@ public class RoleController {
         return successResult(BaseEnum.DELETE_SUCCESS);
     }
 
+    @SystemControllerLog(description = "更新账号角色")
     @ResponseBody
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     public JsonResult update(@RequestBody Roles roles) {
@@ -80,6 +83,7 @@ public class RoleController {
      * @param roles 数据
      * @return 插入数据的结果
      */
+    @SystemControllerLog(description = "新增账号角色")
     @ResponseBody
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     public JsonResult insert(@RequestBody Roles roles) {
@@ -115,6 +119,7 @@ public class RoleController {
         return ConversionUtil.convertToBootstrapTableResult(rolesList, total);
     }
 
+    @SystemControllerLog(description = "查看账号角色页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {
         return "/accountInfo/role/roleList";

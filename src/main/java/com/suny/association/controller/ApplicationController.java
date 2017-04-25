@@ -1,5 +1,6 @@
 package com.suny.association.controller;
 
+import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.enums.BaseEnum;
 import com.suny.association.pojo.po.*;
 import com.suny.association.service.interfaces.*;
@@ -48,6 +49,7 @@ public class ApplicationController {
      * @param resultStatus  管理员审批的结果状态
      * @return 对应的操作结果json数据
      */
+    @SystemControllerLog(description = "审批异议考勤记录")
     @RequestMapping(value = "/setResult.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult setResult(@RequestParam(value = "memberId") int memberId,
@@ -111,6 +113,7 @@ public class ApplicationController {
      *
      * @return 主页面
      */
+    @SystemControllerLog(description = "查看异议考勤页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {
         return "/punchLog/application/messageList";

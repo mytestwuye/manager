@@ -1,5 +1,6 @@
 package com.suny.association.controller;
 
+import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.enums.BaseEnum;
 import com.suny.association.pojo.po.Department;
 import com.suny.association.pojo.po.Member;
@@ -48,6 +49,13 @@ public class MemberController {
     }
 
 
+    /**
+     * 插入成员信息操作
+     *
+     * @param member 成员信息
+     * @return 插入的结果
+     */
+    @SystemControllerLog(description = "插入成员信息")
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult insert(@RequestBody Member member) {
@@ -64,6 +72,12 @@ public class MemberController {
     }
 
 
+    /**
+     * 进行新增成员信息页面
+     *
+     * @param modelAndView 带有数据库的数据模型
+     * @return 数据跟视图地址
+     */
     @RequestMapping(value = "/insert.html")
     public ModelAndView insertPage(ModelAndView modelAndView) {
         List<Member> managerList = memberService.queryNormalManager();
@@ -78,6 +92,7 @@ public class MemberController {
     }
 
 
+    @SystemControllerLog(description = "删除成员信息")
     @RequestMapping(value = "/deleteById.json/{id}")
     @ResponseBody
     public JsonResult deleteById(@PathVariable("id") Long id) {
@@ -92,6 +107,7 @@ public class MemberController {
     }
 
 
+    @SystemControllerLog(description = "更新成员信息")
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult update(@RequestBody Member member) {
@@ -120,6 +136,7 @@ public class MemberController {
     }
 
 
+    @SystemControllerLog(description = "查询冻结的成员")
     @RequestMapping(value = "/queryFreeze.json")
     @ResponseBody
     public JsonResult queryFreeze() {
@@ -131,6 +148,7 @@ public class MemberController {
     }
 
 
+    @SystemControllerLog(description = "查询正常的成员")
     @RequestMapping(value = "/queryNormal.json")
     @ResponseBody
     public JsonResult queryNormal() {
@@ -165,6 +183,7 @@ public class MemberController {
     }
 
 
+    @SystemControllerLog(description = "查询指定成员")
     @RequestMapping(value = "/queryById.do")
     public JsonResult queryById(Integer memberId) {
         Member member = memberService.queryById(memberId);
@@ -172,6 +191,7 @@ public class MemberController {
     }
 
 
+    @SystemControllerLog(description = "查看成员管理页面")
     @RequestMapping(value = "/memberManager.html")
     public String managerPage() {
         return "memberInfo/memberManager";

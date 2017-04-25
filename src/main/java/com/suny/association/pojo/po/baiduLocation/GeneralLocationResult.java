@@ -18,6 +18,9 @@ public class GeneralLocationResult {
     private int status;
 
     public String getAddress() {
+        if (address == null) {
+            return "未知地址";
+        }
         return address;
     }
 

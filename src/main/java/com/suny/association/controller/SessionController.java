@@ -1,5 +1,6 @@
 package com.suny.association.controller;
 
+import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.pojo.po.LoginHistory;
 import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.ILoginHistoryService;
@@ -15,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Comments:
+ * Comments:    登录记录控制器
  * Author:   孙建荣
  * Create Date: 2017/04/09 14:44
  */
@@ -42,6 +43,7 @@ public class SessionController {
         return ConversionUtil.convertToBootstrapTableResult(loginHistoryList, total);
     }
 
+    @SystemControllerLog(description = "查询指定账号登录记录")
     @RequestMapping(value = "/queryByMemberId.json", method = RequestMethod.GET)
     @ResponseBody
     public Map<Object, Object> queryById(@RequestParam("memberId") int memberId) {
@@ -49,6 +51,7 @@ public class SessionController {
         return ConversionUtil.convertToBootstrapTableResult(loginHistoryList, 5);
     }
 
+    @SystemControllerLog(description = "查看登录记录页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {
         return "/session/sessionList";

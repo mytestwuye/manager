@@ -418,7 +418,7 @@
             type: "Get",
             url: "${basePath}/base/logoutAction.do",
             success: function (result) {
-                if (result.status !== 199) {
+                if (result.status !== 993) {
                     alertFunMessage('这都能出错了。。');
                 }
                 alertMessage('您已经成功退出，请注意账号安全');
@@ -430,7 +430,7 @@
         })
     }
     function login() {
-        window.parent.location.href = "${basePath}/base/login.html";
+        window.parent.location.href = "${basePath}/base/loginPage.html";
     }
 
 

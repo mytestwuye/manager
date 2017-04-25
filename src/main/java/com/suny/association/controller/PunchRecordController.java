@@ -1,5 +1,6 @@
 package com.suny.association.controller;
 
+import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.pojo.po.PunchRecord;
 import com.suny.association.service.interfaces.IPunchRecordService;
 import com.suny.association.utils.ConversionUtil;
@@ -39,6 +40,7 @@ public class PunchRecordController {
         return ConversionUtil.convertToBootstrapTableResult(punchRecordList, total);
     }
 
+    @SystemControllerLog(description = "查看考勤记录页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {
         return "/punchLog/punchLogList";

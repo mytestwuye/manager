@@ -129,16 +129,29 @@
                 },
                 columns: [
                     {field: 'operationId', title: '日志编号', sortable: true, align: 'center'},
-                    {field: 'operationAccountId', title: '操作账号', sortable: true, align: 'center', formatter: 'accountFormat'},
+                    {
+                        field: 'operationAccountId',
+                        title: '操作账号',
+                        sortable: true,
+                        align: 'center',
+                        formatter: 'accountFormat'
+                    },
                     {field: 'operationMessage', title: '操作信息', sortable: true, align: 'center'},
+                    {
+                        field: 'operationMemberName',
+                        title: '操作者',
+                        sortable: true,
+                        align: 'center',
+                        formatter: 'memberNameFormater'
+                    },
+                    {field: 'operationTime', title: '操作时间', align: 'center', formatter: 'dateFormat'},
                     {field: 'operationBrower', title: '浏览器'},
                     {field: 'operationOsVersion', title: '操作系统', align: 'center'},
                     {field: 'operationUserAgent', title: 'UA代理', align: 'center'},
                     {field: 'operationRequestUrl', title: '请求url', align: 'center'},
-                    {field: 'operationTime', title: '操作时间', align: 'center',formatter: 'dateFormat'},
                     {field: 'operationIp', title: '操作IP地址', align: 'center'},
                     {field: 'operationAddress', title: '操作地址', align: 'center'},
-                    {field: 'operationStatus', title: '操作状态', align: 'center',formatter:'statusFormatter'}
+                    {field: 'operationStatus', title: '操作状态', align: 'center', formatter: 'statusFormatter'}
                 ],
                 onClickRow: function (row, $element) {
                     //$element是当前tr的jquery对象
@@ -172,15 +185,22 @@
         return row.operationAccountId.accountName;
     }
 
-    function dateFormat(value,row,index){
+    function memberNameFormater(value, row, index) {
+        if (row.operationMemberName == null) {
+            return "没有绑定成员";
+        }
+        return row.operationMemberName;
+    }
+
+    function dateFormat(value, row, index) {
         var date = new Date(row.operationTime);
         Y = date.getFullYear() + '-';
-        M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+        M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
         D = date.getDate() + ' ';
         h = date.getHours() + ':';
         m = date.getMinutes() + ':';
         s = date.getSeconds();
-        return Y+M+D+h+m+s;
+        return Y + M + D + h + m + s;
     }
     // 格式化状态
     function statusFormatter(value, row, index) {

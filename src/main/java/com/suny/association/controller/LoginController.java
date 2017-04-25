@@ -1,8 +1,9 @@
 package com.suny.association.controller;
 
+import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.enums.BaseEnum;
-import com.suny.association.enums.LoginEnum;
 import com.suny.association.exception.BusinessException;
+import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.ILoginHistoryService;
@@ -43,18 +44,33 @@ public class LoginController {
     }
 
 
+    /**
+     * 登录页面
+     */
     @RequestMapping("/loginPage.html")
     public ModelAndView loginPage() {
         return new ModelAndView("/loginPage");
     }
 
 
+    /**
+     * 全局错误页面
+     */
     @RequestMapping(value = "/errorPage.html")
     public ModelAndView errorPage() {
         return new ModelAndView("/errorPage");
     }
 
 
+    /**
+     * 提交登录信息操作
+     *
+     * @param username 登录用户名
+     * @param password 登录密码
+     * @param formCode 表单过来的验证码
+     * @param request  request请求
+     * @return
+     */
     @RequestMapping(value = "/loginAction.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult loginAction(@RequestParam("username") String username,
@@ -84,10 +100,24 @@ public class LoginController {
     }
 
 
+    /**
+     * 匹配表单填写的验证码跟session中储存的验证码
+     *
+     * @param formCode    表单提交的验证码
+     * @param sessionCode session里面报存的验证码
+     * @return 比较的结果
+     */
     private boolean matchCode(String formCode, String sessionCode) {
         return !formCode.equals("") && sessionCode.equals(formCode);
     }
 
+    /**
+     * 提交给shiro认证用户的密码跟用户名
+     *
+     * @param request  request请求
+     * @param username 用户名
+     * @param password 密码
+     */
     private void authAction(HttpServletRequest request, String username, String password) {
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
@@ -106,23 +136,42 @@ public class LoginController {
         }
     }
 
+    /**
+     * shiro验证成功后报存用户的登录信息
+     *
+     * @param request  request请求
+     * @param username 登录的用户名
+     */
     private void saveLoginUser(HttpServletRequest request, String username) {
         Member member = accountService.queryByName(username).getAccountMember();
+        Account account = accountService.queryByName(username);
         request.getSession().setAttribute("member", member);
+        request.getSession().setAttribute("account", account);
     }
 
 
+    /**
+     * 登录成功后的操作
+     *
+     * @return 管理员中心
+     * @throws Exception 不知道会发生什么异常
+     */
     @RequestMapping("/goAdminPage.html")
     public ModelAndView goAdminPage() throws Exception {
         return new ModelAndView("adminManager");
     }
 
-
+    /**
+     * 用户点击退出的操作
+     *
+     * @return 注销登录，然后返回注销结果
+     */
+    @SystemControllerLog(description = "注销操作")
     @RequestMapping(value = "/logoutAction.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult logoutAction() {
         SecurityUtils.getSubject().logout();
-        return JsonResult.successResult(LoginEnum.LOGOUT_SUCCESS);
+        return JsonResult.successResult(BaseEnum.LOGOUT_SUCCESS);
     }
 
 

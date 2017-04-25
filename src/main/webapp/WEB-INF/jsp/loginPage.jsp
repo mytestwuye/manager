@@ -28,7 +28,8 @@
     <div class="topPart">
         <h2>登陆入口</h2>
         <div id="toolbar">
-            <a class="waves-effect waves-button" href="javascript:;" onclick="logoutAction()"><i class="zmdi zmdi-run"></i> 强制退出</a>
+            <a class="waves-effect waves-button" href="javascript:;" onclick="logoutAction()"><i
+                    class="zmdi zmdi-run"></i> 强制退出</a>
         </div>
         <%--<a id="goBack" href="javascript:;" onclick="logoutAction()"><i class="zmdi zmdi-run"></i> 强制退出</a></a>--%>
     </div>
@@ -130,12 +131,12 @@
         }
     };
 
-    function logoutAction(){
+    function logoutAction() {
         $.ajax({
             type: "Get",
             url: "${basePath}/base/logoutAction.do",
             success: function (result) {
-                if (result.status !== 199) {
+                if (result.status !== 993) {
                     alertFunMessage('这都能出错了。。');
                 }
                 alertMessage('已经强行退出，请尝试重新登录');
@@ -189,7 +190,7 @@
             type: 'post',
             data: {formCode: codeValue},
             success: function (result) {
-                if (result.status == 994) {
+                if (result.status == 991) {
                     layer.msg('验证码错了。。', {icon: 5});
                     error2.text('验证码错误');
                     emptyInputValue(code);
@@ -223,7 +224,7 @@
             data: param,
             dataType: "json",
             success: function (result) {
-                var statusCode=result.status;
+                var statusCode = result.status;
                 if (statusCode == 995) {
                     //登录成功
                     layer.msg('登陆成功了', function () {
@@ -234,17 +235,17 @@
                         setTimeout("goAdminPage()", 300);
                     });
 
-                } else if(result.errorCode == 996){
+                } else if (statusCode == 996 || statusCode == 001) {
                     layer.msg('用户名或者密码错误。。', {icon: 5});
                     error1.text('用户名或密码错误');
                     emptyInputValue(code);
                     redStyleWarn(userName);
                     redStyleWarn(passWord);
                     refresh();
-                }else if(result.errorCode == 998){
+                } else if (statusCode == 998) {
                     layer.msg('您已经登录过了，请不要重复登录', {icon: 5});
                 }
-                else{
+                else {
                     layer.msg('登录失败,服务器出了点小插曲', {icon: 5});
                 }
             },
@@ -291,11 +292,11 @@
         object.text('');
     }
 
-    function alertMessage(message){
+    function alertMessage(message) {
         layer.alert(message, {icon: 6});
     }
 
-    function alertFunMessage(message){
+    function alertFunMessage(message) {
         layer.msg(message, {icon: 5});
     }
 

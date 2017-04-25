@@ -1,5 +1,6 @@
 package com.suny.association.controller;
 
+import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.enums.BaseEnum;
 import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Member;
@@ -51,6 +52,7 @@ public class AccountController {
      * @param account 要插入的账号信息
      * @return 插入的json数据结果
      */
+    @SystemControllerLog(description = "插入账号信息")
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult insert(@RequestBody Account account) {
@@ -91,6 +93,7 @@ public class AccountController {
      * @param accountId 账号
      * @return 操作结果
      */
+    @SystemControllerLog(description = "删除账号信息")
     @RequestMapping(value = "/deleteById.json/{accountId}", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult deleteById(@PathVariable("accountId") Long accountId) {
@@ -147,6 +150,7 @@ public class AccountController {
      * @param account 账号实体信息
      * @return 更新数据的结果
      */
+    @SystemControllerLog(description = "更新账号信息")
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult update(@RequestBody Account account) {
@@ -190,6 +194,7 @@ public class AccountController {
      * @param status 查询的账号状态
      * @return 带查询条件的结果集
      */
+    @SystemControllerLog(description = "查询账号信息")
     @RequestMapping(value = "/queryAll.json", method = RequestMethod.GET)
     @ResponseBody
     public Map<Object, Object> queryAll(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
@@ -202,13 +207,15 @@ public class AccountController {
     }
 
 
-    @RequestMapping("/getUserInfo.html")
+    @SystemControllerLog(description = "查看个人中心")
+    @RequestMapping(value = "/getUserInfo.html", method = RequestMethod.GET)
     public ModelAndView getUserInfo(ModelAndView modelAndView) {
         modelAndView.setViewName("/user/userInfo");
         return modelAndView;
     }
 
-    @RequestMapping(value = "/accountManager.html")
+    @SystemControllerLog(description = "查看账号管理页面")
+    @RequestMapping(value = "/accountManager.html", method = RequestMethod.GET)
     public String index() {
         return "accountInfo/accountManager";
     }

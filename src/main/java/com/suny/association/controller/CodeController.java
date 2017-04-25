@@ -1,6 +1,6 @@
 package com.suny.association.controller;
 
-import com.suny.association.enums.LoginEnum;
+import com.suny.association.enums.BaseEnum;
 import com.suny.association.utils.JsonResult;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -114,11 +114,11 @@ public class CodeController {
                                 @RequestParam String formCode) {
 //        String sessionCode = (String) request.getSession().getAttribute("code");
        /* if (matchCode(formCode, sessionCode)) {
-            return JsonResult.successResult(LoginEnum.VALIDATE_CODE_SUCCESS);
+            return JsonResult.successResult(BaseEnum.VALIDATE_CODE_SUCCESS);
         }
-        return JsonResult.failResult(LoginEnum.VALIDATE_CODE_ERROR);*/
+        return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);*/
 
-        return JsonResult.successResult(LoginEnum.VALIDATE_CODE_SUCCESS);
+        return JsonResult.successResult(BaseEnum.VALIDATE_CODE_SUCCESS);
     }
     
     

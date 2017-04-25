@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.suny.association.mapper.OperationLogMapper">
+    <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.OperationLog">
+        <id property="operationId" column="operation_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
+        <result property="operationMessage" column="operation_message" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="operationMemberName" column="operation_member_name" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+        <result property="operationBrower" column="operation_brower" jdbcType="VARCHAR" javaType="java.lang.String"/>
+        <result property="operationOsVersion" column="operation_os_version" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+        <result property="operationUserAgent" column="operation_user_agent" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+        <result property="operationTime" column="operation_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="operationStatus" column="operation_status" jdbcType="BOOLEAN" javaType="java.lang.Boolean"/>
+        <result property="operationRequestUrl" column="operation_request_url" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+        <result property="operationIp" column="operation_ip" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+        <result property="operationAddress" column="operation_address" jdbcType="VARCHAR"
+                javaType="java.lang.String"/>
+        <association property="operationAccountId" column="operation_account_id"
+                     javaType="com.suny.association.pojo.po.Account" select="getAccount"/>
+    </resultMap>
+
+    <resultMap id="AccountInfo" type="com.suny.association.pojo.po.Account">
+        <id property="accountId" column="account_id"/>
+        <result property="accountName" column="account_name"/>
+    </resultMap>
+
+    <select id="getAccount" parameterType="int" resultMap="AccountInfo">
+        SELECT
+            account_id,
+            account_name
+        FROM account
+        WHERE account_id = #{ operationAccountId }
+    </select>
+
+    <insert id="insert" parameterType="com.suny.association.pojo.po.OperationLog">
+        INSERT INTO operation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="  operationId != null">
+                operation_id ,
+            </if>
+            <if test=" operationMessage != null">
+                operation_message ,
+            </if>
+            <if test=" operationMemberName != null">
+                operation_member_name ,
+            </if>
+            <if test="  operationBrower != null">
+                operation_brower ,
+            </if>
+            <if test=" operationOsVersion != null">
+                operation_os_version ,
+            </if>
+            <if test="  operationUserAgent != null">
+                operation_user_agent ,
+            </if>
+            <if test="  operationTime != null">
+                operation_time ,
+            </if>
+            <if test=" operationStatus != null">
+                operation_status,
+            </if>
+            <if test="operationRequestUrl != null">
+                operation_request_url ,
+            </if>
+            <if test="operationIp != null">
+                operation_ip ,
+            </if>
+            <if test="operationAddress != null">
+                operation_address ,
+            </if>
+            <if test="operationAccountId != null">
+                operation_account_id
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="  operationId != null">
+                #{operationId} ,
+            </if>
+            <if test=" operationMessage != null">
+                #{ operationMessage } ,
+            </if>
+            <if test=" operationMemberName != null">
+                #{operationMemberName} ,
+            </if>
+            <if test="  operationBrower != null">
+                #{ operationBrower } ,
+            </if>
+            <if test=" operationOsVersion != null">
+                #{ operationOsVersion } ,
+            </if>
+            <if test="  operationUserAgent != null">
+                #{ operationUserAgent } ,
+            </if>
+            <if test="  operationTime != null">
+                #{ operationTime } ,
+            </if>
+            <if test=" operationStatus != null">
+                #{ operationStatus } ,
+            </if>
+            <if test="operationRequestUrl != null">
+                #{operationRequestUrl  } ,
+            </if>
+            <if test="operationIp != null">
+                #{  operationIp} ,
+            </if>
+            <if test="operationAddress != null">
+                #{ operationAddress } ,
+            </if>
+            <if test="operationAccountId != null">
+                #{operationAccountId.accountId  }
+            </if>
+        </trim>
+    </insert>
+
+
+    <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
+        SELECT
+            o.operation_id,
+            o.operation_message,
+        o.operation_member_name,
+            o.operation_brower,
+            o.operation_os_version,
+            o.operation_user_agent,
+            o.operation_request_url,
+            o.operation_account_id,
+            o.operation_time,
+            o.operation_ip,
+            o.operation_address,
+            o.operation_status
+        FROM operation AS o
+        ORDER BY o.operation_time DESC
+        LIMIT
+            #{offset},
+            #{limit}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*)
+        FROM operation;
+    </select>
+
+</mapper>

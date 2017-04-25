@@ -1,5 +1,6 @@
 package com.suny.association.controller;
 
+import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.enums.BaseEnum;
 import com.suny.association.pojo.po.MemberRoles;
 import com.suny.association.service.interfaces.IMemberRolesService;
@@ -35,6 +36,7 @@ public class MemberRoleController {
         this.memberService = memberService;
     }
 
+    @SystemControllerLog(description = "删除成员角色")
     @RequestMapping(value = "/delete.json/{memberRoleId}", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult delete(@PathVariable("memberRoleId") Integer memberRoleId) {
@@ -47,6 +49,7 @@ public class MemberRoleController {
         return successResult(BaseEnum.DELETE_SUCCESS);
     }
 
+    @SystemControllerLog(description = "更新成员角色")
     @ResponseBody
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     public JsonResult update(@RequestBody MemberRoles memberRoles) {
@@ -82,6 +85,7 @@ public class MemberRoleController {
      * @param memberRoles 数据
      * @return 插入数据的结果
      */
+    @SystemControllerLog(description = "新增成员角色")
     @ResponseBody
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     public JsonResult insert(@RequestBody MemberRoles memberRoles) {
@@ -108,6 +112,7 @@ public class MemberRoleController {
      * @param limit  查询几条数据
      * @return 带查询条件的数据
      */
+    @SystemControllerLog(description = "查询成员角色")
     @RequestMapping(value = "/list.json", method = RequestMethod.GET)
     @ResponseBody
     public Map<Object, Object> query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
@@ -117,6 +122,7 @@ public class MemberRoleController {
         return ConversionUtil.convertToBootstrapTableResult(rolesList, total);
     }
 
+    @SystemControllerLog(description = "查看成员角色页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {
         return "/memberInfo/role/roleList";

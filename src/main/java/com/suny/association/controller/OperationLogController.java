@@ -1,7 +1,8 @@
 package com.suny.association.controller;
 
-import com.suny.association.pojo.po.Operation;
-import com.suny.association.service.interfaces.IOperationService;
+import com.suny.association.annotation.SystemControllerLog;
+import com.suny.association.pojo.po.OperationLog;
+import com.suny.association.service.interfaces.IOperationLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,13 +23,13 @@ import static com.suny.association.utils.ConversionUtil.convertToCriteriaMap;
  */
 @Controller
 @RequestMapping(value = "/operations/log")
-public class OperationInfoController {
+public class OperationLogController {
 
-    private final IOperationService operationService;
+    private final IOperationLogService operationLogService;
 
     @Autowired
-    public OperationInfoController(IOperationService operationService) {
-        this.operationService = operationService;
+    public OperationLogController(IOperationLogService operationLogService) {
+        this.operationLogService = operationLogService;
     }
 
     /**
@@ -42,11 +43,12 @@ public class OperationInfoController {
     @ResponseBody
     public Map query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
                      @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
-        List<Operation> operationList = operationService.list(convertToCriteriaMap(offset, limit));
-        int total = operationService.queryCount();
-        return convertToBootstrapTableResult(operationList, total);
+        List<OperationLog> operationLogList = operationLogService.list(convertToCriteriaMap(offset, limit));
+        int total = operationLogService.queryCount();
+        return convertToBootstrapTableResult(operationLogList, total);
     }
 
+    @SystemControllerLog(description = "查看操作记录页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {
         return "/operations/operationList";

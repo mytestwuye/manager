@@ -8,8 +8,8 @@ package com.suny.association.enums;
 public enum LoginEnum {
     
             LOGIN_SYSTEM("100","登录系统成功"),
-            LOGOUT_SUCCESS("199","注销系统成功"),
-            USER_NOT_EXITS("101","登录用户不存在"),
+
+    USER_NOT_EXITS("101","登录用户不存在"),
             USER_NO__ROLE("102","登录用户不属于任何角色"),
             NO_OPERATE_AUTH("103","登录用户无任何操作权限"),
             NO_MANAGE_AREA("104","登录用户无任何管理区域"),
@@ -19,10 +19,8 @@ public enum LoginEnum {
             PLEASE_INPUT_USER("110","请输入用户账号"),
             PLEASE_INPUT_PASSWORD("111","请输入密码"),
             PLEASE_INPUT__CODE("112","请输入验证码"),
-            VALIDATE_CODE_ERROR("113","验证码输入错误"),
-            VALIDATE_CODE_SUCCESS("114","验证码输入正确"),
-            UNDERPASS_ERROR("115","用户名或密码输入错误"),
-            REPEAT_LOGIN("116","重复登录");
+
+    REPEAT_LOGIN("116","重复登录");
             
     
     String value;

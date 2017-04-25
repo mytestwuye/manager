@@ -2,10 +2,12 @@ package com.suny.association.pojo.po;
 
 import java.util.Date;
 
-public class Operation {
+public class OperationLog {
     private Long operationId;
 
     private String operationMessage;
+
+    private String operationMemberName;
 
     private String operationBrower;
 
@@ -25,12 +27,13 @@ public class Operation {
 
     private Account operationAccountId;
 
-    public Operation() {
+    public OperationLog() {
     }
 
-    public Operation(Long operationId, String operationMessage, String operationBrower, String operationOsVersion, String operationUserAgent, String operationRequestUrl, Date operationTime, String operationIp, String operationAddress, Boolean operationStatus, Account operationAccountId) {
+    public OperationLog(Long operationId, String operationMessage, String operationMemberName, String operationBrower, String operationOsVersion, String operationUserAgent, String operationRequestUrl, Date operationTime, String operationIp, String operationAddress, Boolean operationStatus, Account operationAccountId) {
         this.operationId = operationId;
         this.operationMessage = operationMessage;
+        this.operationMemberName = operationMemberName;
         this.operationBrower = operationBrower;
         this.operationOsVersion = operationOsVersion;
         this.operationUserAgent = operationUserAgent;
@@ -56,6 +59,14 @@ public class Operation {
 
     public void setOperationMessage(String operationMessage) {
         this.operationMessage = operationMessage;
+    }
+
+    public String getOperationMemberName() {
+        return operationMemberName;
+    }
+
+    public void setOperationMemberName(String operationMemberName) {
+        this.operationMemberName = operationMemberName;
     }
 
     public String getOperationBrower() {
