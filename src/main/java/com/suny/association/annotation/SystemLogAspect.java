@@ -159,7 +159,7 @@ public class SystemLogAspect {
             operationLog.setOperationAccountId(account);
              /*  操作时间 : 数据库自动生成 */
              /*  操作状态  */
-            operationLog.setOperationStatus(true);
+            operationLog.setOperationStatus(false);
              /*   操作ip*/
             operationLog.setOperationIp(LoginUtils.getClientIpAdder(request));
              /*  操作地址 */
@@ -184,7 +184,7 @@ public class SystemLogAspect {
      *
      * @param joinPoint 切点
      * @return 方法描述
-     * @throws ClassNotFoundException
+     * @throws ClassNotFoundException   类不能找到异常
      */
     private static String getServiceMethodDescription(JoinPoint joinPoint) throws ClassNotFoundException {
         String targetName = joinPoint.getTarget().getClass().getName();
