@@ -20,20 +20,25 @@
     <!-- Shiro Filter -->
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
+        <!-- loginUrl认证提交地址，如果没有认证将会请求此地址进行认证，请求此地址将由formAuthenticationFilter进行表单认证 -->
         <property name="loginUrl" value="/base/loginPage.html"/>
         <property name="successUrl" value="/base/goAdminPage.html"/>
+        <!--授权失败的地址-->
         <property name="unauthorizedUrl" value="/base/errorPage.html"/>
         <property name="filterChainDefinitions">
+            <!-- -/**=authc 表示所有的url都必须认证通过才可以访问- -->
+            <!--/**=anon 表示所有的url都可以匿名访问-->
             <value>
+                <!--请求这个地址就自动退出-->
+                /base//logoutAction.do=logout
+
                 /base/index = anon
                 /base/loginPage.html = anon
                 /base/loginAction.json = anon
-                /code/checkCode.do  =anon
+                /code/checkCode.do =anon
                 /code//generateCode.do =anon
                 /LoginSuccess = anon
                 /base/logoutAction.do = anon
-                /member/update.json =anon
-                /account/update.json =anon
                 /** = authc
             </value>
         </property>
