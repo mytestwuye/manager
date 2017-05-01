@@ -68,7 +68,7 @@
             contentType: "application/json",
             url: '${pageContext.request.contextPath}/account/role/insert.json',
             data: JSON.stringify({
-                roleName: roleNameVal
+                description: roleNameVal
             }),
             success: function (result) {
                 if (result.status == 102) {

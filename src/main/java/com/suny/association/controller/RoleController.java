@@ -53,7 +53,7 @@ public class RoleController {
         if (roles.getRoleId() == null || rolesService.queryById(roles.getRoleId()) == null) {
             return failResult(BaseEnum.SELECT_FAILURE);
         }
-        if ("".equals(roles.getRoleName()) || roles.getRoleName() == null) {
+        if ("".equals(roles.getDescription()) || roles.getDescription() == null) {
             return failResult(BaseEnum.FIELD_NULL);
         }
         rolesService.update(roles);
@@ -87,10 +87,10 @@ public class RoleController {
     @ResponseBody
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     public JsonResult insert(@RequestBody Roles roles) {
-        if ("".equals(roles.getRoleName()) || roles.getRoleName() == null) {
+        if ("".equals(roles.getDescription()) || roles.getDescription() == null) {
             return failResult(BaseEnum.FIELD_NULL);
         }
-        if (rolesService.queryByName(roles.getRoleName()) != null) {
+        if (rolesService.queryByName(roles.getDescription()) != null) {
             return failResult(BaseEnum.REPEAT_ADD);
         }
         rolesService.insert(roles);

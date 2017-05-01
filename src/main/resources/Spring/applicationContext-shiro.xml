@@ -30,7 +30,7 @@
             <!--/**=anon 表示所有的url都可以匿名访问-->
             <value>
                 <!--请求这个地址就自动退出-->
-                /base//logoutAction.do=logout
+                /base/logoutAction.do=logout
 
                 /base/index = anon
                 /base/loginPage.html = anon
@@ -56,6 +56,7 @@
         <property name="proxyTargetClass" value="true"/>
     </bean>
 
+    <!--开启使用基于注解的开发-->
     <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
         <property name="securityManager" ref="securityManager"/>
     </bean>

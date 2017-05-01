@@ -4,6 +4,7 @@
     <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.Roles">
         <id column="role_id" property="roleId"/>
         <result column="role_name" property="roleName"/>
+        <result column="role_description" property="description"/>
         <result column="role_create_time" property="createTime"/>
     </resultMap>
 
@@ -24,7 +25,7 @@
         INSERT INTO roles
         (role_name)
         VALUES
-            (#{roleName})
+        (#{description})
     </insert>
 
     <delete id="deleteById" parameterType="int">
@@ -35,7 +36,7 @@
 
     <update id="update" parameterType="com.suny.association.pojo.po.Roles">
         UPDATE roles
-        SET role_name = #{roleName}
+        SET role_name = #{description}
         WHERE
             role_id = #{roleId}
     </update>
@@ -45,6 +46,7 @@
         SELECT
         r.role_id,
         r.role_name,
+        r.role_description,
         r.role_create_time
         FROM roles AS r
     </select>
@@ -53,6 +55,7 @@
         SELECT
         r.role_id,
         r.role_name,
+        r.role_description,
         r.role_create_time
         FROM roles AS r
         WHERE r.role_id = #{roleId}
@@ -62,9 +65,10 @@
         SELECT
         r.role_id,
         r.role_name,
+        r.role_description,
         r.role_create_time
         FROM roles AS r
-        WHERE r.role_name LIKE CONCAT(CONCAT('%', #{roleName}), '%')
+        WHERE r.role_name LIKE CONCAT(CONCAT('%', #{description}), '%')
     </select>
 
 
@@ -72,6 +76,7 @@
         SELECT
         r.role_id,
         r.role_name,
+        r.role_description,
         r.role_create_time
         FROM roles AS r
         LIMIT

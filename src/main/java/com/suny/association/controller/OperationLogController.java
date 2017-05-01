@@ -3,7 +3,7 @@ package com.suny.association.controller;
 import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.pojo.po.OperationLog;
 import com.suny.association.service.interfaces.IOperationLogService;
-import org.apache.shiro.authz.annotation.RequiresRoles;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,7 +49,7 @@ public class OperationLogController {
         return convertToBootstrapTableResult(operationLogList, total);
     }
 
-    @RequiresRoles("超级管理")
+    @RequiresPermissions("operationLog:read")
     @SystemControllerLog(description = "查看操作记录页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {

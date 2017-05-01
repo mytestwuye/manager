@@ -156,7 +156,7 @@
                 columns: [
                     {title: "全选", field: "select", checkbox: true, width: 20, align: "center", valign: "middle"},
                     {field: 'roleId', title: '角色ID', sortable: true, align: 'center'},
-                    {field: 'roleName', title: '角色名字', sortable: true, align: 'center'},
+                    {field: 'description', title: '角色名字', sortable: true, align: 'center'},
                     {field: 'createTime', title: '创建时间', sortable: true, align: 'center', formatter: 'dateFormat'}
                 ],
                 onClickRow: function (row, $element) {
@@ -243,7 +243,7 @@
             layer.msg('请先勾选一条你要删除的数据。。', {icon: 5});
         } else {
             //询问框
-            layer.confirm('您确定要删除【' + selectedRadio[0].roleName + "】这条成员的信息吗?", {
+            layer.confirm('您确定要删除【' + selectedRadio[0].description + "】这条成员的信息吗?", {
                 btn: ['确定', '点错了'] //按钮
             }, function () {
                 layer.msg('准备删除了', {icon: 1});

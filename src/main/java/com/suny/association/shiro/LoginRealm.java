@@ -58,7 +58,7 @@ public class LoginRealm extends AuthorizingRealm {
         info.setRoles(roleNames);
         /*   根据用户id去查询权限(permission),放入到Authorization里面    */
         Set<String> permissions = new HashSet<String>();
-        permissions.add("select");
+        permissions.add("operationLog:read");
         /*  把权限放进SimpleAuthorizationInfo里面去   */
         info.setStringPermissions(permissions);
 //        roleNames.add("administrator");    //角色权限

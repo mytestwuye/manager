@@ -38,7 +38,7 @@
         <div>当前角色名字</div>
         <div class="form-group">
             <label for="roleName_old"></label>
-            <input id="roleName_old" type="text" class="form-control" value="${role.roleName}" disabled>
+            <input id="roleName_old" type="text" class="form-control" value="${role.description}" disabled>
         </div>
         <div class="form-group">
             <label for="roleName_new">修改角色名字</label>
@@ -70,7 +70,7 @@
             url: '${basePath}/account/role/update.json',
             data:JSON.stringify({
                 roleId:roleIdVal,
-                roleName:roleNameVal
+                description: roleNameVal
             }),
             success :function(result){
                 if(result.status == 104){

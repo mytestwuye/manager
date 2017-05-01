@@ -3,17 +3,24 @@ package com.suny.association.pojo.po;
 import java.util.Date;
 
 public class Roles {
+    /*账号主键id*/
     private Integer roleId;
 
+    /* 账号的中文解释*/
+    private String description;
+
+    /* 账号的角色名字 */
     private String roleName;
 
+    /*账号创建的时间*/
     private Date createTime;
 
     public Roles() {
     }
 
-    public Roles(Integer roleId, String roleName, Date createTime) {
+    public Roles(Integer roleId, String description, String roleName, Date createTime) {
         this.roleId = roleId;
+        this.description = description;
         this.roleName = roleName;
         this.createTime = createTime;
     }
@@ -24,6 +31,14 @@ public class Roles {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getRoleName() {

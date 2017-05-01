@@ -208,7 +208,7 @@
 
 
     function rolesFormatter(value, row, index) {
-        return row.accountRoles.roleName;
+        return row.accountRoles.description;
     }
 
     var ButtonInit = function () {
