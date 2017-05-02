@@ -294,7 +294,10 @@
                 <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-lock-outline"></i> 权限资源管理</a>
                 <ul>
                     <li><a class="waves-effect"
-                           href="javascript:Tab.addTab('权限管理', '${basePath}/manage/permission/index');">权限管理</a>
+                           href="javascript:Tab.addTab('权限管理', '${basePath}/system/permission/index.html');">角色权限管理</a>
+                    </li>
+                    <li><a class="waves-effect"
+                           href="javascript:Tab.addTab('权限管理', '${basePath}/system/permission/allot/index.html');">角色权限分配</a>
                     </li>
                 </ul>
             </li>

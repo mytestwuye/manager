@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.suny.association.mapper.PermissionMapper">
+
+    <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.Permission">
+        <id property="permissionId" column="permission_id"/>
+        <result property="permissionName" column="permission_name"/>
+        <result property="description" column="permission_description"/>
+        <result property="createTime" column="create_time"/>
+        <result property="permissionStatus" column="permission_status"/>
+    </resultMap>
+
+
+    <insert id="insert" parameterType="com.suny.association.pojo.po.Permission">
+        INSERT INTO permission
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test=" permissionName != null">
+                permission_name,
+            </if>
+            <if test=" description != null">
+                permission_description,
+            </if>
+            <if test=" permissionStatus != null">
+                permission_status
+            </if>
+        </trim>
+        <trim prefix="VALUES(" suffix=")" suffixOverrides=",">
+            <if test=" permissionName != null">
+                #{permissionName},
+            </if>
+            <if test=" description != null">
+                #{description},
+            </if>
+            <if test=" permissionStatus != null">
+                #{permissionStatus}
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM permission
+        WHERE permission_id = #{permissionId}
+    </delete>
+
+    <update id="update" parameterType="com.suny.association.pojo.po.Permission">
+        UPDATE permission
+        SET
+        <trim suffixOverrides=",">
+            <if test=" permissionName != null">
+                permission_name =#{permissionName},
+            </if>
+            <if test=" description != null">
+                permission_description =#{description},
+            </if>
+            <if test=" permissionStatus != null">
+                permission_status =#{permissionStatus}
+            </if>
+        </trim>
+        WHERE
+        permission_id = #{permissionId}
+    </update>
+
+
+    <select id="queryByName" resultMap="BaseResultMap" parameterType="String">
+        SELECT
+            p.permission_id,
+            p.permission_name,
+            p.permission_description,
+            p.create_time,
+            p.permission_status
+        FROM permission AS p
+        WHERE permission_name = #{name}
+    </select>
+
+    <select id="queryById" parameterType="int" resultMap="BaseResultMap">
+        SELECT
+            p.permission_id,
+            p.permission_name,
+            p.permission_description,
+            p.create_time,
+            p.permission_status
+        FROM permission AS p
+        WHERE permission_id = #{id}
+    </select>
+
+    <select id="queryPermissionQuote" parameterType="int" resultMap="BaseResultMap">
+        SELECT
+            pr.role_id,
+            pr.permiss_id
+        FROM permission_union_role AS pr
+        WHERE
+            pr.permiss_id = #{ permissionId}
+    </select>
+
+    <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
+        SELECT
+        p.permission_id,
+        p.permission_name,
+        p.permission_description,
+        p.create_time,
+        p.permission_status
+        FROM permission AS p
+        <!--<if test=" status != null ">-->
+        <!--WHERE p.permission_status = #{status}-->
+        <!--</if>-->
+        LIMIT #{offset} ,#{limit}
+    </select>
+
+    <select id="queryCount" resultType="int">
+        SELECT count(*)
+        FROM permission
+    </select>
+
+
+</mapper>
