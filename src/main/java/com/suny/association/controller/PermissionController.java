@@ -82,9 +82,7 @@ public class PermissionController {
         if (permissionService.queryById(permissionId) == null) {
             return failResult(BaseEnum.SELECT_FAILURE);
         }
-        if (permissionId < 37) {
-            return failResult(BaseEnum.SYSTEM_LIMIT);
-        }
+        if (permissionId <= 37) return failResult(BaseEnum.SYSTEM_LIMIT);
         permissionService.deleteById(permissionId);
         return successResult(BaseEnum.DELETE_SUCCESS);
     }

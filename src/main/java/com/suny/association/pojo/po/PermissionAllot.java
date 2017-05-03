@@ -12,13 +12,13 @@ public class PermissionAllot implements Serializable {
 
     private static final long serialVersionUID = -2433044880242889682L;
     private Integer id;   /* 主键id */
-    private int roleId;   /* 角色id */
+    private Roles roleId;   /* 角色id */
     private Set<Permission> permissionSet;   /* 权限id */
 
     public PermissionAllot() {
     }
 
-    public PermissionAllot(Integer id, int roleId, Set<Permission> permissionSet) {
+    public PermissionAllot(Integer id, Roles roleId, Set<Permission> permissionSet) {
         this.id = id;
         this.roleId = roleId;
         this.permissionSet = permissionSet;
@@ -32,11 +32,11 @@ public class PermissionAllot implements Serializable {
         this.id = id;
     }
 
-    public int getRoleId() {
+    public Roles getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(int roleId) {
+    public void setRoleId(Roles roleId) {
         this.roleId = roleId;
     }
 
