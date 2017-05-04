@@ -223,7 +223,7 @@ var Tab = {
 		}
 		initScrollShow();
 	}
-}
+};
 function initScrollShow() {
 	if (document.getElementById('tabs').scrollWidth > document.getElementById('tabs').clientWidth) {
 		$('.content_tab').addClass('scroll');

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: 孙建荣
@@ -31,6 +32,17 @@
         </tr>
         </thead>
         <tbody>
+        <c:forEach items="${permissionAllotList}" var="roles">
+            <tr>
+                <td>${roles.roleId.description}</td>
+                <td>
+                    <c:forEach items="${roles.permissionSet}" var="permission">
+                        【${permission.description}】
+                    </c:forEach>
+                </td>
+                <td><a href="#">分配权限</a></td>
+            </tr>
+        </c:forEach>
         <tr>
             <td>超级管理员</td>
             <td>删除账号，增加账号</td>

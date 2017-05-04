@@ -371,7 +371,7 @@ public class EncryptUtil {
     public static void main(String[] args) {
         EncryptUtil encryptUtils = new EncryptUtil();
         String source = "www.putiman.com";
-        System.out.println("Hello经过MD5:" + encryptUtils.encryptToMD5(source));
+        System.out.println("Hello经过MD5:" + encryptToMD5(source));
         System.out.println("Hello经过SHA:" + encryptUtils.encryptToSHA(source));
         System.out.println("========随机生成Key进行加解密==============");
         // 生成一个DES算法的密匙

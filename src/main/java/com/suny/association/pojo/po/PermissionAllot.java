@@ -1,7 +1,7 @@
 package com.suny.association.pojo.po;
 
 import java.io.Serializable;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Comments:    角色权限角色中间表，给角色分配权限
@@ -13,12 +13,12 @@ public class PermissionAllot implements Serializable {
     private static final long serialVersionUID = -2433044880242889682L;
     private Integer id;   /* 主键id */
     private Roles roleId;   /* 角色id */
-    private Set<Permission> permissionSet;   /* 权限id */
+    private List<Permission> permissionSet;   /* 权限id */
 
     public PermissionAllot() {
     }
 
-    public PermissionAllot(Integer id, Roles roleId, Set<Permission> permissionSet) {
+    public PermissionAllot(Integer id, Roles roleId, List<Permission> permissionSet) {
         this.id = id;
         this.roleId = roleId;
         this.permissionSet = permissionSet;
@@ -40,11 +40,11 @@ public class PermissionAllot implements Serializable {
         this.roleId = roleId;
     }
 
-    public Set<Permission> getPermissionSet() {
+    public List<Permission> getPermissionSet() {
         return permissionSet;
     }
 
-    public void setPermissionSet(Set<Permission> permissionSet) {
+    public void setPermissionSet(List<Permission> permissionSet) {
         this.permissionSet = permissionSet;
     }
 }

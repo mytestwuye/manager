@@ -337,7 +337,7 @@
                 FP.setScrollingSpeed (0, 'internal');
             });
 
-            FP.moveTo(sectionAnchor, slideAnchor)
+            FP.moveTo(sectionAnchor, slideAnchor);
 
             requestAnimFrame(function(){
                 FP.setScrollingSpeed (originals.scrollingSpeed, 'internal');
@@ -455,7 +455,7 @@
                 $(SECTION_NAV_SEL).show();
                 container.removeClass(RESPONSIVE);
             }
-        }
+        };
 
         //flag to avoid very fast sliding for landscape sliders
         var slideMoving = false;
@@ -1395,7 +1395,7 @@
             //callback (afterLoad) if the site is not just resizing and readjusting the slides
             $.isFunction(options.afterLoad) && !v.localIsResizing && options.afterLoad.call(v.element, v.anchorLink, (v.sectionIndex + 1));
 
-            playMedia(v.element)
+            playMedia(v.element);
 
             canScroll = true;
 
