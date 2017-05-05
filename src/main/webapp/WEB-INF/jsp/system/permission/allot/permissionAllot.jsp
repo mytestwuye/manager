@@ -36,18 +36,13 @@
             <tr>
                 <td>${roles.roleId.description}</td>
                 <td>
-                    <c:forEach items="${roles.permissionSet}" var="permission">
+                    <c:forEach items="${roles.permissionArrayList}" var="permission">
                         【${permission.description}】
                     </c:forEach>
                 </td>
-                <td><a href="#">分配权限</a></td>
+                <td><a href="${basePath}/system/permission/allot/update.html/${roles.roleId.roleId}">分配权限</a></td>
             </tr>
         </c:forEach>
-        <tr>
-            <td>超级管理员</td>
-            <td>删除账号，增加账号</td>
-            <td><a href="#">分配权限</a></td>
-        </tr>
         </tbody>
 
     </table>

@@ -1,6 +1,7 @@
 package com.suny.association.service.impl;
 
 import com.suny.association.mapper.PermissionAllotMapper;
+import com.suny.association.pojo.po.Permission;
 import com.suny.association.pojo.po.PermissionAllot;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IPermissionAllotService;
@@ -42,5 +43,10 @@ public class PermissionAllotServiceImpl extends AbstractBaseServiceImpl<Permissi
     @Override
     public List<PermissionAllot> queryAll() {
         return permissionAllotMapper.queryAll();
+    }
+
+    @Override
+    public List<Permission> queryByRoleId(int roleId) {
+        return permissionAllotMapper.queryByRoleId(roleId);
     }
 }

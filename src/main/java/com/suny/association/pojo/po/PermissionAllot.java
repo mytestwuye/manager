@@ -1,6 +1,7 @@
 package com.suny.association.pojo.po;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,15 +14,15 @@ public class PermissionAllot implements Serializable {
     private static final long serialVersionUID = -2433044880242889682L;
     private Integer id;   /* 主键id */
     private Roles roleId;   /* 角色id */
-    private List<Permission> permissionSet;   /* 权限id */
+    private List<Permission> permissionArrayList = new ArrayList<>();   /* 权限id */
 
     public PermissionAllot() {
     }
 
-    public PermissionAllot(Integer id, Roles roleId, List<Permission> permissionSet) {
+    public PermissionAllot(Integer id, Roles roleId, List<Permission> permissionArrayList) {
         this.id = id;
         this.roleId = roleId;
-        this.permissionSet = permissionSet;
+        this.permissionArrayList = permissionArrayList;
     }
 
     public Integer getId() {
@@ -40,11 +41,11 @@ public class PermissionAllot implements Serializable {
         this.roleId = roleId;
     }
 
-    public List<Permission> getPermissionSet() {
-        return permissionSet;
+    public List<Permission> getPermissionArrayList() {
+        return permissionArrayList;
     }
 
-    public void setPermissionSet(List<Permission> permissionSet) {
-        this.permissionSet = permissionSet;
+    public void setPermissionArrayList(List<Permission> permissionArrayList) {
+        this.permissionArrayList = permissionArrayList;
     }
 }
