@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @RequestMapping("/punchLog")
 @Controller
-public class PunchRecordController {
+public class PunchRecordController extends BaseController {
 
     private final IPunchRecordService punchRecordService;
 

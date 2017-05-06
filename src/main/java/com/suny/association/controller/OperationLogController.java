@@ -24,7 +24,7 @@ import static com.suny.association.utils.ConversionUtil.convertToCriteriaMap;
  */
 @Controller
 @RequestMapping(value = "/operations/log")
-public class OperationLogController {
+public class OperationLogController extends BaseController {
 
     private final IOperationLogService operationLogService;
 

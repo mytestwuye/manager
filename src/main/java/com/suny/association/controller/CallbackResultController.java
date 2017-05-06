@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/punchLog/applyForResult")
-public class CallbackResultController {
+public class CallbackResultController extends BaseController {
 
     private final ICallbackResultService callbackResultService;
 

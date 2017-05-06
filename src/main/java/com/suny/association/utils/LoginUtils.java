@@ -37,7 +37,7 @@ public class LoginUtils {
         String key = "8256e813b3dec54c5a6aac371c05e5eaa";   // 百度定位密匙
         String url = String.format("http://api.map.baidu.com/location/ip?ak=%s&ip=%s&coor=bd09ll", key, ipString);
         URL myUrl = null;
-        URLConnection urlConnection = null;
+        URLConnection urlConnection;
         try {
             myUrl = new URL(url);
         } catch (MalformedURLException e) {
@@ -341,5 +341,16 @@ public class LoginUtils {
 
     }
 
+
+    /**
+     * 判断是否为ajax请求
+     *
+     * @param request request请求
+     * @return 是否为ajax请求
+     */
+    public static boolean isAjaxRequest(HttpServletRequest request) {
+        String requestedWith = request.getHeader("x-requested-with");
+        return requestedWith != null && requestedWith.equalsIgnoreCase("XMLHttpRequest");
+    }
 
 }

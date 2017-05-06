@@ -30,7 +30,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/member")
-public class MemberController {
+public class MemberController extends BaseController {
 
     private final IMemberService memberService;
 
@@ -117,7 +117,8 @@ public class MemberController {
     public JsonResult update(@RequestBody Member member) {
         if (member.getMemberName() == null || "".equals(member.getMemberName())) {
             return JsonResult.failResult(BaseEnum.FIELD_NULL);
-        } else if (!member.getMemberStatus() || java.util.Objects.equals("", member.getMemberStatus())) {
+        }
+        if (!member.getMemberStatus()) {
             return JsonResult.failResult(BaseEnum.FIELD_NULL);
         }
         memberService.update(member);

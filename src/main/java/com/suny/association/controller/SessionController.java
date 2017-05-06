@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/session")
-public class SessionController {
+public class SessionController extends BaseController {
 
     private final ILoginHistoryService loginHistoryService;
 

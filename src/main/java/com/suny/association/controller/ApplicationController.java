@@ -30,7 +30,7 @@ import static com.suny.association.utils.ConversionUtil.convertToCriteriaMap;
  */
 @Controller
 @RequestMapping("/punchLog/applicationMessage")
-public class ApplicationController {
+public class ApplicationController extends BaseController {
 
     private final IApplicationMessageService applicationMessageService;
     private final IMemberService memberService;

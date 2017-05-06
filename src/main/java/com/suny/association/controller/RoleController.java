@@ -25,7 +25,7 @@ import static com.suny.association.utils.JsonResult.successResult;
  */
 @Controller
 @RequestMapping("/account/role")
-public class RoleController {
+public class RoleController extends BaseController {
 
     private final IRolesService rolesService;
 

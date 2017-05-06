@@ -26,7 +26,7 @@ import static com.suny.association.utils.JsonResult.successResult;
  */
 @RequestMapping("/system/permission")
 @Controller
-public class PermissionController {
+public class PermissionController extends BaseController {
 
     private final IPermissionService permissionService;
 

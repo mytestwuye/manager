@@ -25,7 +25,7 @@ import java.util.List;
  */
 @RequestMapping("/system/permission/allot")
 @Controller
-public class PermissionAllotController {
+public class PermissionAllotController extends BaseController {
 
     private final IRolesService rolesService;
 

@@ -32,7 +32,7 @@ import static com.suny.association.utils.JsonResult.successResult;
  */
 @Controller
 @RequestMapping("/account")
-public class AccountController {
+public class AccountController extends BaseController {
 
     private final IAccountService accountService;
 
