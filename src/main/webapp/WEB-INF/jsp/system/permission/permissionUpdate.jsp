@@ -111,9 +111,7 @@
                             $("#permissionName").css('border', '');
                             //当你在iframe页面关闭自身时
                             window.parent.layer.alert('更新成功了，刷新下页面看效果吧', {icon: 6});
-                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                            parent.layer.close(index); //再执行关闭
-                            refreshTable();
+                            setTimeout('closeWindows()', 20000);
                         }
                         else if (result.status == 7) {
                             window.layer.msg("权限为系统初始权限，不能够修改部分权限信息", {icon: 4});
@@ -128,6 +126,11 @@
                 });
             }
     );
+
+    function closeWindows() {
+        var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+        parent.layer.close(index); //再执行关闭
+    }
 
     /**
      * 刷新表格

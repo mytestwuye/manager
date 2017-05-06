@@ -112,4 +112,15 @@
     </select>
 
 
+    <select id="queryAll" resultMap="BaseResultMap">
+        SELECT
+            p.permission_id,
+            p.permission_name,
+            p.permission_description,
+            p.permission_status,
+            p.create_time
+        FROM permission AS p;
+    </select>
+
+
 </mapper>

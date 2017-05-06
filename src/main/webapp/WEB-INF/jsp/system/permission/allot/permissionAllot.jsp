@@ -40,7 +40,7 @@
                         【${permission.description}】
                     </c:forEach>
                 </td>
-                <td><a href="${basePath}/system/permission/allot/update.html/${roles.roleId.roleId}">分配权限</a></td>
+                <td><a href="#" onclick="changeRolePermission(${roles.roleId.roleId})">分配权限</a></td>
             </tr>
         </c:forEach>
         </tbody>
@@ -50,6 +50,17 @@
 </body>
 <script src="${basePath}/plugins/jquery.1.12.4.min.js"></script>
 <script src="${basePath}/plugins/bootstrap-3.3.0/js/bootstrap.min.js"></script>
+<script src="${basePath}/plugins/layer/layer.js"></script>
+<script>
+    function changeRolePermission(roleId) {
+        layer.open({
+            type: 2,
+            content: '${basePath}/system/permission/allot/update.html/' + roleId,
+            area: ['520px', '630px'],
+            maxmin: true
+        });
+    }
+</script>
 </html>
 
 

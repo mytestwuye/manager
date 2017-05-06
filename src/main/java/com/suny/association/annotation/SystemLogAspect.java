@@ -95,10 +95,12 @@ public class SystemLogAspect {
              /*  操作状态  */
             operationLog.setOperationStatus(true);
              /*   操作ip*/
-            operationLog.setOperationIp(LoginUtils.getClientIpAdder(request));
+//            operationLog.setOperationIp(LoginUtils.getClientIpAdder(request));
+            operationLog.setOperationIp("182.85.141.54");
              /*  操作地址 */
             //noinspection ConstantConditions
-            operationLog.setOperationAddress(LoginUtils.getGeneralLocation(ip).getAddress());
+//            operationLog.setOperationAddress(LoginUtils.getGeneralLocation(ip).getAddress());
+            operationLog.setOperationAddress("江西省南昌市南昌县创新二路");
 
             System.out.println("准备向数据库插入操作记录");
             /*开始插入操作日志*/

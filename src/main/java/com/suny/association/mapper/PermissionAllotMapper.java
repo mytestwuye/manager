@@ -1,7 +1,6 @@
 package com.suny.association.mapper;
 
 import com.suny.association.mapper.interfaces.IMapper;
-import com.suny.association.pojo.po.Permission;
 import com.suny.association.pojo.po.PermissionAllot;
 
 import java.util.List;
@@ -12,5 +11,5 @@ import java.util.List;
  * Create Date: 2017/05/02 13:16
  */
 public interface PermissionAllotMapper extends IMapper<PermissionAllot> {
-    List<Permission> queryByRoleId(int roleId);
+    List<PermissionAllot> queryByRoleId(int roleId);
 }

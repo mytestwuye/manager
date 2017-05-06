@@ -1,12 +1,13 @@
 package com.suny.association.service.impl;
 
+import com.suny.association.annotation.SystemServiceLog;
 import com.suny.association.mapper.PermissionAllotMapper;
-import com.suny.association.pojo.po.Permission;
 import com.suny.association.pojo.po.PermissionAllot;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IPermissionAllotService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,21 @@ public class PermissionAllotServiceImpl extends AbstractBaseServiceImpl<Permissi
     @Autowired
     public PermissionAllotServiceImpl(PermissionAllotMapper permissionAllotMapper) {
         this.permissionAllotMapper = permissionAllotMapper;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @SystemServiceLog(description = "增加角色权限失败")
+    @Override
+    public void insert(PermissionAllot permissionAllot) {
+        permissionAllotMapper.insert(permissionAllot);
+    }
+
+
+    @Transactional(rollbackFor = Exception.class)
+    @SystemServiceLog(description = "删除角色所有权限失败")
+    @Override
+    public void deleteById(int id) {
+        permissionAllotMapper.deleteById(id);
     }
 
     @Override
@@ -46,7 +62,7 @@ public class PermissionAllotServiceImpl extends AbstractBaseServiceImpl<Permissi
     }
 
     @Override
-    public List<Permission> queryByRoleId(int roleId) {
+    public List<PermissionAllot> queryByRoleId(int roleId) {
         return permissionAllotMapper.queryByRoleId(roleId);
     }
 }

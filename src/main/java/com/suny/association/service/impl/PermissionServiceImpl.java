@@ -77,4 +77,9 @@ public class PermissionServiceImpl extends AbstractBaseServiceImpl<Permission> i
     public List<PermissionAllot> queryPermissionQuote(int permissionId) {
         return permissionMapper.queryPermissionQuote(permissionId);
     }
+
+    @Override
+    public List<Permission> queryAll() {
+        return permissionMapper.queryAll();
+    }
 }

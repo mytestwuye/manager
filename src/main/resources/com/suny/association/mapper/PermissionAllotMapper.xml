@@ -18,6 +18,21 @@
         </collection>
     </resultMap>
 
+    <insert id="insert" parameterType="com.suny.association.pojo.po.PermissionAllot">
+        INSERT INTO permission_union_role (role_id, permiss_id) VALUES
+        <foreach collection="permissionArrayList" index="index" item="perList" separator=",">
+            (
+            #{roleId.roleId},
+            #{perList.permissionId}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteById" parameterType="int">
+        DELETE FROM permission_union_role
+        WHERE role_id = #{roleId}
+    </delete>
+
     <select id="queryAll" resultMap="BaseResultMap">
         SELECT
         pr.role_id AS pr_role_id,
