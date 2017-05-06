@@ -9,6 +9,7 @@ import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.service.interfaces.IRolesService;
 import com.suny.association.utils.JsonResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -52,6 +53,7 @@ public class AccountController {
      * @param account 要插入的账号信息
      * @return 插入的json数据结果
      */
+    @RequiresPermissions("account:insert")
     @SystemControllerLog(description = "插入账号信息")
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     @ResponseBody
@@ -74,6 +76,7 @@ public class AccountController {
      * @param modelAndView 模型数据跟视图
      * @return 新增账号页面
      */
+    @RequiresPermissions("account:insert")
     @RequestMapping(value = "/insert.html", method = RequestMethod.GET)
     public ModelAndView insertPage(ModelAndView modelAndView) {
         List<Account> account = accountService.queryAll();
@@ -93,6 +96,7 @@ public class AccountController {
      * @param accountId 账号
      * @return 操作结果
      */
+    @RequiresPermissions("account:delete")
     @SystemControllerLog(description = "删除账号信息")
     @RequestMapping(value = "/deleteById.json/{accountId}", method = RequestMethod.GET)
     @ResponseBody
@@ -150,6 +154,7 @@ public class AccountController {
      * @param account 账号实体信息
      * @return 更新数据的结果
      */
+    @RequiresPermissions("account:update")
     @SystemControllerLog(description = "更新账号信息")
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
@@ -173,6 +178,7 @@ public class AccountController {
      * @param modelAndView 模型数据跟视图地址
      * @return 模型数据跟视图地址
      */
+    @RequiresPermissions("account:update")
     @RequestMapping(value = "/update.html/{id}", method = RequestMethod.GET)
     public ModelAndView updatePage(@PathVariable("id") Integer id, ModelAndView modelAndView) {
         Account account = accountService.queryById(id);
@@ -194,6 +200,7 @@ public class AccountController {
      * @param status 查询的账号状态
      * @return 带查询条件的结果集
      */
+    @RequiresPermissions("account:read")
     @SystemControllerLog(description = "查询账号信息")
     @RequestMapping(value = "/queryAll.json", method = RequestMethod.GET)
     @ResponseBody
@@ -214,6 +221,7 @@ public class AccountController {
         return modelAndView;
     }
 
+    @RequiresPermissions("account:read")
     @SystemControllerLog(description = "查看账号管理页面")
     @RequestMapping(value = "/accountManager.html", method = RequestMethod.GET)
     public String index() {

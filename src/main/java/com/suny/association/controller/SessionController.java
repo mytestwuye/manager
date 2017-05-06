@@ -5,6 +5,7 @@ import com.suny.association.pojo.po.LoginHistory;
 import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.ILoginHistoryService;
 import com.suny.association.utils.ConversionUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,12 +27,9 @@ public class SessionController {
 
     private final ILoginHistoryService loginHistoryService;
 
-    private final IAccountService accountService;
-
     @Autowired
     public SessionController(ILoginHistoryService loginHistoryService, IAccountService accountService) {
         this.loginHistoryService = loginHistoryService;
-        this.accountService = accountService;
     }
 
     @RequestMapping(value = "list.json", method = RequestMethod.GET)
@@ -43,6 +41,7 @@ public class SessionController {
         return ConversionUtil.convertToBootstrapTableResult(loginHistoryList, total);
     }
 
+    @RequiresPermissions("session:log:read")
     @SystemControllerLog(description = "查询指定账号登录记录")
     @RequestMapping(value = "/queryByMemberId.json", method = RequestMethod.GET)
     @ResponseBody
@@ -51,6 +50,7 @@ public class SessionController {
         return ConversionUtil.convertToBootstrapTableResult(loginHistoryList, 5);
     }
 
+    @RequiresPermissions("session:log:read")
     @SystemControllerLog(description = "查看登录记录页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {

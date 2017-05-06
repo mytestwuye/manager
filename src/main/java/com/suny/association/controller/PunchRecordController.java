@@ -4,6 +4,7 @@ import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.pojo.po.PunchRecord;
 import com.suny.association.service.interfaces.IPunchRecordService;
 import com.suny.association.utils.ConversionUtil;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,6 +32,7 @@ public class PunchRecordController {
         this.punchRecordService = punchRecordService;
     }
 
+    @RequiresPermissions("punch:log:read")
     @RequestMapping(value = "list.json", method = RequestMethod.GET)
     @ResponseBody
     public Map query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
@@ -40,6 +42,7 @@ public class PunchRecordController {
         return ConversionUtil.convertToBootstrapTableResult(punchRecordList, total);
     }
 
+    @RequiresPermissions("punch:log:read")
     @SystemControllerLog(description = "查看考勤记录页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {

@@ -7,6 +7,7 @@ import com.suny.association.service.interfaces.IMemberRolesService;
 import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.utils.ConversionUtil;
 import com.suny.association.utils.JsonResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,7 @@ public class MemberRoleController {
         this.memberService = memberService;
     }
 
+    @RequiresPermissions("member:role:delete")
     @SystemControllerLog(description = "删除成员角色")
     @RequestMapping(value = "/delete.json/{memberRoleId}", method = RequestMethod.GET)
     @ResponseBody
@@ -49,6 +51,7 @@ public class MemberRoleController {
         return successResult(BaseEnum.DELETE_SUCCESS);
     }
 
+    @RequiresPermissions("member:role:update")
     @SystemControllerLog(description = "更新成员角色")
     @ResponseBody
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
@@ -63,7 +66,7 @@ public class MemberRoleController {
         return successResult(BaseEnum.UPDATE_SUCCESS);
     }
 
-
+    @RequiresPermissions("member:role:update")
     @RequestMapping(value = "/update.html/{memberRoleId}", method = RequestMethod.GET)
     public ModelAndView updatePage(@PathVariable int memberRoleId
             , ModelAndView modelAndView) {
@@ -85,6 +88,7 @@ public class MemberRoleController {
      * @param memberRoles 数据
      * @return 插入数据的结果
      */
+    @RequiresPermissions("member:role:insert")
     @SystemControllerLog(description = "新增成员角色")
     @ResponseBody
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
@@ -99,6 +103,7 @@ public class MemberRoleController {
         return successResult(BaseEnum.ADD_SUCCESS);
     }
 
+    @RequiresPermissions("member:role:insert")
     @RequestMapping(value = "/insert.html", method = RequestMethod.GET)
     public ModelAndView insertPage(ModelAndView modelAndView) {
         modelAndView.setViewName("/memberInfo/role/roleInsert");
@@ -112,6 +117,7 @@ public class MemberRoleController {
      * @param limit  查询几条数据
      * @return 带查询条件的数据
      */
+    @RequiresPermissions("member:role:read")
     @SystemControllerLog(description = "查询成员角色")
     @RequestMapping(value = "/list.json", method = RequestMethod.GET)
     @ResponseBody
@@ -122,6 +128,7 @@ public class MemberRoleController {
         return ConversionUtil.convertToBootstrapTableResult(rolesList, total);
     }
 
+    @RequiresPermissions("member:role:read")
     @SystemControllerLog(description = "查看成员角色页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {

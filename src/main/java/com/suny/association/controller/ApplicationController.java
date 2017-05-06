@@ -2,10 +2,15 @@ package com.suny.association.controller;
 
 import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.enums.BaseEnum;
-import com.suny.association.pojo.po.*;
-import com.suny.association.service.interfaces.*;
+import com.suny.association.pojo.po.ApplicationMessage;
+import com.suny.association.pojo.po.CallbackResult;
+import com.suny.association.service.interfaces.IApplicationMessageService;
+import com.suny.association.service.interfaces.ICallbackResultService;
+import com.suny.association.service.interfaces.IMemberService;
+import com.suny.association.service.interfaces.IPunchRecordService;
 import com.suny.association.utils.ConversionUtil;
 import com.suny.association.utils.JsonResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,6 +54,7 @@ public class ApplicationController {
      * @param resultStatus  管理员审批的结果状态
      * @return 对应的操作结果json数据
      */
+    @RequiresPermissions("apply:update")
     @SystemControllerLog(description = "审批异议考勤记录")
     @RequestMapping(value = "/setResult.json", method = RequestMethod.POST)
     @ResponseBody
@@ -98,6 +104,7 @@ public class ApplicationController {
      * @param limit  查询几条记录数
      * @return 查询出来的数据
      */
+    @RequiresPermissions("apply:read")
     @RequestMapping(value = "/queryAll.json", method = RequestMethod.GET)
     @ResponseBody
     public Map query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
@@ -113,6 +120,7 @@ public class ApplicationController {
      *
      * @return 主页面
      */
+    @RequiresPermissions("apply:read")
     @SystemControllerLog(description = "查看异议考勤页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {

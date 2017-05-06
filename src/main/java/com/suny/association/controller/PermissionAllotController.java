@@ -9,6 +9,7 @@ import com.suny.association.service.interfaces.IPermissionAllotService;
 import com.suny.association.service.interfaces.IPermissionService;
 import com.suny.association.service.interfaces.IRolesService;
 import com.suny.association.utils.JsonResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class PermissionAllotController {
     }
 
 
+    @RequiresPermissions("system:permission:allot:update")
     @SystemControllerLog(description = "【修改权限】删除权限后增加权限")
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
@@ -79,7 +81,7 @@ public class PermissionAllotController {
         return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
     }
 
-
+    @RequiresPermissions("system:permission:allot:update")
     @SystemControllerLog(description = "指定角色权限分配")
     @RequestMapping("/update.html/{roleId}")
     public ModelAndView update(@PathVariable("roleId") int roleId, ModelAndView modelAndView) {
@@ -93,8 +95,8 @@ public class PermissionAllotController {
         return modelAndView;
     }
 
-
-    @SystemControllerLog(description = "权限分配页面")
+    @RequiresPermissions("system:permission:allot:read")
+    @SystemControllerLog(description = "查看权限分配页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public ModelAndView index(ModelAndView modelAndView) {
         List<Roles> roleList = rolesService.queryAll();

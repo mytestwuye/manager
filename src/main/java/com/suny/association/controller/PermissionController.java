@@ -5,6 +5,7 @@ import com.suny.association.enums.BaseEnum;
 import com.suny.association.pojo.po.Permission;
 import com.suny.association.service.interfaces.IPermissionService;
 import com.suny.association.utils.JsonResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,7 @@ public class PermissionController {
      * @param permission 要插入的权限信息
      * @return 插入的json数据结果
      */
+    @RequiresPermissions("system:permission:insert")
     @SystemControllerLog(description = "插入权限信息")
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     @ResponseBody
@@ -60,6 +62,7 @@ public class PermissionController {
      * @param modelAndView 模型数据跟视图
      * @return 新增权限页面
      */
+    @RequiresPermissions("system:permission:insert")
     @RequestMapping(value = "/insert.html", method = RequestMethod.GET)
     public ModelAndView insertPage(ModelAndView modelAndView) {
         modelAndView.setViewName("system/permission/permissionInsert");
@@ -72,6 +75,7 @@ public class PermissionController {
      * @param permissionId 账号
      * @return 操作结果
      */
+    @RequiresPermissions("system:permission:delete")
     @SystemControllerLog(description = "删除权限信息")
     @RequestMapping(value = "/deleteById.json/{permissionId}", method = RequestMethod.GET)
     @ResponseBody
@@ -93,6 +97,7 @@ public class PermissionController {
      * @param permission 权限信息
      * @return 更新数据的结果
      */
+    @RequiresPermissions("system:permission:update")
     @SystemControllerLog(description = "更新权限信息")
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
@@ -112,6 +117,7 @@ public class PermissionController {
      * @param modelAndView 模型数据跟视图地址
      * @return 模型数据跟视图地址
      */
+    @RequiresPermissions("system:permission:update")
     @RequestMapping(value = "/update.html/{id}", method = RequestMethod.GET)
     public ModelAndView updatePage(@PathVariable("id") Integer id, ModelAndView modelAndView) {
         Permission permission = permissionService.queryById(id);
@@ -129,7 +135,8 @@ public class PermissionController {
      * @param status 查询的账号状态
      * @return 带查询条件的结果集
      */
-    @SystemControllerLog(description = "查询账号信息")
+    @RequiresPermissions("system:permission:read")
+    @SystemControllerLog(description = "查询所有的权限信息")
     @RequestMapping(value = "/queryAll.json", method = RequestMethod.GET)
     @ResponseBody
     public Map<Object, Object> queryAll(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
@@ -141,7 +148,7 @@ public class PermissionController {
         return convertToBootstrapTableResult(permissionList, totalCount);
     }
 
-
+    @RequiresPermissions("system:permission:read")
     @SystemControllerLog(description = "查看权限管理页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {
