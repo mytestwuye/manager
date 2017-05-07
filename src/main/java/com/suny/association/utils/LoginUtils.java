@@ -2,6 +2,8 @@ package com.suny.association.utils;
 
 import com.google.gson.Gson;
 import com.suny.association.pojo.po.baiduLocation.GeneralLocationResult;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -17,6 +19,7 @@ import java.util.Objects;
  * Create Date: 2017/04/20 19:57
  */
 public class LoginUtils {
+    private static final Logger logger = LoggerFactory.getLogger(LoginUtils.class);
 
     /**
      * 获取普通精度的位置
@@ -25,8 +28,6 @@ public class LoginUtils {
      * @return 百度普通定位地址
      */
     public static GeneralLocationResult getGeneralLocation(String ip) {
-        String city;   //定位到的城市
-        String status;    //定位的状态
         String ipString = null;    // ip地址
         String jsonData = null;    //服务器返回的json数据
         try {
@@ -36,42 +37,27 @@ public class LoginUtils {
         }
         String key = "8256e813b3dec54c5a6aac371c05e5eaa";   // 百度定位密匙
         String url = String.format("http://api.map.baidu.com/location/ip?ak=%s&ip=%s&coor=bd09ll", key, ipString);
-        URL myUrl = null;
-        URLConnection urlConnection;
+        URL myUrl;
+        URLConnection urlConnection = null;
         try {
             myUrl = new URL(url);
-        } catch (MalformedURLException e) {
+            urlConnection = myUrl.openConnection();   //　不使用代理进行访问
+        } catch (IOException e) {
+            logger.error("发生了输入输出流异常");
             e.printStackTrace();
         }
-        InputStreamReader inputStreamReader = null;
-        BufferedReader bufferedReader = null;
-        try {
-            urlConnection = myUrl != null ? myUrl.openConnection() : null;   //　不使用代理进行访问
-            if (urlConnection != null) {
-                inputStreamReader = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
-                bufferedReader = new BufferedReader(inputStreamReader);
+        if (urlConnection != null) {
+            try (InputStreamReader inputStreamReader = new InputStreamReader(urlConnection.getInputStream(), "UTF-8");
+                 BufferedReader bufferedReader = new BufferedReader(inputStreamReader)
+            ) {
                 String data;
                 while ((data = bufferedReader.readLine()) != null) {
                     jsonData += data;
                 }
                 return parseJsonDate(jsonData);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (inputStreamReader != null) {
-                try {
-                    inputStreamReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-            if (bufferedReader != null) {
-                try {
-                    bufferedReader.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            } catch (IOException e) {
+                logger.error("发生了输入输出流异常");
+                e.printStackTrace();
             }
         }
         return null;

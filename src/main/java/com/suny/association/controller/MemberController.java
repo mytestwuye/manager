@@ -81,7 +81,7 @@ public class MemberController extends BaseController {
      * @return 数据跟视图地址
      */
     @RequiresPermissions("member:insert")
-    @RequestMapping(value = "/insert.html")
+    @RequestMapping(value = "/insert.html", method = RequestMethod.GET)
     public ModelAndView insertPage(ModelAndView modelAndView) {
         List<Member> managerList = memberService.queryNormalManager();
         List<Department> departmentList = departmentService.queryAll();
@@ -97,7 +97,7 @@ public class MemberController extends BaseController {
 
     @RequiresPermissions("member:delete")
     @SystemControllerLog(description = "删除成员信息")
-    @RequestMapping(value = "/deleteById.json/{id}")
+    @RequestMapping(value = "/deleteById.json/{id}", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult deleteById(@PathVariable("id") Long id) {
         if (memberService.queryByLongId(id) == null) {
@@ -142,7 +142,7 @@ public class MemberController extends BaseController {
 
     @RequiresPermissions("member:read")
     @SystemControllerLog(description = "查询冻结的成员")
-    @RequestMapping(value = "/queryFreeze.json")
+    @RequestMapping(value = "/queryFreeze.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult queryFreeze() {
         List<Member> memberList = memberService.queryNormalMember();
@@ -154,7 +154,7 @@ public class MemberController extends BaseController {
 
     @RequiresPermissions("member:read")
     @SystemControllerLog(description = "查询正常的成员")
-    @RequestMapping(value = "/queryNormal.json")
+    @RequestMapping(value = "/queryNormal.json", method = RequestMethod.POST)
     @ResponseBody
     public JsonResult queryNormal() {
         List<Member> memberList = memberService.queryNormalMember();
@@ -189,15 +189,15 @@ public class MemberController extends BaseController {
 
     @RequiresPermissions("member:read")
     @SystemControllerLog(description = "查询指定成员")
-    @RequestMapping(value = "/queryById.do")
-    public JsonResult queryById(Integer memberId) {
+    @RequestMapping(value = "/queryById.do/{memberId}", method = RequestMethod.GET)
+    public JsonResult queryById(@PathVariable("memberId") Integer memberId) {
         Member member = memberService.queryById(memberId);
         return JsonResult.successResultAndData(BaseEnum.SELECT_SUCCESS, member);
     }
 
     @RequiresPermissions("member:read")
     @SystemControllerLog(description = "查看成员管理页面")
-    @RequestMapping(value = "/memberManager.html")
+    @RequestMapping(value = "/memberManager.html", method = RequestMethod.GET)
     public String managerPage() {
         return "memberInfo/memberManager";
     }

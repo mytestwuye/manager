@@ -225,6 +225,7 @@
             dataType: "json",
             success: function (result) {
                 var statusCode = result.status;
+                var errorCode = result.errorCode;
                 if (statusCode == 995) {
                     //登录成功
                     layer.msg('登陆成功了', function () {
@@ -235,15 +236,15 @@
                         setTimeout("goAdminPage()", 300);
                     });
 
-                } else if (statusCode == 996 || statusCode == 001) {
+                } else if (errorCode == 996 || statusCode == 996 || statusCode == 1) {
                     layer.msg('用户名或者密码错误。。', {icon: 5});
                     error1.text('用户名或密码错误');
                     emptyInputValue(code);
                     redStyleWarn(userName);
                     redStyleWarn(passWord);
                     refresh();
-                } else if (statusCode == 998) {
-                    layer.msg('您已经登录过了，请不要重复登录', {icon: 5});
+                } else if (errorCode == 998) {
+                    layer.msg('您已经登录过了，请不要重复登录,点击强制退出清除您的会话', {icon: 5});
                 }
                 else {
                     layer.msg('登录失败,服务器出了点小插曲', {icon: 5});

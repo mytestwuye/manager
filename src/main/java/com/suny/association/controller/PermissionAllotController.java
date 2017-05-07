@@ -83,7 +83,7 @@ public class PermissionAllotController extends BaseController {
 
     @RequiresPermissions("system:permission:allot:update")
     @SystemControllerLog(description = "指定角色权限分配")
-    @RequestMapping("/update.html/{roleId}")
+    @RequestMapping(value = "/update.html/{roleId}", method = RequestMethod.GET)
     public ModelAndView update(@PathVariable("roleId") int roleId, ModelAndView modelAndView) {
         //  查询一个角色对应的权限
         List<PermissionAllot> permissionList = permissionAllotService.queryByRoleId(roleId);

@@ -47,7 +47,7 @@ public class LoginController {
     /**
      * 登录页面
      */
-    @RequestMapping("/loginPage.html")
+    @RequestMapping(value = "/loginPage.html", method = RequestMethod.GET)
     public ModelAndView loginPage() {
         return new ModelAndView("/loginPage");
     }
@@ -56,7 +56,7 @@ public class LoginController {
     /**
      * 全局错误页面
      */
-    @RequestMapping(value = "/errorPage.html")
+    @RequestMapping(value = "/errorPage.html", method = RequestMethod.GET)
     public ModelAndView errorPage() {
         return new ModelAndView("/errorPage");
     }
@@ -119,18 +119,16 @@ public class LoginController {
      * @param password 密码
      */
     private void authAction(HttpServletRequest request, String username, String password) {
-        try {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
-            Subject currentUser = SecurityUtils.getSubject();
-            //如果还没有登录就 //使用shiro来验证
-            if (!currentUser.isAuthenticated()) {
-                token.setRememberMe(true);
-                currentUser.login(token);      //验证角色和权限
-            } else {
-                saveLoginInfo(request, username, false);
-                throw new BusinessException(BaseEnum.REPEAT_LOGIN);
-            }
-        } catch (Exception ex) {
+        UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
+        Subject currentUser = SecurityUtils.getSubject();
+        //如果还没有登录就 //使用shiro来验证
+        if (!currentUser.isAuthenticated()) {
+            token.setRememberMe(true);
+            currentUser.login(token);      //验证角色和权限
+        } else if (currentUser.isAuthenticated()) {
+            saveLoginInfo(request, username, false);
+            throw new BusinessException(BaseEnum.REPEAT_LOGIN);
+        } else {
             saveLoginInfo(request, username, false);
             throw new BusinessException(BaseEnum.PASS_ERROR);
         }
@@ -156,7 +154,7 @@ public class LoginController {
      * @return 管理员中心
      * @throws Exception 不知道会发生什么异常
      */
-    @RequestMapping("/goAdminPage.html")
+    @RequestMapping(value = "/goAdminPage.html", method = RequestMethod.GET)
     public ModelAndView goAdminPage() throws Exception {
         return new ModelAndView("adminManager");
     }
