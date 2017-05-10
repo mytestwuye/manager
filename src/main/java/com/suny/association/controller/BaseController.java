@@ -1,11 +1,18 @@
 package com.suny.association.controller;
 
+import com.suny.association.pojo.po.Member;
 import com.suny.association.utils.JsonResult;
 import com.suny.association.utils.LoginUtils;
-import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.authz.UnauthenticatedException;
 import org.apache.shiro.authz.UnauthorizedException;
+import org.apache.shiro.cache.Cache;
+import org.apache.shiro.cache.CacheManager;
+import org.apache.shiro.mgt.RealmSecurityManager;
+import org.apache.shiro.realm.Realm;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
@@ -21,22 +28,29 @@ import java.util.Map;
  * Create Date: 2017/05/06 22:23
  */
 public abstract class BaseController {
+    private final Logger logger = LoggerFactory.getLogger(BaseController.class);
 
-    @ExceptionHandler({UnauthenticatedException.class, AuthenticationException.class})
-    public String authenticationException(HttpServletRequest request, HttpServletResponse response) {
-        if (LoginUtils.isAjaxRequest(request)) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("code", "-999");
-            map.put("message", "未登录");
-            writeJson(map, response);
-            return null;
-        } else {
-            return "redirect:/loginPage.html";
-        }
-    }
 
+    /**
+     * 当操作没有权限时处理结果
+     *
+     * @param request  请求
+     * @param response 响应
+     * @return 处理的结果
+     */
     @ExceptionHandler({UnauthorizedException.class, AuthorizationException.class})
     public String authorizationException(HttpServletRequest request, HttpServletResponse response) {
+        Subject subject = SecurityUtils.getSubject();
+        logger.info("是否认证:" + subject.isAuthenticated());
+        logger.info("是否记住:" + subject.isRemembered());
+        logger.info("用户信息是否为空" + subject.getPrincipal());
+        RealmSecurityManager securityManager = (RealmSecurityManager) SecurityUtils.getSecurityManager();
+        Realm next = securityManager.getRealms().iterator().next();
+        logger.info(next.getName());
+        CacheManager securityManagerCacheManager = securityManager.getCacheManager();
+        Cache<Object, Object> cache = securityManagerCacheManager.getCache("com.suny.association.shiro.LoginRealm.authorizationCache");
+        Member member = (Member) request.getSession().getAttribute("member");
+        logger.error("成员名【" + member.getMemberName() + "】没有权限操作一个页面");
         if (LoginUtils.isAjaxRequest(request)) {
             Map<String, Object> map = new HashMap<>();
             map.put("code", "-998");
@@ -49,6 +63,12 @@ public abstract class BaseController {
     }
 
 
+    /**
+     * 输出json数据
+     *
+     * @param map      封装数据集合
+     * @param response 响应
+     */
     private void writeJson(Map<String, Object> map, HttpServletResponse response) {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json;charset=utf-8");

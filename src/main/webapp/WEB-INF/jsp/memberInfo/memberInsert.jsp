@@ -42,8 +42,8 @@
         <div class="form-group">
             <label for="member-sex" class="col-sm-2 control-label">性别</label>
             <select class="form-control" id="member-sex" name="member-sex">
-                <option name="sex" value="0">男</option>
-                <option name="sex" value="1">女</option>
+                <option name="sex" value="1">男</option>
+                <option name="sex" value="0">女</option>
             </select>
         </div>
         <div class="form-group">
@@ -178,7 +178,7 @@
             window.parent.layer.msg('姓名必须输入，并且为中文！', {icon: 5});
             return false;
         }
-        if(validChinese(memberNameVal) === false){
+        if (validChinese(memberNameVal) === false) {
             $("#member-name").focus();
             $("#member-name").css('border', '2px solid red');
             window.parent.layer.msg('必须为中文！', {icon: 5});
@@ -199,7 +199,7 @@
             window.parent.layer.msg('班级必须输入，并且为中文！', {icon: 5});
             return false;
         }
-        if(validChinese(memberClassVal) ===false){
+        if (validChinese(memberClassVal) === false) {
             $("#member-class").focus();
             $("#member-class").css('border', '2px solid red');
             window.parent.layer.msg('班级必须全部为中文！', {icon: 5});
@@ -207,7 +207,7 @@
         return true;
     }
 
-    function validChinese(strVal){
+    function validChinese(strVal) {
         var reg = /^[\u4E00-\u9FA5]+$/;
         return reg.test(strVal);
     }

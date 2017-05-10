@@ -10,7 +10,9 @@ import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.service.interfaces.IPunchRecordService;
 import com.suny.association.utils.ConversionUtil;
 import com.suny.association.utils.JsonResult;
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -120,10 +122,13 @@ public class ApplicationController extends BaseController {
      *
      * @return 主页面
      */
-    @RequiresPermissions("apply:read")
     @SystemControllerLog(description = "查看异议考勤页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {
+        Subject subject = SecurityUtils.getSubject();
+        if(subject.isPermitted("apply:read")){
+            System.out.println("有权限");
+        }
         return "/punchLog/application/messageList";
     }
 }

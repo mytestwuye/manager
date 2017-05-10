@@ -48,11 +48,11 @@ public class LoginRealm extends AuthorizingRealm {
     }
 
     /**
-     * 授权，验证权限
+     * 授权，获取登录用户的所有权限跟角色
      */
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {
-        System.out.println("进入用户权限验证doGetAuthorizationInfo()方法");
+        logger.info("=============进入用户权限跟角色获取doGetAuthorizationInfo()方法=========");
         com.suny.association.pojo.po.Account token = accountService.queryByName((String) SecurityUtils.getSubject().getPrincipal());
         /* 等到账号的角色   */
         Integer roleId = token.getAccountRoles().getRoleId();
@@ -68,19 +68,23 @@ public class LoginRealm extends AuthorizingRealm {
         /*   根据用户id去查询权限(permission),放入到Authorization里面    */
         Set<String> permissions = new HashSet<>();
         List<PermissionAllot> permissionAllotList = permissionAllotService.queryByRoleId(roleId);
-        //  防止角色没有权限导致数据下标溢出
+        //  首先进行判断，防止角色没有权限导致数据下标溢出
         if (permissionAllotList.size() > 0) {
             List<Permission> permissionArrayList = permissionAllotList.get(0).getPermissionArrayList();
             permissions.addAll(permissionArrayList.stream().map(Permission::getpermissionName).collect(Collectors.toList()));
-                  /*  把权限放进SimpleAuthorizationInfo里面去   */
+                  /*  把用户的所有权限放进SimpleAuthorizationInfo里面去   */
             info.setStringPermissions(permissions);
+            for (int i = 0; i < permissionArrayList.size(); i++) {
+                logger.info("登录用户拥有的权限:" + permissionAllotList.get(0).getPermissionArrayList().get(i).getpermissionName());
+            }
+
         }
-        logger.info("授权认证被执行");
+        logger.info("=========================授权认证被执行=====================");
         return info;
     }
 
     /**
-     * 登陆验证
+     * 登陆验证，验证账号密码是否正确
      */
     @Override
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken) throws AuthenticationException {

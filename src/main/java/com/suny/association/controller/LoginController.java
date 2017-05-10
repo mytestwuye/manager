@@ -77,6 +77,7 @@ public class LoginController {
                                   @RequestParam("password") String password,
                                   @RequestParam("formCode") String formCode,
                                   HttpServletRequest request) {
+        /*   方便本机测试，把验证码验证环节去除      */
 //        String sessionCode = (String) request.getSession().getAttribute("code");
        /* if (!matchCode(formCode, sessionCode)) {
             return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);
@@ -152,10 +153,9 @@ public class LoginController {
      * 登录成功后的操作
      *
      * @return 管理员中心
-     * @throws Exception 不知道会发生什么异常
      */
     @RequestMapping(value = "/goAdminPage.html", method = RequestMethod.GET)
-    public ModelAndView goAdminPage() throws Exception {
+    public ModelAndView goAdminPage() {
         return new ModelAndView("adminManager");
     }
 

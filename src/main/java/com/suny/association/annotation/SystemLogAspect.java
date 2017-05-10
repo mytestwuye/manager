@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 import java.lang.reflect.Method;
 
 /**
- * Comments:  切点类
+ * Comments:  系统操作日志切点类
  * Author:   孙建荣
  * Create Date: 2017/04/25 13:42
  */
@@ -96,10 +96,13 @@ public class SystemLogAspect {
             operationLog.setOperationStatus(true);
              /*   操作ip*/
             operationLog.setOperationIp(LoginUtils.getClientIpAdder(request));
+            /*   没有网络时则注释从网络获取ip，直接固定一个ip写入数据库     */
 //            operationLog.setOperationIp("182.85.141.54");
              /*  操作地址 */
             //noinspection ConstantConditions
             operationLog.setOperationAddress(LoginUtils.getGeneralLocation(ip).getAddress());
+
+            /*   没有网络时则注释从网络获取物理地址，直接固定一个物理地址写入数据库     */
 //            operationLog.setOperationAddress("江西省南昌市南昌县创新二路");
 
             System.out.println("准备向数据库插入操作记录");
@@ -117,6 +120,12 @@ public class SystemLogAspect {
     }
 
 
+    /**
+     * 业务逻辑层抛异常日志类
+     *
+     * @param joinPoint 切点
+     * @param e         抛出异常的信息
+     */
     @AfterThrowing(pointcut = "serviceAspect()", throwing = "e")
     public void doAfterThrowing(JoinPoint joinPoint, Throwable e) {
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
@@ -186,7 +195,7 @@ public class SystemLogAspect {
      *
      * @param joinPoint 切点
      * @return 方法描述
-     * @throws ClassNotFoundException   类不能找到异常
+     * @throws ClassNotFoundException 类不能找到异常
      */
     private static String getServiceMethodDescription(JoinPoint joinPoint) throws ClassNotFoundException {
         String targetName = joinPoint.getTarget().getClass().getName();

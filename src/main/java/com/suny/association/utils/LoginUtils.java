@@ -55,9 +55,11 @@ public class LoginUtils {
                     jsonData += data;
                 }
                 return parseJsonDate(jsonData);
-            } catch (IOException e) {
-                logger.error("发生了输入输出流异常");
-                e.printStackTrace();
+            } catch (UnknownHostException e) {
+                logger.error("无法获取hosts地址，检查是否有网络连接");
+            } catch (IOException e1) {
+                logger.error("发生输入输出流异常");
+                e1.printStackTrace();
             }
         }
         return null;
@@ -188,6 +190,12 @@ public class LoginUtils {
         return ip;
     }
 
+    /**
+     * 获取操作系统版本
+     *
+     * @param userAgent 浏览器userAgent标示
+     * @return 模糊匹配操作系统版本
+     */
     public static String getOSVersion(String userAgent) {
         if (Objects.equals(userAgent, "") || userAgent == null) {
             return "UnKnown";

@@ -55,7 +55,7 @@
     <p id="error1"></p> <!-- 用户名密码错误提示 -->
     <p id="error2"></p> <!-- 验证码错误提示 -->
     <p id="error3"></p> <!-- 用户名提示 -->
-    <a href="javascript:;" id="loginBtn">登录</a>
+    <button type="button" href="javascript:;" id="loginBtn" onclick="checkForm()">登录</button>
     <a id="forget" href="#">忘记密码 ?</a>
     <a id="set_username" href="#">学号登录入口 ?</a>
 </div>
@@ -149,11 +149,6 @@
     }
 
 
-    //点击登陆按钮时触发的时间
-    $('#loginBtn').click(function () {
-        checkForm();
-    });
-
     function checkForm() {
         userNameValue = userName.val();
         passWordValue = passWord.val();
@@ -183,32 +178,49 @@
         checkCode();
 
     }
+
+    var loginBtn = $("#loginBtn");
     //验证码验证
     function checkCode() {
-        $.ajax({
-            url: '${basePath}/code/checkCode.do',
-            type: 'post',
-            data: {formCode: codeValue},
-            success: function (result) {
-                if (result.status == 991) {
-                    layer.msg('验证码错了。。', {icon: 5});
-                    error2.text('验证码错误');
-                    emptyInputValue(code);
-                    code.focus();
-                    code.css('border', '2px solid red');
-                    refresh();
-                    return false;
+        var flag = 1;
+        if (flag) {
+            $.ajax({
+                url: '${basePath}/code/checkCode.do',
+                type: 'post',
+                data: {formCode: codeValue},
+                beforeSend: function () {
+                    flag = 0;
+//                    $("#loginBtn").unbind();
+//                    $("#loginBtn").removeAttr("onclick");
+                    loginBtn.attr("disabled", "true");
+                    loginBtn.text("登录验证中");
+                },
+                success: function (result) {
+                    if (result.status == 991) {
+                        layer.msg('验证码错了。。', {icon: 5});
+                        error2.text('验证码错误');
+                        emptyInputValue(code);
+                        code.focus();
+                        code.css('border', '2px solid red');
+                        refresh();
+                        return false;
+                    }
+                    else {
+                        // 现在开始发送登陆请求
+                        sendLoginInfo();
+                    }
+                    flag = 1;
+                    loginBtn.text("登录");
+                    loginBtn.removeAttr("disabled");
+                },
+                error: function () {
+                    loginBtn.text("登录");
+                    loginBtn.removeAttr("disabled");
+                    layer.msg('服务器开小差了,出了点小问题。。', {icon: 5});
                 }
-                else {
-                    // 现在开始发送登陆请求
-                    sendLoginInfo();
-                }
+            });
 
-            },
-            error: function () {
-                layer.msg('服务器开小差了,出了点小问题。。', {icon: 5});
-            }
-        });
+        }
     }
 
     function sendLoginInfo() {
@@ -217,43 +229,57 @@
             password: passWordValue,
             formCode: codeValue
         };
-
-        $.ajax({
-            type: "post",
-            url: "${basePath}/base/loginAction.json",
-            data: param,
-            dataType: "json",
-            success: function (result) {
-                var statusCode = result.status;
-                var errorCode = result.errorCode;
-                if (statusCode == 995) {
-                    //登录成功
-                    layer.msg('登陆成功了', function () {
-                        layer.msg('正在进入主页面', {
-                            icon: 16
-                            , shade: 0.01
+        var flag = 1;
+        if (flag) {
+            $.ajax({
+                type: "post",
+                url: "${basePath}/base/loginAction.json",
+                data: param,
+                dataType: "json",
+                beforeSend: function () {
+                    flag = 0;
+                    loginBtn.attr("disabled", "true");
+                    loginBtn.text("登录验证中");
+                },
+                success: function (result) {
+                    var statusCode = result.status;
+                    var errorCode = result.errorCode;
+                    if (statusCode == 995) {
+                        loginBtn.attr("disabled", "true");
+                        //登录成功
+                        layer.msg('登陆成功了', function () {
+                            layer.msg('正在进入主页面', {
+                                icon: 16
+                                , shade: 0.01
+                            });
+                           goAdminPage();
                         });
-                        setTimeout("goAdminPage()", 300);
-                    });
 
-                } else if (errorCode == 996 || statusCode == 996 || statusCode == 1) {
-                    layer.msg('用户名或者密码错误。。', {icon: 5});
-                    error1.text('用户名或密码错误');
-                    emptyInputValue(code);
-                    redStyleWarn(userName);
-                    redStyleWarn(passWord);
-                    refresh();
-                } else if (errorCode == 998) {
-                    layer.msg('您已经登录过了，请不要重复登录,点击强制退出清除您的会话', {icon: 5});
+                    } else if (errorCode == 996 || statusCode == 996 || statusCode == 1) {
+                        layer.msg('用户名或者密码错误。。', {icon: 5});
+                        error1.text('用户名或密码错误');
+                        emptyInputValue(code);
+                        redStyleWarn(userName);
+                        redStyleWarn(passWord);
+                        refresh();
+                    } else if (errorCode == 998) {
+                        layer.msg('您已经登录过了，请不要重复登录,点击强制退出清除您的会话', {icon: 5});
+                    }
+                    else {
+                        layer.msg('检查下你的用户名跟密码尝试重新登录', {icon: 5});
+                    }
+                    flag = 1;
+                    loginBtn.text("登录");
+                    loginBtn.removeAttr("disabled");
+                },
+                error: function () {
+                    loginBtn.text("登录");
+                    loginBtn.removeAttr("disabled");
+                    layer.msg('服务器开小差了,出了点小问题。。', {icon: 5});
                 }
-                else {
-                    layer.msg('登录失败,服务器出了点小插曲', {icon: 5});
-                }
-            },
-            error: function () {
-                layer.msg('调用失败');
-            }
-        });
+            });
+
+        }
     }
 
     /**

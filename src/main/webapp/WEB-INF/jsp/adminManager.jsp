@@ -224,6 +224,8 @@
                         <img src="${basePath}/images/avatar.jpg"/>
                     </div>
                     <div class="sp-info">
+                        <shiro:principal/>
+                        <%--<shiro:user></shiro:user>--%>
                         【${member.memberRoles.memberRoleName}】 ${member.memberName}，您好！
                         <i class="zmdi zmdi-caret-down"></i>
                     </div>

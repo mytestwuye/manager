@@ -94,26 +94,26 @@
                 var accountEmailVal = $("#account_email").val();
                 var accountPasswordVal = $("#account_password").val();
                 var accountNameVal = $("#account_name").val();
-                if (accountNameVal == '' || accountNameVal.length <6){
+                if (accountNameVal == '' || accountNameVal.length < 6) {
                     //noinspection JSDuplicatedDeclaration
-                    var nowLength=parseInt(accountNameVal.length);
+                    var nowLength = parseInt(accountNameVal.length);
                     //noinspection JSDuplicatedDeclaration
-                    var mustLength=6-nowLength;
-                    layer.alert('用户名必须为英文，并且长度大于<span style="color:red;font-size: 22px">6</span>位,你当前输入的号码长度为为【<span style="color:red;font-size: 22px">'+nowLength+'</span>】位，至少还需要输入【<span style="color:red;font-size: 22px">'+mustLength+'</span>】位', {icon: 5});
+                    var mustLength = 6 - nowLength;
+                    layer.alert('用户名必须为英文，并且长度大于<span style="color:red;font-size: 22px">6</span>位,你当前输入的号码长度为为【<span style="color:red;font-size: 22px">' + nowLength + '</span>】位，至少还需要输入【<span style="color:red;font-size: 22px">' + mustLength + '</span>】位', {icon: 5});
                     $("#account_name").focus();
                     $('#account_name').css('border', '2px solid red');
                     return false;
                 }
                 else if (accountPhoneVal == '' || !/^1[34578]\d{9}$/.test(accountPhoneVal)) {
                     //noinspection JSDuplicatedDeclaration
-                    var nowLength=parseInt(accountPhoneVal.length);
+                    var nowLength = parseInt(accountPhoneVal.length);
                     //noinspection JSDuplicatedDeclaration
-                    var mustLength=11-nowLength;
+                    var mustLength = 11 - nowLength;
                     $("#account_password").css('border', '');
                     $('#account_phone').focus();
                     $("#account_phone").css('border', '2px solid red');
-                    if(mustLength>0){
-                        layer.alert("手机号码必填,格式为【11位以13，14，15，17，18开头】的手机号码,你当前输入的号码长度为为【<span style='color:red;font-size: 22px'>"+nowLength+"</span>】位，还需要输入【<span style='color:red;font-size: 22px'>"+mustLength+"</span>】位", {icon: 5});
+                    if (mustLength > 0) {
+                        layer.alert("手机号码必填,格式为【11位以13，14，15，17，18开头】的手机号码,你当前输入的号码长度为为【<span style='color:red;font-size: 22px'>" + nowLength + "</span>】位，还需要输入【<span style='color:red;font-size: 22px'>" + mustLength + "</span>】位", {icon: 5});
                     }
                     else {
                         layer.alert('手机号码格式有误', {icon: 5});
@@ -127,64 +127,80 @@
                     layer.alert('邮箱格式不正确', {icon: 5});
                     return false;
                 }
-                $.ajax({
-                    type: 'post',
-                    cache: false,
-                    dataType: 'json',  //数据传输格式
-                    contentType: "application/json ; charset=utf-8",
-                    url: '${basePath}/account/insert.json',
-                    data: JSON.stringify({
-                        accountName: accountNameVal,
-                        accountPassword: accountPasswordVal,
-                        accountPhone: accountPhoneVal,
-                        accountEmail: accountEmailVal,
-                        accountRoles: {
-                            roleId: selectRoleOptionVal
+                var flag = 1;
+                var submitBtn = $("#submit");
+                if (flag) {
+                    $.ajax({
+                        type: 'post',
+                        cache: false,
+                        dataType: 'json',  //数据传输格式
+                        contentType: "application/json ; charset=utf-8",
+                        url: '${basePath}/account/insert.json',
+                        data: JSON.stringify({
+                            accountName: accountNameVal,
+                            accountPassword: accountPasswordVal,
+                            accountPhone: accountPhoneVal,
+                            accountEmail: accountEmailVal,
+                            accountRoles: {
+                                roleId: selectRoleOptionVal
+                            },
+                            accountStatus: selectAccountStatusOptionVal
+                        }),
+                        beforeSend: function () {
+                            flag = 0;
+                            submitBtn.attr("disabled", "true");
+                            submitBtn.text("提交中，请勿重复提交");
                         },
-                        accountStatus: selectAccountStatusOptionVal
-                    }),
-                    success: function (result) {
-                        $("#account_name").css('border', '');
-                        $("#account_email").css('border', '');
-                        $("#account_phone").css('border', '');
-                        var statusCode = result.status;
-                        if (statusCode == 202) {
-                            //当你在iframe页面关闭自身时
-                            window.parent.layer.alert('必要字段为空，请检查', {icon: 6});
-                        }
-                        else if (statusCode == 108) {
-                            window.parent.layer.alert('用户名重复，请重新填写', {icon: 6});
-                            $("#account_name").focus();
-                            $('#account_name').css('border', '2px solid red');
-                        }
-                        else if (statusCode == 107) {
-                            window.parent.layer.alert('手机号码重复，请重新填写', {icon: 6});
+                        success: function (result) {
                             $("#account_name").css('border', '');
-                            $("#account_phone").focus();
-                            $('#account_phone').css('border', '2px solid red');
-                        }
-                        else if (statusCode == 106) {
-                            window.parent.layer.alert('邮箱重复，请重新填写', {icon: 6});
-                            $("#account_phone").css('border', '');
-                            $("#account_email").focus();
-                            $('#account_email').css('border', '2px solid red');
-                        }
-                        else if (result.status == 102) {
                             $("#account_email").css('border', '');
-                            //当你在iframe页面关闭自身时
-                            window.parent.layer.alert('新增成功了，刷新下页面看效果吧', {icon: 6});
-                            var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
-                            parent.layer.close(index); //再执行关闭
-                            refreshTable();
+                            $("#account_phone").css('border', '');
+                            var statusCode = result.status;
+                            if (statusCode == 202) {
+                                //当你在iframe页面关闭自身时
+                                window.parent.layer.alert('必要字段为空，请检查', {icon: 6});
+                            }
+                            else if (statusCode == 108) {
+                                window.parent.layer.alert('用户名重复，请重新填写', {icon: 6});
+                                $("#account_name").focus();
+                                $('#account_name').css('border', '2px solid red');
+                            }
+                            else if (statusCode == 107) {
+                                window.parent.layer.alert('手机号码重复，请重新填写', {icon: 6});
+                                $("#account_name").css('border', '');
+                                $("#account_phone").focus();
+                                $('#account_phone').css('border', '2px solid red');
+                            }
+                            else if (statusCode == 106) {
+                                window.parent.layer.alert('邮箱重复，请重新填写', {icon: 6});
+                                $("#account_phone").css('border', '');
+                                $("#account_email").focus();
+                                $('#account_email').css('border', '2px solid red');
+                            }
+                            else if (result.status == 102) {
+                                $("#account_email").css('border', '');
+                                //当你在iframe页面关闭自身时
+                                window.parent.layer.alert('新增成功了，刷新下页面看效果吧', {icon: 6});
+                                var index = parent.layer.getFrameIndex(window.name); //先得到当前iframe层的索引
+                                parent.layer.close(index); //再执行关闭
+                                refreshTable();
+                            }
+                            else {
+                                window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
+                            }
+                            flag = 0;
+                            submitBtn.removeAttr("disabled");
+                            submitBtn.text("点击添加");
+                        },
+                        error: function () {
+                            flag = 0;
+                            submitBtn.removeAttr("disabled");
+                            submitBtn.text("点击添加");
+                            window.parent.layer.msg('系统异常！', {icon: 5});
                         }
-                        else {
-                            window.parent.layer.msg('失败了。。你再检查下哪里！', {icon: 5});
-                        }
-                    },
-                    error: function () {
-                        window.parent.layer.msg('系统异常！', {icon: 5});
-                    }
-                });
+                    });
+                }
+
             }
     );
 

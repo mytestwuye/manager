@@ -2,7 +2,6 @@ package com.suny.association.exceptionsolver;
 
 import com.suny.association.exception.BusinessException;
 import com.suny.association.utils.JsonResult;
-import org.springframework.web.servlet.HandlerExceptionResolver;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.io.IOException;
@@ -15,9 +14,8 @@ import java.util.Map;
  * Author:   孙建荣
  * Create Date: 2017/03/08 18:18
  */
-public class SimpleMappingExceptionSolver implements HandlerExceptionResolver {
+public class SimpleMappingExceptionSolver {
     
-    @Override
     public ModelAndView resolveException(javax.servlet.http.HttpServletRequest request, javax.servlet.http.HttpServletResponse response, Object handler, Exception ex) {
         
         //首先先判断是否为ajax请求，不是的话使用jsp返回

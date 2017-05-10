@@ -6,6 +6,7 @@
   Time: 22:21
   To change this template use File | Settings | File Templates.
 --%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
@@ -25,7 +26,7 @@
     <link href="${basePath}/plugins/bootstrap-table-1.11.0/bootstrap-editable.css"
           rel="stylesheet"/>
     <style>
-        .account-status{
+        .account-status {
             font-size: 12px;
         }
     </style>
@@ -37,9 +38,11 @@
         <button id="btn_add" type="button" class="btn btn-default btn-info">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
         </button>
-        <button id="btn_edit" type="button" class="btn btn-default btn-warning">
-            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
-        </button>
+        <shiro:hasPermission name="account:update">
+            <button id="btn_edit" type="button" class="btn btn-default btn-warning">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+            </button>
+        </shiro:hasPermission>
         <button id="btn_delete" type="button" class="btn btn-default btn-danger">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
         </button>
@@ -149,8 +152,15 @@
                         formatter: "accountStatusFormatter",
                         align: "center"
                     },
-                    {field: "accountRoles", title: "账号角色", sortable: true, order: "desc", formatter: "rolesFormatter", align: "center"},
-                    {field: "accountMember", title: "对应成员", formatter:'accountMember', align: "center"}
+                    {
+                        field: "accountRoles",
+                        title: "账号角色",
+                        sortable: true,
+                        order: "desc",
+                        formatter: "rolesFormatter",
+                        align: "center"
+                    },
+                    {field: "accountMember", title: "对应成员", formatter: 'accountMember', align: "center"}
 
                 ],
                 onClickRow: function (row, $element) {
@@ -188,12 +198,11 @@
         }
     }
 
-    function accountMember(value,row,index){
+    function accountMember(value, row, index) {
         //noinspection JSUnresolvedVariable
-        if(row.accountMember == null)return '<p class="btn btn-primary">暂无绑定成员</p>';
-       return row.accountMember.memberName;
+        if (row.accountMember == null)return '<p class="btn btn-primary">暂无绑定成员</p>';
+        return row.accountMember.memberName;
     }
-
 
 
     function memberFormatter(value, row, index) {
@@ -252,7 +261,6 @@
         layer.open({
             type: 2,
             area: ['300px', '620px'],
-            fixed: true, //不固定
             maxmin: true,
             content: '${basePath}/account/update.html/' + accountId
         });

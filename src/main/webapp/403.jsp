@@ -5,6 +5,7 @@
   Time: 22:36
   To change this template use File | Settings | File Templates.
 --%>
+<%@ page session="false" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
