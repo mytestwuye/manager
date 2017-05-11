@@ -77,7 +77,6 @@ public class LoginRealm extends AuthorizingRealm {
             for (int i = 0; i < permissionArrayList.size(); i++) {
                 logger.info("登录用户拥有的权限:" + permissionAllotList.get(0).getPermissionArrayList().get(i).getpermissionName());
             }
-
         }
         logger.info("=========================授权认证被执行=====================");
         return info;

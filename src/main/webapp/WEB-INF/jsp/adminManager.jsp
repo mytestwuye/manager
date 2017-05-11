@@ -224,7 +224,7 @@
                         <img src="${basePath}/images/avatar.jpg"/>
                     </div>
                     <div class="sp-info">
-                        <shiro:principal/>
+                        <%--<shiro:principal/>--%>
                         <%--<shiro:user></shiro:user>--%>
                         【${member.memberRoles.memberRoleName}】 ${member.memberName}，您好！
                         <i class="zmdi zmdi-caret-down"></i>
@@ -259,33 +259,23 @@
                 <li class="sub-menu system_menus system_1 0">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts-list"></i> 协会信息管理</a>
                     <ul>
-                        <shiro:hasPermission name="member:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('协会成员信息', '${basePath}/member/memberManager.html');">协会成员信息</a>
-                            </li>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="member:role:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('协会角色管理', '${basePath}/member/role/index.html');">协会角色管理</a>
-                            </li>
-                        </shiro:hasPermission>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('协会成员信息', '${basePath}/member/memberManager.html');">协会成员信息</a>
+                        </li>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('协会角色管理', '${basePath}/member/role/index.html');">协会角色管理</a>
+                        </li>
 
-                        <shiro:hasPermission name="punch:log:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('考勤记录查看', '${basePath}/punchLog/index.html');">考勤记录查看</a>
-                            </li>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="apply:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('异议考勤审批', '${basePath}/punchLog/applicationMessage/index.html');">异议考勤审批</a>
-                            </li>
-                        </shiro:hasPermission>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('考勤记录查看', '${basePath}/punchLog/index.html');">考勤记录查看</a>
+                        </li>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('异议考勤审批', '${basePath}/punchLog/applicationMessage/index.html');">异议考勤审批</a>
+                        </li>
 
-                        <shiro:hasPermission name="apply:result:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('考勤审批记录', '${basePath}/punchLog/applyForResult/index.html');">考勤审批记录</a>
-                            </li>
-                        </shiro:hasPermission>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('考勤审批记录', '${basePath}/punchLog/applyForResult/index.html');">考勤审批记录</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="sub-menu system_menus system_1 0">
@@ -302,32 +292,24 @@
                 <li class="sub-menu system_menus system_1 3">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 账号信息管理</a>
                     <ul>
-                        <shiro:hasPermission name="account:role:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('账号角色管理', '${basePath}/account/role/index.html');">账号角色管理</a>
-                            </li>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="account:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('账号信息管理', '${basePath}/account/accountManager.html');">账号信息管理</a>
-                            </li>
-                        </shiro:hasPermission>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('账号角色管理', '${basePath}/account/role/index.html');">账号角色管理</a>
+                        </li>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('账号信息管理', '${basePath}/account/accountManager.html');">账号信息管理</a>
+                        </li>
                     </ul>
                 </li>
                 <li class="sub-menu system_menus system_1 6">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-lock-outline"></i> 权限资源管理</a>
                     <ul>
-                        <shiro:hasPermission name="system:permission:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('权限管理', '${basePath}/system/permission/index.html');">角色权限管理</a>
-                            </li>
-                        </shiro:hasPermission>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('权限管理', '${basePath}/system/permission/index.html');">角色权限管理</a>
+                        </li>
 
-                        <shiro:hasPermission name="system:permission:allot:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('权限分配', '${basePath}/system/permission/allot/index.html');">角色权限分配</a>
-                            </li>
-                        </shiro:hasPermission>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('权限分配', '${basePath}/system/permission/allot/index.html');">角色权限分配</a>
+                        </li>
 
                     </ul>
                 </li>
@@ -338,16 +320,12 @@
                                href="javascript:Tab.addTab('公共码表', '${basePath}/manage/coder/index');">公共码表</a>
                         </li>
 
-                        <shiro:hasPermission name="session:log:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('登录日志', '${basePath}/session/index.html');">登录日志</a>
-                            </li>
-                        </shiro:hasPermission>
-                        <shiro:hasPermission name="operation:log:read">
-                            <li><a class="waves-effect"
-                                   href="javascript:Tab.addTab('操作日志', '${basePath}/operations/log/index.html');">操作日志</a>
-                            </li>
-                        </shiro:hasPermission>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('登录日志', '${basePath}/session/index.html');">登录日志</a>
+                        </li>
+                        <li><a class="waves-effect"
+                               href="javascript:Tab.addTab('操作日志', '${basePath}/operations/log/index.html');">操作日志</a>
+                        </li>
                         <li><a class="waves-effect"
                                href="javascript:Tab.addTab('键值设置', '${basePath}/manage/map/index');">键值设置</a>
                         </li>

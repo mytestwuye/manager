@@ -2,7 +2,6 @@ package com.suny.association.controller;
 
 import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.enums.BaseEnum;
-import com.suny.association.exception.BusinessException;
 import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.interfaces.IAccountService;
@@ -10,8 +9,6 @@ import com.suny.association.service.interfaces.ILoginHistoryService;
 import com.suny.association.utils.EncryptUtil;
 import com.suny.association.utils.JsonResult;
 import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -82,10 +79,15 @@ public class LoginController {
        /* if (!matchCode(formCode, sessionCode)) {
             return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);
         }*/
-        authAction(request, username, password);
-        saveLoginInfo(request, username, true);
-        saveLoginUser(request, username);
-        return JsonResult.successResult(BaseEnum.LOGIN_SYSTEM);
+        boolean authStatus = authAction(request, username, password);
+        if (authStatus) {
+            saveLoginInfo(request, username, true);
+            saveLoginUser(request, username);
+            return JsonResult.successResult(BaseEnum.LOGIN_SYSTEM);
+        }
+        saveLoginInfo(request, username, false);
+        return JsonResult.failResult(BaseEnum.LOGIN_FAILURE);
+
     }
 
     /**
@@ -119,8 +121,8 @@ public class LoginController {
      * @param username 用户名
      * @param password 密码
      */
-    private void authAction(HttpServletRequest request, String username, String password) {
-        UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
+    private boolean authAction(HttpServletRequest request, String username, String password) {
+        /*UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
         Subject currentUser = SecurityUtils.getSubject();
         //如果还没有登录就 //使用shiro来验证
         if (!currentUser.isAuthenticated()) {
@@ -132,7 +134,11 @@ public class LoginController {
         } else {
             saveLoginInfo(request, username, false);
             throw new BusinessException(BaseEnum.PASS_ERROR);
-        }
+        }*/
+        /*    手动写权限控制，注释shiro代码   */
+        Account account = accountService.queryByName(username);
+        return account != null && account.getAccountPassword().equals(EncryptUtil.encryptToMD5(password));
+
     }
 
     /**

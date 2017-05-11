@@ -7,44 +7,14 @@
         <welcome-file>/index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!--<servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.jpg</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.png</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.js</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>default</servlet-name>
-        <url-pattern>*.css</url-pattern>
-    </servlet-mapping>-->
-
-    <!-- shiro过滤器 -->
     <filter>
-        <filter-name>shiroFilter</filter-name>
-        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-        <init-param>
-            <param-name>targetFilterLifecycle</param-name>
-            <param-value>true</param-value>
-        </init-param>
+        <filter-name>PermissionFilter</filter-name>
+        <filter-class>com.suny.association.Filter.PermissionFilter</filter-class>
     </filter>
     <filter-mapping>
-        <filter-name>shiroFilter</filter-name>
-        <url-pattern>*.html</url-pattern>
-        <url-pattern>*.jsp</url-pattern>
-        <url-pattern>*.json</url-pattern>
-        <url-pattern>*.do</url-pattern>
-        <dispatcher>REQUEST</dispatcher>
-        <dispatcher>FORWARD</dispatcher>
-        <dispatcher>INCLUDE</dispatcher>
-        <dispatcher>ERROR</dispatcher>
+        <filter-name>PermissionFilter</filter-name>
+        <url-pattern>/base/loginPage.html</url-pattern>
     </filter-mapping>
-
 
 
     <!--先执行spring容器，切记-->

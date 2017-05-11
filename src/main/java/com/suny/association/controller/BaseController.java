@@ -1,16 +1,8 @@
 package com.suny.association.controller;
 
-import com.suny.association.pojo.po.Member;
 import com.suny.association.utils.JsonResult;
-import com.suny.association.utils.LoginUtils;
-import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authz.AuthorizationException;
 import org.apache.shiro.authz.UnauthorizedException;
-import org.apache.shiro.cache.Cache;
-import org.apache.shiro.cache.CacheManager;
-import org.apache.shiro.mgt.RealmSecurityManager;
-import org.apache.shiro.realm.Realm;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -19,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -40,7 +31,7 @@ public abstract class BaseController {
      */
     @ExceptionHandler({UnauthorizedException.class, AuthorizationException.class})
     public String authorizationException(HttpServletRequest request, HttpServletResponse response) {
-        Subject subject = SecurityUtils.getSubject();
+        /*Subject subject = SecurityUtils.getSubject();
         logger.info("是否认证:" + subject.isAuthenticated());
         logger.info("是否记住:" + subject.isRemembered());
         logger.info("用户信息是否为空" + subject.getPrincipal());
@@ -59,7 +50,8 @@ public abstract class BaseController {
             return null;
         } else {
             return "redirect:/403.jsp";
-        }
+        }*/
+        return null;
     }
 
 
