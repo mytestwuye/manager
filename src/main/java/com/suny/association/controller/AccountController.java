@@ -9,10 +9,7 @@ import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.service.interfaces.IRolesService;
 import com.suny.association.utils.JsonResult;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -184,35 +181,35 @@ public class AccountController extends BaseController {
     @RequestMapping(value = "/update.html/{id}", method = RequestMethod.GET)
     public ModelAndView updatePage(@PathVariable("id") Integer id, ModelAndView modelAndView) {
         //    获取shiro认证后的身份信息
-        Subject subject = SecurityUtils.getSubject();
-        if (subject.isPermitted("account:read")) {
-            System.out.println("有【account:read 读取账号信息页面】这个权限");
+//        Subject subject = SecurityUtils.getSubject();
+//        if (subject.isPermitted("account:read")) {
+        System.out.println("有【account:read 读取账号信息页面】这个权限");
               /*         这里是项目的代码，非测试代码             */
-            Account account = accountService.queryById(id);
-            List<Member> memberList = memberService.queryAll();
-            List<Roles> rolesList = rolesService.queryAll();
-            modelAndView.addObject("account", account);
-            modelAndView.addObject("memberList", memberList);
-            modelAndView.addObject("rolesList", rolesList);
-            modelAndView.setViewName("/accountInfo/accountUpdate");
-            return modelAndView;
-        } else {
-            // 没有权限就手动抛出shiro里面的一个没有权限的异常，仅作测试
-            throw new UnauthorizedException();
-        }
+        Account account = accountService.queryById(id);
+        List<Member> memberList = memberService.queryAll();
+        List<Roles> rolesList = rolesService.queryAll();
+        modelAndView.addObject("account", account);
+        modelAndView.addObject("memberList", memberList);
+        modelAndView.addObject("rolesList", rolesList);
+        modelAndView.setViewName("/accountInfo/accountUpdate");
+        return modelAndView;
+//        } else {
+        // 没有权限就手动抛出shiro里面的一个没有权限的异常，仅作测试
+//            throw new UnauthorizedException();
+//        }
     }
 
     @SystemControllerLog(description = "查看账号管理页面")
     @RequestMapping(value = "/accountManager.html", method = RequestMethod.GET)
     public String index() {
         //    获取shiro认证后的身份信息
-        Subject subject = SecurityUtils.getSubject();
+//        Subject subject = SecurityUtils.getSubject();
         //     使用编程式的shiro判断是否有权限，有权限则进入管理页面
-        if (subject.isPermitted("account:read")) {
-            return "accountInfo/accountManager";
-        }
+//        if (subject.isPermitted("account:read")) {
+        return "accountInfo/accountManager";
+//        }
         // 没有权限就手动抛出shiro里面的一个没有权限的异常，仅作测试
-        throw new UnauthorizedException();
+//        throw new UnauthorizedException();
     }
 
 

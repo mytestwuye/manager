@@ -38,11 +38,9 @@
         <button id="btn_add" type="button" class="btn btn-default btn-info">
             <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
         </button>
-        <shiro:hasPermission name="account:update">
-            <button id="btn_edit" type="button" class="btn btn-default btn-warning">
-                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
-            </button>
-        </shiro:hasPermission>
+        <button id="btn_edit" type="button" class="btn btn-default btn-warning">
+            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>修改
+        </button>
         <button id="btn_delete" type="button" class="btn btn-default btn-danger">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
         </button>

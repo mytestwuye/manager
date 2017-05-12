@@ -4,18 +4,28 @@
          id="WebApp_ID" version="3.0">
 
     <welcome-file-list>
-        <welcome-file>/index.jsp</welcome-file>
+        <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <filter>
-        <filter-name>PermissionFilter</filter-name>
-        <filter-class>com.suny.association.Filter.PermissionFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>PermissionFilter</filter-name>
-        <url-pattern>/base/loginPage.html</url-pattern>
-    </filter-mapping>
+    <!--委派Spring管理Filter-->
+    <!-- <filter>
+         <filter-name>DelegatingFilterProxy</filter-name>
+         <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+         <init-param>
+             <param-name>targetBeanName</param-name>
+             <param-value>permissionFilter</param-value>
+             <param-value>loginFilter</param-value>
+         </init-param>
+         <init-param>
+             <param-name>targetFilterLifecycle</param-name>
+             <param-value>true</param-value>
+         </init-param>
+     </filter>
 
+     <filter-mapping>
+         <filter-name>DelegatingFilterProxy</filter-name>
+         <url-pattern>/*</url-pattern>
+     </filter-mapping>-->
 
     <!--先执行spring容器，切记-->
     <context-param>
@@ -25,6 +35,29 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
+
+    <!--判断是否登录过滤器-->
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>com.suny.association.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!--判断是否有权限过滤器-->
+    <filter>
+        <filter-name>permissionFilter</filter-name>
+        <filter-class>com.suny.association.filter.PermissionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>permissionFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+        <url-pattern>*.jsp</url-pattern>
+        <url-pattern>*.json</url-pattern>
+        <url-pattern>*.html</url-pattern>
+    </filter-mapping>
 
 
     <!--编码过滤器-->
