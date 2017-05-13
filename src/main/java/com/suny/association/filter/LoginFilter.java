@@ -31,15 +31,11 @@ public class LoginFilter implements Filter {
         Account account = (Account) request.getSession().getAttribute("account");
         String ext = path.substring(path.lastIndexOf("."));
         if (account != null) {
-            logger.info("登录用户，直接放行,进行操作权限验证");
+            logger.info("登录用户，直接放行,验证过操作权限");
             chain.doFilter(req, resp);
         } else {
             if (path.endsWith("index.jsp") || path.endsWith("/base/loginPage.html")) {
                 logger.info("============用户请求登录页面==================");
-                chain.doFilter(req, resp);
-            } else if (path.endsWith(".css") || path.endsWith(".js") || path.endsWith(".jpg") || path.endsWith(".png")
-                    || path.endsWith("gif")) {
-                logger.info("============请求静态资源==================");
                 chain.doFilter(req, resp);
             } else if (path.endsWith("/403.jsp")) {
                 logger.info("=============没有权限页面=============");

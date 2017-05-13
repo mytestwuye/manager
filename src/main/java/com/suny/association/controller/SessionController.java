@@ -32,7 +32,7 @@ public class SessionController extends BaseController {
         this.loginHistoryService = loginHistoryService;
     }
 
-    @RequestMapping(value = "list.json", method = RequestMethod.GET)
+    @RequestMapping(value = "/list.json", method = RequestMethod.GET)
     @ResponseBody
     public Map<Object, Object> query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
                                      @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {

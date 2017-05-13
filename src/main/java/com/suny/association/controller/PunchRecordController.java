@@ -33,7 +33,7 @@ public class PunchRecordController extends BaseController {
     }
 
     @RequiresPermissions("punch:log:read")
-    @RequestMapping(value = "list.json", method = RequestMethod.GET)
+    @RequestMapping(value = "/list.json", method = RequestMethod.GET)
     @ResponseBody
     public Map query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
                      @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {

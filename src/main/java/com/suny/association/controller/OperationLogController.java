@@ -41,7 +41,7 @@ public class OperationLogController extends BaseController {
      * @return 带查询条件的数据
      */
     @RequiresPermissions("operation:log:read")
-    @RequestMapping(value = "list.json", method = RequestMethod.GET)
+    @RequestMapping(value = "/list.json", method = RequestMethod.GET)
     @ResponseBody
     public Map query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
                      @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {

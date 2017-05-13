@@ -12,6 +12,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
@@ -36,11 +37,10 @@ public class PermissionFilter implements Filter {
     /**
      * 解决过滤器在SpringMVC之前运行
      *
-     * @param filterConfig
-     * @throws ServletException
+     * @param filterConfig 配置属性
      */
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
         ServletContext servletContext = filterConfig.getServletContext();
         ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(servletContext);
         rolesService = (IRolesService) context.getBean("rolesService");
@@ -55,22 +55,27 @@ public class PermissionFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) rep;
         String uri = request.getRequestURI();
         Account account = (Account) request.getSession().getAttribute("account");
+        HttpSession session = request.getSession(false);
+        logger.info("session创建时间:" + session.getCreationTime());
+        logger.info("session上次交互时间:" + session.getLastAccessedTime());
+        logger.info("session最大过期时间:" + session.getMaxInactiveInterval());
+        // session为空则会话过期
         // 如果账号不为空就说明登录过了，是请求操作
         if (account != null) {
-            /* 等到账号的角色   */
+        /* 等到账号的角色   */
             Integer roleId = account.getAccountRoles().getRoleId();
-        /*   根据用户id去查询用户的角色   */
+    /*   根据用户id去查询用户的角色   */
             Roles roles = rolesService.queryById(roleId);
-        /*  构建一个角色集合，我这里一个账号就是对应着一个角色  */
-        /*  把角色放进SimpleAuthorizationInfo里面去   */
-        /*   根据用户id去查询权限(permission),放入到Authorization里面    */
+    /*  构建一个角色集合，我这里一个账号就是对应着一个角色  */
+    /*  把角色放进SimpleAuthorizationInfo里面去   */
+    /*   根据用户id去查询权限(permission),放入到Authorization里面    */
             HashSet<String> permissions = new HashSet<>();
             List<PermissionAllot> permissionAllotList = permissionAllotService.queryByRoleId(roleId);
             //  首先进行判断，防止角色没有权限导致数据下标溢出
             if (permissionAllotList.size() > 0) {
                 List<Permission> permissionArrayList = permissionAllotList.get(0).getPermissionArrayList();
                 permissions.addAll(permissionArrayList.stream().map(Permission::getpermissionName).collect(Collectors.toList()));
-                  /*  把用户的所有权限放进SimpleAuthorizationInfo里面去   */
+              /*  把用户的所有权限放进SimpleAuthorizationInfo里面去   */
 
                 AccessPermission accessPermission = accessPermissionService.queryByName(uri);
                 if (accessPermission == null) {
@@ -78,24 +83,27 @@ public class PermissionFilter implements Filter {
                     chain.doFilter(req, rep);
                 } else {
                     String permission = accessPermission.getAccessPermission();
-                    for (int i = 0; i < permissionArrayList.size(); i++) {
-                        if (permission.equals(permissionArrayList.get(i).getpermissionName())) {
-                            logger.info("用户有这个权限，放行");
-                            chain.doFilter(req, rep);
-                            break;
-                        } else {
-                            logger.warn("没有这个权限");
-                            response.sendRedirect("/403.jsp");
-                        }
+                    boolean hasPermission = false;
+                    for (Permission permission1 : permissionArrayList) {
+                        hasPermission = permission1.getpermissionName().equals(permission);
+                        if (hasPermission) break;
+                    }
+                    if (hasPermission) {
+                        logger.info("用户有这个权限，放行");
+                        chain.doFilter(req, rep);
+                    } else {
+                        logger.warn("没有访问这个操作的权限");
+                        response.sendRedirect("/403.jsp");
                     }
                 }
             } else {
-                logger.error("用户没有权限访问这个页面");
-                response.sendRedirect("/403.jsp");
+                logger.error("用户没有任何操作权限");
+                response.sendRedirect(request.getContextPath() + "/403.jsp");
             }
+        } else {
+            logger.info("===============不是操作页面，直接放行================");
+            chain.doFilter(req, rep);
         }
-        logger.info("===============不是操作页面，直接放行================");
-        chain.doFilter(req, rep);
 
     }
 

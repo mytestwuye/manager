@@ -37,15 +37,6 @@
     </listener>
 
 
-    <!--判断是否登录过滤器-->
-    <filter>
-        <filter-name>loginFilter</filter-name>
-        <filter-class>com.suny.association.filter.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>loginFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
     <!--判断是否有权限过滤器-->
     <filter>
         <filter-name>permissionFilter</filter-name>
@@ -57,6 +48,16 @@
         <url-pattern>*.jsp</url-pattern>
         <url-pattern>*.json</url-pattern>
         <url-pattern>*.html</url-pattern>
+    </filter-mapping>
+
+    <!--判断是否登录过滤器-->
+    <filter>
+        <filter-name>loginFilter</filter-name>
+        <filter-class>com.suny.association.filter.LoginFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>loginFilter</filter-name>
+        <url-pattern>/*</url-pattern>
     </filter-mapping>
 
 
