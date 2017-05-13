@@ -28,12 +28,12 @@ public class CodeController {
     private char[] codeSequence = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
             'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W',
             'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-    
-    
+
+
     @RequestMapping("/generateCode.do")
     public void generateCode(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        
+
         // 定义图像buffer
         int width = 90;   //验证码的宽度
         int height = 20;   //验证码的高度
@@ -45,17 +45,17 @@ public class CodeController {
         // 将图像填充为白色
         gd.setColor(Color.WHITE);
         gd.fillRect(0, 0, width, height);
-        
+
         // 创建字体，字体的大小应该根据图片的高度来定。
         int fontHeight = 18;
         Font font = new Font("Fixedsys", Font.BOLD, fontHeight);
         // 设置字体。
         gd.setFont(font);
-        
+
         // 画边框。
         gd.setColor(Color.BLACK);
         gd.drawRect(0, 0, width - 1, height - 1);
-        
+
         // 随机产生40条干扰线，使图象中的认证码不易被其它程序探测到。
         gd.setColor(Color.BLACK);
         for (int i = 0; i < 40; i++) {
@@ -65,11 +65,11 @@ public class CodeController {
             int yl = random.nextInt(12);
             gd.drawLine(x, y, x + xl, y + yl);
         }
-        
+
         // randomCode用于保存随机产生的验证码，以便用户登录后进行验证。
         StringBuffer randomCode = new StringBuffer();
         int red, green, blue;
-        
+
         // 随机产生codeCount数字的验证码。
         int codeCount = 4;
         for (int i = 0; i < codeCount; i++) {
@@ -79,13 +79,13 @@ public class CodeController {
             red = random.nextInt(255);
             green = random.nextInt(255);
             blue = random.nextInt(255);
-            
+
             // 用随机产生的颜色将验证码绘制到图像中。
             gd.setColor(new Color(red, green, blue));
             int xx = 15;
             int codeY = 16;
             gd.drawString(code, (i + 1) * xx, codeY);
-            
+
             // 将产生的四个随机数组合在一起。
             randomCode.append(code);
         }
@@ -93,38 +93,36 @@ public class CodeController {
         HttpSession session = req.getSession();
         System.out.print(randomCode);
         session.setAttribute("code", randomCode.toString());
-        
+
         // 禁止图像缓存。
         resp.setHeader("Pragma", "no-cache");
         resp.setHeader("Cache-Control", "no-cache");
         resp.setDateHeader("Expires", 0);
-        
+
         resp.setContentType("image/jpeg");
-        
+
         // 将图像输出到Servlet输出流中。
         ServletOutputStream sos = resp.getOutputStream();
         ImageIO.write(buffImg, "jpeg", sos);
         sos.close();
     }
-    
-    
+
+
     @RequestMapping("/checkCode.do")
     @ResponseBody
     public JsonResult checkCode(HttpServletRequest request,
                                 @RequestParam String formCode) {
-//        String sessionCode = (String) request.getSession().getAttribute("code");
-       /* if (matchCode(formCode, sessionCode)) {
+        String sessionCode = (String) request.getSession().getAttribute("code");
+        if (matchCode(formCode, sessionCode)) {
             return JsonResult.successResult(BaseEnum.VALIDATE_CODE_SUCCESS);
         }
-        return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);*/
-
-        return JsonResult.successResult(BaseEnum.VALIDATE_CODE_SUCCESS);
+        return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);
     }
-    
-    
+
+
     private boolean matchCode(String formCode, String sessionCode) {
         return !formCode.equals("") && sessionCode.equals(formCode);
     }
-    
-    
+
+
 }

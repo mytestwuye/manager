@@ -69,7 +69,7 @@ public class PermissionFilter implements Filter {
         } else if (path.endsWith("/code/generateCode.do")) {
             logger.info("==============请求验证码=================");
             chain.doFilter(req, resp);
-        } else if (path.endsWith("/code/checkCode.do.do")) {
+        } else if (path.endsWith("/code/checkCode.do")) {
             logger.info("==============验证验证码正确性=================");
             chain.doFilter(req, resp);
         } else if (path.endsWith("/base/loginAction.json")) {

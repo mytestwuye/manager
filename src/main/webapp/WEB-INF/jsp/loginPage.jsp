@@ -1,3 +1,4 @@
+<%--@elvariable id="token" type="java.lang.String"--%>
 <%--
   Created by IntelliJ IDEA.
   User: 孙建荣
@@ -33,6 +34,8 @@
         </div>
         <%--<a id="goBack" href="javascript:;" onclick="logoutAction()"><i class="zmdi zmdi-run"></i> 强制退出</a></a>--%>
     </div>
+
+    <input type="hidden" name="token" id="token" value="${sessionScope.token}">
 
     <input type="text" id="userName" name="LoginForm[username]" class="txt_input txt_input2" placeholder="请输入用户名"
            autocomplete="off">
@@ -96,6 +99,10 @@
     error3 = $('#error3');
     var error3Value;
     error3Value = error3.val();
+
+    var tokenVal;
+
+    tokenVal = $("#token").val();
 
     //切换验证码
     $("#codePanel").click(function () {
@@ -190,8 +197,6 @@
                 data: {formCode: codeValue},
                 beforeSend: function () {
                     flag = 0;
-//                    $("#loginBtn").unbind();
-//                    $("#loginBtn").removeAttr("onclick");
                     loginBtn.attr("disabled", "true");
                     loginBtn.text("登录验证中");
                 },
@@ -203,6 +208,8 @@
                         code.focus();
                         code.css('border', '2px solid red');
                         refresh();
+                        loginBtn.text("登录");
+                        loginBtn.removeAttr("disabled");
                         return false;
                     }
                     else {
@@ -222,14 +229,15 @@
 
         }
     }
-
     function sendLoginInfo() {
         var param = {
             username: userNameValue,
             password: passWordValue,
-            formCode: codeValue
+            formCode: codeValue,
+            token: tokenVal
         };
         var flag = 1;
+        console.log(tokenVal);
         if (flag) {
             $.ajax({
                 type: "post",
@@ -252,7 +260,7 @@
                                 icon: 16
                                 , shade: 0.01
                             });
-                           goAdminPage();
+                            goAdminPage();
                         });
 
                     } else if (errorCode == 996 || statusCode == 996 || statusCode == 1) {
@@ -264,6 +272,10 @@
                         refresh();
                     } else if (errorCode == 998) {
                         layer.msg('您已经登录过了，请不要重复登录,点击强制退出清除您的会话', {icon: 5});
+                    } else if (errorCode == 988) {
+                        layer.msg('重复提交表单，速度太快了。。。。。', {icon: 5});
+                    } else if (errorCode == 991) {
+                        layer.msg('验证码错误', {icon: 5});
                     }
                     else {
                         layer.msg('检查下你的用户名跟密码尝试重新登录', {icon: 5});

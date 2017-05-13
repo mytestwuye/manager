@@ -27,6 +27,8 @@ public enum BaseEnum {
     HAVE_QUOTE("204", "存在引用"),
     MUST_CHINESE("205", "一定要是中文"),
     LIMIT_MEMBER_Manager("206", "部门角色太低"),
+    REPEAT_SUBMIT("988", "重复提交"),
+    LOGOUT_FAIL("989", "注销失败"),
     UNDERPASS_ERROR("990", "用户名或密码输入错误"),
     VALIDATE_CODE_ERROR("991", "验证码输入错误"),
     VALIDATE_CODE_SUCCESS("992", "验证码输入正确"),

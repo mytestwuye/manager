@@ -8,6 +8,7 @@ import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.ILoginHistoryService;
 import com.suny.association.utils.EncryptUtil;
 import com.suny.association.utils.JsonResult;
+import com.suny.association.utils.TokenProcessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import static com.suny.association.utils.LoginUtils.getClientIpAdder;
 
@@ -44,8 +46,10 @@ public class LoginController {
      * 登录页面
      */
     @RequestMapping(value = "/loginPage.html", method = RequestMethod.GET)
-    public ModelAndView loginPage() {
-        return new ModelAndView("/loginPage");
+    public String loginPage(HttpServletRequest request) {
+        String token = TokenProcessor.getInstance().makeToken();
+        request.getSession().setAttribute("token", token);
+        return "/loginPage";
     }
 
 
@@ -72,21 +76,27 @@ public class LoginController {
     public JsonResult loginAction(@RequestParam("username") String username,
                                   @RequestParam("password") String password,
                                   @RequestParam("formCode") String formCode,
+                                  @RequestParam("token") String token,
                                   HttpServletRequest request) {
-        /*   方便本机测试，把验证码验证环节去除      */
-//        String sessionCode = (String) request.getSession().getAttribute("code");
-       /* if (!matchCode(formCode, sessionCode)) {
-            return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);
-        }*/
-        boolean authStatus = authAction(request, username, password);
-        if (authStatus) {
-            saveLoginInfo(request, username, true);
-            saveLoginUser(request, username);
-            return JsonResult.successResult(BaseEnum.LOGIN_SYSTEM);
+        /*   首先验证表单提交的token跟session里面的token是否相等，相等就说明不是重复提交  */
+        if (!isRepeatSubmit(token, request)) {
+            request.getSession().removeAttribute("token");
+            String sessionCode = (String) request.getSession().getAttribute("code");
+            /*  匹配session里面的验证码跟表单上的验证码是否相等    */
+            if (!matchCode(formCode, sessionCode)) {
+                return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);
+            }
+            /*  匹配认证状态   */
+            boolean authStatus = authAction(username, password);
+            if (authStatus) {
+                saveLoginInfo(request, username, true);
+                saveLoginUser(request, username);
+                return JsonResult.successResult(BaseEnum.LOGIN_SYSTEM);
+            }
+            saveLoginInfo(request, username, false);
+            return JsonResult.failResult(BaseEnum.LOGIN_FAILURE);
         }
-        saveLoginInfo(request, username, false);
-        return JsonResult.failResult(BaseEnum.LOGIN_FAILURE);
-
+        return JsonResult.failResult(BaseEnum.REPEAT_SUBMIT);
     }
 
     /**
@@ -99,6 +109,28 @@ public class LoginController {
         String loginIp = getClientIpAdder(request);
         String userAgent = request.getHeader("user-agent");
         loginHistoryService.makeUpLoginInfo(userAgent, username, loginIp, authStatus);
+    }
+
+    /**
+     * 验证token是否相同，防止CSRF或者重复提交表单
+     *
+     * @param token   令牌值
+     * @param request request值
+     * @return 比较的结果
+     */
+    private boolean isRepeatSubmit(String token, HttpServletRequest request) {
+        // 如果token是空的则说明重复提交了表单
+        if ("".equals(token) || token == null) {
+            return true;
+        }
+        String sessionToken = (String) request.getSession().getAttribute("token");
+        if (sessionToken == null) {
+            return true;
+        }
+        if (sessionToken.equals(token)) {
+            return false;
+        }
+        return false;
     }
 
 
@@ -116,25 +148,10 @@ public class LoginController {
     /**
      * 提交给shiro认证用户的密码跟用户名
      *
-     * @param request  request请求
      * @param username 用户名
      * @param password 密码
      */
-    private boolean authAction(HttpServletRequest request, String username, String password) {
-        /*UsernamePasswordToken token = new UsernamePasswordToken(username, EncryptUtil.encryptToMD5(password));
-        Subject currentUser = SecurityUtils.getSubject();
-        //如果还没有登录就 //使用shiro来验证
-        if (!currentUser.isAuthenticated()) {
-            token.setRememberMe(true);
-            currentUser.login(token);      //验证角色和权限
-        } else if (currentUser.isAuthenticated()) {
-            saveLoginInfo(request, username, false);
-            throw new BusinessException(BaseEnum.REPEAT_LOGIN);
-        } else {
-            saveLoginInfo(request, username, false);
-            throw new BusinessException(BaseEnum.PASS_ERROR);
-        }*/
-        /*    手动写权限控制，注释shiro代码   */
+    private boolean authAction(String username, String password) {
         Account account = accountService.queryByName(username);
         return account != null && account.getAccountPassword().equals(EncryptUtil.encryptToMD5(password));
 
@@ -172,8 +189,15 @@ public class LoginController {
     @SystemControllerLog(description = "注销操作")
     @RequestMapping(value = "/logoutAction.do", method = RequestMethod.GET)
     @ResponseBody
-    public JsonResult logoutAction() {
-        return JsonResult.successResult(BaseEnum.LOGOUT_SUCCESS);
+    public JsonResult logoutAction(HttpServletRequest request) {
+        // 防止自动创建session，传入false阻止自动创建
+        HttpSession session = request.getSession(false);
+        if (session != null) {
+            session.removeAttribute("account");
+            session.removeAttribute("member");
+            return JsonResult.successResult(BaseEnum.LOGOUT_SUCCESS);
+        }
+        return JsonResult.failResult(BaseEnum.LOGOUT_FAIL);
     }
 
 

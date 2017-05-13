@@ -6,7 +6,6 @@
   Time: 17:54
   To change this template use File | Settings | File Templates.
 --%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
@@ -436,10 +435,9 @@
             url: "${basePath}/base/logoutAction.do",
             success: function (result) {
                 if (result.status !== 993) {
-                    alertFunMessage('这都能出错了。。');
+                    alertFunMessage('这都能出错了。。你是不是没登录就想注销');
                 }
                 alertMessage('您已经成功退出，请注意账号安全');
-
             },
             error: function () {
                 alertFunMessage('这都能出错了。。');
