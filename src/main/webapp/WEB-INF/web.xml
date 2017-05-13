@@ -49,18 +49,7 @@
         <url-pattern>*.json</url-pattern>
         <url-pattern>*.html</url-pattern>
     </filter-mapping>
-
-    <!--判断是否登录过滤器-->
-    <filter>
-        <filter-name>loginFilter</filter-name>
-        <filter-class>com.suny.association.filter.LoginFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>loginFilter</filter-name>
-        <url-pattern>/*</url-pattern>
-    </filter-mapping>
-
-
+    
     <!--编码过滤器-->
     <filter>
         <filter-name>CharacterEncodingFilter</filter-name>

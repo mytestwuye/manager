@@ -3,7 +3,6 @@ package com.suny.association.controller;
 import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.pojo.po.OperationLog;
 import com.suny.association.service.interfaces.IOperationLogService;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +39,6 @@ public class OperationLogController extends BaseController {
      * @param limit  查几个数据
      * @return 带查询条件的数据
      */
-    @RequiresPermissions("operation:log:read")
     @RequestMapping(value = "/list.json", method = RequestMethod.GET)
     @ResponseBody
     public Map query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
@@ -50,7 +48,6 @@ public class OperationLogController extends BaseController {
         return convertToBootstrapTableResult(operationLogList, total);
     }
 
-    @RequiresPermissions("operation:log:read")
     @SystemControllerLog(description = "查看操作记录页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {

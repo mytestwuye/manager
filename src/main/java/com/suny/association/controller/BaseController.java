@@ -1,11 +1,8 @@
 package com.suny.association.controller;
 
 import com.suny.association.utils.JsonResult;
-import org.apache.shiro.authz.AuthorizationException;
-import org.apache.shiro.authz.UnauthorizedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +26,6 @@ public abstract class BaseController {
      * @param response 响应
      * @return 处理的结果
      */
-    @ExceptionHandler({UnauthorizedException.class, AuthorizationException.class})
     public String authorizationException(HttpServletRequest request, HttpServletResponse response) {
         /*Subject subject = SecurityUtils.getSubject();
         logger.info("是否认证:" + subject.isAuthenticated());

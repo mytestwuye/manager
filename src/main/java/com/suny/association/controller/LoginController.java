@@ -8,7 +8,6 @@ import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.ILoginHistoryService;
 import com.suny.association.utils.EncryptUtil;
 import com.suny.association.utils.JsonResult;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,7 +65,7 @@ public class LoginController {
      * @param password 登录密码
      * @param formCode 表单过来的验证码
      * @param request  request请求
-     * @return
+     * @return 验证的json结果
      */
     @RequestMapping(value = "/loginAction.json", method = RequestMethod.POST)
     @ResponseBody
@@ -174,7 +173,6 @@ public class LoginController {
     @RequestMapping(value = "/logoutAction.do", method = RequestMethod.GET)
     @ResponseBody
     public JsonResult logoutAction() {
-        SecurityUtils.getSubject().logout();
         return JsonResult.successResult(BaseEnum.LOGOUT_SUCCESS);
     }
 

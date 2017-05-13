@@ -13,7 +13,6 @@ import com.suny.association.utils.ConversionUtil;
 import com.suny.association.utils.CustomDate;
 import com.suny.association.utils.JsonResult;
 import com.suny.association.utils.ValidActionUtil;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -56,7 +55,6 @@ public class MemberController extends BaseController {
      * @param member 成员信息
      * @return 插入的结果
      */
-    @RequiresPermissions("member:insert")
     @SystemControllerLog(description = "插入成员信息")
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     @ResponseBody
@@ -80,8 +78,6 @@ public class MemberController extends BaseController {
      * @param modelAndView 带有数据库的数据模型
      * @return 数据跟视图地址
      */
-    @RequiresPermissions("member:insert")
-    @RequestMapping(value = "/insert.html", method = RequestMethod.GET)
     public ModelAndView insertPage(ModelAndView modelAndView) {
         List<Member> managerList = memberService.queryNormalManager();
         List<Department> departmentList = departmentService.queryAll();
@@ -95,7 +91,6 @@ public class MemberController extends BaseController {
     }
 
 
-    @RequiresPermissions("member:delete")
     @SystemControllerLog(description = "删除成员信息")
     @RequestMapping(value = "/deleteById.json/{id}", method = RequestMethod.GET)
     @ResponseBody
@@ -110,7 +105,6 @@ public class MemberController extends BaseController {
         return JsonResult.successResult(BaseEnum.DELETE_SUCCESS);
     }
 
-    @RequiresPermissions("member:update")
     @SystemControllerLog(description = "更新成员信息")
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
@@ -125,7 +119,6 @@ public class MemberController extends BaseController {
         return JsonResult.successResult(BaseEnum.UPDATE_SUCCESS);
     }
 
-    @RequiresPermissions("member:update")
     @RequestMapping(value = "/update.html/{id}", method = RequestMethod.GET)
     public ModelAndView updatePage(@PathVariable("id") Integer id, ModelAndView modelAndView) {
         Member member = memberService.queryById(id);
@@ -140,7 +133,6 @@ public class MemberController extends BaseController {
         return modelAndView;
     }
 
-    @RequiresPermissions("member:read")
     @SystemControllerLog(description = "查询冻结的成员")
     @RequestMapping(value = "/queryFreeze.json", method = RequestMethod.POST)
     @ResponseBody
@@ -152,7 +144,6 @@ public class MemberController extends BaseController {
         return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
     }
 
-    @RequiresPermissions("member:read")
     @SystemControllerLog(description = "查询正常的成员")
     @RequestMapping(value = "/queryNormal.json", method = RequestMethod.POST)
     @ResponseBody
@@ -164,7 +155,6 @@ public class MemberController extends BaseController {
         return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
     }
 
-    @RequiresPermissions("member:read")
     @RequestMapping(value = "/queryAll.json", method = RequestMethod.GET)
     @ResponseBody
     public Map<Object, Object> queryAll(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
@@ -187,7 +177,6 @@ public class MemberController extends BaseController {
         return tableDate;
     }
 
-    @RequiresPermissions("member:read")
     @SystemControllerLog(description = "查询指定成员")
     @RequestMapping(value = "/queryById.do/{memberId}", method = RequestMethod.GET)
     public JsonResult queryById(@PathVariable("memberId") Integer memberId) {
@@ -195,7 +184,6 @@ public class MemberController extends BaseController {
         return JsonResult.successResultAndData(BaseEnum.SELECT_SUCCESS, member);
     }
 
-    @RequiresPermissions("member:read")
     @SystemControllerLog(description = "查看成员管理页面")
     @RequestMapping(value = "/memberManager.html", method = RequestMethod.GET)
     public String managerPage() {

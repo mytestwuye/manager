@@ -6,7 +6,6 @@ import com.suny.association.pojo.po.Roles;
 import com.suny.association.service.interfaces.IRolesService;
 import com.suny.association.utils.ConversionUtil;
 import com.suny.association.utils.JsonResult;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +33,6 @@ public class RoleController extends BaseController {
         this.rolesService = rolesService;
     }
 
-    @RequiresPermissions("account:role:delete")
     @SystemControllerLog(description = "删除账号角色")
     @RequestMapping(value = "/delete.json/{roleId}", method = RequestMethod.GET)
     @ResponseBody
@@ -48,7 +46,6 @@ public class RoleController extends BaseController {
         return successResult(BaseEnum.DELETE_SUCCESS);
     }
 
-    @RequiresPermissions("account:role:update")
     @SystemControllerLog(description = "更新账号角色")
     @ResponseBody
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
@@ -63,7 +60,6 @@ public class RoleController extends BaseController {
         return successResult(BaseEnum.UPDATE_SUCCESS);
     }
 
-    @RequiresPermissions("account:role:update")
     @RequestMapping(value = "/update.html/{roleId}", method = RequestMethod.GET)
     public ModelAndView updatePage(@PathVariable int roleId
             , ModelAndView modelAndView) {
@@ -86,7 +82,6 @@ public class RoleController extends BaseController {
      * @param roles 数据
      * @return 插入数据的结果
      */
-    @RequiresPermissions("account:role:insert")
     @SystemControllerLog(description = "新增账号角色")
     @ResponseBody
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
@@ -114,7 +109,6 @@ public class RoleController extends BaseController {
      * @param limit  查询几条数据
      * @return 带查询条件的数据
      */
-    @RequiresPermissions("account:role:read")
     @RequestMapping(value = "/list.json", method = RequestMethod.GET)
     @ResponseBody
     public Map<Object, Object> query(@RequestParam(value = "offset", required = false, defaultValue = "0") int offset,
@@ -124,7 +118,6 @@ public class RoleController extends BaseController {
         return ConversionUtil.convertToBootstrapTableResult(rolesList, total);
     }
 
-    @RequiresPermissions("account:role:read")
     @SystemControllerLog(description = "查看账号角色页面")
     @RequestMapping(value = "/index.html", method = RequestMethod.GET)
     public String index() {
