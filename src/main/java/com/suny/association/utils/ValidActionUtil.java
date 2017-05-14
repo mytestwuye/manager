@@ -5,18 +5,31 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-/**  判断是否为空封装工具类
+/**
+ * 判断是否为空封装工具类
  * Comments:
  * Author:   孙建荣
  * Create Date: 2017/03/30 17:44
  */
 public class ValidActionUtil {
 
+    /**
+     * 匹配表单填写的验证码跟session中储存的验证码
+     *
+     * @param formCode    表单提交的验证码
+     * @param sessionCode session里面报存的验证码
+     * @return 比较的结果
+     */
+    public static boolean matchCode(String formCode, String sessionCode) {
+        return !formCode.equals("") && sessionCode.equals(formCode);
+    }
+
 
     /**
      * 检测是否包含中文
-     * @param str  待检测字符串
-     * @return  结果
+     *
+     * @param str 待检测字符串
+     * @return 结果
      */
     public static boolean isContainChinese(String str) {// 检测是否包含中文
         String regEx = "[\\u4E00-\\u9FA5]+";
@@ -25,37 +38,37 @@ public class ValidActionUtil {
         return m.find();
     }
 
-    public static boolean isNullOrEmpty(Object object){
-        if(object ==null){
+    public static boolean isNullOrEmpty(Object object) {
+        if (object == null) {
             return true;
         }
-        if(object instanceof CharSequence){
+        if (object instanceof CharSequence) {
             return (((CharSequence) object).length() == 0);
         }
-        if(object instanceof Collection){
+        if (object instanceof Collection) {
             return ((Collection) object).isEmpty();
         }
-        if(object instanceof Map){
+        if (object instanceof Map) {
             return ((Map) object).isEmpty();
         }
-        
-        if (object instanceof Object[]){
-            Object[] objects = (Object[])object;
-            if(objects.length ==0 ){
+
+        if (object instanceof Object[]) {
+            Object[] objects = (Object[]) object;
+            if (objects.length == 0) {
                 return true;
             }
             boolean empty = true;
-    
-            for (int i = 0; i < objects.length ; i++) {
-                if(!isNullOrEmpty(objects[i])){
+
+            for (int i = 0; i < objects.length; i++) {
+                if (!isNullOrEmpty(objects[i])) {
                     empty = false;
                     break;
                 }
-               
+
             }
             return empty;
-           
-            
+
+
         }
         return false;
     }

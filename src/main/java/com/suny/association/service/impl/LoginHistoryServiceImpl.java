@@ -9,7 +9,9 @@ import com.suny.association.pojo.po.baiduLocation.GeneralLocationResult;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.ILoginHistoryService;
 import com.suny.association.utils.CustomDate;
-import com.suny.association.utils.LoginUtils;
+import com.suny.association.utils.WebUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
-import static com.suny.association.utils.LoginUtils.getOSVersion;
+import static com.suny.association.utils.WebUtils.getOSVersion;
 
 /**
  * Comments:  登录历史记录业务逻辑
@@ -27,6 +29,9 @@ import static com.suny.association.utils.LoginUtils.getOSVersion;
  */
 @Service
 public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistory> implements ILoginHistoryService {
+
+    private static final Logger logger = LoggerFactory.getLogger(LoginHistoryServiceImpl.class);
+
     private LoginHistoryMapper loginHistoryMapper;
 
     private AccountMapper accountMapper;
@@ -86,7 +91,7 @@ public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistor
     @Override
     public void makeUpLoginInfo(String userAgent, String username, String loginIp, boolean authStatus) {
          /*  通过userAgent分析触登录的浏览器  */
-        String loginBrowser = LoginUtils.getBrowserInfo(userAgent);
+        String loginBrowser = WebUtils.getBrowserInfo(userAgent);
          /*  手动new一个登录历史对象，然后往里面填充对象     */
         LoginHistory loginHistory = new LoginHistory();
         /* 填充userAgent  */
@@ -106,11 +111,12 @@ public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistor
         /* 填充 字段 登录用户   */
         loginHistory.setHistoryAccountId(account);
         /*  通过ip地址去获取普通的定位地址  */
-        GeneralLocationResult generalLocation = LoginUtils.getGeneralLocation(loginIp);
+        GeneralLocationResult generalLocation = WebUtils.getGeneralLocation(loginIp);
         /*  如果得到的普通定位地址为空的话就给登录地址自动设置一个默认的值      */
         if (generalLocation != null) {
             loginHistory.setLoginAddress(generalLocation.getStatus() == 0 ? generalLocation.getAddress() : "未知位置");
         } else {
+            logger.warn("连接网络可能出了点问题，把操作位置默认设为未知位置");
             loginHistory.setLoginAddress("未知位置");
         }
         insert(loginHistory);

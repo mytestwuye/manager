@@ -18,8 +18,8 @@ import java.util.Objects;
  * Author:   孙建荣
  * Create Date: 2017/04/20 19:57
  */
-public class LoginUtils {
-    private static final Logger logger = LoggerFactory.getLogger(LoginUtils.class);
+public class WebUtils {
+    private static final Logger logger = LoggerFactory.getLogger(WebUtils.class);
 
     /**
      * 获取普通精度的位置
@@ -33,6 +33,7 @@ public class LoginUtils {
         try {
             ipString = URLEncoder.encode(ip, "UTF-8");
         } catch (UnsupportedEncodingException e) {
+            logger.warn("不支持的编码异常");
             e.printStackTrace();
         }
         String key = "8256e813b3dec54c5a6aac371c05e5eaa";   // 百度定位密匙
@@ -73,6 +74,12 @@ public class LoginUtils {
      */
     private static GeneralLocationResult parseJsonDate(String jsonData) {
         GeneralLocationResult generalLocationResult = new GeneralLocationResult();
+        /*  如果包含HTML标签则说明访问到一个错误页面   */
+        if (jsonData.contains("<html>")) {
+            logger.warn("访问到一个错误页面，无法进行解析");
+            generalLocationResult.setStatus(200);
+            return generalLocationResult;
+        }
         /*这里对文本进行解析，因为此时返回的是一个返回的是请求出错的json数据
             * 返回格式是统一的类型，所以我们进行切割得到状态码
             * 统一状态码大概是这样的：   null{"status":2,"message":"Request Parameter Error:ip illegal"}
@@ -83,12 +90,11 @@ public class LoginUtils {
         /*   如果返回的文本不等于空的话，并且包含状态码0的话就说明百度成功定位了  */
         if (statusCode == 0) {
             Gson gson = new Gson();
-        /*  使用Google的 Gson 把json数据封装到实体类里面去   */
+             /*  使用Google的 Gson 把json数据封装到实体类里面去   */
             generalLocationResult = gson.fromJson(jsonData, GeneralLocationResult.class);
             return generalLocationResult;
         } else {
             generalLocationResult.setStatus(200);
-            generalLocationResult.setAddress("未知地址");
             return generalLocationResult;
         }
     }

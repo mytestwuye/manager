@@ -2,6 +2,7 @@ package com.suny.association.controller;
 
 import com.suny.association.enums.BaseEnum;
 import com.suny.association.utils.JsonResult;
+import com.suny.association.utils.ValidActionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -108,20 +109,22 @@ public class CodeController {
     }
 
 
+    /**
+     * 在提交登录前检查一次验证码是否正确
+     *
+     * @param request  request请求
+     * @param formCode 表单传过来的验证码
+     * @return 验证验证码的结果
+     */
     @RequestMapping("/checkCode.do")
     @ResponseBody
     public JsonResult checkCode(HttpServletRequest request,
                                 @RequestParam String formCode) {
         String sessionCode = (String) request.getSession().getAttribute("code");
-        if (matchCode(formCode, sessionCode)) {
+        if (ValidActionUtil.matchCode(formCode, sessionCode)) {
             return JsonResult.successResult(BaseEnum.VALIDATE_CODE_SUCCESS);
         }
         return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);
-    }
-
-
-    private boolean matchCode(String formCode, String sessionCode) {
-        return !formCode.equals("") && sessionCode.equals(formCode);
     }
 
 

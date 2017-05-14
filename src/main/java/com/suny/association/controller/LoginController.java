@@ -9,6 +9,7 @@ import com.suny.association.service.interfaces.ILoginHistoryService;
 import com.suny.association.utils.EncryptUtil;
 import com.suny.association.utils.JsonResult;
 import com.suny.association.utils.TokenProcessor;
+import com.suny.association.utils.ValidActionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import static com.suny.association.utils.LoginUtils.getClientIpAdder;
+import static com.suny.association.utils.WebUtils.getClientIpAdder;
 
 /**
  * Comments:   基础公共Controller
@@ -49,6 +50,7 @@ public class LoginController {
     public String loginPage(HttpServletRequest request) {
         String token = TokenProcessor.getInstance().makeToken();
         request.getSession().setAttribute("token", token);
+        System.out.println("产生的令牌值是" + token);
         return "/loginPage";
     }
 
@@ -83,7 +85,7 @@ public class LoginController {
             request.getSession().removeAttribute("token");
             String sessionCode = (String) request.getSession().getAttribute("code");
             /*  匹配session里面的验证码跟表单上的验证码是否相等    */
-            if (!matchCode(formCode, sessionCode)) {
+            if (!ValidActionUtil.matchCode(formCode, sessionCode)) {
                 return JsonResult.failResult(BaseEnum.VALIDATE_CODE_ERROR);
             }
             /*  匹配认证状态   */
@@ -96,6 +98,7 @@ public class LoginController {
             saveLoginInfo(request, username, false);
             return JsonResult.failResult(BaseEnum.LOGIN_FAILURE);
         }
+        System.out.println("重复提交表单");
         return JsonResult.failResult(BaseEnum.REPEAT_SUBMIT);
     }
 
@@ -133,17 +136,6 @@ public class LoginController {
         return false;
     }
 
-
-    /**
-     * 匹配表单填写的验证码跟session中储存的验证码
-     *
-     * @param formCode    表单提交的验证码
-     * @param sessionCode session里面报存的验证码
-     * @return 比较的结果
-     */
-    private boolean matchCode(String formCode, String sessionCode) {
-        return !formCode.equals("") && sessionCode.equals(formCode);
-    }
 
     /**
      * 提交给shiro认证用户的密码跟用户名

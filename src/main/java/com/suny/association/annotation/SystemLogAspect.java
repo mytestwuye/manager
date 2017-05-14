@@ -5,7 +5,7 @@ import com.suny.association.pojo.po.Member;
 import com.suny.association.pojo.po.OperationLog;
 import com.suny.association.service.interfaces.IOperationLogService;
 import com.suny.association.utils.JsonResult;
-import com.suny.association.utils.LoginUtils;
+import com.suny.association.utils.WebUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
@@ -66,7 +66,7 @@ public class SystemLogAspect {
         Member member = (Member) session.getAttribute("member");
         Account account = (Account) session.getAttribute("account");
         //获取请求的ip
-        String ip = LoginUtils.getClientIpAdder(request);
+        String ip = WebUtils.getClientIpAdder(request);
         try {
             /*控制台输出*/
             System.out.println("====前置通知开始");
@@ -82,9 +82,9 @@ public class SystemLogAspect {
             /* 操作者姓名，可选 */
             operationLog.setOperationMemberName(member.getMemberName());
              /*  操作浏览器  */
-            operationLog.setOperationBrower(LoginUtils.getBrowserInfo(userAgent));
+            operationLog.setOperationBrower(WebUtils.getBrowserInfo(userAgent));
              /*  操作系统 */
-            operationLog.setOperationOsVersion(LoginUtils.getOSVersion(userAgent));
+            operationLog.setOperationOsVersion(WebUtils.getOSVersion(userAgent));
              /*  userAgent  */
             operationLog.setOperationUserAgent(userAgent);
              /*   请求的地址 */
@@ -95,12 +95,12 @@ public class SystemLogAspect {
              /*  操作状态  */
             operationLog.setOperationStatus(true);
              /*   操作ip*/
-            operationLog.setOperationIp(LoginUtils.getClientIpAdder(request));
+            operationLog.setOperationIp(WebUtils.getClientIpAdder(request));
             /*   没有网络时则注释从网络获取ip，直接固定一个ip写入数据库     */
 //            operationLog.setOperationIp("182.85.141.54");
              /*  操作地址 */
             //noinspection ConstantConditions
-            operationLog.setOperationAddress(LoginUtils.getGeneralLocation(ip).getAddress());
+            operationLog.setOperationAddress(WebUtils.getGeneralLocation(ip).getAddress());
 
             /*   没有网络时则注释从网络获取物理地址，直接固定一个物理地址写入数据库     */
 //            operationLog.setOperationAddress("江西省南昌市南昌县创新二路");
@@ -134,7 +134,7 @@ public class SystemLogAspect {
         Member member = (Member) session.getAttribute("member");
         Account account = (Account) session.getAttribute("account");
         //获取请求的ip
-        String ip = LoginUtils.getClientIpAdder(request);
+        String ip = WebUtils.getClientIpAdder(request);
         //获取用户请求方法的参数并序列化为JSON格式字符串
         String params = "";
         if (joinPoint.getArgs() != null && joinPoint.getArgs().length > 0) {
@@ -159,9 +159,9 @@ public class SystemLogAspect {
             /* 操作者姓名，可选 */
             operationLog.setOperationMemberName(member.getMemberName());
              /*  操作浏览器  */
-            operationLog.setOperationBrower(LoginUtils.getBrowserInfo(userAgent));
+            operationLog.setOperationBrower(WebUtils.getBrowserInfo(userAgent));
              /*  操作系统 */
-            operationLog.setOperationOsVersion(LoginUtils.getOSVersion(userAgent));
+            operationLog.setOperationOsVersion(WebUtils.getOSVersion(userAgent));
              /*  userAgent  */
             operationLog.setOperationUserAgent(userAgent);
              /*   请求的地址 */
@@ -172,10 +172,10 @@ public class SystemLogAspect {
              /*  操作状态  */
             operationLog.setOperationStatus(false);
              /*   操作ip*/
-            operationLog.setOperationIp(LoginUtils.getClientIpAdder(request));
+            operationLog.setOperationIp(WebUtils.getClientIpAdder(request));
              /*  操作地址 */
             //noinspection ConstantConditions
-            operationLog.setOperationAddress(LoginUtils.getGeneralLocation(ip).getAddress());
+            operationLog.setOperationAddress(WebUtils.getGeneralLocation(ip).getAddress());
 
             /*开始插入操作日志*/
             operationLogService.insert(operationLog);

@@ -81,44 +81,45 @@ public class PermissionFilter implements Filter {
                 if (path.endsWith("/base/goAdminPage.html")) {
                     logger.info("==============进入管理页面===============");
                     chain.doFilter(req, resp);
-                }
-                    /* 等到账号的角色   */
-                Integer roleId = account.getAccountRoles().getRoleId();
+                } else {
+                         /* 等到账号的角色   */
+                    Integer roleId = account.getAccountRoles().getRoleId();
                     /*   根据用户id去查询用户的角色   */
-                Roles roles = rolesService.queryById(roleId);
+                    Roles roles = rolesService.queryById(roleId);
                  /*  构建一个角色集合，我这里一个账号就是对应着一个角色  */
                 /*  把角色放进SimpleAuthorizationInfo里面去   */
                  /*   根据用户id去查询权限(permission),放入到Authorization里面    */
-                HashSet<String> permissions = new HashSet<>();
-                List<PermissionAllot> permissionAllotList = permissionAllotService.queryByRoleId(roleId);
-                //  首先进行判断，防止角色没有权限导致数据下标溢出
-                if (permissionAllotList.size() > 0) {
-                    List<Permission> permissionArrayList = permissionAllotList.get(0).getPermissionArrayList();
-                    permissions.addAll(permissionArrayList.stream().map(Permission::getpermissionName).collect(Collectors.toList()));
+                    HashSet<String> permissions = new HashSet<>();
+                    List<PermissionAllot> permissionAllotList = permissionAllotService.queryByRoleId(roleId);
+                    //  首先进行判断，防止角色没有权限导致数据下标溢出
+                    if (permissionAllotList.size() > 0) {
+                        List<Permission> permissionArrayList = permissionAllotList.get(0).getPermissionArrayList();
+                        permissions.addAll(permissionArrayList.stream().map(Permission::getpermissionName).collect(Collectors.toList()));
                     /*  把用户的所有权限放进SimpleAuthorizationInfo里面去   */
-                    AccessPermission accessPermission = accessPermissionService.queryByName(path);
-                    if (accessPermission == null) {
-                        logger.info("这个页面不需要权限就可以访问");
-                        chain.doFilter(req, resp);
-                    } else {
-                        //  获取当前操作所需要得到权限
-                        String urlPermission = accessPermission.getAccessPermission();
-                        boolean hasPermission = false;
-                        for (Permission permission1 : permissionArrayList) {
-                            hasPermission = permission1.getpermissionName().equals(urlPermission);
-                            if (hasPermission) break;
-                        }
-                        if (hasPermission) {
-                            logger.info("访问当前页面需要【" + urlPermission + "】用户有访问【" + urlPermission + "】这个权限，放行");
+                        AccessPermission accessPermission = accessPermissionService.queryByName(path);
+                        if (accessPermission == null) {
+                            logger.info("这个页面不需要权限就可以访问");
                             chain.doFilter(req, resp);
                         } else {
-                            logger.warn("没有访问这个操作的权限");
-                            response.sendRedirect("/403.jsp");
+                            //  获取当前操作所需要得到权限
+                            String urlPermission = accessPermission.getAccessPermission();
+                            boolean hasPermission = false;
+                            for (Permission permission1 : permissionArrayList) {
+                                hasPermission = permission1.getpermissionName().equals(urlPermission);
+                                if (hasPermission) break;
+                            }
+                            if (hasPermission) {
+                                logger.info("访问当前页面需要【" + urlPermission + "】用户有访问【" + urlPermission + "】这个权限，放行");
+                                chain.doFilter(req, resp);
+                            } else {
+                                logger.warn("没有访问这个操作的权限");
+                                response.sendRedirect("/403.jsp");
+                            }
                         }
+                    } else {
+                        logger.error("用户没有任何操作权限");
+                        response.sendRedirect(request.getContextPath() + "/403.jsp");
                     }
-                } else {
-                    logger.error("用户没有任何操作权限");
-                    response.sendRedirect(request.getContextPath() + "/403.jsp");
                 }
             } else {
                 logger.info("===============没有登录================");

@@ -253,6 +253,7 @@
                     var statusCode = result.status;
                     var errorCode = result.errorCode;
                     if (statusCode == 995) {
+                        flag = 0;
                         loginBtn.attr("disabled", "true");
                         //登录成功
                         layer.msg('登陆成功了', function () {
@@ -262,7 +263,6 @@
                             });
                             goAdminPage();
                         });
-
                     } else if (errorCode == 996 || statusCode == 996 || statusCode == 1) {
                         layer.msg('用户名或者密码错误。。', {icon: 5});
                         error1.text('用户名或密码错误');
@@ -270,15 +270,15 @@
                         redStyleWarn(userName);
                         redStyleWarn(passWord);
                         refresh();
-                    } else if (errorCode == 998) {
-                        layer.msg('您已经登录过了，请不要重复登录,点击强制退出清除您的会话', {icon: 5});
-                    } else if (errorCode == 988) {
-                        layer.msg('重复提交表单，速度太快了。。。。。', {icon: 5});
-                    } else if (errorCode == 991) {
+                    } else if (statusCode == 998) {
+                        layer.alert('您已经登录过了，请不要重复登录,点击强制退出清除您的会话');
+                    } else if (statusCode == 988) {
+                        layer.alert('重复提交表单，速度太快了。。。。。刷新页面后再尝试登陆');
+                    } else if (statusCode == 991) {
                         layer.msg('验证码错误', {icon: 5});
                     }
                     else {
-                        layer.msg('检查下你的用户名跟密码尝试重新登录', {icon: 5});
+                        layer.alert('检查下你的用户名跟密码尝试重新登录');
                     }
                     flag = 1;
                     loginBtn.text("登录");
