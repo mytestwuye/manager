@@ -251,7 +251,6 @@
                 },
                 success: function (result) {
                     var statusCode = result.status;
-                    var errorCode = result.errorCode;
                     if (statusCode == 995) {
                         flag = 0;
                         loginBtn.attr("disabled", "true");
@@ -263,7 +262,7 @@
                             });
                             goAdminPage();
                         });
-                    } else if (errorCode == 996 || statusCode == 996 || statusCode == 1) {
+                    } else if (statusCode == 996 || statusCode == 1) {
                         layer.msg('用户名或者密码错误。。', {icon: 5});
                         error1.text('用户名或密码错误');
                         emptyInputValue(code);

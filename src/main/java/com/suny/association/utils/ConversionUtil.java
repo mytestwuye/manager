@@ -1,5 +1,8 @@
 package com.suny.association.utils;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,11 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Comments:
+ * Comments:   在controller中存在大量重复代码，所以抽取出来组成一个静态的公共方法，组合成符合Bootstrap-table需要的分页结果
  * Author:   孙建荣
  * Create Date: 2017/04/15 19:40
  */
 public class ConversionUtil {
+    private static final Logger logger = LoggerFactory.getLogger(ConversionUtil.class);
+
     /**
      * 把前端传来的int类型的状态码转换为boolean类型的状态
      *
@@ -50,6 +55,13 @@ public class ConversionUtil {
         return criteriaMap;
     }
 
+    /**
+     * 把查询出来的结果变成符合Bootstrap-table需要的服务器端分页数据
+     *
+     * @param resultList 查询出来的结果集数据
+     * @param totalCount 查询出来的总行数
+     * @return Mpa集合
+     */
     public static Map<Object, Object> convertToBootstrapTableResult(List resultList, int totalCount) {
         Map<Object, Object> tableDate = new HashMap<>();
         if (resultList.size() != 0 && !resultList.isEmpty()) {
@@ -80,11 +92,11 @@ public class ConversionUtil {
                 Method method = methods[i];
                 Class<?>[] parameterTypes = method.getParameterTypes();
                 if (className.equals("AccountController")) {
-                    System.out.println("传过来的是" + className);
-                    System.out.println("是否匹配" + matchParameterType(parameterTypes, threeArrayParam));
+                    logger.info("传过来的是" + className);
+                    logger.info("是否匹配" + matchParameterType(parameterTypes, threeArrayParam));
                 }
                 while (j < parameterTypes.length) {
-                    System.out.println("参数类型是" + parameterTypes[j].getName());
+                    logger.info("参数类型是" + parameterTypes[j].getName());
                     j++;
                 }
             }
@@ -110,7 +122,7 @@ public class ConversionUtil {
             matchStatus.add(i, ((Class) parameterTypes[i]).getName() == threeArrayParam[i]);
         }
         int statusSize = matchStatus.size();
-        for (int i = 0; i < statusSize; i++) {
+        for (int i = statusSize - 1; i >= 0; i--) {
             while (statusSize > 0) {
                 if (matchStatus.get(i) != matchStatus.get(statusSize - 1)) {
                     return false;

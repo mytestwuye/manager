@@ -33,7 +33,6 @@ public enum BaseEnum {
     VALIDATE_CODE_ERROR("991", "验证码输入错误"),
     VALIDATE_CODE_SUCCESS("992", "验证码输入正确"),
     LOGOUT_SUCCESS("993", "注销系统成功"),
-    //    VALIDATE_CODE_ERROR("994","存在引用"),
     LOGIN_SYSTEM("995", "登录成功"),
     PASS_ERROR("996", "密码错误"),
     REPEAT_LOGIN("998", "重复登录"),
