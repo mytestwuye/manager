@@ -6,7 +6,6 @@ import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.ILoginHistoryService;
-import com.suny.association.utils.EncryptUtil;
 import com.suny.association.utils.JsonResult;
 import com.suny.association.utils.TokenProcessor;
 import com.suny.association.utils.ValidActionUtil;
@@ -145,7 +144,8 @@ public class LoginController {
      */
     private boolean authAction(String username, String password) {
         Account account = accountService.queryByName(username);
-        return account != null && account.getAccountPassword().equals(EncryptUtil.encryptToMD5(password));
+//        return account != null && account.getAccountPassword().equals(EncryptUtil.encryptToMD5(password));
+        return account != null && account.getAccountPassword().equals(password);
 
     }
 

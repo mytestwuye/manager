@@ -33,7 +33,7 @@
         <div class="panel-heading">查询条件</div>
         <div class="panel-body">
             <form id="formSearch" class="form-horizontal">
-                <div class="form-group" >
+                <div class="form-group">
                     <label class="control-label col-sm-1" for="txt_search_departmentname">部门名称</label>
                     <div class="col-sm-3">
                         <input type="text" class="form-control" id="txt_search_departmentname">
@@ -41,7 +41,8 @@
                     <label class="control-label col-sm-1" for="txt_search_status"></label>
                     <div class="btn-group" id="txt_search_status">
                         <label class="radio-inline">
-                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="2" checked="checked"> 全部状态
+                            <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="2" checked="checked">
+                            全部状态
                         </label>
                         <label class="radio-inline">
                             <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="1"> 正常状态
@@ -70,9 +71,13 @@
         <button id="btn_delete" type="button" class="btn btn-default">
             <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
         </button>
+        <button id="btn_update" type="button" class="btn btn-default">
+            <span class=" glyphicon glyphicon-arrow-up" aria-hidden="true"></span>上传新成员数据
+        </button>
     </div>
     <table id="tabs" class="table table-hover"></table>
 </div>
+
 
 <%--正文区结束--%>
 
@@ -316,15 +321,15 @@
                 if (result.status == 5) {
                     layer.msg("没有你要删除的信息", {icon: 4});
 
-                } else if(result.status==103){
+                } else if (result.status == 103) {
                     layer.msg("删除成功了，请刷新", {icon: 1});
                     layer.load(0, {shade: false, time: 1000});
                     $("#tabs").bootstrapTable("refresh");
 
-                }else if(result.status==204){
+                } else if (result.status == 204) {
                     layer.msg("存在引用账号，无法删除", {icon: 4});
                 }
-                else{
+                else {
                     layer.msg("出了点小问题", {icon: 4});
                 }
             },
@@ -333,6 +338,17 @@
             }
         })
     }
+
+    $("#btn_update").click(function () {
+        //弹出即全屏
+        var index = layer.open({
+            type: 2,
+            content: '${basePath}/member/uploadMemberInfo.html',
+            area: ['260px', '500px'],
+            maxmin: true
+        });
+        layer.full(index);
+    });
 
 
     /**

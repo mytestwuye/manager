@@ -16,11 +16,13 @@ import com.suny.association.utils.ValidActionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Comments:   成员信息管理类Controller
@@ -78,6 +80,8 @@ public class MemberController extends BaseController {
      * @param modelAndView 带有数据库的数据模型
      * @return 数据跟视图地址
      */
+    @SystemControllerLog(description = "新增成员页面")
+    @RequestMapping(value = "/insertPage.html", method = RequestMethod.GET)
     public ModelAndView insertPage(ModelAndView modelAndView) {
         List<Member> managerList = memberService.queryNormalManager();
         List<Department> departmentList = departmentService.queryAll();
@@ -88,6 +92,27 @@ public class MemberController extends BaseController {
         modelAndView.addObject("memberGradeList", CustomDate.getLastYearAndThisYears());
         modelAndView.setViewName("memberInfo/memberInsert");
         return modelAndView;
+    }
+
+    @SystemControllerLog(description = "通过Excel文件批量新增数据")
+    @RequestMapping(value = "/uploadMemberInfo.json", method = RequestMethod.POST)
+    public JsonResult uploadMemberInfo(@RequestParam("excelFile") MultipartFile excelFile) {
+        if (excelFile == null) {
+            return null;
+        }
+        String fileType = excelFile.getContentType();
+        if (!Objects.equals(fileType, "xls")) {
+            return null;
+        }
+        String name = excelFile.getName();
+        return JsonResult.successResult(BaseEnum.SELECT_FAILURE);
+    }
+
+
+    @SystemControllerLog(description = "上传成员数据页面")
+    @RequestMapping(value = "/uploadMemberInfo.html", method = RequestMethod.GET)
+    public String uploadMemberInfoPage() {
+        return "memberInfo/memberInfoUpdate";
     }
 
 

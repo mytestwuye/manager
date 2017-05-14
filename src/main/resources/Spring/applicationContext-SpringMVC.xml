@@ -64,6 +64,10 @@
     <aop:aspectj-autoproxy proxy-target-class="true"/>
 
 
+    <!--配置文件上传 10M-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="10485760"/>
+    </bean>
 
 
 </beans>
