@@ -13,12 +13,24 @@ import com.suny.association.utils.ConversionUtil;
 import com.suny.association.utils.CustomDate;
 import com.suny.association.utils.JsonResult;
 import com.suny.association.utils.ValidActionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +44,8 @@ import java.util.Objects;
 @Controller
 @RequestMapping("/member")
 public class MemberController extends BaseController {
+
+    private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 
     private final IMemberService memberService;
 
@@ -96,7 +110,7 @@ public class MemberController extends BaseController {
 
     @SystemControllerLog(description = "通过Excel文件批量新增数据")
     @RequestMapping(value = "/uploadMemberInfo.json", method = RequestMethod.POST)
-    public JsonResult uploadMemberInfo(@RequestParam("excelFile") MultipartFile excelFile) {
+    public JsonResult uploadMemberInfo(@RequestParam("excelFile") MultipartFile excelFile) throws FileNotFoundException {
         if (excelFile == null) {
             return null;
         }
@@ -104,8 +118,40 @@ public class MemberController extends BaseController {
         if (!Objects.equals(fileType, "xls")) {
             return null;
         }
-        String name = excelFile.getName();
+        String fileName = excelFile.getName();
+        String extension = fileName.lastIndexOf(".") == -1 ? "" : fileName.substring(fileName.lastIndexOf("." + 1));
+        FileInputStream fileInputStream = new FileInputStream((File) excelFile);
+
         return JsonResult.successResult(BaseEnum.SELECT_FAILURE);
+    }
+
+    /**
+     * 下载成员信息模板，上传者要按照模板的要求进行修改Excel文档，否则系统将忽略上传请求
+     *
+     * @param request  request请求
+     * @param response response请求
+     */
+    @RequestMapping(value = "downloadMemberTemplate.json", method = RequestMethod.GET)
+    public void downloadMemberTemplate(HttpServletRequest request, HttpServletResponse response) {
+        String fileName = "memberTemplate.xlsx";
+        ServletContext servletContext = request.getServletContext();
+        /*  获取放置模板文件的目录    */
+        String realPath = servletContext.getRealPath("/WEB-INF/template");
+        /*  得到一个真实的文件存放地址，代表一个文件 */
+        Path file = Paths.get(realPath, fileName);
+        /* 判断文件是否存在，否则会发生异常   */
+        if (Files.exists(file)) {
+            response.setContentType("application/octet-stream");
+            response.setHeader("Content-Disposition", "attachment;filename=" + fileName);
+            try {
+                logger.info("正在向客户端输出成员信息Excel模板");
+                Files.copy(file, response.getOutputStream());
+            } catch (IOException e) {
+                logger.error("捕获了异常，向客户端发送Excel文件时发生错误");
+                e.printStackTrace();
+            }
+        }
+        logger.warn("要下载的文件{}不存在", fileName);
     }
 
 

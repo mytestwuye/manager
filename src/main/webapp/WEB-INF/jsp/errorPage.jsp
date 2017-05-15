@@ -24,7 +24,7 @@
 <div id="container"><img class="png" src="${basePath}/images/error/404.png"/> <img
         class="png msg" src="${basePath}/images/error/404_msg.png"/>
 
-    <p><a href="${basePath}/base/AdminManager.html">
+    <p><a href="${basePath}/base/goAdminPage.html">
         <img class="png"
              src="${basePath}/images/error/404_to_index.png"/></a>
     </p>

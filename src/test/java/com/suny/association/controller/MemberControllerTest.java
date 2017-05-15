@@ -3,6 +3,7 @@ package com.suny.association.controller;
 import junit.framework.TestCase;
 import org.junit.Test;
 
+import java.io.InputStream;
 import java.util.UUID;
 
 /**
@@ -19,5 +20,25 @@ public class MemberControllerTest extends TestCase {
         System.out.println(uuid);
         
     }
+
+    @Test
+    public void getTemplateDir(){
+        ClassLoader classLoader = MemberController.class.getClassLoader();
+        InputStream resourceAsStream = classLoader.getResourceAsStream("/");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     
 }

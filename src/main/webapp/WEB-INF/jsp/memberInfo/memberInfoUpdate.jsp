@@ -23,6 +23,9 @@
 </head>
 <body>
 <div class="container" style=" width: 830px;height: 400px;margin-top: 200px;">
+    <div class="col-lg-1">
+        <button class="btn-success"><a href="${basePath}/member/downloadMemberTemplate.json">下载模板</a></button>
+    </div>
     <form role="form" id="importFile" method="post"
           enctype="multipart/form-data">
         <input id="excelFile" name="excelFile" class="file-loading"
