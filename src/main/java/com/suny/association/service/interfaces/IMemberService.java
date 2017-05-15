@@ -30,4 +30,6 @@ public interface IMemberService extends IBaseService<Member> {
     List<Member> quoteByMemberRoleId(Integer memberRoleId);
 
 
+
+
 }

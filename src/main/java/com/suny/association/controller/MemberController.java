@@ -9,24 +9,21 @@ import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IDepartmentService;
 import com.suny.association.service.interfaces.IMemberRolesService;
 import com.suny.association.service.interfaces.IMemberService;
-import com.suny.association.utils.ConversionUtil;
-import com.suny.association.utils.CustomDate;
-import com.suny.association.utils.JsonResult;
-import com.suny.association.utils.ValidActionUtil;
+import com.suny.association.utils.*;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,7 +31,6 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Comments:   成员信息管理类Controller
@@ -110,20 +106,24 @@ public class MemberController extends BaseController {
 
     @SystemControllerLog(description = "通过Excel文件批量新增数据")
     @RequestMapping(value = "/uploadMemberInfo.json", method = RequestMethod.POST)
-    public JsonResult uploadMemberInfo(@RequestParam("excelFile") MultipartFile excelFile) throws FileNotFoundException {
-        if (excelFile == null) {
-            return null;
-        }
+    public JsonResult uploadMemberInfo(@RequestParam("excelFile") MultipartFile excelFile) throws IOException {
         String fileType = excelFile.getContentType();
-        if (!Objects.equals(fileType, "xls")) {
-            return null;
+        /*  获取上传文件名 */
+        String fileName = ((CommonsMultipartFile) excelFile).getFileItem().getName();
+        /* 获取上传文件名的文件后缀名    */
+        String fileExtension = fileName.lastIndexOf(".") == -1 ? "" : fileName.substring(fileName.lastIndexOf(".") + 1);
+        CommonsMultipartFile commonsMultipartFile = (CommonsMultipartFile) excelFile;
+        DiskFileItem diskFileItem = (DiskFileItem) commonsMultipartFile.getFileItem();
+        File file = diskFileItem.getStoreLocation();
+        /* 获取文件名的后缀名，检查是否存在欺骗   */
+        if (!ExcelUtils.compareFileType(fileType, fileExtension)) {
+            logger.warn("上传的文件貌似有点小问题，可能是后缀名欺骗");
+            return JsonResult.failResult(BaseEnum.FILE_EXTENSION_WARN);
         }
-        String fileName = excelFile.getName();
-        String extension = fileName.lastIndexOf(".") == -1 ? "" : fileName.substring(fileName.lastIndexOf("." + 1));
-        FileInputStream fileInputStream = new FileInputStream((File) excelFile);
-
+        ExcelUtils.matchExcelVersion(file);
         return JsonResult.successResult(BaseEnum.SELECT_FAILURE);
     }
+
 
     /**
      * 下载成员信息模板，上传者要按照模板的要求进行修改Excel文档，否则系统将忽略上传请求
