@@ -3,6 +3,7 @@ package com.suny.association.service.interfaces;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.IBaseService;
 
+import java.io.File;
 import java.util.List;
 
 /**
@@ -29,7 +30,7 @@ public interface IMemberService extends IBaseService<Member> {
 
     List<Member> quoteByMemberRoleId(Integer memberRoleId);
 
-
+    int batchInsertFromExcel(File file, String fileExtension);
 
 
 }

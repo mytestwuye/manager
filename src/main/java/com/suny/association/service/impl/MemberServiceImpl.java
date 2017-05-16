@@ -7,13 +7,16 @@ import com.suny.association.pojo.po.Account;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IMemberService;
+import com.suny.association.utils.ExcelUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Comments:  成员逻辑层类
@@ -139,6 +142,14 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     @Override
     public List<Member> quoteByMemberRoleId(Integer memberRoleId) {
         return memberMapper.quoteByMemberRoleId(memberRoleId);
+    }
+
+    @Override
+    public int batchInsertFromExcel(File file, String fileExtension) {
+        AtomicReference<Map<Object, Object>> mapAtomicReference = ExcelUtils.readExcel(file, fileExtension, 0, 0);
+        List<Member> memberList = (List<Member>) mapAtomicReference.get().get("memberList");
+        List<Account> accountList = (List<Account>) mapAtomicReference.get().get("accountList");
+        return 0;
     }
 
     /*   查询正常的成员信息    */

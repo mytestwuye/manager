@@ -116,11 +116,11 @@ public class MemberController extends BaseController {
         DiskFileItem diskFileItem = (DiskFileItem) commonsMultipartFile.getFileItem();
         File file = diskFileItem.getStoreLocation();
         /* 获取文件名的后缀名，检查是否存在欺骗   */
-        if (!ExcelUtils.compareFileType(fileType, fileExtension)) {
+        if (!ExcelUtils.parseExcelFileType(fileType, fileExtension)) {
             logger.warn("上传的文件貌似有点小问题，可能是后缀名欺骗");
             return JsonResult.failResult(BaseEnum.FILE_EXTENSION_WARN);
         }
-        ExcelUtils.matchExcelVersion(file);
+        memberService.batchInsertFromExcel(file, fileExtension);
         return JsonResult.successResult(BaseEnum.SELECT_FAILURE);
     }
 
