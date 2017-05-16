@@ -287,15 +287,15 @@
 
     <select id="queryByLongId" parameterType="Long" resultMap="BaseResultMap">
         SELECT
-        member_id,
-        member_name,
-        member_class_name,
-        member_sex,
-        member_grade_number,
-        member_manager_id,
-        member_department_id,
-        member_status,
-        member_role_id
+            member_id,
+            member_name,
+            member_class_name,
+            member_sex,
+            member_grade_number,
+            member_manager_id,
+            member_department_id,
+            member_status,
+            member_role_id
         FROM member
         WHERE member_id = #{id}
     </select>
@@ -369,10 +369,25 @@
     </select>
     <select id="quoteByMemberRoleId" parameterType="int" resultType="com.suny.association.pojo.po.Member">
         SELECT
-        m.member_id,
-        m.member_id
+            m.member_id,
+            m.member_id
         FROM member AS m
         WHERE m.member_role_id = #{memberRoleId}
+    </select>
+
+    <select id="queryByName" resultMap="BaseResultMap" parameterType="string">
+        SELECT
+            m.member_id,
+            m.member_name,
+            m.member_class_name,
+            m.member_sex,
+            m.member_grade_number,
+            m.member_manager_id,
+            m.member_department_id,
+            m.member_status,
+            m.member_role_id
+        FROM member AS m
+        WHERE m.member_name = #{name}
     </select>
 
 

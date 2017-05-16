@@ -1,5 +1,6 @@
 package com.suny.association.service.impl;
 
+import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.annotation.SystemServiceLog;
 import com.suny.association.mapper.AccountMapper;
 import com.suny.association.mapper.MemberMapper;
@@ -16,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -144,12 +146,56 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
         return memberMapper.quoteByMemberRoleId(memberRoleId);
     }
 
+    @SystemControllerLog(description = "批量插入成员信息失败")
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public int batchInsertFromExcel(File file, String fileExtension) {
+        Member member;
+        int successNum = 0;
         AtomicReference<Map<Object, Object>> mapAtomicReference = ExcelUtils.readExcel(file, fileExtension, 0, 0);
         List<Member> memberList = (List<Member>) mapAtomicReference.get().get("memberList");
         List<Account> accountList = (List<Account>) mapAtomicReference.get().get("accountList");
+        for (int i = 0; i < memberList.size(); i++) {
+            member = memberList.get(i);
+            Member queryMember = memberMapper.queryByName(member.getMemberName());
+            if (queryMember != null && Objects.equals(queryMember.getMemberGradeNumber(), member.getMemberGradeNumber())) {
+                System.out.println("已经存在这个成员");
+            } else {
+                int memberId = batchInsertMember(member);
+                if (memberId != 0) {
+                    Member member1 = new Member();
+                    member.setMemberId(memberId);
+                    accountList.get(i).setAccountMember(member1);
+                    batchInsertAccount(accountList.get(i));
+                }
+                successNum++;
+            }
+        }
+        return successNum;
+    }
+
+
+    @SystemControllerLog(description = "批量插入成员信息")
+    @Transactional(rollbackFor = Exception.class)
+    public int batchInsertMember(Member member) {
+        try {
+            return memberMapper.insertAndGetId(member);
+        } catch (Exception e) {
+//            throw new BusinessException(BaseEnum.ADD_FAILURE);
+            e.printStackTrace();
+        }
         return 0;
+    }
+
+    @SystemControllerLog(description = "批量自动产生账号信息")
+    @Transactional(rollbackFor = Exception.class)
+    public boolean batchInsertAccount(Account account) {
+        try {
+            accountMapper.insertAndGetId(account);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     /*   查询正常的成员信息    */
