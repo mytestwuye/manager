@@ -3,8 +3,10 @@ package com.suny.association.service.impl;
 import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.annotation.SystemServiceLog;
 import com.suny.association.mapper.AccountMapper;
+import com.suny.association.mapper.DepartmentMapper;
 import com.suny.association.mapper.MemberMapper;
 import com.suny.association.pojo.po.Account;
+import com.suny.association.pojo.po.Department;
 import com.suny.association.pojo.po.Member;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.IMemberService;
@@ -20,7 +22,6 @@ import java.io.File;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Comments:  成员逻辑层类
@@ -32,11 +33,13 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     private static final Logger logger = LoggerFactory.getLogger(MemberServiceImpl.class);
     private final MemberMapper memberMapper;
     private final AccountMapper accountMapper;
+    private final DepartmentMapper departmentMapper;
 
     @Autowired
-    public MemberServiceImpl(MemberMapper memberMapper, AccountMapper accountMapper) {
+    public MemberServiceImpl(MemberMapper memberMapper, AccountMapper accountMapper, DepartmentMapper departmentMapper) {
         this.memberMapper = memberMapper;
         this.accountMapper = accountMapper;
+        this.departmentMapper = departmentMapper;
     }
 
     /**
@@ -153,61 +156,143 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int batchInsertFromExcel(File file, String fileExtension) {
-        Member member;   // 定义一个成员实体变量
+//        Member member;   // 定义一个成员实体变量
         int successNum = 0;    // 成功插入的行数
-        AtomicReference<Map<Object, Object>> mapAtomicReference = ExcelUtils.readExcel(file, fileExtension, 0, 0);    // 包含成员信息跟账号信息的一个集合，原子操作
-        List<Member> memberList = (List<Member>) mapAtomicReference.get().get("memberList");            // 获取成员信息列表
-        List<Account> accountList = (List<Account>) mapAtomicReference.get().get("accountList");          //   获取账号信息列表
-        /*    循环插入成员信息跟账号信息    */
-        for (int i = 0; i < memberList.size(); i++) {
-            member = memberList.get(i);    //  当前获取的成员实体信息
-            /*  首先通过成员的名字跟年级去判断是否是同一个成员，一般情况下同一个年级同一个名字的人概率比较的低    */
-            Member queryMember = memberMapper.queryByName(member.getMemberName());
-            if (queryMember != null && Objects.equals(queryMember.getMemberGradeNumber(), member.getMemberGradeNumber())) {
-                logger.error("数据库中存在这个成员,成员名字:【{}】,班级【{}】,年级【{}】", queryMember.getMemberName(), member.getMemberClassName(), member.getMemberGradeNumber());
-            } else {
-                /*   获取插入后返回的Member信息   */
-                Member insertMember = batchInsertMember(member);
-                /*   首先判断插入成员是否成功，成功的话会返回一个带自增主键的Member实体类,判断Id是否为空就可以知道是否插入成功了       */
-                if (insertMember != null && insertMember.getMemberId() != null) {
-                    /*   给当前的账号信息设置一个对应的成员信息    */
-                    accountList.get(i).setAccountMember(insertMember);
-                    /*    开始插入账号信息      */
-                    batchInsertAccount(accountList.get(i));
+        List<String[]> memberList = ExcelUtils.parseExcel(file, fileExtension, 0, 0);// 包含成员信息跟账号信息的一个集合，原子操作
+        if (memberList.size() > 0) {
+            for (String[] memberArray : memberList) {
+                /* 按照模板约定，必须是6组数据，分别是名字，班级，性别，电话号码，入学年份，部门，如果不满足直接拒绝写入*/
+                if (memberArray.length >= 6) {
+                    /* 把数据传过去组成一个Member信息跟Account信息   */
+                    Member member = parseMemberInfo(memberArray);
+                    Account account = parseAccountInfo(memberArray);
+                    //  首先通过成员的名字跟年级去判断是否是同一个成员，一般情况下同一个年级同一个名字的人概率比较的低    //
+                    Member queryMember = memberMapper.queryByName(member.getMemberName());
+                    if (queryMember != null && Objects.equals(queryMember.getMemberGradeNumber(), member.getMemberGradeNumber())) {
+                        logger.error("数据库中存在这个成员,成员名字:【{}】,班级【{}】,年级【{}】", queryMember.getMemberName(), member.getMemberClassName(), member.getMemberGradeNumber());
+                    } else {
+                        //   获取插入后返回的Member信息   //
+                        Member insertMember = batchInsertMember(member);
+                        //   首先判断插入成员是否成功，成功的话会返回一个带自增主键的Member实体类,判断Id是否为空就可以知道是否插入成功了
+                        if (insertMember != null && insertMember.getMemberId() != null) {
+                            //   给当前的账号信息设置一个对应的成员信息    //
+                            account.setAccountMember(insertMember);
+                            //    开始插入账号信息      //
+                            boolean successStatus = batchInsertAccount(account);
+                            if (successStatus) {
+                                logger.info("成功插入信息{}", member.toString());
+                                successNum++;
+                            }
+                        } else {
+                            logger.error("插入成员信息失败{}", member.toString());
+                        }
+                    }
+                } else {
+                    logger.info("数据不符合约定，当前数据个数为{}", memberArray.length);
                 }
-                successNum++;
+
             }
         }
         return successNum;
     }
 
 
-    @SystemControllerLog(description = "批量插入成员信息")
+    /**
+     * 根据传过来的数组读取出来,然后组成一个Account实体信息.
+     *
+     * @param memberArray 数组数据
+     * @return 组合成的Account数据
+     */
+    private Account parseAccountInfo(String[] memberArray) {
+        Account account = new Account();
+        //   因为要自动产生一个账号，所以默认拉取电话号码作为登录账号   //
+        Long phoneNumber = Long.valueOf(memberArray[3]);
+        String phoneString = String.valueOf(phoneNumber);
+        account.setAccountPhone(phoneNumber);
+        account.setAccountName(phoneString);
+        return account;
+    }
+
+    /**
+     * 根据传过来的数组读取出,然后组成一个Member实体信息.
+     *
+     * @param memberArray 数组数据
+     * @return 组合成的Member数据
+     */
+    private Member parseMemberInfo(String[] memberArray) {
+        Member member = new Member();
+        Department department = new Department();
+        //  创建一个List来存放读取的每一行数据     //
+        member.setMemberName(memberArray[0]);
+        member.setMemberClassName(memberArray[1]);
+        member.setMemberSex(convertSexToBoolean(memberArray[2]));
+        member.setMemberGradeNumber(Integer.valueOf(memberArray[4]));
+        department.setDepartmentId(convertDepartId(memberArray[5]));
+        member.setMemberDepartment(department);
+        return member;
+    }
+
+    /**
+     * 根据文本判断性别，如果没有获取到就默认是男
+     *
+     * @param sexText 可能是性别的文字
+     * @return 用boolean表示的性别，true为男，false为女
+     */
+    private static boolean convertSexToBoolean(String sexText) {
+        switch (sexText) {
+            case "男":
+                return true;
+            case "女":
+                return false;
+            default:
+                return true;
+        }
+    }
+
+    /**
+     * 通过部门的名字转换成部门ID，从数据库读取部门id
+     *
+     * @param departName 部门的名字
+     * @return 部门对应的ID
+     */
+    private Integer convertDepartId(String departName) {
+        Department department = departmentMapper.queryByName(departName);
+        return department.getDepartmentId() != null ? department.getDepartmentId() : 0;
+    }
+
+
+    /**
+     * 往数据库里面插入Member的信息
+     *
+     * @param member Member实体信息
+     * @return 如果插入成功就返回带自增主键Id的Member实体信息，否则就返回一个NULL对象
+     */
+    @SystemControllerLog(description = "批量插入成员信息失败")
     @Transactional(rollbackFor = Exception.class)
     private Member batchInsertMember(Member member) {
         try {
-            /* 获取插入成功的行数  */
-            int successRow = memberMapper.insertAndGetId(member);
-            /* 获取自增的主键Id   */
-            Integer memberId = member.getMemberId();
+            memberMapper.insertAndGetId(member);
             return member;
         } catch (Exception e) {
             logger.error("插入成员信息发生了异常，信息为{}", member);
-            //    throw new BusinessException(BaseEnum.ADD_FAILURE);
             e.printStackTrace();
         }
         return null;
     }
 
-    @SystemControllerLog(description = "批量自动产生账号信息")
+    /**
+     * 往数据库里面插入账号信息
+     *
+     * @param account 账号实体信息
+     * @return 是否插入成功的布尔值
+     */
+    @SystemControllerLog(description = "批量自动产生账号信息失败")
     @Transactional(rollbackFor = Exception.class)
     private boolean batchInsertAccount(Account account) {
         try {
             /* 获取插入成功的行数  */
             int successRow = accountMapper.insertAndGetId(account);
             if (successRow != 0) {
-                /* 获取自增的主键Id   */
-                Long accountId = account.getAccountId();
                 logger.info("成功插入一条账号信息,信息为{}", account);
                 return true;
             }

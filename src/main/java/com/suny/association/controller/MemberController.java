@@ -120,7 +120,8 @@ public class MemberController extends BaseController {
             logger.warn("上传的文件貌似有点小问题，可能是后缀名欺骗");
             return JsonResult.failResult(BaseEnum.FILE_EXTENSION_WARN);
         }
-        memberService.batchInsertFromExcel(file, fileExtension);
+        /* 查看成功插入的行数  */
+        int successRow = memberService.batchInsertFromExcel(file, fileExtension);
         return JsonResult.successResult(BaseEnum.SELECT_FAILURE);
     }
 

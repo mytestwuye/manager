@@ -8,9 +8,17 @@
 
     <select id="queryAll" resultMap="BaseResultMap">
         SELECT
-        d.department_id,
-        d.department_name
+            d.department_id,
+            d.department_name
         FROM department AS d
+    </select>
+
+    <select id="queryByName" parameterType="String" resultMap="BaseResultMap">
+        SELECT
+            d.department_id,
+            d.department_name
+        FROM department AS d
+        WHERE d.department_name = #{departName}
     </select>
 
 </mapper>
