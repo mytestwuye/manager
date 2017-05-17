@@ -118,10 +118,13 @@ public class MemberController extends BaseController {
         /* 获取文件名的后缀名，检查是否存在欺骗   */
         if (!ExcelUtils.parseExcelFileType(fileType, fileExtension)) {
             logger.warn("上传的文件貌似有点小问题，可能是后缀名欺骗");
-            return JsonResult.failResult(BaseEnum.FILE_EXTENSION_WARN);
+//            return JsonResult.failResult(BaseEnum.FILE_EXTENSION_WARN);
+//            return "memberInfo/memberManager";
         }
         /* 查看成功插入的行数  */
         int successRow = memberService.batchInsertFromExcel(file, fileExtension);
+//        return "memberInfo/memberManager";
+        logger.info("开始返回json");
         return JsonResult.successResult(BaseEnum.SELECT_FAILURE);
     }
 
