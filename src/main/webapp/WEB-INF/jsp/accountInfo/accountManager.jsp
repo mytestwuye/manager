@@ -6,7 +6,6 @@
   Time: 22:21
   To change this template use File | Settings | File Templates.
 --%>
-<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     String path = request.getContextPath();
