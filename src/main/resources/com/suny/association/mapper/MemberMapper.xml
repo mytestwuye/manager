@@ -367,6 +367,7 @@
         SELECT count(*)
         FROM member;
     </select>
+
     <select id="quoteByMemberRoleId" parameterType="int" resultType="com.suny.association.pojo.po.Member">
         SELECT
             m.member_id,

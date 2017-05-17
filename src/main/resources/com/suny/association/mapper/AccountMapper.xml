@@ -180,6 +180,63 @@
         </trim>
     </insert>
 
+    <insert id="insertAndGetId" parameterType="com.suny.association.pojo.po.Account" useGeneratedKeys="true"
+            keyProperty="accountId">
+        INSERT INTO account
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="accountId != null">
+                account_id ,
+            </if>
+            <if test="accountName != null">
+                account_name ,
+            </if>
+            <if test="accountPassword != null">
+                account_password ,
+            </if>
+            <if test="accountPhone != null">
+                account_phone ,
+            </if>
+            <if test="accountEmail != null">
+                account_email,
+            </if>
+            <if test="accountStatus != null">
+                account_status,
+            </if>
+            <if test="accountMember != null">
+                account_member_id,
+            </if>
+            <if test="accountRoles != null">
+                account_role_id,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="accountId != null">
+                #{accountId,jdbcType=BIGINT},
+            </if>
+            <if test="accountName != null">
+                #{accountName,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPassword != null">
+                #{accountPassword,jdbcType=VARCHAR},
+            </if>
+            <if test="accountPhone != null">
+                #{accountPhone,jdbcType=BIGINT},
+            </if>
+            <if test="accountEmail != null">
+                #{accountEmail,jdbcType=VARCHAR},
+            </if>
+            <if test="accountStatus != null">
+                #{accountStatus,jdbcType=BOOLEAN},
+            </if>
+            <if test="accountMember != null">
+                #{accountMember.memberId,jdbcType=BIGINT},
+            </if>
+            <if test="accountRoles != null">
+                #{accountRoles.roleId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+
     <update id="update" parameterType="com.suny.association.pojo.po.Account">
         UPDATE account as a
         <trim prefix="set" suffixOverrides=",">

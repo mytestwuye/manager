@@ -49,12 +49,12 @@ public class ExcelUtils {
         Row row = null;             /*  Excel的每一行数据  */
         Cell cell = null;         /*  Excel一行数据中的每一个单元格的数据  */
         CellStyle cellStyle = null;    /*     表格的样式         */
-        Member member = new Member();
         Department department = new Department();
-        Account account = new Account();
         for (int i = 1; i < sheet.getLastRowNum() + 1; i++) {      /*  遍历单元表的每一行的数据    */
             row = sheet.getRow(i);
             if (row.getRowNum() >= startRow) {
+                Member member = new Member();
+                Account account = new Account();
                 /*  创建一个List来存放读取的每一行数据     */
                 member.setMemberName((String) getCellValue(row.getCell(0)));
                 member.setMemberClassName((String) getCellValue(row.getCell(1)));
@@ -62,14 +62,19 @@ public class ExcelUtils {
                 member.setMemberGradeNumber((Integer) getCellValue(row.getCell(4)));
                 department.setDepartmentId(convertDepartId((String) getCellValue(row.getCell(5))));
                 member.setMemberDepartment(department);
-                account.setAccountPhone((Long) getCellValue(row.getCell(3)));
-                account.setAccountId((Long) getCellValue(row.getCell(3)));
+                /*   因为要自动产生一个账号，所以默认拉取电话号码作为登录账号   */
+                Long phoneNumber = (Long) getCellValue(row.getCell(3));
+                String accountName = String.valueOf(getCellValue(row.getCell(3)));
+                account.setAccountPhone(phoneNumber);
+                account.setAccountName(accountName);
+                logger.info(account.toString());
+                logger.info(member.toString());
+                memberList.add(member);
+                accountList.add(account);
             } else {
                 logger.warn("开始读取的这一列不存在数据，不存在这行");
                 throw new BusinessException(BaseEnum.SHEET_NUM_OVERFLOW);
             }
-            memberList.add(member);
-            accountList.add(account);
         }
         memberAndAccountMap.get().put("memberList", memberList);
         memberAndAccountMap.get().put("accountList", accountList);
