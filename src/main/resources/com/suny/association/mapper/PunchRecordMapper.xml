@@ -3,7 +3,8 @@
 <mapper namespace="com.suny.association.mapper.PunchRecordMapper">
     <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.PunchRecord">
         <id property="punchRecordId" column="punch_record_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-        <result property="punchDatetime" column="punch_datetime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="punchDatetime" column="punch_datetime" jdbcType="TIMESTAMP"
+                javaType="java.time.LocalDateTime"/>
         <result property="punchTodayDate" column="punch_today_date" jdbcType="DATE" javaType="java.util.Date"/>
         <result property="punchIsCome" column="punch_is_come" jdbcType="BIT" javaType="java.lang.Boolean"/>
         <association property="punchTypeId" column="punch_type_id" javaType="com.suny.association.pojo.po.PunchType"
@@ -23,11 +24,11 @@
 
     <select id="queryMember" resultMap="memberInfo" parameterType="int">
         SELECT
-        m.member_id,
-        m.member_name,
-        m.member_grade_number,
-        m.member_manager_id,
-        m.member_department_id
+            m.member_id,
+            m.member_name,
+            m.member_grade_number,
+            m.member_manager_id,
+            m.member_department_id
         FROM member AS m
         WHERE
             member_id = #{ punchMemberId }
@@ -36,8 +37,8 @@
     <!--查询部门-->
     <select id="getDepartment" parameterType="int" resultMap="memberDepartmentResult">
         SELECT
-        d.department_id,
-        d.department_name
+            d.department_id,
+            d.department_name
         FROM department AS d
         WHERE d.department_id = #{memberDepartment.departmentId}
     </select>
@@ -54,22 +55,22 @@
 
     <select id="queryPunchTypeInfo" resultMap="punchTypeInfo" parameterType="int">
         SELECT
-        t.punch_type_id,
-        t.punch_type_name
+            t.punch_type_id,
+            t.punch_type_name
         FROM punchtype AS t
         WHERE
-        t.punch_type_id = #{ punchTypeId }
+            t.punch_type_id = #{ punchTypeId }
     </select>
 
 
     <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
         SELECT
-        r.punch_record_id,
-        r.punch_today_date,
-        r.punch_datetime,
-        r.punch_is_come,
-        r.punch_type_id,
-        r.punch_member_id
+            r.punch_record_id,
+            r.punch_today_date,
+            r.punch_datetime,
+            r.punch_is_come,
+            r.punch_type_id,
+            r.punch_member_id
         FROM punch_record AS r
         LIMIT
             #{offset},
@@ -81,7 +82,35 @@
         FROM punch_record;
     </select>
 
+    <select id="queryByMemberIdAndDate" resultMap="BaseResultMap">
+        SELECT *
+        FROM punch_record p
+        WHERE p.punch_member_id = #{memberId}
+              AND p.punch_today_date = #{date}
+    </select>
+
     <update id="update" parameterType="com.suny.association.pojo.po.PunchRecord">
+        update punch_record
+        <trim prefix="set" suffixOverrides=",">
+            <if test=" punchDatetime!= null">
+                punch_today_date =#{punchDatetime,jdbcType=TIMESTAMP},
+            </if>
+            <if test=" punchTodayDate != null">
+                punch_datetime =#{punchTodayDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test=" punchIsCome != null">
+                punch_is_come =#{punchIsCome,jdbcType=BOOLEAN},
+            </if>
+            <if test=" punchTypeId.punchTypeId != null">
+                punch_type_id =#{punchTypeId.punchTypeId,jdbcType=INTEGER},
+            </if>
+            <if test=" punchMemberId.memberId != null">
+                punch_member_id =#{punchMemberId.memberId,jdbcType=INTEGER},
+            </if>
+        </trim>
+        where punch_record_id = #{punchRecordId,jdbcType=BIGINT}
+    </update>
+    <update id="updatePunch" parameterType="com.suny.association.pojo.po.PunchRecord">
         update punch_record
         <trim prefix="set" suffixOverrides=",">
             <if test=" punchDatetime!= null">

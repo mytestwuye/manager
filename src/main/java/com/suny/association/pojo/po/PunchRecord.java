@@ -1,10 +1,14 @@
 package com.suny.association.pojo.po;
 
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 
-public class PunchRecord {
+public class PunchRecord implements Serializable {
+
+    private static final long serialVersionUID = 4274980896614790015L;
     private Long punchRecordId;
-    private Date punchDatetime;
+    private LocalDateTime punchDatetime;
     private Date punchTodayDate;
     private Boolean punchIsCome;
     private PunchType punchTypeId;
@@ -13,7 +17,7 @@ public class PunchRecord {
     public PunchRecord() {
     }
 
-    public PunchRecord(Long punchRecordId, Date punchDatetime, Date punchTodayDate, Boolean punchIsCome, PunchType punchTypeId, Member punchMemberId) {
+    public PunchRecord(Long punchRecordId, LocalDateTime punchDatetime, Date punchTodayDate, Boolean punchIsCome, PunchType punchTypeId, Member punchMemberId) {
         this.punchRecordId = punchRecordId;
         this.punchDatetime = punchDatetime;
         this.punchTodayDate = punchTodayDate;
@@ -30,11 +34,11 @@ public class PunchRecord {
         this.punchRecordId = punchRecordId;
     }
 
-    public Date getPunchDatetime() {
+    public LocalDateTime getPunchDatetime() {
         return punchDatetime;
     }
 
-    public void setPunchDatetime(Date punchDatetime) {
+    public void setPunchDatetime(LocalDateTime punchDatetime) {
         this.punchDatetime = punchDatetime;
     }
 

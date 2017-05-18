@@ -1,6 +1,7 @@
 package com.suny.association.service.impl;
 
 import com.suny.association.annotation.SystemControllerLog;
+import com.suny.association.annotation.SystemServiceLog;
 import com.suny.association.mapper.PunchRecordMapper;
 import com.suny.association.pojo.po.PunchRecord;
 import com.suny.association.pojo.po.PunchType;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +47,26 @@ public class PunchRecordServiceImpl extends AbstractBaseServiceImpl<PunchRecord>
     public void updatePunchType(PunchRecord punchRecord, PunchType changePunchType) {
         punchRecord.setPunchTypeId(changePunchType);
         this.update(punchRecord);
+    }
+
+    @SystemServiceLog(description = "成员考勤失败")
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int updatePunch(Integer memberId,Long punchRecordId) {
+        LocalDate localDate = LocalDate.now();
+        LocalDateTime dateTime = LocalDateTime.now().withNano(0);
+        PunchRecord punchRecord = new PunchRecord();
+        punchRecord.setPunchDatetime(dateTime);
+        PunchType punchType = new PunchType();
+        punchType.setPunchTypeId(1);
+        punchRecord.setPunchTypeId(punchType);
+        return punchRecordMapper.updatePunch(punchRecord);
+    }
+
+    @Override
+    public PunchRecord queryByMemberIdAndDate(Integer memberId) {
+        LocalDate date = LocalDate.now();
+        return punchRecordMapper.queryByMemberIdAndDate(memberId, date);
     }
 
     /*   查询考勤记录表中的总记录数   */
