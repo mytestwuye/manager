@@ -279,14 +279,14 @@
                 </li>
                 <li class="sub-menu system_menus system_1 0">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts-list"></i> 系统组织管理</a>
-                    <ul>
+                   <%-- <ul>
                         <li><a class="waves-effect"
                                href="javascript:Tab.addTab('系统管理', '${basePath}/systemConfig.html');">系统管理</a>
                         </li>
                         <li><a class="waves-effect"
                                href="javascript:Tab.addTab('组织管理', '${basePath}/manage/organization/index');">组织管理</a>
                         </li>
-                    </ul>
+                    </ul>--%>
                 </li>
                 <li class="sub-menu system_menus system_1 3">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 账号信息管理</a>
@@ -315,9 +315,9 @@
                 <li class="sub-menu system_menus system_1 7">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-more"></i> 其他数据管理</a>
                     <ul>
-                        <li><a class="waves-effect"
+                       <%-- <li><a class="waves-effect"
                                href="javascript:Tab.addTab('公共码表', '${basePath}/manage/coder/index');">公共码表</a>
-                        </li>
+                        </li>--%>
 
                         <li><a class="waves-effect"
                                href="javascript:Tab.addTab('登录日志', '${basePath}/session/index.html');">登录日志</a>
@@ -325,12 +325,12 @@
                         <li><a class="waves-effect"
                                href="javascript:Tab.addTab('操作日志', '${basePath}/operations/log/index.html');">操作日志</a>
                         </li>
-                        <li><a class="waves-effect"
+                      <%--  <li><a class="waves-effect"
                                href="javascript:Tab.addTab('键值设置', '${basePath}/manage/map/index');">键值设置</a>
-                        </li>
+                        </li>--%>
                     </ul>
                 </li>
-                <li class="sub-menu system_menus system_2 12" style="display:none;">
+                <%--<li class="sub-menu system_menus system_2 12" style="display:none;">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-menu"></i> 标签类目管理</a>
                     <ul>
                         <li><a class="waves-effect"
@@ -340,8 +340,8 @@
                                href="javascript:Tab.addTab('类目管理', '${basePath}/manage/category/index');">类目管理</a>
                         </li>
                     </ul>
-                </li>
-                <li class="sub-menu system_menus system_2 15" style="display:none;">
+                </li>--%>
+                <%--<li class="sub-menu system_menus system_2 15" style="display:none;">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-collection-text"></i> 文章内容管理</a>
                     <ul>
                         <li><a class="waves-effect"
@@ -351,7 +351,7 @@
                                href="javascript:Tab.addTab('回收管理', '${basePath}/manage/article/recycle');">回收管理</a>
                         </li>
                     </ul>
-                </li>
+                </li>--%>
                 <li>
                     <div class="upms-version">
                         &copy; sunybyjava@gmail.com V1.0.0
