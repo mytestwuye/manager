@@ -25,4 +25,7 @@ public interface IAccountService extends IBaseService<Account> {
 
     void deleteByLongId(Long id);
 
+    int changePassword(Long accountId, String newPassword);
+
+
 }

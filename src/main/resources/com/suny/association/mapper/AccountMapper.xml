@@ -265,6 +265,11 @@
         WHERE
         a.account_id = #{accountId,jdbcType=BIGINT}
     </update>
+    <update id="changePassword" parameterType="String">
+        UPDATE account
+        SET account_password = #{newPassword}
+        WHERE account_id = #{accountId}
+    </update>
 
     <select id="queryByMemberId" parameterType="int" resultMap="BaseResultMap">
         SELECT

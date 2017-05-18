@@ -2,6 +2,7 @@ package com.suny.association.mapper;
 
 import com.suny.association.mapper.interfaces.IMapper;
 import com.suny.association.pojo.po.Account;
+import org.apache.ibatis.annotations.Param;
 
 /**
  * Comments:  账号表mapper接口映射
@@ -22,4 +23,6 @@ public interface AccountMapper extends IMapper<Account> {
     void deleteByLongId(Long id);
 
     Account queryByMemberId(int memberId);
+
+    int changePassword(@Param("accountId") Long accountId, @Param("newPassword") String newPassword);
 }

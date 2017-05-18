@@ -9,11 +9,13 @@ import com.suny.association.service.interfaces.IAccountService;
 import com.suny.association.service.interfaces.IMemberService;
 import com.suny.association.service.interfaces.IRolesService;
 import com.suny.association.utils.JsonResult;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,11 +34,9 @@ import static com.suny.association.utils.JsonResult.successResult;
 @Controller
 @RequestMapping("/account")
 public class AccountController extends BaseController {
-
+    private static final Logger logger = org.slf4j.LoggerFactory.getLogger(AccountController.class);
     private final IAccountService accountService;
-
     private final IMemberService memberService;
-
     private final IRolesService rolesService;
 
     @Autowired
@@ -226,6 +226,57 @@ public class AccountController extends BaseController {
         Map<Object, Object> criteriaMap = convertToCriteriaMap(offset, limit, status);
         List<Account> accountList = accountService.list(criteriaMap);
         return convertToBootstrapTableResult(accountList, totalCount);
+    }
+
+
+    /**
+     * 修改自己账号的密码
+     *
+     * @param request     request请求
+     * @param accountId   请求修改密码账号的Id
+     * @param passWord    原始密码
+     * @param newPassword 新密码
+     * @return 修改密码的结果，要进行很多业务逻辑的判断
+     */
+    @RequestMapping("/changePassword.json")
+    public JsonResult changePassword(HttpServletRequest request,
+                                     @RequestParam Long accountId,
+                                     @RequestParam String passWord,
+                                     @RequestParam String newPassword) {
+        Account account = (Account) request.getSession().getAttribute("account");
+        if (account.getAccountId().equals(accountId)) {
+            if ("".equals(passWord) || "".equals(newPassword)) {
+                logger.warn("两个密码不能为空，必须都有值");
+                return JsonResult.failResult(BaseEnum.FIELD_NULL);
+            }
+            if (passWord.length() < 9 || newPassword.length() < 9) {
+                logger.warn("207字段的长度有错误，密码强制性必须大于9位");
+                return JsonResult.failResult(BaseEnum.FIELD_LENGTH_WRONG);
+            }
+            Account databaseAccount = accountService.queryByLongId(accountId);
+            if (databaseAccount == null) {
+                logger.error("数据库不存在要更改密码的账号,可能存在用户恶意修改密码风险");
+                return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
+            } else {
+                if (!account.getAccountPassword().equals(passWord)) {
+                    logger.warn("208, 输入的原密码跟数据库的原密码不一致");
+                    return JsonResult.failResult(BaseEnum.OLD_PASSWORD_WRONG);
+                } else if (passWord.equals(newPassword)) {
+                    logger.warn("209,两次密码一样");
+                    return JsonResult.failResult(BaseEnum.TWICE_PASSWORD_EQUALS);
+                } else {
+                    int successNum = accountService.changePassword(accountId, newPassword);
+                    if (successNum == 1) {
+                        logger.info("更新密码成功");
+                        return JsonResult.successResult(BaseEnum.UPDATE_SUCCESS);
+                    }
+                    logger.warn("更新密码失败");
+                    return JsonResult.successResult(BaseEnum.UPDATE_FAILURE);
+                }
+            }
+        }
+        logger.info("session中的账号跟要修改的账号ID不一样，恶意修改密码");
+        return JsonResult.failResult(BaseEnum.MALICIOUS_OPERATION);
     }
 
 
