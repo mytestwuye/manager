@@ -238,18 +238,20 @@ public class AccountController extends BaseController {
      * @param newPassword 新密码
      * @return 修改密码的结果，要进行很多业务逻辑的判断
      */
+    @SystemControllerLog(description = "修改用户密码操作")
     @RequestMapping("/changePassword.json")
+    @ResponseBody
     public JsonResult changePassword(HttpServletRequest request,
-                                     @RequestParam Long accountId,
-                                     @RequestParam String passWord,
-                                     @RequestParam String newPassword) {
+                                     @RequestParam("accountId") Long accountId,
+                                     @RequestParam("passWord") String passWord,
+                                     @RequestParam("newPassword") String newPassword) {
         Account account = (Account) request.getSession().getAttribute("account");
         if (account.getAccountId().equals(accountId)) {
             if ("".equals(passWord) || "".equals(newPassword)) {
                 logger.warn("两个密码不能为空，必须都有值");
                 return JsonResult.failResult(BaseEnum.FIELD_NULL);
             }
-            if (passWord.length() < 9 || newPassword.length() < 9) {
+            if (newPassword.length() < 9) {
                 logger.warn("207字段的长度有错误，密码强制性必须大于9位");
                 return JsonResult.failResult(BaseEnum.FIELD_LENGTH_WRONG);
             }
@@ -258,7 +260,7 @@ public class AccountController extends BaseController {
                 logger.error("数据库不存在要更改密码的账号,可能存在用户恶意修改密码风险");
                 return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
             } else {
-                if (!account.getAccountPassword().equals(passWord)) {
+                if (!databaseAccount.getAccountPassword().equals(passWord)) {
                     logger.warn("208, 输入的原密码跟数据库的原密码不一致");
                     return JsonResult.failResult(BaseEnum.OLD_PASSWORD_WRONG);
                 } else if (passWord.equals(newPassword)) {
@@ -268,6 +270,7 @@ public class AccountController extends BaseController {
                     int successNum = accountService.changePassword(accountId, newPassword);
                     if (successNum == 1) {
                         logger.info("更新密码成功");
+                        request.getSession().removeAttribute("account");
                         return JsonResult.successResult(BaseEnum.UPDATE_SUCCESS);
                     }
                     logger.warn("更新密码失败");

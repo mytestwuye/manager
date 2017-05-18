@@ -1,6 +1,5 @@
 package com.suny.association.service.impl;
 
-import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.annotation.SystemServiceLog;
 import com.suny.association.enums.BaseEnum;
 import com.suny.association.exception.BusinessException;
@@ -176,7 +175,7 @@ public class AccountServiceImpl extends AbstractBaseServiceImpl<Account> impleme
         accountMapper.deleteByLongId(id);
     }
 
-    @SystemControllerLog(description = "修改用户密码失败")
+    @SystemServiceLog(description = "修改用户密码失败")
     @Transactional(rollbackFor = Exception.class)
     @Override
     public int changePassword(Long accountId, String newPassword) {

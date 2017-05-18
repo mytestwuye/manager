@@ -1,3 +1,4 @@
+<%--@elvariable id="account" type="com.suny.association.pojo.po.Account"--%>
 <%--@elvariable id="member" type="com.suny.association.pojo.po.Member"--%>
 <%--
   Created by IntelliJ IDEA.
@@ -239,7 +240,8 @@
                         <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-face"></i> 隐私管理</a>
                     </li>
                     <li>
-                        <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-settings"></i> 系统设置</a>
+                        <a class="waves-effect" data-toggle="modal" data-target="#myModal"><i
+                                class="zmdi zmdi-settings"></i> 修改密码</a>
                     </li>
                     <li>
                         <a class="waves-effect" href="javascript:;" onclick="clickLogout()"><i
@@ -248,6 +250,12 @@
                     </li>
                 </ul>
             </div>
+
+            <%--<h2>创建模态框（Modal）</h2>--%>
+            <!-- 按钮触发模态框 -->
+            <%--<button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">开始演示模态框</button>--%>
+            <!-- 模态框（Modal） -->
+
             <!-- /个人资料区 -->
             <!-- 菜单区 -->
             <ul class="main-menu">
@@ -279,14 +287,14 @@
                 </li>
                 <li class="sub-menu system_menus system_1 0">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts-list"></i> 系统组织管理</a>
-                   <%-- <ul>
-                        <li><a class="waves-effect"
-                               href="javascript:Tab.addTab('系统管理', '${basePath}/systemConfig.html');">系统管理</a>
-                        </li>
-                        <li><a class="waves-effect"
-                               href="javascript:Tab.addTab('组织管理', '${basePath}/manage/organization/index');">组织管理</a>
-                        </li>
-                    </ul>--%>
+                    <%-- <ul>
+                         <li><a class="waves-effect"
+                                href="javascript:Tab.addTab('系统管理', '${basePath}/systemConfig.html');">系统管理</a>
+                         </li>
+                         <li><a class="waves-effect"
+                                href="javascript:Tab.addTab('组织管理', '${basePath}/manage/organization/index');">组织管理</a>
+                         </li>
+                     </ul>--%>
                 </li>
                 <li class="sub-menu system_menus system_1 3">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-accounts"></i> 账号信息管理</a>
@@ -315,9 +323,9 @@
                 <li class="sub-menu system_menus system_1 7">
                     <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-more"></i> 其他数据管理</a>
                     <ul>
-                       <%-- <li><a class="waves-effect"
-                               href="javascript:Tab.addTab('公共码表', '${basePath}/manage/coder/index');">公共码表</a>
-                        </li>--%>
+                        <%-- <li><a class="waves-effect"
+                                href="javascript:Tab.addTab('公共码表', '${basePath}/manage/coder/index');">公共码表</a>
+                         </li>--%>
 
                         <li><a class="waves-effect"
                                href="javascript:Tab.addTab('登录日志', '${basePath}/session/index.html');">登录日志</a>
@@ -325,9 +333,9 @@
                         <li><a class="waves-effect"
                                href="javascript:Tab.addTab('操作日志', '${basePath}/operations/log/index.html');">操作日志</a>
                         </li>
-                      <%--  <li><a class="waves-effect"
-                               href="javascript:Tab.addTab('键值设置', '${basePath}/manage/map/index');">键值设置</a>
-                        </li>--%>
+                        <%--  <li><a class="waves-effect"
+                                 href="javascript:Tab.addTab('键值设置', '${basePath}/manage/map/index');">键值设置</a>
+                          </li>--%>
                     </ul>
                 </li>
                 <%--<li class="sub-menu system_menus system_2 12" style="display:none;">
@@ -377,6 +385,45 @@
             </div>
             <div class="content_main">
                 <div id="iframe_home" class="iframe cur">
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal"
+                                            aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title" id="myModalLabel">修改用户密码</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-horizontal">
+                                        <div class="form-group">
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="text" id="password"
+                                                       placeholder="输入原密码">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="password" id="newPassword"
+                                                       placeholder="输入新密码">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-10">
+                                                <input class="form-control" type="password" id="repeatPassword"
+                                                       placeholder="重复新密码">
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                                    <button type="button" class="btn btn-primary" onclick="changePassword()">提交更改
+                                    </button>
+                                </div>
+                            </div><!-- /.modal-content -->
+                        </div><!-- /.modal -->
+                    </div>
                     <p><h4>江西现代技术学院软件技术协会管理系统 <i style="color:#c00"></i></h4></p>
                     <p><b>演示地址</b>：<a href="http://182.254.149.200" target="_blank">点击访问我的网站首页</a></p>
                     <%--<p><b>系统简介</b>：本系统是基于RBAC授权和基于用户授权的细粒度权限控制通用平台，并提供单点登录、会话管理和日志管理。接入的系统可自由定义组织、角色、权限、资源等。</p><br/>--%>
@@ -415,6 +462,83 @@
 <script src="${basePath}/js/common.js"></script>
 <script src="${basePath}/js/admin.js"></script>
 <script>
+    function changePassword() {
+        var passwordVal;
+        var newPasswordVal;
+        var repeatPasswordVal;
+        passwordVal = $("#password").val();
+        newPasswordVal = $("#newPassword").val();
+        repeatPasswordVal = $("#repeatPassword").val();
+        console.log("原密码" + passwordVal);
+        console.log("新密码" + newPasswordVal);
+        console.log("重复密码" + repeatPasswordVal);
+        if (passwordVal == null || passwordVal == "") {
+            layer.alert("原密码不能为空");
+            return false;
+        }
+        if (newPasswordVal == null || newPasswordVal == "" || newPasswordVal.length < 9) {
+            if (newPasswordVal == "") {
+                layer.alert("新密码不能为空");
+                return false;
+            }
+            else {
+                layer.alert("为了您的密码安全密码长度必须大于9位，不能是简单的密码,当前长度" + newPasswordVal.length);
+                return false;
+            }
+        }
+        if (repeatPasswordVal == null || repeatPasswordVal == "" || repeatPasswordVal.length < 9) {
+            if (repeatPasswordVal == "") {
+                layer.alert("重复新密码不能为空");
+                return false;
+            }
+            else {
+                layer.alert("为了您的密码安全密码长度必须大于9位，不能是简单的密码,当前重复密码长度" + repeatPasswordVal.length);
+                return false;
+            }
+        }
+        if (repeatPasswordVal != newPasswordVal) {
+            layer.alert("新密码跟重复密码必须要填写一样，证明您记住了新密码");
+            return false;
+        }
+        $.ajax({
+            type: "post",
+            url: "${basePath}/account/changePassword.json",
+            data: {
+                passWord: passwordVal,
+                newPassword: newPasswordVal,
+                accountId:${account.accountId}
+            },
+            success: function (result) {
+                var status = result.status;
+                if (status == 201) {
+                    layer.alert("密码不能为空！");
+                } else if (status == 207) {
+                    layer.alert("请检查新密码长度不能小于9位！");
+                } else if (status == 5) {
+                    layer.alert("没有你要修改密码的账号！");
+                } else if (status == 208) {
+                    layer.alert("老密码填写错误，请重新检查您的老密码！");
+                } else if (status == 104) {
+                    layer.alert("更新密码成功，请重新用新密码登录！");
+                    layer.confirm('密码更新成功了！', {
+                        btn: ['我知道了'] //按钮
+                    }, function () {
+                        layer.load(0, {shade: false});   //0代表加载的风格，支持0-2
+                        setTimeout(login(), 5000);
+                    });
+
+                } else if (status == 4) {
+                    layer.alert("服务器更新密码出了点小问题，请重试！");
+                } else if (status == 211) {
+                    layer.alert("恶意修改他人密码！");
+                } else {
+                    layer.alert("出了点未知的小问题！");
+                }
+            }, error: function (result) {
+                layer.alert("服务器出了点小问题");
+            }
+        })
+    }
     function clickLogout() {
         //询问框
         layer.confirm('您确定要退出登陆吗？', {

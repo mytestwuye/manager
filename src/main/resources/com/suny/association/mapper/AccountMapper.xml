@@ -265,7 +265,7 @@
         WHERE
         a.account_id = #{accountId,jdbcType=BIGINT}
     </update>
-    <update id="changePassword" parameterType="String">
+    <update id="changePassword">
         UPDATE account
         SET account_password = #{newPassword}
         WHERE account_id = #{accountId}
@@ -345,7 +345,8 @@
     <select id="queryByLongId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         SELECT
             a.account_id,
-            a.account_name
+            a.account_name,
+            a.account_password
         FROM account AS a
         WHERE a.account_id = #{accountId,jdbcType=BIGINT}
     </select>
