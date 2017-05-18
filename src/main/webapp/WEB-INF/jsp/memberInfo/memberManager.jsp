@@ -344,10 +344,9 @@
         var index = layer.open({
             type: 2,
             content: '${basePath}/member/uploadMemberInfo.html',
-            area: ['260px', '500px'],
+            area: ['460px', '500px'],
             maxmin: true
         });
-        layer.full(index);
     });
 
 

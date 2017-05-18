@@ -2,6 +2,8 @@ package com.suny.association.service.impl;
 
 import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.annotation.SystemServiceLog;
+import com.suny.association.enums.BaseEnum;
+import com.suny.association.exception.BusinessException;
 import com.suny.association.mapper.AccountMapper;
 import com.suny.association.mapper.DepartmentMapper;
 import com.suny.association.mapper.MemberMapper;
@@ -19,9 +21,11 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Comments:  成员逻辑层类
@@ -155,11 +159,14 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
     @SystemControllerLog(description = "批量插入成员信息失败")
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int batchInsertFromExcel(File file, String fileExtension) {
-//        Member member;   // 定义一个成员实体变量
+    public AtomicReference<List<Member>> batchInsertFromExcel(File file, String fileExtension) {
+        // 定义一个插入失败的列表，返回给前端
+        AtomicReference<List<Member>> failList = new AtomicReference<>(new ArrayList<>());
+        //   Member member;   // 定义一个成员实体变量
         int successNum = 0;    // 成功插入的行数
         List<String[]> memberList = ExcelUtils.parseExcel(file, fileExtension, 0, 0);// 包含成员信息跟账号信息的一个集合，原子操作
-        if (memberList.size() > 0) {
+        int memberListSize = memberList.size();
+        if (memberListSize > 0) {
             for (String[] memberArray : memberList) {
                 /* 按照模板约定，必须是6组数据，分别是名字，班级，性别，电话号码，入学年份，部门，如果不满足直接拒绝写入*/
                 if (memberArray.length >= 6) {
@@ -170,6 +177,7 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
                     Member queryMember = memberMapper.queryByName(member.getMemberName());
                     if (queryMember != null && Objects.equals(queryMember.getMemberGradeNumber(), member.getMemberGradeNumber())) {
                         logger.error("数据库中存在这个成员,成员名字:【{}】,班级【{}】,年级【{}】", queryMember.getMemberName(), member.getMemberClassName(), member.getMemberGradeNumber());
+                        failList.get().add(member);
                     } else {
                         //   获取插入后返回的Member信息   //
                         Member insertMember = batchInsertMember(member);
@@ -192,8 +200,12 @@ public class MemberServiceImpl extends AbstractBaseServiceImpl<Member> implement
                 }
 
             }
+            logger.info("成功插入的行数为:{}，失败的行数为{}", successNum, memberListSize - successNum);
+        } else {
+            logger.warn("读取出来的数据是空的，无法进行插入");
+            throw new BusinessException(BaseEnum.ADD_FAIL_ALL_NULL);
         }
-        return successNum;
+        return failList;
     }
 
 

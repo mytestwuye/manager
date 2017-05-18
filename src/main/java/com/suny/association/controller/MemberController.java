@@ -31,6 +31,9 @@ import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+
+import static com.suny.association.utils.JsonResult.successResult;
 
 /**
  * Comments:   成员信息管理类Controller
@@ -80,7 +83,7 @@ public class MemberController extends BaseController {
             return JsonResult.failResult(BaseEnum.MUST_CHINESE);
         }
         memberService.insert(member);
-        return JsonResult.successResult(BaseEnum.ADD_SUCCESS);
+        return successResult(BaseEnum.ADD_SUCCESS);
     }
 
 
@@ -106,6 +109,7 @@ public class MemberController extends BaseController {
 
     @SystemControllerLog(description = "通过Excel文件批量新增数据")
     @RequestMapping(value = "/uploadMemberInfo.json", method = RequestMethod.POST)
+    @ResponseBody
     public JsonResult uploadMemberInfo(@RequestParam("excelFile") MultipartFile excelFile) throws IOException {
         String fileType = excelFile.getContentType();
         /*  获取上传文件名 */
@@ -118,14 +122,16 @@ public class MemberController extends BaseController {
         /* 获取文件名的后缀名，检查是否存在欺骗   */
         if (!ExcelUtils.parseExcelFileType(fileType, fileExtension)) {
             logger.warn("上传的文件貌似有点小问题，可能是后缀名欺骗");
-//            return JsonResult.failResult(BaseEnum.FILE_EXTENSION_WARN);
-//            return "memberInfo/memberManager";
+            return JsonResult.failResult(BaseEnum.FILE_EXTENSION_WARN);
         }
         /* 查看成功插入的行数  */
-        int successRow = memberService.batchInsertFromExcel(file, fileExtension);
-//        return "memberInfo/memberManager";
-        logger.info("开始返回json");
-        return JsonResult.successResult(BaseEnum.SELECT_FAILURE);
+        AtomicReference<List<Member>> listAtomicReference = memberService.batchInsertFromExcel(file, fileExtension);
+        int size = listAtomicReference.get().size();
+        if (size == 0) {
+            return successResult(BaseEnum.ADD_SUCCESS_ALL);
+        } else {
+            return JsonResult.successResultAndData(BaseEnum.ADD_SUCCESS_PART_OF, listAtomicReference.get());
+        }
     }
 
 
@@ -177,7 +183,7 @@ public class MemberController extends BaseController {
             return JsonResult.failResult(BaseEnum.HAVE_QUOTE);
         }
         memberService.deleteByLongId(id);
-        return JsonResult.successResult(BaseEnum.DELETE_SUCCESS);
+        return successResult(BaseEnum.DELETE_SUCCESS);
     }
 
     @SystemControllerLog(description = "更新成员信息")
@@ -191,7 +197,7 @@ public class MemberController extends BaseController {
             return JsonResult.failResult(BaseEnum.FIELD_NULL);
         }
         memberService.update(member);
-        return JsonResult.successResult(BaseEnum.UPDATE_SUCCESS);
+        return successResult(BaseEnum.UPDATE_SUCCESS);
     }
 
     @RequestMapping(value = "/update.html/{id}", method = RequestMethod.GET)

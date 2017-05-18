@@ -5,6 +5,7 @@ import com.suny.association.service.IBaseService;
 
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Comments:   成员表业务逻辑接口
@@ -30,7 +31,7 @@ public interface IMemberService extends IBaseService<Member> {
 
     List<Member> quoteByMemberRoleId(Integer memberRoleId);
 
-    int batchInsertFromExcel(File file, String fileExtension);
+    AtomicReference<List<Member>> batchInsertFromExcel(File file, String fileExtension);
 
 
 }
