@@ -185,8 +185,6 @@
         if (date == null) {
             return "没有签到";
         } else {
-            console.log(date);
-            console.log(date.year);
             var Y = date.year + '-';
             var M = date.monthValue + '-';
             var D = date.dayOfMonth + ' ';
