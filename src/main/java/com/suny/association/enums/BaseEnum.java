@@ -15,6 +15,7 @@ public enum BaseEnum {
     REPEAT_ADD("006", "重复添加"),
     SYSTEM_LIMIT("007", "系统限制，不允许操作"),
     ADD_FAIL_ALL_NULL("008", "数据为空，全部插入失败"),
+    ADD_FAIL_ALL("009", "开启考勤失败"),
     ADD_SUCCESS("102", "添加成功"),
     DELETE_SUCCESS("103", "删除成功"),
     UPDATE_SUCCESS("104", "更新成功"),

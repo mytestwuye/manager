@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.suny.association.mapper.PunchTypeMapper" >
+<mapper namespace="com.suny.association.mapper.PunchTypeMapper">
     <resultMap id="BaseResultMap" type="com.suny.association.pojo.po.PunchType">
         <id column="punch_type_id" property="punchTypeId" jdbcType="INTEGER" javaType="java.lang.Integer"/>
         <result column="punch_type_name" property="punchTypeName" jdbcType="VARCHAR" javaType="java.lang.String"/>
     </resultMap>
+
+    <select id="queryByName" resultMap="BaseResultMap" parameterType="string">
+        SELECT
+            p.punch_type_id,
+            p.punch_type_name
+        FROM punchtype AS p
+        WHERE p.punch_type_name = #{name}
+    </select>
 
 
 </mapper>

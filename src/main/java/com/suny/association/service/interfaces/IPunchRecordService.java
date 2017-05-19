@@ -5,6 +5,8 @@ import com.suny.association.pojo.po.PunchType;
 import com.suny.association.service.IBaseService;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * Comments:
  * Author:   孙建荣
@@ -16,4 +18,8 @@ public interface IPunchRecordService extends IBaseService<PunchRecord> {
     int updatePunch(@Param("memberId") Integer memberId, @Param("punchRecordId") Long punchRecordId);
 
     PunchRecord queryByMemberIdAndDate(Integer memberId);
+
+    int batchInsertsPunchRecord();
+
+    List<PunchRecord> queryByPunchDate();
 }

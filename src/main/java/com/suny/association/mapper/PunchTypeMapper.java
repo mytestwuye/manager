@@ -10,6 +10,8 @@ import com.suny.association.pojo.po.PunchType;
  * Create Date: 2017/03/05 23:05
  */
 
-public interface PunchTypeMapper extends IMapper<PunchType>{
+public interface PunchTypeMapper extends IMapper<PunchType> {
 
+    @Override
+    PunchType queryByName(String name);
 }

@@ -21,6 +21,21 @@
                      javaType="com.suny.association.pojo.po.Department"
                      select="getDepartment"/>
     </resultMap>
+    <insert id="batchInsertsPunchRecord" parameterType="ArrayList" >
+        INSERT INTO punch_record
+        (punch_today_date,
+        punch_is_come ,
+        punch_type_id ,
+        punch_member_id)
+        VALUES
+        <foreach collection="list" item="punchRecord" index="index" separator=",">
+            ( #{punchRecord.punchTodayDate,jdbcType=DATE},
+            #{punchRecord.punchIsCome,jdbcType=BOOLEAN},
+            #{punchRecord.punchTypeId.punchTypeId,jdbcType=INTEGER},
+            #{punchRecord.punchMemberId.memberId,jdbcType=INTEGER}
+            )
+        </foreach>
+    </insert>
 
     <select id="queryMember" resultMap="memberInfo" parameterType="int">
         SELECT
@@ -87,6 +102,14 @@
         FROM punch_record p
         WHERE p.punch_member_id = #{memberId}
               AND p.punch_today_date = #{date}
+    </select>
+
+    <select id="queryByPunchDate" resultMap="BaseResultMap" parameterType="java.time.LocalDate">
+        SELECT
+            p.punch_record_id,
+            p.punch_today_date
+        FROM punch_record p
+        WHERE p.punch_today_date = #{localDate}
     </select>
 
     <update id="update" parameterType="com.suny.association.pojo.po.PunchRecord">

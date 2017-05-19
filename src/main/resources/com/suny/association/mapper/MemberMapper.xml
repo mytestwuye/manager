@@ -390,6 +390,16 @@
         FROM member AS m
         WHERE m.member_name = #{name}
     </select>
+    <select id="queryLimitMemberRole" resultMap="BaseResultMap">
+        SELECT
+            m.member_id,
+            m.member_role_id,
+            m.member_grade_number
+        FROM member AS m
+        WHERE m.member_role_id <![CDATA[
+        <=
+        ]]> #{memberRoleId} AND m.member_grade_number = #{memberGrade}
+    </select>
 
 
 </mapper>

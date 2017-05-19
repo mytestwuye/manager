@@ -84,11 +84,47 @@ public class PunchRecordController extends BaseController {
     }
 
 
-    @SystemControllerLog(description = "考勤操作")
+    /**
+     * 开启今天的签到，给每一个符合规则的成员添加一条缺勤记录.
+     * 这里开启签到必须要在协会的角色大于一个数值，这里我们先固定一个数值，
+     * 就是对应我数据库里面的值，这个角色不能够小于2，也就是至少是部长级别才能开始，
+     * 因为在我数据库里面角色小于2的都是新成员，新成员肯定不能具备开启签到功能
+     *
+     * @param memberId 开启今日考勤的管理员姓名
+     * @return 开启今日签到的操作结果
+     */
+    @SystemControllerLog(description = "管理员开启今日考勤操作")
     @RequestMapping(value = "/insert.json", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult insert(@RequestParam("memberId") Long punchMemberId) {
-        return null;
+    public JsonResult insert(HttpServletRequest request, @RequestParam("memberId") Long memberId) {
+
+        Member sessionMember = (Member) request.getSession().getAttribute("member");
+        if (sessionMember == null) {
+            logger.warn("987,用户没有登录进行操作");
+            return JsonResult.failResult(BaseEnum.NO_LOGIN_IN);
+        } else {
+            Member dataBaseMember = memberService.queryByLongId(memberId);
+            if (dataBaseMember == null) {
+                logger.info("005，数据库没有查询到开启签到的管理员信息，恶意操作");
+                return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
+            } else if (!Objects.equals(dataBaseMember.getMemberId(), sessionMember.getMemberId())) {
+                logger.info("211,要操作的Member主键Id与Session中保存的Member主键Id不同，属于恶意操作");
+                return JsonResult.failResult(BaseEnum.MALICIOUS_OPERATION);
+            } else if (dataBaseMember.getMemberRoles().getMemberRoleId() <= 2) {
+                logger.warn("206,部门角色太低,没有权限进行开启签到功能");
+                return JsonResult.failResult(BaseEnum.LIMIT_MEMBER_Manager);
+            } else if (punchRecordService.queryByPunchDate().size() > 0) {
+                logger.warn("212,重复签到，今天已经开启签到过了");
+                return JsonResult.failResult(BaseEnum.REPEAT_PUNCH);
+            } else {
+                int successRow = punchRecordService.batchInsertsPunchRecord();
+                if (successRow == 0) {
+                    logger.error("009,开启考勤失败");
+                    return JsonResult.failResult(BaseEnum.ADD_FAIL_ALL);
+                }
+                return JsonResult.successResult(BaseEnum.ADD_SUCCESS_ALL);
+            }
+        }
     }
 
 

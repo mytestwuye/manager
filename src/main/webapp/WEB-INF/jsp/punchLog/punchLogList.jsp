@@ -27,8 +27,9 @@
 <div>
     <div class="panel-body" style="padding-bottom:0;">
         <div id="toolbar">
-            <%--<a class="waves-effect waves-button" href="javascript:;" onclick="forceoutAction()"><i
-                    class="zmdi zmdi-run"></i> 强制退出</a>--%>
+            <button id="open_punch" type="button" class="btn btn-default btn-info">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>开启考勤
+            </button>
         </div>
         <table id="table"></table>
     </div>
@@ -210,6 +211,50 @@
     function punchMemberDepartmentFormat(value, row, index) {
         //noinspection JSUnresolvedVariable
         return row.punchMemberId.memberDepartment.departmentName;
+    }
+
+    var openPunch;
+    openPunch = $("#open_punch");
+    openPunch.click(function () {
+        layer.confirm('您确定要开启今天的考勤吗？', {
+            btn: ['同意', '点错了'] //按钮
+        }, function () {
+            layer.msg('您开启了今天的考勤', {icon: 1});
+            sendPunch();
+        }, function () {
+            layer.alert('已经取消了');
+        });
+    });
+
+    function sendPunch() {
+        $.ajax({
+            type: "POST",
+            url: "${basePath}/punchLog/insert.json",
+            data: {
+                memberId:${sessionScope.member.memberId}
+            }, success: function (result) {
+                var status = result.status;
+                if (status == 987) {
+                    layer.alert("没有登录你还开启签到！查看下是不是会话过期了或者你不是协会成员，重新登录下吧");
+                } else if (status == 211) {
+                    layer.alert("请不要恶意操作他人账号！");
+                } else if (status == 5) {
+                    layer.alert("没有你这个要开启签到的账号！恶意操作");
+                } else if (status == 212) {
+                    layer.alert("今天已经开启签到成功啦，不要重复开启！");
+                } else if (status == 0) {
+                    layer.alert("考勤失败啦，再等等吧！");
+                } else if (status == 206) {
+                    layer.alert("你的角色暂时不能使用开启签到功能！");
+                } else if (status == 110) {
+                    layer.alert("恭喜你开启签到成功啦！");
+                } else {
+                    layer.alert("服务器除了点小问题，可能执行到Bug了");
+                }
+            }, error: function () {
+                layer.alert("服务器可能瘫痪了，去看下吧。。。。。。");
+            }
+        })
     }
 
     /**
