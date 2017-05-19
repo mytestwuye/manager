@@ -141,7 +141,7 @@
                         title: '考勤成员部门',
                         align: 'center',
                         formatter: 'punchMemberDepartmentFormat'
-                    },
+                    }
                 ],
                 onClickRow: function (row, $element) {
                     //$element是当前tr的jquery对象
@@ -172,21 +172,30 @@
     };
 
     function dateFormat(value, row, index) {
-        var date = row.punchTodayDate;
+        var date;
+        date = row.punchTodayDate;
         var Y = date.year + '-';
         var M = date.monthValue + '-';
         var D = date.dayOfMonth + ' ';
         return Y + M + D;
     }
     function timeFormat(value, row, index) {
-        var date = row.punchDatetime;
-        var Y = date.year + '-';
-        var M = date.monthValue + '-';
-        var D = date.dayOfMonth + ' ';
-        var h = date.hour + ':';
-        var m = date.minute + ':';
-        var s = date.second;
-        return Y + M + D + h + m + s;
+        var date;
+        date = row.punchDatetime;
+        if (date == null) {
+            return "没有签到";
+        } else {
+            console.log(date);
+            console.log(date.year);
+            var Y = date.year + '-';
+            var M = date.monthValue + '-';
+            var D = date.dayOfMonth + ' ';
+            var h = date.hour + ':';
+            var m = date.minute + ':';
+            var s = date.second;
+            return Y + M + D + h + m + s;
+        }
+
     }
 
     function punchTypeStatusFormat(value, row, index) {
@@ -215,6 +224,7 @@
 
     var openPunch;
     openPunch = $("#open_punch");
+
     openPunch.click(function () {
         layer.confirm('您确定要开启今天的考勤吗？', {
             btn: ['同意', '点错了'] //按钮
@@ -222,7 +232,7 @@
             layer.msg('您开启了今天的考勤', {icon: 1});
             sendPunch();
         }, function () {
-            layer.alert('已经取消了');
+            layer.msg('已经取消了', {icon: 1});
         });
     });
 
@@ -231,7 +241,7 @@
             type: "POST",
             url: "${basePath}/punchLog/insert.json",
             data: {
-                memberId:${sessionScope.member.memberId}
+                memberId: parseInt(${sessionScope.member.memberId})
             }, success: function (result) {
                 var status = result.status;
                 if (status == 987) {
