@@ -92,11 +92,11 @@
     <update id="update" parameterType="com.suny.association.pojo.po.PunchRecord">
         update punch_record
         <trim prefix="set" suffixOverrides=",">
-            <if test=" punchDatetime!= null">
-                punch_today_date =#{punchDatetime,jdbcType=TIMESTAMP},
+            <if test=" punchDatetime != null">
+                punch_datetime=#{punchDatetime,jdbcType=TIMESTAMP},
             </if>
             <if test=" punchTodayDate != null">
-                punch_datetime =#{punchTodayDate,jdbcType=DATE},
+                punch_today_date=#{punchTodayDate,jdbcType=DATE},
             </if>
             <if test=" punchIsCome != null">
                 punch_is_come =#{punchIsCome,jdbcType=BOOLEAN},
@@ -115,10 +115,10 @@
         update punch_record
         <trim prefix="set" suffixOverrides=",">
             <if test=" punchDatetime != null">
-                punch_today_date =#{punchDatetime,jdbcType=TIMESTAMP},
+                punch_datetime=#{punchDatetime,jdbcType=TIMESTAMP},
             </if>
             <if test=" punchTodayDate != null">
-                punch_datetime =#{punchTodayDate,jdbcType=DATE},
+                punch_today_date=#{punchTodayDate,jdbcType=DATE},
             </if>
             <if test=" punchIsCome != null">
                 punch_is_come =#{punchIsCome,jdbcType=BOOLEAN},

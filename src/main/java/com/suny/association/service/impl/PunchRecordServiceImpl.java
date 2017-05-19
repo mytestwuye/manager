@@ -56,7 +56,7 @@ public class PunchRecordServiceImpl extends AbstractBaseServiceImpl<PunchRecord>
     public int updatePunch(Integer memberId, Long punchRecordId) {
         /* 组成一条考勤记录需要有考勤的Member信息，考勤类型PunchType， */
         //  使用Java8的LocalDateTime，抛弃以前难用的Date吧
-        LocalDateTime dateTime = LocalDateTime.now().withNano(0);
+        LocalDateTime dateTime = LocalDateTime.now();
         //   实例化一个考勤记录对象
         PunchRecord punchRecord = new PunchRecord();
         //  首先放入考勤记录的ID，可与考勤的状态必定数据库有一条缺勤的记录
