@@ -50,6 +50,13 @@ public class PunchRecordServiceImpl extends AbstractBaseServiceImpl<PunchRecord>
         this.update(punchRecord);
     }
 
+    /**
+     * 对今天的考勤记录进行修改，也就是所谓的考勤
+     *
+     * @param memberId      考勤的memberId
+     * @param punchRecordId 对应的那条考勤状态为缺勤的考勤记录主键Id
+     * @return 成功影响的行数
+     */
     @SystemServiceLog(description = "成员考勤失败")
     @Transactional(rollbackFor = Exception.class)
     @Override
@@ -74,9 +81,9 @@ public class PunchRecordServiceImpl extends AbstractBaseServiceImpl<PunchRecord>
         //   实例化一个考勤的成员，用来判断哪个进行考勤
         Member member = new Member();
         member.setMemberId(memberId);
+        // 把考勤人设置进去
         punchRecord.setPunchMemberId(member);
-        int successRow = punchRecordMapper.updatePunch(punchRecord);
-        return successRow;
+        return punchRecordMapper.updatePunch(punchRecord);
     }
 
     @Override

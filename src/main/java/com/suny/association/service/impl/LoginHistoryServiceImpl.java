@@ -8,7 +8,6 @@ import com.suny.association.pojo.po.LoginHistory;
 import com.suny.association.pojo.po.baiduLocation.GeneralLocationResult;
 import com.suny.association.service.AbstractBaseServiceImpl;
 import com.suny.association.service.interfaces.ILoginHistoryService;
-import com.suny.association.utils.CustomDate;
 import com.suny.association.utils.WebUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -99,7 +99,7 @@ public class LoginHistoryServiceImpl extends AbstractBaseServiceImpl<LoginHistor
         /* 填充用户登录的ip  */
         loginHistory.setLastLoginIp(loginIp);
         /*  填充用户登录的时间，可选，不填充则数据库生成 */
-        loginHistory.setLastLoginTime(CustomDate.getCurrentDateTime());
+        loginHistory.setLastLoginTime(LocalDateTime.now());
         /* 填充登录的浏览器信息  */
         loginHistory.setLoginBrowser(loginBrowser);
         /*  填充登录用户的浏览器版本 */

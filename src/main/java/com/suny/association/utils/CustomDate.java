@@ -1,8 +1,8 @@
 package com.suny.association.utils;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,9 +25,8 @@ public class CustomDate {
     }
 
 
-    public static Date getCurrentDateTime() {
-        Date date = new Date();
-        return new Timestamp(date.getTime());
+    public static LocalDateTime getCurrentDateTime() {
+        return LocalDateTime.now();
     }
 
     public static Long formatStamp(Long stampTime) {

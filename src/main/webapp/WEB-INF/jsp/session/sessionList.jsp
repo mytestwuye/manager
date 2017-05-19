@@ -41,6 +41,7 @@
 <script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
 <%--由于宽带运营商不定期调整网络，我们获取IP所在地可能不准确，请通过登录时间与产品判断是否为您本人操作--%>
+<%--suppress JSUnresolvedVariable --%>
 <script>
 
     function refresh() {
@@ -133,7 +134,7 @@
                         formatter: 'accountFormat'
                     },
                     {field: 'loginBrowser', title: '浏览器', sortable: true, align: 'center'},
-                    {field: 'lastLoginTime', title: '最后访问时间',formatter: 'dateFormat'},
+                    {field: 'lastLoginTime', title: '最后访问时间', formatter: 'dateFormat'},
                     {field: 'loginOsVersion', title: '操作系统', align: 'center'},
                     {field: 'lastLoginIp', title: '登录IP', align: 'center'},
                     {field: 'loginAddress', title: '登录地址', align: 'center'},
@@ -172,15 +173,15 @@
         return row.historyAccountId.accountName;
     }
 
-    function dateFormat(value,row,index){
-        var date = new Date(row.lastLoginTime);
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-        var D = date.getDate() + ' ';
-        var h = date.getHours() + ':';
-        var m = date.getMinutes() + ':';
-        var s = date.getSeconds();
-        return Y+M+D+h+m+s;
+    function dateFormat(value, row, index) {
+        var date = row.lastLoginTime;
+        var Y = date.year + '-';
+        var M = date.monthValue + '-';
+        var D = date.dayOfMonth + ' ';
+        var h = date.hour + ':';
+        var m = date.minute + ':';
+        var s = date.second;
+        return Y + M + D + h + m + s;
     }
 
 

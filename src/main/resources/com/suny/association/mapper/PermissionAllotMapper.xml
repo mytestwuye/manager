@@ -7,13 +7,15 @@
             <id column="r_role_id" property="roleId"/>
             <result column="r_role_name" property="roleName"/>
             <result column="r_role_description" property="description"/>
-            <result column="r_role_create_time" property="createTime"/>
+            <result column="r_role_create_time" property="createTime" javaType="java.time.LocalDateTime"
+                    jdbcType="TIMESTAMP"/>
         </association>
         <collection property="permissionArrayList" ofType="com.suny.association.pojo.po.Permission">
             <id property="permissionId" column="p_permission_id"/>
             <result property="permissionName" column="p_permission_name"/>
             <result property="description" column="p_permission_description"/>
-            <result property="createTime" column="p_create_time"/>
+            <result property="createTime" column="p_create_time" javaType="java.time.LocalDateTime"
+                    jdbcType="TIMESTAMP"/>
             <result property="permissionStatus" column="p_permission_status"/>
         </collection>
     </resultMap>
@@ -35,40 +37,40 @@
 
     <select id="queryAll" resultMap="BaseResultMap">
         SELECT
-        pr.role_id AS pr_role_id,
-        p.permission_id AS p_permission_id,
-        p.permission_name AS p_permission_name,
-        p.permission_description AS p_permission_description,
-        p.create_time AS p_create_time,
-        p.permission_status AS p_permission_status,
-        r.role_id AS r_role_id,
-        r.role_name AS r_role_name,
-        r.role_description AS r_role_description,
-        r.role_create_time AS r_role_create_time
+            pr.role_id               AS pr_role_id,
+            p.permission_id          AS p_permission_id,
+            p.permission_name        AS p_permission_name,
+            p.permission_description AS p_permission_description,
+            p.create_time            AS p_create_time,
+            p.permission_status      AS p_permission_status,
+            r.role_id                AS r_role_id,
+            r.role_name              AS r_role_name,
+            r.role_description       AS r_role_description,
+            r.role_create_time       AS r_role_create_time
         FROM permission p,
-        permission_union_role pr,
-        roles r
+            permission_union_role pr,
+            roles r
         WHERE p.permission_id = pr.permiss_id
-        AND pr.role_id = r.role_id;
+              AND pr.role_id = r.role_id;
     </select>
     <select id="queryByRoleId" resultMap="BaseResultMap" parameterType="int">
         SELECT
-        pr.role_id AS pr_role_id,
-        p.permission_id AS p_permission_id,
-        p.permission_name AS p_permission_name,
-        p.permission_description AS p_permission_description,
-        p.create_time AS p_create_time,
-        p.permission_status AS p_permission_status,
-        r.role_id AS r_role_id,
-        r.role_name AS r_role_name,
-        r.role_description AS r_role_description,
-        r.role_create_time AS r_role_create_time
+            pr.role_id               AS pr_role_id,
+            p.permission_id          AS p_permission_id,
+            p.permission_name        AS p_permission_name,
+            p.permission_description AS p_permission_description,
+            p.create_time            AS p_create_time,
+            p.permission_status      AS p_permission_status,
+            r.role_id                AS r_role_id,
+            r.role_name              AS r_role_name,
+            r.role_description       AS r_role_description,
+            r.role_create_time       AS r_role_create_time
         FROM permission p,
-        permission_union_role pr,
-        roles r
+            permission_union_role pr,
+            roles r
         WHERE p.permission_id = pr.permiss_id
-        AND pr.role_id = #{roleId}
-        AND r.role_id = #{roleId}
+              AND pr.role_id = #{roleId}
+              AND r.role_id = #{roleId}
     </select>
 </mapper>
 

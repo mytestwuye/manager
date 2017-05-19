@@ -1,8 +1,11 @@
 package com.suny.association.pojo.po;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
-public class ApplicationMessage {
+public class ApplicationMessage implements Serializable {
+
+    private static final long serialVersionUID = 8887542705964935531L;
     private Integer applicationId;    //主键id
 
     private PunchRecord punchRecordId;   //成员有异议的考勤记录id
@@ -15,12 +18,12 @@ public class ApplicationMessage {
 
     private PunchType changePunchType;    //希望更改为什么类型的考勤
 
-    private Date applyForTime;       //提出申请的时间
+    private LocalDateTime applyForTime;       //提出申请的时间
 
     public ApplicationMessage() {
     }
 
-    public ApplicationMessage(Integer applicationId, PunchRecord punchRecordId, PunchType punchTypeId, String applicationReason, CallbackResult applicationResult, PunchType changePunchType, Date applyForTime) {
+    public ApplicationMessage(Integer applicationId, PunchRecord punchRecordId, PunchType punchTypeId, String applicationReason, CallbackResult applicationResult, PunchType changePunchType, LocalDateTime applyForTime) {
         this.applicationId = applicationId;
         this.punchRecordId = punchRecordId;
         this.punchTypeId = punchTypeId;
@@ -78,11 +81,24 @@ public class ApplicationMessage {
         this.changePunchType = changePunchType;
     }
 
-    public Date getApplyForTime() {
+    public LocalDateTime getApplyForTime() {
         return applyForTime;
     }
 
-    public void setApplyForTime(Date applyForTime) {
+    public void setApplyForTime(LocalDateTime applyForTime) {
         this.applyForTime = applyForTime;
+    }
+
+    @Override
+    public String toString() {
+        return "ApplicationMessage{" +
+                "applicationId=" + applicationId +
+                ", punchRecordId=" + punchRecordId +
+                ", punchTypeId=" + punchTypeId +
+                ", applicationReason='" + applicationReason + '\'' +
+                ", applicationResult=" + applicationResult +
+                ", changePunchType=" + changePunchType +
+                ", applyForTime=" + applyForTime +
+                '}';
     }
 }

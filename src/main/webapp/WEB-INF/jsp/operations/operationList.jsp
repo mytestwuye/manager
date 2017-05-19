@@ -44,6 +44,7 @@
 <script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
 
+<%--suppress JSUnresolvedVariable --%>
 <script>
 
     function refresh() {
@@ -193,13 +194,13 @@
     }
 
     function dateFormat(value, row, index) {
-        var date = new Date(row.operationTime);
-        Y = date.getFullYear() + '-';
-        M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-        D = date.getDate() + ' ';
-        h = date.getHours() + ':';
-        m = date.getMinutes() + ':';
-        s = date.getSeconds();
+        var date = row.operationTime;
+        var Y = date.year + '-';
+        var M = date.monthValue + '-';
+        var D = date.dayOfMonth + ' ';
+        var h = date.hour + ':';
+        var m = date.minute + ':';
+        var s = date.second;
         return Y + M + D + h + m + s;
     }
     // 格式化状态

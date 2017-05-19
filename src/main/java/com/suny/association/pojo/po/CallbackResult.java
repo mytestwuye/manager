@@ -1,8 +1,14 @@
 package com.suny.association.pojo.po;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
-public class CallbackResult {
+/**
+ *   申请结果实体类
+ */
+public class CallbackResult implements Serializable {
+
+    private static final long serialVersionUID = -8623018593261289378L;
     private Integer callbackId;
 
     private ApplicationMessage applicationMessageId;
@@ -13,12 +19,12 @@ public class CallbackResult {
 
     private String callbackReason;
 
-    private Date callbackTime;
+    private LocalDateTime callbackTime;
 
     public CallbackResult() {
     }
 
-    public CallbackResult(Integer callbackId, ApplicationMessage applicationMessageId, Boolean callbackResult, Member callbackManagerId, String callbackReason, Date callbackTime) {
+    public CallbackResult(Integer callbackId, ApplicationMessage applicationMessageId, Boolean callbackResult, Member callbackManagerId, String callbackReason, LocalDateTime callbackTime) {
         this.callbackId = callbackId;
         this.applicationMessageId = applicationMessageId;
         this.callbackResult = callbackResult;
@@ -67,11 +73,23 @@ public class CallbackResult {
         this.callbackReason = callbackReason;
     }
 
-    public Date getCallbackTime() {
+    public LocalDateTime getCallbackTime() {
         return callbackTime;
     }
 
-    public void setCallbackTime(Date callbackTime) {
+    public void setCallbackTime(LocalDateTime callbackTime) {
         this.callbackTime = callbackTime;
+    }
+
+    @Override
+    public String toString() {
+        return "CallbackResult{" +
+                "callbackId=" + callbackId +
+                ", applicationMessageId=" + applicationMessageId +
+                ", callbackResult=" + callbackResult +
+                ", callbackManagerId=" + callbackManagerId +
+                ", callbackReason='" + callbackReason + '\'' +
+                ", callbackTime=" + callbackTime +
+                '}';
     }
 }

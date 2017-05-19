@@ -44,6 +44,7 @@
 <script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
 
+<%--suppress JSUnresolvedVariable --%>
 <script>
 
     function refresh() {
@@ -129,11 +130,11 @@
                 },
                 columns: [
                     {field: 'punchRecordId', title: '日志编号', sortable: true, align: 'center'},
-                    {field: 'punchDatetime', title: '签到时间', sortable: true, align: 'center',formatter:'timeFormat'},
-                    {field: 'punchTodayDate', title: '考勤日期', sortable: true, align: 'center',formatter:'dateFormat'},
-                    {field: 'punchIsCome', title: '是否考勤',formatter:'punchTypeStatusFormat'},
-                    {field: 'punchTypeId', title: '考勤类型', align: 'center',formatter:'punchTypeFormat'},
-                    {field: 'punchMemberId', title: '考勤成员', align: 'center',formatter:'punchMemberFormat'},
+                    {field: 'punchDatetime', title: '签到时间', sortable: true, align: 'center', formatter: 'timeFormat'},
+                    {field: 'punchTodayDate', title: '考勤日期', sortable: true, align: 'center', formatter: 'dateFormat'},
+                    {field: 'punchIsCome', title: '是否考勤', formatter: 'punchTypeStatusFormat'},
+                    {field: 'punchTypeId', title: '考勤类型', align: 'center', formatter: 'punchTypeFormat'},
+                    {field: 'punchMemberId', title: '考勤成员', align: 'center', formatter: 'punchMemberFormat'},
                     {
                         field: 'punchMemberDepartment',
                         title: '考勤成员部门',
@@ -169,19 +170,22 @@
         return oTableInit;
     };
 
-    function dateFormat(value,row,index){
-        var date = new Date(row.punchTodayDate);
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-        var D = date.getDate() + ' ';
-        return Y+M+D;
+    function dateFormat(value, row, index) {
+        var date = row.punchTodayDate;
+        var Y = date.year + '-';
+        var M = date.monthValue + '-';
+        var D = date.dayOfMonth + ' ';
+        return Y + M + D;
     }
-    function timeFormat(value,row,index){
-        var date = new Date(row.punchDatetime);
-        var h = date.getHours() + ':';
-        var m = date.getMinutes() + ':';
-        var s = date.getSeconds();
-        return h+m+s;
+    function timeFormat(value, row, index) {
+        var date = row.punchDatetime;
+        var Y = date.year + '-';
+        var M = date.monthValue + '-';
+        var D = date.dayOfMonth + ' ';
+        var h = date.hour + ':';
+        var m = date.minute + ':';
+        var s = date.second;
+        return Y + M + D + h + m + s;
     }
 
     function punchTypeStatusFormat(value, row, index) {
@@ -193,7 +197,7 @@
         }
     }
 
-    function punchTypeFormat(value,row,index){
+    function punchTypeFormat(value, row, index) {
         //noinspection JSUnresolvedVariable
         return row.punchTypeId.punchTypeName;
     }

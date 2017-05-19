@@ -1,8 +1,14 @@
 package com.suny.association.pojo.po;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
-public class LoginHistory {
+/**
+ * 登录历史实体类
+ */
+public class LoginHistory implements Serializable {
+
+    private static final long serialVersionUID = -8878807427599819429L;
     private Long loginHistoryId;
 
     private Account historyAccountId;
@@ -11,7 +17,7 @@ public class LoginHistory {
 
     private String loginAddress;
 
-    private Date lastLoginTime;
+    private LocalDateTime lastLoginTime;
 
     private String loginBrowser;
 
@@ -24,7 +30,7 @@ public class LoginHistory {
     public LoginHistory() {
     }
 
-    public LoginHistory(Long loginHistoryId, Account historyAccountId, String lastLoginIp, String loginAddress, Date lastLoginTime, String loginBrowser, String loginOsVersion, String loginUserAgent, boolean loginStatus) {
+    public LoginHistory(Long loginHistoryId, Account historyAccountId, String lastLoginIp, String loginAddress, LocalDateTime lastLoginTime, String loginBrowser, String loginOsVersion, String loginUserAgent, boolean loginStatus) {
         this.loginHistoryId = loginHistoryId;
         this.historyAccountId = historyAccountId;
         this.lastLoginIp = lastLoginIp;
@@ -68,11 +74,11 @@ public class LoginHistory {
         this.loginAddress = loginAddress;
     }
 
-    public Date getLastLoginTime() {
+    public LocalDateTime getLastLoginTime() {
         return lastLoginTime;
     }
 
-    public void setLastLoginTime(Date lastLoginTime) {
+    public void setLastLoginTime(LocalDateTime lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
     }
 
@@ -106,5 +112,20 @@ public class LoginHistory {
 
     public void setLoginStatus(boolean loginStatus) {
         this.loginStatus = loginStatus;
+    }
+
+    @Override
+    public String toString() {
+        return "LoginHistory{" +
+                "loginHistoryId=" + loginHistoryId +
+                ", historyAccountId=" + historyAccountId +
+                ", lastLoginIp='" + lastLoginIp + '\'' +
+                ", loginAddress='" + loginAddress + '\'' +
+                ", lastLoginTime=" + lastLoginTime +
+                ", loginBrowser='" + loginBrowser + '\'' +
+                ", loginOsVersion='" + loginOsVersion + '\'' +
+                ", loginUserAgent='" + loginUserAgent + '\'' +
+                ", loginStatus=" + loginStatus +
+                '}';
     }
 }

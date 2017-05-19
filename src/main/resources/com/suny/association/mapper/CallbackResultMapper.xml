@@ -5,7 +5,7 @@
         <id property="callbackId" column="callback_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         <result property="callbackResult" column="callback_result" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
         <result property="callbackReason" column="callback_reason" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result property="callbackTime" column="callback_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="callbackTime" column="callback_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
         <!--     有问题的地方     查询审批的管理员-->
         <association property="callbackManagerId" column="callback_manager_id"
                      javaType="com.suny.association.pojo.po.Member"
@@ -83,7 +83,8 @@
     <!--查询对应的申请-->
     <resultMap id="queryApplicationMap" type="com.suny.association.pojo.po.ApplicationMessage">
         <id property="applicationId" column="application_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
-        <result property="applyForTime" column="apply_for_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="applyForTime" column="apply_for_time" jdbcType="TIMESTAMP"
+                javaType="java.time.LocalDateTime"/>
         <association property="punchRecordId" column="punch_record_id"
                      javaType="com.suny.association.pojo.po.PunchRecord"
                      select="queryRecord"/>
@@ -93,10 +94,10 @@
 
     <select id="queryApplication" parameterType="int" resultMap="queryApplicationMap">
         SELECT
-        a.application_id,
-        a.apply_for_time,
-        a.change_punch_type,
-        a.punch_record_id
+            a.application_id,
+            a.apply_for_time,
+            a.change_punch_type,
+            a.punch_record_id
         FROM application_message AS a
         WHERE a.application_id = #{applicationMessageId.applicationId,jdbcType=INTEGER}
     </select>
@@ -104,9 +105,9 @@
     <!--查询对应的考勤记录-->
     <select id="queryRecord" parameterType="int" resultMap="queryRecordMap">
         SELECT
-        p.punch_record_id,
-        p.punch_type_id,
-        p.punch_member_id
+            p.punch_record_id,
+            p.punch_type_id,
+            p.punch_member_id
         FROM punch_record AS p
         WHERE p.punch_record_id = #{punchRecordId}
     </select>
@@ -126,11 +127,11 @@
     <!--查询考勤类型-->
     <select id="queryPunchTypeInfo" resultMap="punchTypeInfo" parameterType="int">
         SELECT
-        type.punch_type_id,
-        type.punch_type_name
+            type.punch_type_id,
+            type.punch_type_name
         FROM punchtype AS type
         WHERE
-        punch_type_id = #{ punchTypeId }
+            punch_type_id = #{ punchTypeId }
     </select>
     <!--考勤的成员数据集合-->
     <resultMap id="memberInfo" type="com.suny.association.pojo.po.Member">
@@ -143,13 +144,13 @@
     <!--查询考勤成员数据-->
     <select id="queryMember" resultMap="memberInfo" parameterType="int">
         SELECT
-        m.member_id,
-        m.member_name,
-        m.member_grade_number,
-        m.member_department_id
+            m.member_id,
+            m.member_name,
+            m.member_grade_number,
+            m.member_department_id
         FROM member AS m
         WHERE
-        m.member_id = #{ punchMemberId.memberId }
+            m.member_id = #{ punchMemberId.memberId }
     </select>
 
     <resultMap id="departmentMap" type="com.suny.association.pojo.po.Department">
@@ -159,8 +160,8 @@
 
     <select id="queryDepartment" resultMap="departmentMap" parameterType="int">
         SELECT
-        d.department_id,
-        d.department_name
+            d.department_id,
+            d.department_name
         FROM department AS d
         WHERE department_id = #{memberDepartment}
     </select>
@@ -230,12 +231,12 @@
 
     <select id="list" parameterType="hashmap" resultMap="BaseResultMap">
         SELECT
-        cr.callback_id,
-        cr.application_message_id,
-        cr.callback_manager_id,
-        cr.callback_result,
-        cr.callback_reason,
-        cr.callback_time
+            cr.callback_id,
+            cr.application_message_id,
+            cr.callback_manager_id,
+            cr.callback_result,
+            cr.callback_reason,
+            cr.callback_time
         FROM callback_result AS cr;
     </select>
 

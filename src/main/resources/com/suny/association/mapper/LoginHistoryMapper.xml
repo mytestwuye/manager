@@ -5,7 +5,7 @@
         <id property="loginHistoryId" column="login_history_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
         <result property="lastLoginIp" column="last_login_ip" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="loginAddress" column="login_address" jdbcType="VARCHAR" javaType="java.lang.String"/>
-        <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="lastLoginTime" column="last_login_time" jdbcType="TIMESTAMP" javaType="java.time.LocalDateTime"/>
         <result property="loginBrowser" column="login_browser" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="loginOsVersion" column="login_os_version" jdbcType="VARCHAR" javaType="java.lang.String"/>
         <result property="loginUserAgent" column="login_user_agent" jdbcType="VARCHAR" javaType="java.lang.String"/>

@@ -1,6 +1,6 @@
 package com.suny.association.pojo.po;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Roles {
     /*账号主键id*/
@@ -13,12 +13,12 @@ public class Roles {
     private String roleName;
 
     /*账号创建的时间*/
-    private Date createTime;
+    private LocalDateTime createTime;
 
     public Roles() {
     }
 
-    public Roles(Integer roleId, String description, String roleName, Date createTime) {
+    public Roles(Integer roleId, String description, String roleName, LocalDateTime createTime) {
         this.roleId = roleId;
         this.description = description;
         this.roleName = roleName;
@@ -49,11 +49,11 @@ public class Roles {
         this.roleName = roleName;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 }

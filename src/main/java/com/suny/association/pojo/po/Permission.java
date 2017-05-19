@@ -1,7 +1,7 @@
 package com.suny.association.pojo.po;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * Comments:  权限实体类
@@ -14,14 +14,14 @@ public class Permission implements Serializable {
     private Integer permissionId;   /*  主键id  */
     private String permissionName;  /*   权限名字，后端使用 */
     private String description;   /*  权限解释，前端使用  */
-    private Date createTime;     /*   权限创建的时间 */
+    private LocalDateTime createTime;     /*   权限创建的时间 */
     private boolean permissionStatus;   /* 权限的状态，1为可用，0为不可用   */
 
 
     public Permission() {
     }
 
-    public Permission(Integer permissionId, String permissionName, String description, Date createTime, boolean permissionStatus) {
+    public Permission(Integer permissionId, String permissionName, String description, LocalDateTime createTime, boolean permissionStatus) {
         this.permissionId = permissionId;
         this.permissionName = permissionName;
         this.description = description;
@@ -53,11 +53,11 @@ public class Permission implements Serializable {
         this.description = description;
     }
 
-    public Date getCreateTime() {
+    public LocalDateTime getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
 

@@ -51,6 +51,7 @@
 <script src="${basePath}/plugins/bootstrap-table-1.11.0/extensions/tableExport.js"></script>
 <script src="${basePath}/plugins/BootstrapMenu.min.js"></script>
 <script src="${basePath}/plugins/layer/layer.js"></script>
+<%--suppress JSUnresolvedVariable --%>
 <script>
     function refresh() {
         $("#mable").bootstrapTable("refresh");
@@ -193,12 +194,12 @@
 
     function dateFormat(value, row, index) {
         var date = new Date(row.createTime);
-        var Y = date.getFullYear() + '-';
-        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
-        var D = date.getDate() + ' ';
-        var h = date.getHours() + ':';
-        var m = date.getMinutes() + ':';
-        var s = date.getSeconds();
+        var Y = date.year + '-';
+        var M = date.monthValue + '-';
+        var D = date.dayOfMonth + ' ';
+        var h = date.hour + ':';
+        var m = date.minute + ':';
+        var s = date.second;
         return Y + M + D + h + m + s;
     }
 

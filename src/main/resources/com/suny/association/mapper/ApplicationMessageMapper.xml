@@ -5,7 +5,8 @@
         <id property="applicationId" column="application_id" jdbcType="INTEGER" javaType="java.lang.Integer"/>
         <result property="applicationReason" column="application_reason" jdbcType="VARCHAR"
                 javaType="java.lang.String"/>
-        <result property="applyForTime" column="apply_for_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="applyForTime" column="apply_for_time" jdbcType="TIMESTAMP"
+                javaType="java.time.LocalDateTime"/>
         <association property="punchRecordId" column="punch_record_id"
                      javaType="com.suny.association.pojo.po.PunchRecord"
                      select="queryRecord"/>
@@ -32,8 +33,9 @@
     <!--考勤记录集合-->
     <resultMap id="queryRecordMap" type="com.suny.association.pojo.po.PunchRecord">
         <id property="punchRecordId" column="punch_record_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
-        <result property="punchDatetime" column="punch_datetime" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
-        <result property="punchTodayDate" column="punch_today_date" jdbcType="DATE" javaType="java.util.Date"/>
+        <result property="punchDatetime" column="punch_datetime" jdbcType="TIMESTAMP"
+                javaType="java.time.LocalDateTime"/>
+        <result property="punchTodayDate" column="punch_today_date" jdbcType="DATE" javaType="java.time.LocalDate"/>
         <result property="punchIsCome" column="punch_is_come" jdbcType="BIT" javaType="java.lang.Boolean"/>
         <association property="punchTypeId" column="punch_type_id" javaType="com.suny.association.pojo.po.PunchType"
                      select="queryPunchTypeInfo"/>
@@ -47,11 +49,11 @@
     </resultMap>
     <select id="queryPunchTypeInfo" resultMap="punchTypeInfo" parameterType="int">
         SELECT
-        type.punch_type_id,
-        type.punch_type_name
+            type.punch_type_id,
+            type.punch_type_name
         FROM punchtype AS type
         WHERE
-        punch_type_id = #{ punchTypeId }
+            punch_type_id = #{ punchTypeId }
     </select>
     <!--考勤记录中对应的成员-->
     <resultMap id="memberInfo" type="com.suny.association.pojo.po.Member">
@@ -66,8 +68,8 @@
             m.member_id,
             m.member_name,
             m.member_grade_number,
-        m.member_manager_id,
-        m.member_department_id
+            m.member_manager_id,
+            m.member_department_id
         FROM member AS m
         WHERE
             m.member_id = #{ punchMemberId }
@@ -79,8 +81,8 @@
     </resultMap>
     <select id="queryDepartment" resultMap="departmentMap" parameterType="int">
         SELECT
-        d.department_id,
-        d.department_name
+            d.department_id,
+            d.department_name
         FROM department AS d
         WHERE department_id = #{memberDepartment}
     </select>
@@ -90,7 +92,7 @@
         <id property="callbackId" column="callback_id" javaType="java.lang.Integer" jdbcType="INTEGER"/>
         <result property="callbackResult" column="callback_result" javaType="java.lang.Boolean" jdbcType="BOOLEAN"/>
         <result property="callbackReason" column="callback_reason" javaType="java.lang.String" jdbcType="VARCHAR"/>
-        <result property="callbackTime" column="callback_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="callbackTime" column="callback_time" javaType="java.time.LocalDateTime" jdbcType="TIMESTAMP"/>
         <association property="callbackManagerId" column="callback_manager_id"
                      javaType="com.suny.association.pojo.po.Member"
                      select="getMemberManage"/>
@@ -121,15 +123,15 @@
     <!--查询管理员信息-->
     <select id="getMemberManage" resultMap="memberManagerResult">
         SELECT
-        m.member_id,
-        m.member_name,
-        m.member_class_name,
-        m.member_sex,
-        m.member_grade_number,
-        m.member_manager_id,
-        m.member_department_id,
-        m.member_status,
-        m.member_role_id
+            m.member_id,
+            m.member_name,
+            m.member_class_name,
+            m.member_sex,
+            m.member_grade_number,
+            m.member_manager_id,
+            m.member_department_id,
+            m.member_status,
+            m.member_role_id
         FROM member AS m
         WHERE m.member_manager_id = #{ memberManager }
     </select>
@@ -207,13 +209,13 @@
 
     <select id="queryById" parameterType="int" resultMap="BaseResultMap">
         SELECT
-        a.application_id,
-        a.punch_type_id,
-        a.punch_record_id,
-        a.application_reason,
-        a.apply_for_time,
-        a.change_punch_type,
-        a.application_result
+            a.application_id,
+            a.punch_type_id,
+            a.punch_record_id,
+            a.application_reason,
+            a.apply_for_time,
+            a.change_punch_type,
+            a.application_result
         FROM application_message AS a
         WHERE application_id = #{applicationId}
     </select>
@@ -221,7 +223,7 @@
     <update id="update" parameterType="com.suny.association.pojo.po.ApplicationMessage">
         UPDATE application_message
         SET
-        application_result = #{applicationResult.callbackId,jdbcType=INTEGER}
+            application_result = #{applicationResult.callbackId,jdbcType=INTEGER}
 
         WHERE application_id = #{applicationId,jdbcType=INTEGER}
     </update>

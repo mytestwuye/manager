@@ -11,7 +11,8 @@
                 javaType="java.lang.String"/>
         <result property="operationUserAgent" column="operation_user_agent" jdbcType="VARCHAR"
                 javaType="java.lang.String"/>
-        <result property="operationTime" column="operation_time" jdbcType="TIMESTAMP" javaType="java.util.Date"/>
+        <result property="operationTime" column="operation_time" jdbcType="TIMESTAMP"
+                javaType="java.time.LocalDateTime"/>
         <result property="operationStatus" column="operation_status" jdbcType="BOOLEAN" javaType="java.lang.Boolean"/>
         <result property="operationRequestUrl" column="operation_request_url" jdbcType="VARCHAR"
                 javaType="java.lang.String"/>
@@ -121,7 +122,7 @@
         SELECT
             o.operation_id,
             o.operation_message,
-        o.operation_member_name,
+            o.operation_member_name,
             o.operation_brower,
             o.operation_os_version,
             o.operation_user_agent,

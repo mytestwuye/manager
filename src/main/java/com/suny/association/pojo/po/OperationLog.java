@@ -1,8 +1,17 @@
 package com.suny.association.pojo.po;
 
-import java.util.Date;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
-public class OperationLog {
+/**
+ * 操作日志实体类
+ *
+ * @author 孙建荣
+ */
+public class OperationLog implements Serializable {
+
+    private static final long serialVersionUID = -8993955818563136615L;
+
     private Long operationId;
 
     private String operationMessage;
@@ -17,7 +26,7 @@ public class OperationLog {
 
     private String operationRequestUrl;
 
-    private Date operationTime;
+    private LocalDateTime operationTime;
 
     private String operationIp;
 
@@ -30,7 +39,7 @@ public class OperationLog {
     public OperationLog() {
     }
 
-    public OperationLog(Long operationId, String operationMessage, String operationMemberName, String operationBrower, String operationOsVersion, String operationUserAgent, String operationRequestUrl, Date operationTime, String operationIp, String operationAddress, Boolean operationStatus, Account operationAccountId) {
+    public OperationLog(Long operationId, String operationMessage, String operationMemberName, String operationBrower, String operationOsVersion, String operationUserAgent, String operationRequestUrl, LocalDateTime operationTime, String operationIp, String operationAddress, Boolean operationStatus, Account operationAccountId) {
         this.operationId = operationId;
         this.operationMessage = operationMessage;
         this.operationMemberName = operationMemberName;
@@ -101,11 +110,11 @@ public class OperationLog {
         this.operationRequestUrl = operationRequestUrl;
     }
 
-    public Date getOperationTime() {
+    public LocalDateTime getOperationTime() {
         return operationTime;
     }
 
-    public void setOperationTime(Date operationTime) {
+    public void setOperationTime(LocalDateTime operationTime) {
         this.operationTime = operationTime;
     }
 
@@ -139,5 +148,23 @@ public class OperationLog {
 
     public void setOperationAccountId(Account operationAccountId) {
         this.operationAccountId = operationAccountId;
+    }
+
+    @Override
+    public String toString() {
+        return "OperationLog{" +
+                "operationId=" + operationId +
+                ", operationMessage='" + operationMessage + '\'' +
+                ", operationMemberName='" + operationMemberName + '\'' +
+                ", operationBrower='" + operationBrower + '\'' +
+                ", operationOsVersion='" + operationOsVersion + '\'' +
+                ", operationUserAgent='" + operationUserAgent + '\'' +
+                ", operationRequestUrl='" + operationRequestUrl + '\'' +
+                ", operationTime=" + operationTime +
+                ", operationIp='" + operationIp + '\'' +
+                ", operationAddress='" + operationAddress + '\'' +
+                ", operationStatus=" + operationStatus +
+                ", operationAccountId=" + operationAccountId +
+                '}';
     }
 }
