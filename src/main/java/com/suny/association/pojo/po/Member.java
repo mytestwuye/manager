@@ -156,7 +156,6 @@ public class Member {
                 ", 班级='" + memberClassName + '\'' +
                 ", 性别=" + memberSex +
                 ", 届级=" + memberGradeNumber +
-                ", 部长=" + memberManager +
                 ", 部门=" + memberDepartment +
                 ", 状态=" + memberStatus +
                 ", 角色=" + memberRoles +

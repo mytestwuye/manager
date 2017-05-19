@@ -237,7 +237,7 @@
                                 class="zmdi zmdi-account"></i> 个人资料</a>
                     </li>
                     <li>
-                        <a class="waves-effect" href="javascript:;"><i class="zmdi zmdi-face"></i> 隐私管理</a>
+                        <a class="waves-effect" href="#" onclick="punch()"><i class="zmdi zmdi-face"></i> 今天签到</a>
                     </li>
                     <li>
                         <a class="waves-effect" data-toggle="modal" data-target="#myModal"><i
@@ -462,6 +462,35 @@
 <script src="${basePath}/js/common.js"></script>
 <script src="${basePath}/js/admin.js"></script>
 <script>
+    function punch() {
+        $.ajax({
+            type: "POST",
+            data: {punchMemberId: parseInt(${member.memberId})},
+            url: "${basePath}/punchLog/update.json",
+            success: function (result) {
+                var status = result.status;
+                if (status == 987) {
+                    layer.alert("没有登录你还签到！查看下是不是会话过期了，重新登录下吧");
+                } else if (status == 211) {
+                    layer.alert("请不要恶意操作他人账号！");
+                } else if (status == 5) {
+                    layer.alert("没有你这个要签到的账号！恶意操作");
+                } else if (status == 212) {
+                    layer.alert("今天已经签到成功啦，不要重复签到！");
+                } else if (status == 215) {
+                    layer.alert("考勤失败啦，再等等吧！");
+                } else if (status == 213) {
+                    layer.alert("再等等啦，还没有到签到时间！");
+                } else if (status == 214) {
+                    layer.alert("恭喜你签到成功啦！");
+                } else {
+                    layer.alert("服务器除了点小问题，可能执行到Bug了");
+                }
+            }, error: function () {
+                layer.alert("恭喜您碰到了百年难得一遇的服务器瘫痪了");
+            }
+        })
+    }
     function changePassword() {
         var passwordVal;
         var newPasswordVal;

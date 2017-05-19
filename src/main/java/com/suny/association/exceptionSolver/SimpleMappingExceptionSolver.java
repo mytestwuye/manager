@@ -1,4 +1,4 @@
-package com.suny.association.exceptionsolver;
+package com.suny.association.exceptionSolver;
 
 import com.suny.association.exception.BusinessException;
 import com.suny.association.utils.JsonResult;

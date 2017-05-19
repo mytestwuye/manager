@@ -3,6 +3,7 @@ package com.suny.association.service.impl;
 import com.suny.association.annotation.SystemControllerLog;
 import com.suny.association.annotation.SystemServiceLog;
 import com.suny.association.mapper.PunchRecordMapper;
+import com.suny.association.pojo.po.Member;
 import com.suny.association.pojo.po.PunchRecord;
 import com.suny.association.pojo.po.PunchType;
 import com.suny.association.service.AbstractBaseServiceImpl;
@@ -52,15 +53,30 @@ public class PunchRecordServiceImpl extends AbstractBaseServiceImpl<PunchRecord>
     @SystemServiceLog(description = "成员考勤失败")
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int updatePunch(Integer memberId,Long punchRecordId) {
-        LocalDate localDate = LocalDate.now();
+    public int updatePunch(Integer memberId, Long punchRecordId) {
+        /* 组成一条考勤记录需要有考勤的Member信息，考勤类型PunchType， */
+        //  使用Java8的LocalDateTime，抛弃以前难用的Date吧
         LocalDateTime dateTime = LocalDateTime.now().withNano(0);
+        //   实例化一个考勤记录对象
         PunchRecord punchRecord = new PunchRecord();
+        //  首先放入考勤记录的ID，可与考勤的状态必定数据库有一条缺勤的记录
+        punchRecord.setPunchRecordId(punchRecordId);
+        //   设置考勤时间
         punchRecord.setPunchDatetime(dateTime);
+        //  设置考勤是否来了
+        punchRecord.setPunchIsCome(true);
+        //   实例化一个考勤类型对象
         PunchType punchType = new PunchType();
+        //  设置考勤类型，这里应该按照时间来判断设置数值
         punchType.setPunchTypeId(1);
+        // 把考勤类型设置到考勤记录里面去
         punchRecord.setPunchTypeId(punchType);
-        return punchRecordMapper.updatePunch(punchRecord);
+        //   实例化一个考勤的成员，用来判断哪个进行考勤
+        Member member = new Member();
+        member.setMemberId(memberId);
+        punchRecord.setPunchMemberId(member);
+        int successRow = punchRecordMapper.updatePunch(punchRecord);
+        return successRow;
     }
 
     @Override

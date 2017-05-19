@@ -43,34 +43,44 @@ public class PunchRecordController extends BaseController {
     @SystemControllerLog(description = "考勤操作")
     @RequestMapping(value = "/update.json", method = RequestMethod.POST)
     @ResponseBody
-    public JsonResult update(HttpServletRequest request, @RequestParam("memberId") Integer punchMemberId) {
+    public JsonResult update(HttpServletRequest request, @RequestParam("punchMemberId") Integer punchMemberId) {
         /*   获取session中的Member信息，用来判断用户是否恶意操作   */
         Member member = (Member) request.getSession().getAttribute("member");
         if (member == null) {
             logger.error("987，没有登录，无法操作");
             return JsonResult.failResult(BaseEnum.NO_LOGIN_IN);
+        }
+        if (!Objects.equals(member.getMemberId(), punchMemberId)) {
+            logger.info("211,要操作的Member主键Id与Session中保存的Member主键Id不同，属于恶意操作");
+            return JsonResult.failResult(BaseEnum.MALICIOUS_OPERATION);
         } else {
-            if (!Objects.equals(member.getMemberId(), punchMemberId)) {
-                logger.info("211,要操作的Member主键Id与Session中保存的Member主键Id不同，属于恶意操作");
-                return JsonResult.failResult(BaseEnum.MALICIOUS_OPERATION);
+            Member databaseMember = memberService.queryById(punchMemberId);
+            if (databaseMember == null) {
+                logger.info("005，数据库没有查询考勤的成员Id，恶意操作");
+                return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
             } else {
-                Member databaseMember = memberService.queryById(punchMemberId);
-                if (databaseMember == null) {
-                    logger.info("005，数据库没有查询考勤的成员Id，恶意操作");
-                    return JsonResult.failResult(BaseEnum.SELECT_FAILURE);
-                } else {
-                    PunchRecord punchRecord = punchRecordService.queryByMemberIdAndDate(punchMemberId);
-                    if (punchRecord != null || punchRecord.getPunchTypeId().getPunchTypeId() != 0) {
-                        logger.warn("212,今天已经签到过了");
+                PunchRecord punchRecord = punchRecordService.queryByMemberIdAndDate(punchMemberId);
+                if (punchRecord != null) {
+                    if (!punchRecord.getPunchTypeId().getPunchTypeId().equals(0)) {
+                        logger.warn("212,{}今天已经签到过了", member.getMemberName());
                         return JsonResult.failResult(BaseEnum.REPEAT_PUNCH);
                     } else {
-                        punchRecordService.updatePunch(punchMemberId,punchRecord.getPunchRecordId());
+                        logger.info("{}开始进行考勤", member.getMemberName());
+                        int successRow = punchRecordService.updatePunch(punchMemberId, punchRecord.getPunchRecordId());
+                        if (successRow == 0) {
+                            logger.info("215,{}考勤失败", member.getMemberName());
+                            return JsonResult.successResult(BaseEnum.PUNCH_FAIL);
+                        }
                     }
+                } else {
+                        /*   系统设计是考勤当天首先由管理员开始考勤，然后系统自动给每一个成员添加一条缺勤记录   */
+                    logger.warn("213,管理员还没有开启签到！");
+                    return JsonResult.failResult(BaseEnum.TIME_NOT_REACH);
                 }
             }
         }
-
-        return null;
+        logger.info("214,{}考勤成功", member.getMemberName());
+        return JsonResult.successResult(BaseEnum.PUNCH_SUCCESS);
     }
 
 

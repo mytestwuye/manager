@@ -5,8 +5,8 @@
         <id property="punchRecordId" column="punch_record_id" jdbcType="BIGINT" javaType="java.lang.Long"/>
         <result property="punchDatetime" column="punch_datetime" jdbcType="TIMESTAMP"
                 javaType="java.time.LocalDateTime"/>
-        <result property="punchTodayDate" column="punch_today_date" jdbcType="DATE" javaType="java.util.Date"/>
-        <result property="punchIsCome" column="punch_is_come" jdbcType="BIT" javaType="java.lang.Boolean"/>
+        <result property="punchTodayDate" column="punch_today_date" jdbcType="DATE" javaType="java.time.LocalDate"/>
+        <result property="punchIsCome" column="punch_is_come" jdbcType="BOOLEAN" javaType="java.lang.Boolean"/>
         <association property="punchTypeId" column="punch_type_id" javaType="com.suny.association.pojo.po.PunchType"
                      select="queryPunchTypeInfo"/>
         <association property="punchMemberId" column="punch_member_id" javaType="com.suny.association.pojo.po.Member"
@@ -96,7 +96,7 @@
                 punch_today_date =#{punchDatetime,jdbcType=TIMESTAMP},
             </if>
             <if test=" punchTodayDate != null">
-                punch_datetime =#{punchTodayDate,jdbcType=TIMESTAMP},
+                punch_datetime =#{punchTodayDate,jdbcType=DATE},
             </if>
             <if test=" punchIsCome != null">
                 punch_is_come =#{punchIsCome,jdbcType=BOOLEAN},
@@ -110,23 +110,21 @@
         </trim>
         where punch_record_id = #{punchRecordId,jdbcType=BIGINT}
     </update>
+
     <update id="updatePunch" parameterType="com.suny.association.pojo.po.PunchRecord">
         update punch_record
         <trim prefix="set" suffixOverrides=",">
-            <if test=" punchDatetime!= null">
+            <if test=" punchDatetime != null">
                 punch_today_date =#{punchDatetime,jdbcType=TIMESTAMP},
             </if>
             <if test=" punchTodayDate != null">
-                punch_datetime =#{punchTodayDate,jdbcType=TIMESTAMP},
+                punch_datetime =#{punchTodayDate,jdbcType=DATE},
             </if>
             <if test=" punchIsCome != null">
                 punch_is_come =#{punchIsCome,jdbcType=BOOLEAN},
             </if>
             <if test=" punchTypeId.punchTypeId != null">
                 punch_type_id =#{punchTypeId.punchTypeId,jdbcType=INTEGER},
-            </if>
-            <if test=" punchMemberId.memberId != null">
-                punch_member_id =#{punchMemberId.memberId,jdbcType=INTEGER},
             </if>
         </trim>
         where punch_record_id = #{punchRecordId,jdbcType=BIGINT}

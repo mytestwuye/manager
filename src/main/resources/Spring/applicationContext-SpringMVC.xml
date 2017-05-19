@@ -37,7 +37,7 @@
     </bean>
 
     <!-- 框架自定义异常处理Handler -->
-    <bean id="exceptionResolver" class="com.suny.association.exceptionsolver.SimpleMappingExceptionSolver">
+    <bean id="exceptionResolver" class="com.suny.association.exceptionSolver.SimpleMappingExceptionSolver">
     </bean>
 
 

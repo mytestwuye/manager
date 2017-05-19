@@ -55,6 +55,13 @@
             <version>${mybatis-spring.version}</version>
         </dependency>
 
+        <!--mybatis暂时对Java8的时间支持不是很完美，mybatis3.4以上可以直接使用，3.4以下的版本还要配置typeHandlers-->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-typehandlers-jsr310</artifactId>
+            <version>1.0.1</version>
+        </dependency>
+
         <!--连接数据库驱动-->
         <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
         <dependency>
