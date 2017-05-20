@@ -16,7 +16,7 @@
 * **Web容器** ： Tomcat 8.0
 * **数据库** ：Mysql-5.6.17-winx64    轻量级的数据库
 * **依赖管理工具** : Maven  挺好上手的一个工具，管理jar包真的很方便
-
+*  **版本控制工具** : Git 
 --- 
 ### 主要框架
 * **Spring 4.3.6.RELEASE** : 差不多是必选的，全家桶   
@@ -60,7 +60,50 @@
 * **mybatis-generator-maven-plugin** ：mybatis官方出的一个工具，可以自动对数据库表产生实体类，mapper接口文件，mapper.xml文件以及一些常用的查询语句，提高你的开发效率，虽然IDEA自带了一个自动生成工具  
 [插件官方地址,介绍的已经很明白了，建议Maven环境下使用](http://www.mybatis.org/generator/running/runningWithMaven.html) 
 
->  项目中使用的jar包可以在pom.xml文件中查看  
+* 项目中使用的jar包可以在pom.xml文件中查看  
+
+### 前端方面
+
+* **整个后台模板是使用Github上大神的开源项目,基础页面建立在开源项目的基础之上，按照自己的需要对项目进行了一部分的修改操作**
+
+   [基于bootstrap实现的响应式Material Design风格的通用后台管理系统](https://github.com/shuzheng/zhengAdmin)
+
+* **Jquery** ：跨浏览器的JavaScript函数库，简化HTML跟JavaScript之间的操作，很简洁的代码就可以写出好看的效果  
+
+   [官网下载，有文档，有Demo](https://jquery.com/)
+   
+* **Bootstrap** : Twitter推出的一个用于前端开发的开源工具包，项目中基本都是要依赖Bootstrap
+
+  [中文官网，好像也是爱好者自己翻译的](www.bootcss.com/)
+* **angular**：这是后台模板使用到的，用于构建移动应用和桌面Web应用的开发平台.  
+  [英文官网](https://angularjs.org/)
+  [中文官网](https://angular.cn/)
+
+* **Layer** ：一款口碑极佳的web弹出层组件，只是用了弹出层，用很少的代码写出的弹出层很美观  
+ [官方弹出层网站，很良心的一个站点](layer.layui.com/)   
+[官方网站，不只是弹出层，还有别的像分页，日期，富文本等等一系列的组件](https://www.layui.com/)
+
+* **bootstrap-table** ：看名字就知道跟Bootstrap肯定有很大的关系了，一个表格组件，很方便就可以构建出漂亮的表格，再配上Bootstrap的字体图标真的很好看  
+[中文官网，看名字好像是国人开发的](bootstrap-table.wenzhixin.net.cn/zh-cn/)
+
+* **fullPage** ：看名字就知道了，全屏的插件，依赖于Jquery
+
+* **zTree** ：一个树形插件，常用语权限控制的时候显示权限  
+ [中文官网，很给力，作者设置给出了他用Java代码跟这个结合的例子](www.treejs.cn/)
+
+* **material-design-iconic-font** ：字体图标  
+  [https://github.com/zavoloklom/material-design-iconic-font](https://github.com/zavoloklom/material-design-iconic-font)  
+* **Waves** ： 点击效果插件,类似于那种波浪的效果   
+ [https://github.com/fians/Waves](https://github.com/fians/Waves)  
+
+* **Select2** ： 选择框插件，类似缩放的效果   
+
+   [https://github.com/select2/select2](https://github.com/select2/select2)
+
+* **jquery-confirm** ： 弹出窗口插件  
+ [https://github.com/craftpip/jquery-confirm](https://github.com/craftpip/jquery-confirm)
+
+* 等等系列插件可以查看src\main\webapp\plugins，这里是项目中大部分插件存放的地方
 
 ---
 
@@ -134,7 +177,11 @@
 
 ### 运行
 
-  经过前面的步骤后，应该是运行起来是没有问题的，部署到你的**Tomcat**里面去吧，如果部署成功的话，在浏览器里面输入登录页面的地址，在我这里登录地址是***http://localhost:8080/base/loginPage.html**，如果你有项目名的话，请在域名**/base**前面添加你的项目名，也就是
+  经过前面的步骤后，应该是运行起来是没有问题的，部署到你的**Tomcat**里面去吧，如果部署成功的话，在浏览器里面输入登录页面的地址，在我这里登录地址是 
+  > ***http://localhost:8080/base/loginPage.html**     
+  
+  如果你有项目名的话，请在域名**/base**前面添加你的项目名，也就是
+  
 > http://localhost:8080/项目名/base/loginPage.html,如果没问题的话你应该就会看到登录页面了
 
 - 登录页面的效果图  
@@ -142,15 +189,13 @@
 
 
 #### 添加数据库信息
-
-1. 首先你要想登录的话你要往数据库里面添加账号信息，往**Account***表中添加一条信息，这里有一份实例的SQL语句，你可以直接复制过去使用，这里往数据库里面插入了一个账号为【test】，密码为【test】，其他的信息你可暂时不用关注，然后插入成功后你就可以输入账号密码进行登录了，请注意验证码的填写
+1. 首先你要想登录的话你要往数据库里面添加账号信息，往**Account**表中添加一条信息，这里有一份实例的SQL语句，你可以直接复制过去使用，这里往数据库里面插入了一个账号为【test】，密码为【test】，其他的信息你可暂时不用关注，然后插入成功后你就可以输入账号密码进行登录了，请注意验证码的填写
 ```
 INSERT INTO `manager`.`account`(`account_id`,`account_name`,`account_password`,`account_phone`,`account_email`,`account_status`,`account_role_id`,`account_member_id`) VALUES ( NULL,'test','test','12345678901',NULL,'1','0',NULL);
 ````
 
 
 - 登录后的主页面  
-
 ![登录后的主页面](images/adminPage.png)
 
 
@@ -184,10 +229,139 @@ UPDATE `manager`.`account` SET `account_member_id`='你的成员信息主键ID' 
 - 这时候你的账号跟成员就绑定在一起了，你需要继续给你的数据库里添加各种信息，你需要查看哪个功能的信息你就要往对应的数据库表里面插入数据
 
 ## 项目中的一些注意事项
+ 
+### 项目中的考勤操作流程
+
+  在设计考勤流程的过程中，查阅网上资料可能直接讲出来的例子比较少，然后在图书馆找到一本[轻量级Java EE企业应用实战 Struts 2+Spring 4+Hibernate整合开发](http://www.phei.com.cn/module/goods/wssd_content.jsp?bookid=41105)，  在阅读到最后一章的时候，我发现刚好就有一章是讲解企业考勤系统设计的，考勤原理就是每次要考勤的时候，就给所有需要考勤的员工插入一条考勤记录，然后员工在进行打卡的时候就是进行一个修改考勤类型操作，如果员工没有打卡的话，当天考勤就属于缺勤。员工在进行打卡的时候按照打卡的时间进行判断考勤的类型，项目中的考勤流程也是仿照这个理念的
+  
+  项目中考勤的流程在[\src\main\java\com\suny\association\controller\PunchRecordController.java](\src\main\java\com\suny\association\controller\PunchRecordController.java)文件中，一定要管理员首先开启了开启签到，开启签到的地方位于```协会信息管理>考勤记录查看```里面有一个**开启考勤**按钮,也就是执行```insert```方法给所有需要考勤的成员添加一条缺勤记录后，成员才可以进行考勤，否则会提示未开启考勤，成员打卡按钮在主页面点击展开按钮后会出现```今日签到```，点击就可以进行打卡签到了  
+  
+  
+### 项目中的全局异常处理
+
+  项目中异常处理都是使用[\src\main\java\com\suny\association\exceptionSolver\SimpleMappingExceptionSolver.java](C:\workspace\manager\src\main\java\com\suny\association\exceptionSolver\SimpleMappingExceptionSolver.java)进行处理，首先实现了SpringMvc的一个异常处理器
+  ```
+class SimpleMappingExceptionSolver implements HandlerExceptionResolver
+  ```
+    然后根据请求的划分进行不同的处理，假如是普通的请求的话，发生了异常就重定向到一个错误显示的页面，如果是一个**AJAX**请求的话，发生了异常就返回一个异常的**JSON**数据，如果抛出异常的地方传入了异常的原因，就是用传入的异常原因作为返回的**JSON**数据，如果不能判断异常的原因的话就返回一个固定的**JSON**数据:
+```
+status :999
+errorMessage : 系统异常
+```
+  
+###  项目中的类似于数据字典  
+  
+    没有使用动态的数据库读取数据字典，而是使用枚举封装了很多数据，到了后期不是很好维护，位于[\src\main\java\com\suny\association\enums\BaseEnum.java](\src\main\java\com\suny\association\enums\BaseEnum.java)中,注意切勿修改```toString()```方法，否则抛出了异常的话异常没办法解析**status**状态码，异常解析状态码的工具类在[SimpleMappingExceptionSolver](\src\main\java\com\suny\association\exceptionSolver\SimpleMappingExceptionSolver.java)中的```gerErrorCode()```方法中，就是通过枚举的```toString()```方法截取状态码
+```
+private int gerErrorCode(Exception ex) {
+        String errorMessage = ex.getMessage();
+        int afterErrorCode = errorMessage.lastIndexOf(',');
+        String errorCode = errorMessage.substring(5, afterErrorCode);
+        return Integer.parseInt(errorCode);
+    }
+```
+###  项目中的权限控制或者是验证登录时使用原生过滤器来写的  
+   
+项目一开始是使用**Shiro**来进行权限控制的，后面碰到一个bug未能解决，所以就只能自己来写了
+    过滤器位于[\src\main\java\com\suny\association\filter\PermissionFilter.java](\src\main\java\com\suny\association\filter\PermissionFilter.java)中，这里放行了几个不用权限就可以访问的页面，然后根据【access_url_permission】表中的数据判断当前访问的连接是否需要权限，如果需要权限，就从【permission_union_role】表中读取当前登录用户的权限，如果不满足权限就跳转到提示无权限页面，这里可以debug打断点进去查看流程。
 
 
+  - 
+  
 
+## 项目中的一些规范
+  不久前国内Java开源比较多的阿里出了本[阿里巴巴Java开发手册](https://yq.aliyun.com/articles/69327)，毕竟大厂里面使用的标准，我们也可以参考其中的规范，约束自己的代码  
+  
+ #### 例如在项目中：
+
+
+- 项目使用Maven构建，约定大于配置  
+
+- 在类跟方法上面写注释，注释要比较的清晰易懂
+
+- 类名采用驼峰式书写，方法名采用首字母小写
+
+- 尽可能把长的代码拆分成易读的短小代码
+
+- 能复用的代码抽取成静态方法重复使用
+
+- 源文件编码格式为`UTF-8`
+
+- service类，放在在叫名`service`的包下，接口以`I`开头，例如`IAccountService`，实现类以`Impl`结尾，如`AccountServiceImpl`
+
+- controller类，放在在以`controller`结尾的包下，类名以Controller结尾，如`AccountController.java`，并继承`BaseController`
+
+- mapper.xml，需要在名叫`mapper`的包下，并以`Mapper.xml`结尾，如`AccountMapper.xml`
+
+- mapper接口，需要在名叫`mapper`的包下，并以`Mapper`结尾，如`AccountMapper.java`
+
+- model实体类，需要在名叫`pojo`的包下，命名规则为数据表转驼峰规则，如`Account.java`
+
+- spring配置文件，命名规则为`applicationContext-*.xml`
+
+- springmvc配置加到对应模块的`applicationContext-SpringMVC.xml`文件里
+
+- 配置文件放到`src/main/resources`目录下
+
+- 静态资源文件放到`src/main/webapp/resources`目录下
+
+- jsp文件，需要在`/WEB-INF/jsp`目录下
+
+- `RequestMapping`和返回物理试图路径的url尽量写全路径，如：`@RequestMapping("/account")`、`return "/account/index"`
+
+- `RequestMapping`指定method
+
+
+#### 当然网上也有一些Java代码的规范，我们也可以参考
+- [Sun公司在1999年4月20日更新更新的英文规范](http://www.oracle.com/technetwork/java/javase/documentation/codeconvtoc-136057.html)  
+- [国人翻译的Sun公司中文语言规范](https://waylau.gitbooks.io/java-code-conventions/)
+- [Google Java编程风格指南](http://www.hawstein.com/posts/google-java-style.html)
+- [IBM巨头提出的参考标准](https://www.ibm.com/developerworks/cn/java/standards/)
 ## 推荐的一些博客以及参考资料
+
+在做项目的过程中，需要学习很多没有接触过的知识，同时也需要不断地完善已经有认识但是不是很熟悉的技术知识点，于是网上一些论坛，博客分享了很多高质量的内容
+
+### 首先推荐的是京东大神涛哥的跟我学系列，跟我学系列简单易学，并且在Github上有例子可以下载运行，深入浅出易懂
+
+- [跟我学Shiro目录贴](http://jinnianshilongnian.iteye.com/blog/2018398 "跟我学Shiro目录贴")
+
+- [跟我学SpringMVC目录汇总贴](http://jinnianshilongnian.iteye.com/blog/1752171 "跟我学SpringMVC目录汇总贴")
+
+### 做权限控制的时候搜索到的一些在ITeye论坛上的好帖子
+
+
+- [权限控制的讨论](http://www.iteye.com/magazines/82 "ITeye论坛关于权限控制的讨论")  
+- [RBAC新解：基于资源的权限管理(Resource-Based Access Control)](http://globeeip.iteye.com/blog/1236167 "RBAC新解：基于资源的权限管理(Resource-Based Access Control)")
+ - [java poi 读取Excel](http://jynine.iteye.com/blog/1826262)
+- [spring shiro权限注解方式验证](http://zzc1684.iteye.com/blog/2188152)
+- [SpringAOP拦截Controller,Service实现日志管理(自定义注解的方式)](http://tiangai.iteye.com/blog/2103708)
+- [用枚举来处理java自定义异常](http://www.iteye.com/topic/1137167)
+- [java 判断对象是否为空](http://hw1287789687.iteye.com/blog/1936364)
+- [SpringMVC深度探险](http://www.iteye.com/blogs/subjects/springmvc-explore)
+
+
+### 不得不说，stackoverflow上很多方面都比国内很多复制内容的论坛好多了，气氛相对较好的地方
+- [Java8使用LocalDateTime，Mybatis无法识别的解决办法](http://stackoverflow.com/questions/25113579/java-8-localdate-mapping-with-mybatis) 
+- [这里是关于Java的一个标签体，里面介绍的是关于Java 的内容](https://stackoverflow.com/tags/java/info)
+
+### 在使用Bootstrap-table时，在网站找到的比较优质的博客例子，很详细
+- [JS组件系列——表格组件神器：bootstrap table](http://www.cnblogs.com/landeanfen/p/4976838.html)  
+- [JS组件系列——表格组件神器：bootstrap table（二：父子表和行列调序）](http://www.cnblogs.com/landeanfen/p/4993979.html)
+- [JS组件系列——表格组件神器：bootstrap table（三：终结篇，最后的干货福利）](http://www.cnblogs.com/landeanfen/p/5005367.html)  
+#### 同时官网的例子也是挺详细的  
+- [Bootstrap Table Demo](http://issues.wenzhixin.net.cn/bootstrap-table/index.html)
+
+- [Bootstrap Table API](http://bootstrap-table.wenzhixin.net.cn/zh-cn/documentation/)
+
+- [Bootstrap Table源码](https://github.com/wenzhixin/bootstrap-table)
+### 一些在项目中很受用比较零碎的博客
+- [spring MVC 的MultipartFile转File读取](http://www.cnblogs.com/hahaxiaoyu/p/5102900.html)  
+- [在filter里注入被注解的bean？](https://www.zhihu.com/question/22977026)
+- [ JavaWeb--Servlet过滤器Filter和SpringMVC的HandlerInterceptor（Session和Cookie登录认证）](http://blog.csdn.net/jack__frost/article/details/71158139)
+- [shiro 自定义过滤器如何当无权限时返回json字符串](http://bbs.csdn.net/topics/390939739)
+- [ BootStrap--具有增删改查功能的表格Demo](http://blog.csdn.net/wangmei4968/article/details/48437175)
+- [ java web简单权限管理设计](http://blog.csdn.net/zwx19921215/article/details/44467099)
+
 
 
 ## 写在最后
